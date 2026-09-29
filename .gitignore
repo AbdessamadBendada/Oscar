@@ -1,0 +1,12 @@
+# Client personal data — keep local, repo is public
+reference/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Node (if tooling is added later)
+node_modules/
