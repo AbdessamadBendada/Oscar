@@ -3,425 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OPS DETOX™ — Homepage Mockup</title>
-<style>
-/* ============================================================
-   OPS DETOX™ — Homepage high-fidelity mockup
-   Direction: Clean & calm. Monochrome ink on paper, one accent.
-   Images intentionally rendered as grey placeholder boxes.
-   ============================================================ */
-
-:root{
-  --ink:        #0E1113;
-  --ink-70:     #4A5054;
-  --ink-45:     #7D8488;
-  --rule:       #E2E2DE;
-  --paper:      #FBFBF9;
-  --panel:      #F2F2EE;
-  --box:        #C9C9C6;   /* image placeholder grey */
-  --accent:     #0E9B6E;
-  --accent-ink: #086B4C;
-
-  --w:          1180px;
-  --gutter:     32px;
-
-  --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 40px;
-  --s5: 64px; --s6: 96px; --s7: 140px;
-
-  --sans: "Helvetica Neue", Helvetica, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-}
-
-*{ box-sizing:border-box; }
-html{ -webkit-text-size-adjust:100%; }
-body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--sans);
-  font-size:17px;
-  line-height:1.65;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-img{ max-width:100%; display:block; }
-
-.wrap{ width:100%; max-width:var(--w); margin-inline:auto; padding-inline:var(--gutter); }
-
-/* ---------- Type scale ---------- */
-h1,h2,h3,h4{ margin:0; font-weight:700; letter-spacing:-0.02em; line-height:1.06; }
-h1{ font-size:clamp(2.6rem, 5.4vw, 4.2rem); text-transform:uppercase; letter-spacing:-0.025em; }
-h2{ font-size:clamp(1.9rem, 3.4vw, 2.75rem); text-transform:uppercase; }
-h3{ font-size:1.0625rem; letter-spacing:0.01em; line-height:1.3; }
-p{ margin:0 0 1.1em; }
-p:last-child{ margin-bottom:0; }
-
-.eyebrow{
-  font-family:var(--mono);
-  font-size:.7rem;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--ink-45);
-  margin:0 0 var(--s3);
-  display:block;
-}
-.lede{ font-size:1.0625rem; color:var(--ink-70); max-width:54ch; }
-.small{ font-size:.9375rem; color:var(--ink-70); }
-
-/* ---------- Buttons ---------- */
-.btn{
-  display:inline-flex; align-items:center; gap:.6em;
-  font-family:var(--sans);
-  font-size:.75rem; font-weight:700;
-  letter-spacing:.14em; text-transform:uppercase;
-  padding:15px 26px;
-  border:1px solid var(--ink);
-  border-radius:2px;
-  text-decoration:none;
-  background:var(--ink); color:#fff;
-  transition:background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
-  cursor:pointer;
-}
-.btn:hover{ background:var(--accent-ink); border-color:var(--accent-ink); transform:translateY(-1px); }
-.btn--ghost{ background:transparent; color:var(--ink); }
-.btn--ghost:hover{ background:var(--ink); color:#fff; border-color:var(--ink); }
-.btn--sm{ padding:11px 20px; font-size:.6875rem; }
-.btn-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:var(--s4); }
-
-/* ---------- Image placeholder ---------- */
-.ph{
-  background:var(--box);
-  border-radius:2px;
-  position:relative;
-  min-height:180px;
-}
-.ph::after{
-  content:attr(data-label);
-  position:absolute; inset:auto 0 12px 0;
-  text-align:center;
-  font-family:var(--mono); font-size:.625rem; letter-spacing:.12em;
-  text-transform:uppercase; color:#fff; opacity:.75;
-}
-
-/* ---------- Header ---------- */
-.site-header{
-  position:sticky; top:0; z-index:50;
-  background:rgba(251,251,249,.88);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--rule);
-}
-.header-inner{
-  display:flex; align-items:center; justify-content:space-between;
-  gap:var(--s4);
-  height:76px;
-}
-.logo{
-  font-weight:700; font-size:1.0625rem;
-  letter-spacing:.04em; text-transform:uppercase;
-  text-decoration:none; color:var(--ink);
-  white-space:nowrap;
-}
-.logo sup{ font-size:.5em; top:-.7em; position:relative; }
-.nav{ display:flex; align-items:center; gap:var(--s3); }
-.nav a{
-  text-decoration:none; color:var(--ink-70);
-  font-size:.8125rem; letter-spacing:.04em;
-  padding:4px 0; border-bottom:1px solid transparent;
-  transition:color .18s, border-color .18s;
-  white-space:nowrap;
-}
-.nav a:hover{ color:var(--ink); border-color:var(--accent); }
-.nav-sep{ color:var(--rule); font-size:.8125rem; }
-
-/* ---------- Sections ---------- */
-section{ padding-block:var(--s7); }
-section + section{ padding-top:0; }
-.section-pad{ padding-block:var(--s7); }
-
-/* ---------- Hero ---------- */
-.hero{ padding-top:var(--s6); padding-bottom:var(--s6); }
-.hero-grid{
-  display:grid;
-  grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
-  gap:var(--s6);
-  align-items:center;
-}
-.hero h1{ margin-bottom:var(--s3); max-width:14ch; }
-.hero .ph{ aspect-ratio:4/5; }
-
-/* ---------- Ticker ---------- */
-.ticker{
-  background:var(--ink); color:#fff;
-  padding-block:20px;
-  overflow:hidden;
-  white-space:nowrap;
-  margin-block:0;
-}
-.ticker-track{
-  display:inline-flex; gap:0;
-  animation:slide 42s linear infinite;
-  will-change:transform;
-}
-.ticker span{
-  font-size:.75rem; font-weight:700;
-  letter-spacing:.14em; text-transform:uppercase;
-  padding-right:28px;
-}
-@keyframes slide{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
-@media (prefers-reduced-motion:reduce){ .ticker-track{ animation:none; } }
-
-/* ---------- Trust row ---------- */
-.trust{ padding-block:var(--s6); text-align:center; }
-.trust-label{
-  font-size:.9375rem; font-weight:700; color:var(--ink);
-  margin-bottom:var(--s4);
-}
-.logo-row{
-  display:grid; grid-template-columns:repeat(4,1fr);
-  gap:var(--s4); align-items:center;
-}
-.logo-slot{
-  font-family:var(--mono); font-size:1.125rem;
-  letter-spacing:.1em; color:var(--ink-45);
-  text-align:center; padding:18px 0;
-}
-
-/* ---------- Two-col text + image ---------- */
-.split{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:var(--s6);
-  align-items:center;
-}
-.split .ph{ aspect-ratio:3/4; }
-.split h2{ margin-bottom:var(--s3); max-width:16ch; }
-
-/* ---------- Steps ---------- */
-.center-head{ text-align:center; margin-bottom:var(--s6); }
-.steps{
-  display:grid; grid-template-columns:repeat(3,1fr);
-  gap:var(--s5);
-}
-.step{ display:flex; flex-direction:column; text-align:center; align-items:center; }
-.step-num{
-  font-family:var(--mono); font-size:.6875rem;
-  letter-spacing:.16em; text-transform:uppercase;
-  color:var(--accent-ink); margin-bottom:var(--s2);
-}
-.step h3{ text-transform:uppercase; letter-spacing:.03em; margin-bottom:var(--s2); }
-.step p{ font-size:.9375rem; color:var(--ink-70); margin-bottom:var(--s3); }
-.step .btn{ margin-top:auto; }
-
-/* ---------- Stats ---------- */
-.stats{
-  display:grid; grid-template-columns:repeat(4,1fr);
-  gap:var(--s4);
-  border-top:1px solid var(--rule);
-  padding-top:var(--s5);
-}
-.stat-num{
-  font-size:clamp(2.1rem, 3.6vw, 3rem);
-  font-weight:700; letter-spacing:-0.03em; line-height:1;
-  margin-bottom:var(--s2);
-}
-.stat p{ font-size:.875rem; color:var(--ink-70); line-height:1.5; }
-
-/* ---------- Modules panel ---------- */
-.panel{
-  background:var(--panel);
-  border-radius:3px;
-  padding:var(--s6) var(--s5);
-}
-.panel-head{ max-width:56ch; margin-bottom:var(--s5); }
-.panel-head h2{ margin-bottom:var(--s3); }
-.modules{
-  display:grid; grid-template-columns:repeat(4,1fr);
-  gap:var(--s2);
-}
-.module{
-  background:#fff;
-  border:1px solid var(--rule);
-  border-radius:2px;
-  padding:var(--s3);
-  min-height:132px;
-  display:flex; flex-direction:column; gap:6px;
-  cursor:pointer;
-  text-align:left; width:100%; font:inherit; color:inherit;
-  transition:border-color .18s, transform .18s, box-shadow .18s;
-}
-.module:hover{
-  border-color:var(--accent);
-  transform:translateY(-2px);
-  box-shadow:0 6px 20px rgba(14,17,19,.07);
-}
-.module h3{ text-transform:uppercase; letter-spacing:.03em; }
-.module p{ font-size:.875rem; color:var(--ink-70); }
-.module .plus{
-  margin-top:auto; font-family:var(--mono); font-size:1.125rem;
-  color:var(--accent); line-height:1;
-}
-.panel-cta{ text-align:center; margin-top:var(--s5); }
-
-/* ---------- Testimonials ---------- */
-.tests{ display:grid; grid-template-columns:repeat(4,1fr); gap:var(--s3); }
-.test{
-  border:1px solid var(--rule);
-  border-radius:2px;
-  padding:var(--s4) var(--s3);
-  min-height:180px;
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--mono); font-size:.75rem;
-  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-45);
-}
-
-/* ---------- About ---------- */
-.about .ph{ aspect-ratio:3/4; }
-.about-body p{ font-style:italic; color:var(--ink-70); font-size:1rem; }
-.values{
-  margin-top:var(--s5);
-  padding-top:var(--s3);
-  border-top:1px solid var(--rule);
-  font-size:.875rem; color:var(--ink-70);
-}
-.values strong{ color:var(--ink); }
-
-/* ---------- Choice ---------- */
-.choice{ text-align:center; padding-block:var(--s7); }
-.choice h2{ margin-bottom:var(--s4); text-transform:none; font-size:clamp(1.5rem,2.6vw,2rem); }
-.switch{
-  display:inline-flex; align-items:center; gap:var(--s3);
-  font-size:1rem; font-weight:700;
-}
-.switch-track{
-  width:60px; height:30px; border-radius:20px;
-  background:var(--ink); position:relative; cursor:pointer;
-  border:none; padding:0;
-  transition:background .25s ease;
-}
-.switch-track::after{
-  content:""; position:absolute; top:3px; left:3px;
-  width:24px; height:24px; border-radius:50%;
-  background:#fff; transition:transform .25s cubic-bezier(.4,0,.2,1);
-}
-.switch-track[aria-pressed="true"]{ background:var(--accent); }
-.switch-track[aria-pressed="true"]::after{ transform:translateX(30px); }
-.switch .lbl{ color:var(--ink-45); transition:color .25s; }
-.switch .lbl.is-on{ color:var(--ink); }
-
-/* ---------- Footer ---------- */
-.site-footer{
-  background:var(--panel);
-  padding-block:var(--s6);
-  margin-top:var(--s5);
-}
-.footer-grid{
-  display:grid;
-  grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);
-  gap:var(--s5);
-}
-.footer-grid h4{
-  font-size:1.125rem; margin-bottom:var(--s3);
-  text-transform:none; letter-spacing:-0.01em;
-}
-.field{
-  width:100%; padding:13px 14px;
-  border:1px solid var(--rule); border-radius:2px;
-  background:#fff; font:inherit; font-size:.875rem;
-  margin-bottom:var(--s1);
-}
-.field::placeholder{ color:var(--ink-45); font-family:var(--mono); font-size:.6875rem; letter-spacing:.12em; text-transform:uppercase; }
-.field:focus{ outline:2px solid var(--accent); outline-offset:1px; border-color:transparent; }
-.newsletter .btn{ width:100%; justify-content:center; margin-top:var(--s1); }
-.f-item{ margin-bottom:var(--s3); }
-.f-label{
-  font-family:var(--mono); font-size:.625rem;
-  letter-spacing:.16em; text-transform:uppercase;
-  color:var(--ink-45); display:block; margin-bottom:2px;
-}
-.f-item a, .legal a{ color:var(--ink); text-decoration:none; font-size:.9375rem; }
-.f-item a:hover, .legal a:hover{ color:var(--accent-ink); text-decoration:underline; }
-.legal a{ display:block; margin-bottom:8px; }
-.footer-base{
-  border-top:1px solid var(--rule);
-  margin-top:var(--s5); padding-top:var(--s3);
-  display:flex; justify-content:space-between; flex-wrap:wrap; gap:var(--s2);
-  font-family:var(--mono); font-size:.625rem;
-  letter-spacing:.12em; text-transform:uppercase; color:var(--ink-45);
-}
-
-/* ---------- Module modal ---------- */
-.modal{
-  position:fixed; inset:0; z-index:100;
-  display:none; align-items:center; justify-content:center;
-  padding:var(--s3);
-  background:rgba(14,17,19,.55);
-  backdrop-filter:blur(3px);
-}
-.modal.is-open{ display:flex; }
-.modal-card{
-  background:var(--paper);
-  border-radius:3px;
-  max-width:640px; width:100%;
-  max-height:85vh; overflow-y:auto;
-  padding:var(--s5);
-  position:relative;
-}
-.modal-close{
-  position:absolute; top:var(--s3); right:var(--s3);
-  width:34px; height:34px; border-radius:50%;
-  border:1px solid var(--rule); background:#fff;
-  font-size:1.125rem; line-height:1; cursor:pointer; color:var(--ink);
-}
-.modal-close:hover{ background:var(--ink); color:#fff; border-color:var(--ink); }
-.modal-card h3{ font-size:1.625rem; text-transform:uppercase; margin-bottom:var(--s2); }
-.modal-note{
-  margin-top:var(--s4); padding-top:var(--s3);
-  border-top:1px solid var(--rule);
-  font-family:var(--mono); font-size:.6875rem;
-  letter-spacing:.06em; color:var(--ink-45); text-transform:uppercase;
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width:980px){
-  :root{ --s6:64px; --s7:88px; --gutter:24px; }
-  .hero-grid, .split{ grid-template-columns:1fr; gap:var(--s5); }
-  .hero .ph, .split .ph, .about .ph{ aspect-ratio:16/10; }
-  .steps{ grid-template-columns:1fr; gap:var(--s5); }
-  .stats{ grid-template-columns:repeat(2,1fr); gap:var(--s4) var(--s3); }
-  .modules{ grid-template-columns:repeat(2,1fr); }
-  .tests{ grid-template-columns:repeat(2,1fr); }
-  .footer-grid{ grid-template-columns:1fr 1fr; }
-  .newsletter{ grid-column:1 / -1; }
-  .nav{ display:none; }
-  .panel{ padding:var(--s5) var(--s3); }
-}
-@media (max-width:620px){
-  :root{ --s7:72px; }
-  body{ font-size:16px; }
-  .logo-row{ grid-template-columns:repeat(2,1fr); }
-  .modules{ grid-template-columns:1fr; }
-  .tests{ grid-template-columns:1fr; }
-  .stats{ grid-template-columns:1fr; }
-  .footer-grid{ grid-template-columns:1fr; }
-  .btn-row .btn{ width:100%; justify-content:center; }
-  .switch{ flex-direction:column; gap:var(--s2); }
-}
-</style>
+<title>OPS DETOX™ — Operational detox for scale-ups</title>
+<link rel="stylesheet" href="css/site.css">
 </head>
 <body>
 
-<!-- ============ HEADER ============ -->
 <header class="site-header">
   <div class="wrap header-inner">
-    <a href="#" class="logo">OPS DETOX<sup>™</sup></a>
+    <a href="index.html" class="logo">OPS DETOX<sup>™</sup></a>
     <nav class="nav">
-      <a href="#detox">The DETOX</a><span class="nav-sep">·</span>
-      <a href="#audit">Audit</a><span class="nav-sep">·</span>
-      <a href="#results">Results</a><span class="nav-sep">·</span>
-      <a href="#about">About</a><span class="nav-sep">·</span>
-      <a href="#contact">Contact</a>
+      <a href="detox.html">The DETOX</a><span class="nav-sep">·</span>
+      <a href="diagnostic.html">Audit</a><span class="nav-sep">·</span>
+      <a href="index.html#results">Results</a><span class="nav-sep">·</span>
+      <a href="about.html">About</a><span class="nav-sep">·</span>
+      <a href="contact.html">Contact</a>
     </nav>
-    <a href="#contact" class="btn btn--ghost btn--sm">Let’s talk</a>
+    <a href="contact.html" class="btn btn--ghost btn--sm">Let’s talk</a>
   </div>
 </header>
 
@@ -435,8 +32,8 @@ section + section{ padding-top:0; }
       <h1>Cleanse your business systems of operational clutter</h1>
       <p class="lede">We help scale-ups cleanse the systems clogged by meetings nobody needs, reports nobody reads and decisions nobody takes, so time flows back into growing the company.</p>
       <div class="btn-row">
-        <a href="#contact" class="btn">Let’s talk</a>
-        <a href="#audit" class="btn btn--ghost">Book the FREE DIAGNOSTIC</a>
+        <a href="contact.html" class="btn">Let’s talk</a>
+        <a href="diagnostic.html" class="btn btn--ghost">Book the FREE DIAGNOSTIC</a>
       </div>
     </div>
     <div class="ph" data-label="Hero image"></div>
@@ -465,14 +62,14 @@ section + section{ padding-top:0; }
 </section>
 
 <!-- ============ PROBLEM ============ -->
-<section id="detox">
+<section>
   <div class="wrap split">
     <div>
       <h2>Fewer meetings, fewer reports, faster decisions</h2>
       <p class="small">Most scale-ups don't have a strategy problem. They have a company full of work that piled up as they grew, meetings that outlived their purpose, reports nobody reads, decisions that wait on founder’s desk, all kept alive by one sentence: "that's how we've always done it.</p>
       <p class="small">OPS Detox clears out what growth left behind. Together with your team, we strip away the meetings, reports and approval layers that no longer serve the business, and rebuild a structure your people can run on their own, long after we have left.</p>
     </div>
-    <div class="ph" data-label="Supporting image"></div>
+    <div class="ph split-media" data-label="Supporting image"></div>
   </div>
 </section>
 
@@ -486,21 +83,21 @@ section + section{ padding-top:0; }
         <span class="step-num">Step 1</span>
         <h3>OPS Detox Diagnostic™</h3>
         <p>Before anything is stripped, we measure where the time and the decisions actually go. You, your key people and your team answer the same questions, where the answers differ, the clutter sits.</p>
-        <a href="#audit" class="btn btn--ghost btn--sm">Book the FREE DIAGNOSTIC</a>
+        <a href="diagnostic.html" class="btn btn--ghost btn--sm">Book the FREE DIAGNOSTIC</a>
       </div>
 
       <div class="step">
         <span class="step-num">Step 2</span>
         <h3>THE DETOX system</h3>
         <p>Together with your team, we strip and rebuild: the meetings, the reports, the decision paths, the tools. Your team learns the method while we work.</p>
-        <a href="#detox" class="btn btn--ghost btn--sm">Learn more</a>
+        <a href="detox.html" class="btn btn--ghost btn--sm">Learn more</a>
       </div>
 
       <div class="step">
         <span class="step-num">Step 3</span>
         <h3>The Workshops</h3>
         <p>A few intensive hours with your leadership team. In the Speak Up Gym and over the Out Loud card game, people practise saying the uncomfortable thing out loud and the clutter starts to show.</p>
-        <a href="#detox" class="btn btn--ghost btn--sm">Learn more</a>
+        <a href="detox.html" class="btn btn--ghost btn--sm">Learn more</a>
       </div>
 
     </div>
@@ -510,7 +107,7 @@ section + section{ padding-top:0; }
 <!-- ============ OUTCOMES ============ -->
 <section id="results" class="section-pad">
   <div class="wrap">
-    <h2 style="margin-bottom:var(--s5)">OPS DETOX OUTCOMES:</h2>
+    <h2 class="u-mb5">OPS DETOX OUTCOMES:</h2>
     <div class="stats">
       <div class="stat">
         <div class="stat-num">20–35%</div>
@@ -567,7 +164,7 @@ section + section{ padding-top:0; }
       </div>
 
       <div class="panel-cta">
-        <a href="#detox" class="btn">Learn more</a>
+        <a href="detox.html" class="btn">Learn more</a>
       </div>
     </div>
   </div>
@@ -584,22 +181,24 @@ section + section{ padding-top:0; }
 </section>
 
 <!-- ============ ABOUT ============ -->
-<section id="about" class="about section-pad">
+<section class="section-pad">
   <div class="wrap split">
     <div>
       <span class="eyebrow">About Oscar de Grauw</span>
       <h2>Why work with me</h2>
-      <div class="about-body" style="margin-top:var(--s3)">
-        <p>I spent 17 years inside complex, international organizations, working across borders, departments and leadership levels. I've seen strategies succeed and fail because day-to-day operations couldn't keep up.</p>
-        <p>I don't approach your organization as an outsider with a framework. I work from the inside out, focusing on how work really flows.</p>
-        <p>My work is built on proprietary frameworks: The CORE method™, OPS Detox, Truth Latency™, Async Mastery™, Speak Up Gym™ and DRMT™ (the decision engine). You get a repeatable, structured approach that scales.</p>
+      <div style="margin-top:var(--s3)">
+        <p class="small">I spent 17 years inside complex, international organizations, working across borders, departments and leadership levels. I've seen strategies succeed and fail because day-to-day operations couldn't keep up.</p>
+        <p class="small">I don't approach your organization as an outsider with a framework. I work from the inside out, focusing on how work really flows.</p>
+        <p class="small">My work is built on proprietary frameworks: The CORE method™, OPS Detox, Truth Latency™, Async Mastery™, Speak Up Gym™ and DRMT™ (the decision engine). You get a repeatable, structured approach that scales.</p>
       </div>
       <div class="btn-row">
-        <a href="#about" class="btn btn--ghost">More about Oscar →</a>
+        <a href="about.html" class="btn btn--ghost">More about Oscar →</a>
       </div>
-      <p class="values"><strong>How I work</strong> (values row): Uncomfortable honesty · Clarity · Ownership · Substance · Courage · Depth</p>
+      <p class="small" style="margin-top:var(--s5);padding-top:var(--s3);border-top:1px solid var(--rule)">
+        <strong style="color:var(--ink)">How I work</strong> (values row): Uncomfortable honesty · Clarity · Ownership · Substance · Courage · Depth
+      </p>
     </div>
-    <div class="ph" data-label="Portrait of Oscar"></div>
+    <div class="ph split-media" data-label="Portrait of Oscar"></div>
   </div>
 </section>
 
@@ -612,19 +211,17 @@ section + section{ padding-top:0; }
       <button class="switch-track" id="switch" aria-pressed="false" aria-label="Operational noise or operational clarity"></button>
       <span class="lbl" id="lbl-clarity">Operational clarity</span>
     </div>
-    <div class="btn-row" style="justify-content:center">
-      <a href="#contact" class="btn">Let’s talk</a>
+    <div class="btn-row btn-row--center">
+      <a href="contact.html" class="btn">Let’s talk</a>
     </div>
   </div>
 </section>
 
 </main>
 
-<!-- ============ FOOTER ============ -->
-<footer class="site-footer" id="contact">
+<footer class="site-footer">
   <div class="wrap">
     <div class="footer-grid">
-
       <div class="newsletter">
         <h4>Newsletter</h4>
         <form onsubmit="return false">
@@ -633,23 +230,12 @@ section + section{ padding-top:0; }
           <button class="btn" type="submit">Subscribe</button>
         </form>
       </div>
-
       <div>
         <h4>Contact</h4>
-        <div class="f-item">
-          <span class="f-label">Email</span>
-          <a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a>
-        </div>
-        <div class="f-item">
-          <span class="f-label">Phone</span>
-          <a href="tel:+1234567890">(123) 456 7890</a>
-        </div>
-        <div class="f-item">
-          <span class="f-label">Address</span>
-          <span class="small">123 Anywhere St.,<br>Any City 1234</span>
-        </div>
+        <div class="f-item"><span class="f-label">Email</span><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></div>
+        <div class="f-item"><span class="f-label">Phone</span><a href="tel:+1234567890">(123) 456 7890</a></div>
+        <div class="f-item"><span class="f-label">Address</span><span class="small">123 Anywhere St.,<br>Any City 1234</span></div>
       </div>
-
       <div>
         <h4>legal</h4>
         <nav class="legal">
@@ -659,9 +245,7 @@ section + section{ padding-top:0; }
           <a href="#">Cookies</a>
         </nav>
       </div>
-
     </div>
-
     <div class="footer-base">
       <span>OPS DETOX™</span>
       <span>Mockup v1 — placeholder contact details</span>
@@ -669,7 +253,6 @@ section + section{ padding-top:0; }
   </div>
 </footer>
 
-<!-- ============ MODULE MODAL ============ -->
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-card">
     <button class="modal-close" id="modal-close" aria-label="Close">×</button>
@@ -679,43 +262,6 @@ section + section{ padding-top:0; }
   </div>
 </div>
 
-<script>
-/* Module popups */
-var modal = document.getElementById('modal');
-var lastFocus = null;
-
-function openModal(title, sub, trigger){
-  lastFocus = trigger;
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-sub').textContent = sub;
-  modal.classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-  document.getElementById('modal-close').focus();
-}
-function closeModal(){
-  modal.classList.remove('is-open');
-  document.body.style.overflow = '';
-  if (lastFocus) lastFocus.focus();
-}
-
-document.querySelectorAll('.module').forEach(function(el){
-  el.addEventListener('click', function(){
-    openModal(el.dataset.title, el.dataset.sub, el);
-  });
-});
-document.getElementById('modal-close').addEventListener('click', closeModal);
-modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
-document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
-
-/* Noise / clarity switch */
-var sw = document.getElementById('switch');
-sw.addEventListener('click', function(){
-  var on = sw.getAttribute('aria-pressed') === 'true';
-  sw.setAttribute('aria-pressed', String(!on));
-  document.getElementById('lbl-noise').classList.toggle('is-on', on);
-  document.getElementById('lbl-clarity').classList.toggle('is-on', !on);
-});
-</script>
-
+<script src="js/site.js"></script>
 </body>
 </html>

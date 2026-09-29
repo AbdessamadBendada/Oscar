@@ -13,7 +13,14 @@ Website build for **Oscar de Grauw**, founder of OPS Detox™ — operational de
 
 | Path | Contents |
 |---|---|
-| `mockup/index.html` | Homepage mockup — self-contained, no dependencies. Open directly in a browser. |
+| `mockup/index.html` | Homepage |
+| `mockup/detox.html` | The DETOX — the service page (problem, system, seven modules, 3 steps, fit, outcomes) |
+| `mockup/diagnostic.html` | Audit — OPS Detox Diagnostic™ |
+| `mockup/about.html` | About Oscar de Grauw |
+| `mockup/contact.html` | Contact |
+| `mockup/freebie.html` | Opt-in — The Startup Financial Model Template |
+| `mockup/css/site.css` | Shared stylesheet — design tokens and all components |
+| `mockup/js/site.js` | Shared behaviour — module popups, noise/clarity toggle |
 | `content/copy.md` | Full sitemap and all client-supplied copy, organised per page |
 | `content/oscar-bio.md` | Background, credentials and proprietary frameworks |
 | `assets/` | Logo, fonts and imagery (empty — awaiting client) |
@@ -30,6 +37,7 @@ Website build for **Oscar de Grauw**, founder of OPS Detox™ — operational de
 |---|---|
 | Outcomes, stat 2 | `aster decision cycles` — missing the "f" in "faster" |
 | Problem paragraph | `...that's how we've always done it.` — no closing quotation mark |
+| DETOX page, 3-step heading | `From clutter to floW in 3 stesp` — "stesp" and the stray capital W |
 | Footer | Canva placeholder details: `hello@reallygreatsite.com`, `123 Anywhere St.`, `(123) 456 7890` |
 
 ## Outstanding from client
