@@ -215,6 +215,15 @@ section + section{ padding-top:0; }
 }
 .ticks--plain li::before{ content:"×"; color:var(--ink-45); }
 
+/* Centred variant used on the opt-in page */
+.ticks--inline{ display:inline-block; text-align:left; }
+.ticks--inline li{ font-style:italic; color:var(--ink-70); }
+
+/* ---------- Opt-in form (inline, no card) ---------- */
+.optin{ max-width:380px; margin-top:var(--s4); }
+.optin .field{ margin-bottom:10px; }
+.optin .btn{ width:100%; justify-content:center; }
+
 /* ---------- Feature list (checkmarks, boxed) ---------- */
 .feats{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--s3) var(--s5); }
 .feat{ border-top:1px solid var(--rule); padding-top:var(--s3); font-size:.9375rem; color:var(--ink-70); }
