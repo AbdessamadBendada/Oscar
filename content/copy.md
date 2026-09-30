@@ -148,8 +148,25 @@ Each module stands alone. Together, they reset how the company runs.
 - Growth without new headcount, because the time you win back absorbs the work you would otherwise hire for.
 - Two weeks away with the laptop closed, and a company that kept moving in your absence.
 
+### WHY LEADERS CHOOSE — OPS Detox
+(six cards, from the Work With Us wireframe)
+- **Built from inside real organizations** — 17 years inside complex, global enterprises. Not theory. Lived experience.
+- **Focused on how work actually flows** — Meetings. Decisions. Tools. Reporting. The real bottlenecks.
+- **A system, not opinions** — CORE method™. OPS Detox. Repeatable. Scalable. Proven.
+- **Remove operational noise before adding complexity** — We remove what's unnecessary first. Only then do we redesign.
+- **Designed for hybrid & AI reality** — Async work. Tool overload. AI usage. Handled deliberately.
+- **Results leaders can defend** — Time saved. Costs avoided. Speed gained. CFO-proof.
+
 ### Closing + Newsletter
 (same as homepage)
+
+### Page order (per client wireframe "WORK WITH US")
+Hero → Nobody designed it this way → cleaner way + OUTCOMES (one panel) → Seven modules
+→ From clutter to flow in 3 stesp → About Oscar → For / Not for → What a clean operation feels like
+→ Testimonials → Why leaders choose → What will you choose? → Footer
+
+Note: the About block on this page uses the **long Sony bio** (the ABOUT PAGE text),
+not the shorter "17 years inside complex, international organizations" version.
 
 ---
 
