@@ -1,6 +1,14 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 11 October 2026_
+_Last updated: 12 October 2026_
+
+> **12 Oct — the Cost and System sections were parked below the final CTA.** Both now
+> sit inside a `.removed` wrapper with a thick Detox Green frame and a "Removed from
+> Canva" badge, after the closing Choice section. Neither section's own markup changed.
+> See §18.
+
+> **12 Oct — the 10–11 Oct work was committed and pushed to the `Oscar` repo.** Until
+> then all of it was local only. `Brand assets/` is now gitignored. See §19.
 
 > **11 Oct — homepage hero artwork updated by direct user request.** The homepage now
 > uses `website-design/assets/img/hero-concept.png`. It is a generated portrait collage
@@ -48,8 +56,9 @@ the client exactly how the thing behaves, without a backend behind it.
   before/after switcher device.
 - Copy is the client’s, locked and unedited — including the known typos in the homepage
   problem paragraph.
-- Both folders are pushed to https://github.com/AbdessamadBendada/ops-detox (branch `main`).
-  That repo holds **only** those two folders plus the brand assets they reference.
+- The live source of truth is the `Oscar` repo, `main` branch. The `ops-detox` repo
+  holds only `website-design/`, `high-fidelity-design/` and the brand assets they
+  reference, but **it is stale — still at 6 October**. See §19.
 
 ### Pages in `website-design/`
 
@@ -87,7 +96,7 @@ the client exactly how the thing behaves, without a backend behind it.
 | `mockup/` | Original static mockups and client wireframe reference |
 | `content/copy.md` | Client-supplied, locked website copy |
 | `content/oscar-bio.md` | Oscar background, credibility points, proprietary frameworks |
-| `Brand assets/` | Logos, fonts, patterns, icons, brand guideline, campaign artwork |
+| `Brand assets/` | Logos, fonts, patterns, icons, brand guideline, campaign artwork. **Gitignored — local only, see §19** |
 
 ## 4. Changes made
 
@@ -432,12 +441,12 @@ Current homepage section order:
 9. About Oscar
 10. How I work values strip
 11. Pattern divider
-12. The Cost of operational noise
-13. OPS Detox system
-14. Final choice section
+12. Final choice section
+13. `.removed` block — The Cost of operational noise, then OPS Detox system
 
 The previous §12 description of white cleanse cards and the Cost section sitting
 directly beneath them is obsolete; the details above describe the current source.
+The Cost and System sections moved below the final CTA on 12 Oct — see §18.
 
 ## 14. Testimonials relocation and placeholders (11 October 2026)
 
@@ -504,3 +513,60 @@ The final `What will you choose?` section was simplified:
   Detox Green/Deep Green in the Clarity state.
 - The control remains a semantic `<button>` with an explicit accessible label and
   visible focus treatment. On mobile, the two labels and switch stack vertically.
+
+## 18. Sections parked below the final CTA (12 October 2026)
+
+Two sections were cut from the Canva deck and are held below the page rather than
+deleted, so the client can see what was taken out:
+
+- **The Cost of operational noise** and **The OPS Detox system** now sit after the
+  closing Choice section, inside `<div class="removed">` at `website-design/index.html`.
+- Both were moved **verbatim**. No copy, markup, classes or IDs inside them changed, so
+  the `#system` anchor and the seven module popups still work exactly as before.
+- The frame is `.removed` in CSS section 20a: a 50px `var(--lime)` border on a Soft
+  Ivory ground, with `.removed-badge` — a Deep Green pill carrying lime Formula
+  Condensed type — positioned on the neon band at the top right. The badge text is
+  plain text in the markup and is edited there, not in CSS.
+- At 520px and below the border thins to 20px and the badge drops inside the frame. A
+  50px band costs a sixth of a 320px screen.
+- **This is review furniture, not design.** Deleting the `.removed` wrapper and its
+  badge returns both sections to the page flow unchanged. Do not restyle the frame to
+  be brand-compliant; it is deliberately loud so it does not read as part of the page.
+- The `.pattern-break` divider that used to introduce the Cost section stayed where it
+  was, so it now sits between the values strip and the final CTA.
+
+Verified headless at 1680, 1440, 1280, 1024, 834, 768, 520, 430, 390, 360 and 320: no
+horizontal overflow at any width, both sections render fully inside the frame, badge
+in bounds.
+
+### A trap for anyone screenshotting this page
+
+Scripted `window.scrollTo(0, y)` does **not** trigger the reveal-on-scroll observers,
+because the page sets `scroll-behavior:smooth` — the scroll animates and a stepped
+loop outruns it, so late sections never intersect and screenshot at `opacity:0`, their
+backgrounds included. Use `scrollTo({top:y, behavior:'instant'})`. This cost a confused
+round of debugging on an apparently blank section that was in fact rendering correctly.
+
+## 19. Repository state (12 October 2026)
+
+The 10–11 Oct work had never been committed anywhere. It is now in the `Oscar` repo
+(https://github.com/AbdessamadBendada/Oscar), on `main`:
+
+- `4ab5e0d` — the working site, the high-fidelity design, the brand-system rework and
+  this handoff. 45 files.
+- `b4f139d` — the §18 removed-block change.
+
+Two things to know:
+
+- **`Brand assets/` is now gitignored** — 75MB of supplied source, including both
+  guideline PDFs, kept local by decision. The site folders carry their own copies of
+  every asset they actually reference, so nothing on the pages depends on it. **If this
+  machine is the only copy, `OPS_DETOX_BRAND_GUIDELINE_V1.0.pdf` exists nowhere else.**
+  Back it up somewhere deliberate.
+- **The `ops-detox` repo is still at its 6 October state** (`81a1ba1`). Every change
+  from 10 Oct onward is missing from it. If anyone has been shown that repo or anything
+  served from it, they are looking at the pre-rework design.
+
+The `.gitignore` header says the repo is public. `website-design/assets/fonts/FormulaCondensed-Bold.otf`
+is the **trial** font and it is committed — see §9. Excluding `Brand assets/` removed one
+copy but not the one that actually gets served.
