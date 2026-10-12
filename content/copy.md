@@ -29,7 +29,8 @@ Recurring blocks:
 Operational detox for scale-ups
 **Cleanse your business systems of operational clutter**
 We help scale-ups cleanse the systems clogged by meetings nobody needs, reports nobody reads and decisions nobody takes, so time flows back into growing the company.
-CTAs: Book the FREE DIAGNOSTIC · LEARN MORE
+CTAs: Let’s talk → contact · Book the FREE DIAGNOSTIC → page with Calendly integration
+_(Updated 11 Oct 2026 from the client’s hero wireframe: order swapped, “Learn more” dropped.)_
 
 ### Social proof
 Trusted by ambitious leaders and founders at

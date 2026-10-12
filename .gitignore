@@ -1,6 +1,10 @@
 # Client personal data — keep local, repo is public
 reference/
 
+# Supplied brand source archive — 75MB, kept local. The site folders carry
+# their own copies of every asset they actually reference.
+Brand assets/
+
 # OS / editor
 .DS_Store
 Thumbs.db
