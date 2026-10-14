@@ -7,6 +7,7 @@
    4. Demo forms (client-side validation + success state)
    5. Reveal on scroll
    6. Ticker duplication (seamless loop)
+   7. Preloader
    ============================================================ */
 (function () {
   'use strict';
@@ -237,4 +238,53 @@
     var strip = ticker.querySelector('div');
     if (strip && !reduceMotion) strip.innerHTML += strip.innerHTML;
   });
+
+  /* ---------- 7. Preloader ----------
+     The overlay is in the markup and already animating by the time this
+     runs — CSS owns the timing so the switch never stutters waiting on JS.
+     All this does is clear the overlay out of the DOM afterwards and give
+     the visitor a way to skip it.
+
+     An inline script in <head> has already set .no-preloader for
+     reduced-motion users, so there is nothing to do for them. The
+     ops-preloaded flag is still written below but nothing reads it while
+     the preloader is under review and running on every load. */
+  var preloader = document.getElementById('preloader');
+
+  if (preloader && !document.documentElement.classList.contains('no-preloader')) {
+    // The scroll lock is set by the inline <head> script, not here: this file
+    // loads at the end of <body>, so locking from here would let the first
+    // paint show a scrollbar beside the overlay before the lock landed.
+
+    var finished = false;
+
+    function endPreloader(immediate) {
+      if (finished) return;
+      finished = true;
+      try { sessionStorage.setItem('ops-preloaded', '1'); } catch (e) {}
+      // Skipping restarts the lift from wherever the overlay currently is.
+      if (immediate) preloader.classList.add('is-done');
+      // Released as the lift starts, never before it — unlocking early would
+      // pop the scrollbar in while the overlay still covered the page, which
+      // is the whole thing this timing exists to avoid.
+      document.documentElement.classList.remove('pl-lock');
+      // Outlast the lift animation, then take the overlay out of the DOM so
+      // it can never trap a click or a tab stop.
+      window.setTimeout(function () {
+        if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+      }, immediate ? 460 : 560);
+    }
+
+    // Matches the 1.45s lift delay on .preloader in the stylesheet; the lift
+    // itself runs 0.52s. Keep the two in step if either is retimed.
+    window.setTimeout(function () { endPreloader(false); }, 1450);
+
+    ['click', 'keydown', 'wheel', 'touchstart'].forEach(function (evt) {
+      window.addEventListener(evt, function () { endPreloader(true); }, { once: true, passive: true });
+    });
+
+    // Safety net: if an animation never fires (a background tab, a stalled
+    // paint), the page must not stay behind a green sheet.
+    window.setTimeout(function () { endPreloader(true); }, 3000);
+  }
 })();

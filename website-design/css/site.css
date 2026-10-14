@@ -26,6 +26,8 @@
    21. Footer
    22. Reveal motion
    23. Responsive
+   24. Responsive: brand components
+   25. Preloader
    ============================================================ */
 
 /* ---------- 1. Fonts ---------- */
@@ -213,20 +215,39 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
   border-radius:var(--r-pill);
 }
 
-/* Homepage hero, per the book (p.14 / p.21): full-bleed green gradient,
+/* Homepage hero, per the book (p.14 / p.21): full-bleed Deep Green ground,
    lime display headline, white body, and the portrait cut into a circle —
    one of the two shapes the logo is built from. */
 /* .on-dark also sets a flat background and is declared later in this file,
-   so the hero states its gradient at a specificity that survives. */
+   so the hero states its own ground at a specificity that survives. */
 .hero--brand,.hero--brand.on-dark{
   grid-template-columns:1.08fr .92fr;
-  background:var(--grad-hero);color:#fff;
+  background:var(--ink);color:#fff;
   width:100%;max-width:none;padding:0 max(32px,calc((100% - 1180px) / 2));
   gap:48px;position:relative;overflow:hidden;
 }
-/* V1.0 p.37 reserves the logo pattern for large merch, so the hero carries
-   the gradient alone. The switcher pattern (p.38) is the website device and
-   appears as a section break instead — see .pattern-break. */
+/* V1.0 p.37 reserves the logo pattern for large merch, so the depth on the
+   two full-bleed Deep Green bands — this hero and the outcomes stats —
+   comes from the switcher pattern (p.38), the book's website device, held
+   far back so the only true lime on screen is the type and the CTAs.
+   The old radial gradient banded badly on 8-bit screens, washed out the
+   lime headline wherever its bloom passed behind it, and on the stat grid
+   left the four tiles sitting on four different backgrounds. */
+.hero--brand::before,.outcomes::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  /* Scaled to the viewport width, not cover: on a narrow phone hero `cover`
+     fits to height and blows the bars up to three times their intended size.
+     The artwork's top and bottom edges are plain Deep Green, so repeating it
+     down leaves no visible seam. */
+  background:url('../assets/patterns/section-break.png') center top/100% auto repeat-y;
+  opacity:.06;
+}
+/* The ticker below is Deep Green too, so the pattern fades out before the
+   base of the hero — otherwise the two bands read as one slab. */
+.hero--brand::after{
+  content:'';position:absolute;inset:auto 0 0;height:38%;z-index:0;
+  background:linear-gradient(to bottom,rgba(20,51,24,0) 0%,var(--ink) 82%);
+}
 .hero--brand>*{position:relative;z-index:1}
 .hero--brand .eyebrow{color:var(--lime);font-size:20px}
 .hero--brand h1{color:var(--lime);max-width:none;font-size:clamp(42px,4.5vw,74px)}
@@ -531,7 +552,10 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 .process-grid a:hover{text-decoration:underline}
 
 /* ---------- 12. Outcomes (dark panel) ---------- */
-.outcomes{background:var(--grad-hero);color:#fff;padding:115px 0}
+/* Flat Deep Green with the switcher pattern behind it — the texture rule is
+   shared with the homepage hero, see .hero--brand::before. */
+.outcomes{background:var(--ink);color:#fff;padding:115px 0;position:relative;overflow:hidden}
+.outcomes>*{position:relative;z-index:1}
 .outcomes .eyebrow{color:var(--lime)}
 .outcomes h2{color:var(--lime);margin:12px 0 20px}
 .outcome-intro{font-size:19px}
@@ -993,3 +1017,71 @@ footer{background:var(--ink);color:var(--paper);padding:64px 0}
 @media(max-width:520px){
   .toggle-row{font-size:19px}
 }
+
+/* ---------- 25. Preloader ----------
+   The mark is a toggle: an outlined pill with a filled circle in the left
+   socket and an empty circle in the right. The preloader simply switches it
+   on — the knob travels left to right, then the lockup pulls back and OPS
+   and DETOX close in around it. One gesture, and it says what the brand
+   does before a word is read.
+
+   Geometry comes straight from primary-detoxgreen.svg: the pill spans
+   x 203.14 to 332.52, so the two sockets sit at x 242.34 and x 293.32 and
+   the knob's travel is the 50.98 between them. It runs right to left, not
+   left to right: the mark is an O+D monogram, and the dot belongs inside
+   the O — so the switch has to resolve into the real logo, not away from
+   it. Starting it in the D is what makes the landing read as a click. The pill's centre is at
+   43.06% of the viewBox width, which is where the zoom is anchored so the
+   mark holds still while the wordmarks arrive around it. */
+.preloader{
+  position:fixed;inset:0;z-index:200;
+  background:var(--ink);
+  display:grid;place-items:center;
+  animation:pl-lift .52s cubic-bezier(.76,0,.24,1) 1.45s forwards;
+}
+/* The paths are lifted out of the logo file, which carried its fill in an
+   internal stylesheet that does not travel with them. */
+.pl-logo path,.pl-logo polygon{fill:var(--lime)}
+.pl-logo{
+  display:block;width:min(520px,72vw);height:auto;overflow:visible;
+  animation:pl-fade .3s ease-out both;
+}
+/* Scale lives on the wrapper so it does not fight the knob's own transform,
+   and so the zoom can ease independently of the fade. */
+.pl-stage{
+  transform-origin:43.06% 50%;
+  animation:pl-zoom .54s cubic-bezier(.76,0,.24,1) .64s both;
+}
+/* SVG elements default to transform-box:view-box, so this 50.98 is in
+   viewBox units, not CSS px — it stays correct at every width the logo is
+   scaled to. */
+.pl-knob{animation:pl-switch .44s cubic-bezier(.76,0,.24,1) .2s both}
+/* The words are held back until the switch has landed, so the eye reads the
+   gesture first and the lockup second. */
+.pl-word{animation:pl-word .36s cubic-bezier(.2,.7,.3,1) both}
+.pl-word--ops{--pl-from:-26px;animation-delay:.78s}
+.pl-word--detox{--pl-from:26px;animation-delay:.84s}
+
+@keyframes pl-fade{from{opacity:0}to{opacity:1}}
+@keyframes pl-zoom{from{transform:scale(1.9)}to{transform:scale(1)}}
+@keyframes pl-switch{from{transform:translateX(50.98px)}to{transform:translateX(0)}}
+@keyframes pl-word{
+  from{opacity:0;transform:translateX(var(--pl-from,-26px))}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes pl-lift{from{transform:translateY(0)}to{transform:translateY(-101%)}}
+
+/* Dismissed early — by a click, a key, a scroll, or the safety timeout. */
+.preloader.is-done{animation:pl-lift .42s cubic-bezier(.76,0,.24,1) forwards}
+/* Scroll is locked from before the first paint (set in the inline <head>
+   script) so no scrollbar appears beside the overlay, and released as the
+   overlay lifts — the page and its scrollbar arrive together.
+   scrollbar-gutter holds the track's width open while locked, so releasing
+   it does not shift the layout sideways on platforms with classic
+   scrollbars; macOS overlay scrollbars take up no space either way. */
+.pl-lock{overflow:hidden;scrollbar-gutter:stable}
+.pl-lock body{overflow:hidden}
+/* Returning visitors in the same session, and anyone who has asked for less
+   motion, never see it — the class is set by an inline script in <head> so
+   the overlay is never painted in the first place. */
+.no-preloader .preloader{display:none}
