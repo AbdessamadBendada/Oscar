@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OPS Detox — Hero options</title>
+<style>
+/* ============================================================
+   OPS DETOX™ — hero exploration
+   Five hero treatments, tabbed, built only from the brand system:
+   Deep Green, Detox Green, Soft Ivory, Formula Condensed + Inter,
+   the pill/arch shape language and the switcher-pipe pattern.
+
+   The portrait used throughout is the clean studio plate
+   (assets/img/oscar-portrait.webp — 1178x1700, no alpha channel),
+   never the pre-composited hero-concept.png. Because the plate has
+   no cut-out, every option frames it in a brand shape rather than
+   floating it, and tints the grey backdrop where the design calls
+   for it.
+   ============================================================ */
+
+@font-face{font-family:Formula;src:url('assets/fonts/FormulaCondensed-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:Inter;src:url('assets/fonts/Inter-Variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
+
+:root{
+  --ink:#143318;
+  --lime:#ccfe06;
+  --paper:#fefdf2;
+  --rule:#e4e2d2;
+  --muted:#3f4a3f;
+  --sans:Inter,Arial,sans-serif;
+  --display:Formula,Impact,sans-serif;
+  --r-pill:999px;
+  --r-card:36px;
+  --grad-hero:radial-gradient(78% 86% at 68% 96%, #8fd127 0%, #52901f 22%, #2a661c 45%, #1a431a 70%, #143318 100%);
+  --shadow:0 18px 44px rgba(20,51,24,.09);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+h1,h2,h3,p{margin:0}
+
+/* ---------- Page chrome (not part of the hero designs) ---------- */
+.page-head{padding:40px max(24px,5vw) 0;max-width:1400px;margin:auto}
+.page-head .kicker{font:700 11px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.page-head h1{font:700 30px/1.15 var(--sans);letter-spacing:-.03em;text-transform:none;margin:10px 0 8px}
+.page-head p{color:var(--muted);max-width:68ch;font-size:15px}
+
+.tabs{
+  position:sticky;top:0;z-index:40;
+  background:rgba(254,253,242,.88);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);
+  margin-top:28px;
+}
+.tabs-inner{max-width:1400px;margin:auto;padding:14px max(24px,5vw);display:flex;gap:8px;flex-wrap:wrap}
+.tab{
+  font:700 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--rule);background:#fff;color:var(--muted);
+  padding:11px 18px;border-radius:var(--r-pill);cursor:pointer;
+  transition:background .18s,color .18s,border-color .18s;
+}
+.tab:hover{border-color:var(--ink);color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--lime)}
+.tab:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.note{max-width:1400px;margin:auto;padding:26px max(24px,5vw) 22px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start}
+.note .num{font:700 13px/1 var(--sans);letter-spacing:.1em;background:var(--ink);color:var(--lime);padding:9px 12px;border-radius:var(--r-pill)}
+.note h2{font:700 19px/1.2 var(--sans);letter-spacing:-.02em;text-transform:none;margin-bottom:6px}
+.note p{color:var(--muted);font-size:15px;max-width:80ch}
+.panel[hidden]{display:none}
+
+/* ---------- Shared hero furniture ---------- */
+.eyebrow{display:block;font:17px/1.2 var(--display);letter-spacing:.03em;text-transform:uppercase}
+.h-title{font-family:var(--display);letter-spacing:.03em;text-transform:uppercase;line-height:.95}
+.h-lede{font-size:17px;line-height:1.55}
+.acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{
+  display:inline-flex;align-items:center;gap:14px;
+  font:700 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
+  padding:15px 24px;border-radius:var(--r-pill);text-decoration:none;
+  border:1px solid transparent;transition:transform .18s,background .18s,color .18s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn--lime{background:var(--lime);color:var(--ink)}
+.btn--ink{background:var(--ink);color:var(--lime)}
+.btn--line-light{border-color:rgba(255,255,255,.45);color:#fff}
+.btn--line-light:hover{background:rgba(255,255,255,.1)}
+.btn--line-ink{border-color:var(--ink);color:var(--ink)}
+.btn--line-ink:hover{background:var(--ink);color:var(--lime)}
+
+.hero{width:100%;overflow:hidden;position:relative}
+.wrap{width:min(1180px,calc(100% - 64px));margin:auto}
+
+/* ---------- Backdrop tint ----------
+   The studio plate is lit on neutral grey, which reads as a hole punched
+   in the brand green. This pushes the backdrop into brand hue — but it is
+   masked out over the centre of the frame, so Oscar's face and skin keep
+   their natural colour. He is the credibility on this page; he does not
+   get recoloured. Only the paper behind him does.
+   `color` blend preserves luminance, so where the mask does graze his
+   shoulders it shifts hue slightly rather than flattening him. */
+.tint{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  mix-blend-mode:color;
+  -webkit-mask-image:radial-gradient(64% 56% at 50% 38%, #0000 0 34%, #000 100%);
+  mask-image:radial-gradient(64% 56% at 50% 38%, #0000 0 34%, #000 100%);
+}
+
+/* ============================================================
+   A — THE ARCH, CLEANED UP
+   The current layout, corrected: real gradient as the only
+   background, clean plate in the arch, a lime hairline to make the
+   frame deliberate, and a deep-green vignette so the studio grey
+   sinks into the hero instead of sitting on it as a grey rectangle.
+   ============================================================ */
+.hA{background:var(--grad-hero);color:#fff;display:grid;grid-template-columns:1.08fr .92fr;gap:48px;
+    padding:0 max(32px,calc((100% - 1180px) / 2));min-height:640px}
+.hA .copy{padding:86px 24px 86px 0;display:flex;flex-direction:column;justify-content:center}
+.hA .eyebrow{color:var(--lime)}
+.hA .h-title{color:var(--lime);font-size:clamp(42px,4.5vw,74px);margin:18px 0 26px}
+.hA .h-lede{color:rgba(255,255,255,.88);max-width:46ch}
+.hA .art{
+  margin:0;align-self:end;position:relative;
+  height:min(620px,74vh);aspect-ratio:1178/1700;width:auto;justify-self:center;
+  border-radius:999px 999px 0 0;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(204,254,6,.5);
+}
+.hA .art img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:contrast(1.04) saturate(.94)}
+.hA .tint{background:#2a661c}
+/* Vignette + base fade: the backdrop falls off into green shadow at the
+   edges and dissolves into the gradient at the bottom. */
+.hA .art::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    radial-gradient(66% 50% at 50% 30%, rgba(20,51,24,0) 48%, rgba(20,51,24,.82) 100%),
+    linear-gradient(to bottom, rgba(20,51,24,0) 58%, rgba(20,51,24,.95) 100%);
+}
+.hA .floor{position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,rgba(204,254,6,.85),transparent)}
+
+/* ============================================================
+   B — THE PIPELINE
+   The switcher pattern (p.38, the website device) carries the hero.
+   Pipes drift sideways behind a deep-green scrim, so "flush the
+   pipelines" is in the background itself rather than in a caption.
+   ============================================================ */
+.hB{background:var(--ink);color:#fff;position:relative;min-height:660px;display:flex;align-items:center}
+.hB .pipes{
+  position:absolute;inset:-6% -2%;
+  background:url('assets/patterns/section-break.png') repeat;
+  background-size:auto 180px;opacity:.5;
+  animation:drift 34s linear infinite;
+}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-960px)}}
+.hB .scrim{position:absolute;inset:0;background:
+  linear-gradient(100deg, rgba(20,51,24,.97) 30%, rgba(20,51,24,.62) 62%, rgba(20,51,24,.9) 100%)}
+.hB .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.12fr .88fr;gap:56px;align-items:center;padding:92px 0}
+.hB .eyebrow{color:var(--lime)}
+.hB .h-title{font-size:clamp(42px,4.6vw,76px);margin:18px 0 26px;color:#fff}
+.hB .h-title em{font-style:normal;color:var(--lime)}
+.hB .h-lede{color:rgba(255,255,255,.84);max-width:44ch}
+.hB .art{
+  margin:0;position:relative;border-radius:var(--r-card);overflow:hidden;
+  aspect-ratio:1178/1700;max-height:520px;justify-self:end;width:auto;
+  border:1px solid rgba(204,254,6,.55);
+  box-shadow:0 30px 70px rgba(0,0,0,.45);
+  transform:rotate(2.2deg);
+}
+.hB .art img{width:100%;height:100%;object-fit:cover;object-position:center 12%;filter:contrast(1.05) saturate(.9)}
+.hB .tint{background:#2a661c}
+.hB .art::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(20,51,24,.78),rgba(20,51,24,0) 55%)}
+.hB .tagstrip{
+  position:absolute;left:0;right:0;bottom:34px;z-index:3;
+  background:var(--lime);color:var(--ink);
+  font:700 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;
+  padding:11px 18px;
+  display:flex;justify-content:space-between;
+}
+
+/* ============================================================
+   C — DETOX GREEN BLOCK
+   The loudest option and the closest to his existing LinkedIn
+   lockup: flat Detox Green, Deep Green display type at full volume,
+   and the portrait duotoned into the brand by multiplying a
+   desaturated plate straight onto the lime ground.
+   ============================================================ */
+.hC{background:var(--lime);color:var(--ink);display:grid;grid-template-columns:1.1fr .9fr;gap:40px;
+    padding:0 max(32px,calc((100% - 1180px) / 2));min-height:640px;align-items:stretch}
+.hC .copy{padding:88px 20px 88px 0;display:flex;flex-direction:column;justify-content:center}
+.hC .eyebrow{color:var(--ink);opacity:.72}
+.hC .h-title{font-size:clamp(46px,5.4vw,92px);margin:16px 0 24px}
+.hC .h-lede{color:rgba(20,51,24,.82);max-width:42ch;font-weight:500}
+/* Arch crop, so the duotone panel carries the logo's shape language
+   rather than sitting on the lime as a bare rectangle. */
+.hC .art{margin:0;position:relative;align-self:end;height:min(600px,72vh);aspect-ratio:1178/1700;width:auto;justify-self:center;
+  background:var(--lime);border-radius:999px 999px 0 0;overflow:hidden}
+/* Natural portrait. The contrast against the lime comes from the Deep
+   Green backdrop behind him, not from recolouring his face. */
+.hC .art img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:contrast(1.04)}
+.hC .tint{background:#143318;z-index:2}
+.hC .art::after{
+  content:"";position:absolute;inset:0;z-index:3;
+  background:radial-gradient(58% 46% at 50% 34%, rgba(20,51,24,0) 52%, rgba(20,51,24,.6) 100%);
+}
+/* Sits on the hero, not inside the arch — the arch clips its children. */
+.hC .tape{
+  position:absolute;z-index:3;left:57%;right:3%;bottom:19%;
+  background:var(--ink);color:var(--lime);
+  font:700 13px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;
+  padding:13px 20px;transform:rotate(-7deg);
+  display:flex;justify-content:space-between;align-items:center;
+}
+
+/* ============================================================
+   D — THE CARD STACK
+   Built from the client's own "Cards for the website" asset, but
+   recoloured into the official palette and rebuilt in CSS so the
+   tape, type and corner radii stay crisp and editable.
+   ============================================================ */
+.hD{background:var(--paper);color:var(--ink);min-height:680px;display:flex;align-items:center}
+.hD .wrap{display:grid;grid-template-columns:1fr .92fr;gap:64px;align-items:center;padding:96px 0}
+.hD .eyebrow{color:var(--muted)}
+.hD .h-title{font-size:clamp(44px,4.8vw,80px);margin:18px 0 26px}
+.hD .h-lede{color:var(--muted);max-width:46ch}
+.hD .stack{position:relative;justify-self:end;width:min(100%,430px);aspect-ratio:1178/1700;max-height:560px}
+.hD .card{position:absolute;inset:0;border-radius:var(--r-card);box-shadow:var(--shadow)}
+.hD .card--back{transform:translate(-62px,-26px) rotate(-5deg);background:var(--ink)}
+.hD .card--mid{transform:translate(-30px,-12px) rotate(-2.4deg);background:#52901f}
+/* Deep Green card, natural portrait — the lime stays on the tape and the
+   buttons, where it belongs, rather than on his face. */
+.hD .card--front{overflow:hidden;background:var(--ink)}
+.hD .card--front img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:contrast(1.04)}
+.hD .tint{background:#143318;z-index:2}
+.hD .card--front::after{
+  content:"";position:absolute;inset:0;z-index:3;
+  background:radial-gradient(58% 46% at 50% 34%, rgba(20,51,24,0) 52%, rgba(20,51,24,.55) 100%);
+}
+.hD .tape{
+  position:absolute;z-index:3;left:-8%;right:-8%;bottom:19%;
+  background:var(--lime);color:var(--ink);
+  font:700 13px/1 var(--sans);letter-spacing:.11em;text-transform:uppercase;
+  padding:13px 20px;transform:rotate(-8deg);
+  box-shadow:0 10px 28px rgba(20,51,24,.18);
+  display:flex;justify-content:space-between;align-items:center;
+}
+/* Lime on the duotone, which is dark at the top right of the card. */
+.hD .logo-dot{position:absolute;z-index:3;top:24px;right:26px;font:700 20px/1 var(--display);letter-spacing:.04em;
+  text-transform:uppercase;color:var(--lime)}
+
+/* ============================================================
+   E — STRIKE THE CLUTTER
+   The idea the composite was reaching for, done as live type:
+   the three nouns are real text in the display face and the lime
+   rules draw themselves across on load. Nothing is baked in, so
+   the words can be rewritten per campaign.
+   ============================================================ */
+.hE{background:var(--grad-hero);color:#fff;min-height:680px;display:flex;align-items:center;
+    padding:0 max(32px,calc((100% - 1180px) / 2))}
+.hE .inner{display:grid;grid-template-columns:1.06fr .94fr;gap:52px;align-items:center;width:100%}
+.hE .copy{padding:84px 0}
+.hE .eyebrow{color:var(--lime)}
+.hE .h-title{color:#fff;font-size:clamp(38px,3.9vw,62px);margin:18px 0 30px;max-width:20ch}
+.hE .strikes{display:flex;flex-direction:column;gap:6px;margin-bottom:30px}
+.hE .strike{
+  position:relative;display:inline-block;width:fit-content;
+  font:700 clamp(30px,3.4vw,54px)/1.1 var(--display);letter-spacing:.04em;text-transform:uppercase;
+  color:rgba(255,255,255,.52);
+}
+.hE .strike::after{
+  content:"";position:absolute;left:-6px;right:-6px;top:52%;height:5px;
+  background:var(--lime);border-radius:var(--r-pill);
+  transform:scaleX(1);transform-origin:left center;
+}
+/* The .anim class is removed and re-added when the panel is re-selected,
+   which restarts the draw-on. Without it the lines simply sit there, so
+   the hero is never broken if the script fails. */
+.hE.anim .strike::after{animation:strike .62s cubic-bezier(.65,0,.35,1) backwards}
+.hE.anim .strike:nth-child(1)::after{animation-delay:.35s}
+.hE.anim .strike:nth-child(2)::after{animation-delay:.6s}
+.hE.anim .strike:nth-child(3)::after{animation-delay:.85s}
+@keyframes strike{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.hE .h-lede{color:rgba(255,255,255,.86);max-width:44ch}
+.hE .art{
+  margin:0;align-self:end;position:relative;justify-self:center;
+  height:min(600px,72vh);aspect-ratio:1178/1700;width:auto;
+  border-radius:999px 999px 0 0;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(204,254,6,.45);
+}
+.hE .art img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:contrast(1.04) saturate(.92)}
+.hE .tint{background:#2a661c}
+.hE .art::after{content:"";position:absolute;inset:0;z-index:2;background:
+  radial-gradient(66% 50% at 50% 30%, rgba(20,51,24,0) 48%, rgba(20,51,24,.82) 100%),
+  linear-gradient(to bottom, rgba(20,51,24,0) 58%, rgba(20,51,24,.95) 100%)}
+
+/* ---------- Ticker, shown under every option for context ---------- */
+.ticker{background:var(--lime);color:var(--ink);overflow:hidden;white-space:nowrap;
+  font:700 13px/46px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.ticker div{display:inline-block;padding-left:100%;animation:roll 26s linear infinite}
+.ticker span{opacity:.45;padding:0 10px}
+@keyframes roll{to{transform:translateX(-100%)}}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .hA,.hC{grid-template-columns:1fr;gap:0;padding:0 24px}
+  .hA .copy,.hC .copy{padding:48px 0 34px}
+  .hA .art,.hC .art,.hE .art{height:auto;max-height:440px;justify-self:center;width:min(100%,320px)}
+  .hB .wrap,.hD .wrap,.hE .inner{grid-template-columns:1fr;gap:38px;padding:56px 0}
+  .hB .art{justify-self:center;transform:none;max-height:420px}
+  .hD .stack{justify-self:center;width:min(100%,330px)}
+  .hD .card--back{transform:translate(-34px,-18px) rotate(-5deg)}
+  .hD .card--mid{transform:translate(-16px,-8px) rotate(-2.4deg)}
+  .hE{padding:0 24px}
+  .note{grid-template-columns:1fr;gap:12px}
+  .note .num{justify-self:start}
+}
+@media (prefers-reduced-motion:reduce){
+  .hB .pipes,.ticker div{animation:none}
+  .hE.anim .strike::after{animation:none;transform:scaleX(1)}
+}
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <span class="kicker">OPS Detox™ · Homepage</span>
+  <h1>Hero section — five directions</h1>
+  <p>All five are built only from the brand system: Deep Green <code>#143318</code>, Detox Green <code>#ccfe06</code>, Soft Ivory <code>#fefdf2</code>, Formula Condensed for display, Inter for body, and the pill/arch shape language. Every one uses the clean studio plate rather than the pre-composited image, and builds its decoration in CSS so nothing is baked into a PNG.</p>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" role="tablist" aria-label="Hero options">
+    <button class="tab" role="tab" id="tab-a" aria-controls="panel-a" aria-selected="true">A · The Arch</button>
+    <button class="tab" role="tab" id="tab-b" aria-controls="panel-b" aria-selected="false" tabindex="-1">B · The Pipeline</button>
+    <button class="tab" role="tab" id="tab-c" aria-controls="panel-c" aria-selected="false" tabindex="-1">C · Detox Green Block</button>
+    <button class="tab" role="tab" id="tab-d" aria-controls="panel-d" aria-selected="false" tabindex="-1">D · The Card Stack</button>
+    <button class="tab" role="tab" id="tab-e" aria-controls="panel-e" aria-selected="false" tabindex="-1">E · Strike the Clutter</button>
+  </div>
+</nav>
+
+<!-- ============================ A ============================ -->
+<section class="panel" id="panel-a" role="tabpanel" aria-labelledby="tab-a">
+  <div class="note">
+    <span class="num">A</span>
+    <div>
+      <h2>The Arch — the current layout, corrected</h2>
+      <p>Same bones as the live hero, but the gradient is the only background (the book reserves the logo pattern for large merch), the portrait is the clean plate, and a lime hairline plus a deep-green vignette make the arch read as a deliberate frame rather than a grey rectangle dropped on green. The lowest-risk change and the quickest to ship.</p>
+    </div>
+  </div>
+  <section class="hero hA">
+    <div class="copy">
+      <span class="eyebrow">Operational detox for scale-ups</span>
+      <h2 class="h-title">Cleanse your business systems of operational clutter</h2>
+      <p class="h-lede">We help scale-ups cleanse the systems clogged by meetings nobody needs, reports nobody reads and decisions nobody takes — so time flows back into growing the company.</p>
+      <div class="acts">
+        <a class="btn btn--lime" href="contact.html">Let’s talk</a>
+        <a class="btn btn--line-light" href="diagnostic.html">Book the free diagnostic</a>
+      </div>
+    </div>
+    <figure class="art">
+      <img src="assets/img/oscar-portrait.webp" width="1178" height="1700" alt="Oscar de Grauw, founder of OPS Detox">
+        <span class="tint" aria-hidden="true"></span>
+    </figure>
+    <span class="floor"></span>
+  </section>
+  <div class="ticker"><div>Flush the pipelines <span>•</span> Uncomplicate the decision <span>•</span> Clean the systems <span>•</span> Unclog the approval queue <span>•</span> Strip the noise <span>•</span> Drain the decision backlog <span>•</span></div></div>
+</section>
+
+<!-- ============================ B ============================ -->
+<section class="panel" id="panel-b" role="tabpanel" aria-labelledby="tab-b" hidden>
+  <div class="note">
+    <span class="num">B</span>
+    <div>
+      <h2>The Pipeline — the switcher pattern does the work</h2>
+      <p>Uses the pattern the book actually assigns to the website (p.38) as the hero ground, drifting slowly sideways behind a Deep Green scrim. “Flush the pipelines” stops being a line in the ticker and becomes the background itself. The portrait sits in a tilted card with the lime tag strip across its base.</p>
+    </div>
+  </div>
+  <section class="hero hB">
+    <div class="pipes" aria-hidden="true"></div>
+    <div class="scrim" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="copy">
+        <span class="eyebrow">Operational detox for scale-ups</span>
+        <h2 class="h-title">Flush the pipelines. <em>Win your time back.</em></h2>
+        <p class="h-lede">Meetings nobody needs. Reports nobody reads. Decisions nobody takes. We clear the blockage in your operating system so the company can move again.</p>
+        <div class="acts">
+          <a class="btn btn--lime" href="contact.html">Let’s talk</a>
+          <a class="btn btn--line-light" href="diagnostic.html">Book the free diagnostic</a>
+        </div>
+      </div>
+      <figure class="art">
+        <img src="assets/img/oscar-portrait.webp" width="1178" height="1700" alt="Oscar de Grauw, founder of OPS Detox">
+        <span class="tint" aria-hidden="true"></span>
+        <figcaption class="tagstrip"><span>Oscar de Grauw</span><span>Founder ↗</span></figcaption>
+      </figure>
+    </div>
+  </section>
+  <div class="ticker"><div>Flush the pipelines <span>•</span> Uncomplicate the decision <span>•</span> Clean the systems <span>•</span> Unclog the approval queue <span>•</span> Strip the noise <span>•</span> Drain the decision backlog <span>•</span></div></div>
+</section>
+
+<!-- ============================ C ============================ -->
+<section class="panel" id="panel-c" role="tabpanel" aria-labelledby="tab-c" hidden>
+  <div class="note">
+    <span class="num">C</span>
+    <div>
+      <h2>Detox Green Block — the loudest, most him</h2>
+      <p>Closest in spirit to his existing LinkedIn lockup: flat Detox Green, Deep Green display type at full volume, no gradient. He stays in natural colour inside the arch — the contrast against the lime comes from the Deep Green backdrop behind him, not from recolouring his face. The Deep Green tape strip carries the positioning line.</p>
+    </div>
+  </div>
+  <section class="hero hC">
+    <div class="copy">
+      <span class="eyebrow">Operational detox for scale-ups</span>
+      <h2 class="h-title">Cleanse your business systems. Win your time back.</h2>
+      <p class="h-lede">Fewer meetings. Fewer reports. Faster decisions.</p>
+      <div class="acts">
+        <a class="btn btn--ink" href="contact.html">Let’s talk</a>
+        <a class="btn btn--line-ink" href="diagnostic.html">Book the free diagnostic</a>
+      </div>
+    </div>
+    <figure class="art">
+      <img src="assets/img/oscar-portrait.webp" width="1178" height="1700" alt="Oscar de Grauw, founder of OPS Detox">
+        <span class="tint" aria-hidden="true"></span>
+    </figure>
+    <span class="tape"><span>Operational detox for scale-ups</span><span>↗</span></span>
+  </section>
+  <div class="ticker"><div>Flush the pipelines <span>•</span> Uncomplicate the decision <span>•</span> Clean the systems <span>•</span> Unclog the approval queue <span>•</span> Strip the noise <span>•</span> Drain the decision backlog <span>•</span></div></div>
+</section>
+
+<!-- ============================ D ============================ -->
+<section class="panel" id="panel-d" role="tabpanel" aria-labelledby="tab-d" hidden>
+  <div class="note">
+    <span class="num">D</span>
+    <div>
+      <h2>The Card Stack — his own asset, rebuilt properly</h2>
+      <p>Taken from <code>Brand assets/Brand direction/Cards for the website.png</code>, recoloured from the exploratory violet into the official palette and rebuilt in CSS. The tape, the corner radii and the type now stay crisp at any size and can be edited without going back to a designer. The front card is Deep Green with the portrait in natural colour; the lime is held back for the tape and the buttons. Light ivory ground, so it reads as the friendlier, more premium option.</p>
+    </div>
+  </div>
+  <section class="hero hD">
+    <div class="wrap">
+      <div class="copy">
+        <span class="eyebrow">Operational detox for scale-ups</span>
+        <h2 class="h-title">Cleanse your business systems of operational clutter</h2>
+        <p class="h-lede">We help scale-ups cleanse the systems clogged by meetings nobody needs, reports nobody reads and decisions nobody takes — so time flows back into growing the company.</p>
+        <div class="acts">
+          <a class="btn btn--ink" href="contact.html">Let’s talk</a>
+          <a class="btn btn--line-ink" href="diagnostic.html">Book the free diagnostic</a>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card card--back" aria-hidden="true"></div>
+        <div class="card card--mid" aria-hidden="true"></div>
+        <figure class="card card--front" style="margin:0">
+          <img src="assets/img/oscar-portrait.webp" width="1178" height="1700" alt="Oscar de Grauw, founder of OPS Detox">
+        <span class="tint" aria-hidden="true"></span>
+        </figure>
+        <span class="logo-dot">OPS detox</span>
+        <span class="tape"><span>Operational detox for scale-ups</span><span>↗</span></span>
+      </div>
+    </div>
+  </section>
+  <div class="ticker"><div>Flush the pipelines <span>•</span> Uncomplicate the decision <span>•</span> Clean the systems <span>•</span> Unclog the approval queue <span>•</span> Strip the noise <span>•</span> Drain the decision backlog <span>•</span></div></div>
+</section>
+
+<!-- ============================ E ============================ -->
+<section class="panel" id="panel-e" role="tabpanel" aria-labelledby="tab-e" hidden>
+  <div class="note">
+    <span class="num">E</span>
+    <div>
+      <h2>Strike the Clutter — the composite’s idea, as live type</h2>
+      <p>What the current image was reaching for, done without the image. The three nouns are real text in Formula Condensed and the lime rules draw themselves across on load — so there are no grey placeholder bars, no overrunning strikes, no comic speed lines, and the words can be rewritten per campaign. Strongest message clarity of the five.</p>
+    </div>
+  </div>
+  <section class="hero hE">
+    <div class="inner">
+      <div class="copy">
+        <span class="eyebrow">Operational detox for scale-ups</span>
+        <h2 class="h-title">Your calendar isn’t the problem. Your system is.</h2>
+        <div class="strikes">
+          <span class="strike">Meetings nobody needs</span>
+          <span class="strike">Reports nobody reads</span>
+          <span class="strike">Decisions nobody takes</span>
+        </div>
+        <p class="h-lede">We cleanse the systems underneath, so time flows back into growing the company.</p>
+        <div class="acts">
+          <a class="btn btn--lime" href="contact.html">Let’s talk</a>
+          <a class="btn btn--line-light" href="diagnostic.html">Book the free diagnostic</a>
+        </div>
+      </div>
+      <figure class="art">
+        <img src="assets/img/oscar-portrait.webp" width="1178" height="1700" alt="Oscar de Grauw, founder of OPS Detox">
+        <span class="tint" aria-hidden="true"></span>
+      </figure>
+    </div>
+  </section>
+  <div class="ticker"><div>Flush the pipelines <span>•</span> Uncomplicate the decision <span>•</span> Clean the systems <span>•</span> Unclog the approval queue <span>•</span> Strip the noise <span>•</span> Drain the decision backlog <span>•</span></div></div>
+</section>
+
+<script>
+/* Tabs: roving tabindex, arrow-key navigation, and a replay of each
+   panel's entry animations when it becomes visible. */
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+
+  function select(tab, focus){
+    tabs.forEach(function(t){
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      var on = t === tab;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      panel.hidden = !on;
+      var hero = panel.querySelector('.hero');
+      hero.classList.remove('anim');
+      if (on) {
+        void hero.offsetWidth;   /* reflow, so the keyframes restart */
+        hero.classList.add('anim');
+      }
+    });
+    if (focus) tab.focus();
+    history.replaceState(null, '', '#' + tab.id.replace('tab-',''));
+  }
+
+  tabs.forEach(function(tab, i){
+    tab.addEventListener('click', function(){ select(tab, false); });
+    tab.addEventListener('keydown', function(e){
+      var next = null;
+      if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+      if (e.key === 'ArrowLeft')  next = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (e.key === 'Home')       next = tabs[0];
+      if (e.key === 'End')        next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); select(next, true); }
+    });
+  });
+
+  var hash = location.hash.replace('#','');
+  var initial = hash && document.getElementById('tab-' + hash);
+  if (initial) select(initial, false);
+})();
+</script>
+
+</body>
+</html>

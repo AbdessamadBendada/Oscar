@@ -27,6 +27,11 @@ no build step, no dependencies, no CDN.
 | `contact.html` | Contact — message form + booking-embed slot |
 | `freebie.html` | Freebie opt-in (Startup Financial Model Template) |
 
+`hero-sections.html` also sits in this folder but is **not a page of the site**. It is a
+standalone tabbed comparison of five alternative homepage hero treatments, built for
+client review. It carries its own CSS and does not touch `index.html` or `css/site.css`.
+See §20 of the project handoff.
+
 ## What actually works
 
 - Real multi-page navigation; every CTA goes somewhere sensible.

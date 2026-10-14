@@ -1,6 +1,12 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 12 October 2026_
+_Last updated: 14 October 2026_
+
+> **14 Oct — five alternative hero treatments were built for client review.** They live
+> in `website-design/hero-sections.html`, a standalone tabbed page. **The live homepage
+> hero was not touched** — `index.html` still uses `hero-concept.png` per §10. The
+> exploration drops the baked-in logo pattern, which §10 records as a deliberate user
+> decision, so do not treat that as an agreed correction. See §20.
 
 > **12 Oct — the Cost and System sections were parked below the final CTA.** Both now
 > sit inside a `.removed` wrapper with a thick Detox Green frame and a "Removed from
@@ -70,6 +76,7 @@ the client exactly how the thing behaves, without a backend behind it.
 | `about.html` | About Oscar de Grauw |
 | `contact.html` | Contact — message form plus a slot for the booking embed |
 | `freebie.html` | Freebie opt-in (Startup Financial Model Template) |
+| `hero-sections.html` | **Not a site page.** Five alternative hero treatments, tabbed, for client review — see §20 |
 
 ### What actually works
 
@@ -90,6 +97,7 @@ the client exactly how the thing behaves, without a backend behind it.
 |---|---|
 | `website-design/` | The working site — see its README for what is live vs. placeholder |
 | `website-design/css/site.css` | Full design system, expanded and sectioned for editing |
+| `website-design/hero-sections.html` | Standalone hero exploration, self-contained CSS; tokens duplicated from site.css and kept in sync by hand — §20 |
 | `website-design/js/site.js` | Nav, module popups, forms, switch, reveal, ticker |
 | `website-design/js/diagnostic.js` | Demo diagnostic — questions and scoring live here |
 | `high-fidelity-design/` | Approved high-fidelity homepage (minified CSS, reference only) |
@@ -139,10 +147,15 @@ particular), and a formal accessibility audit.
 - Real contact details — address, email, phone (currently Canva placeholders).
 - Legal content for Imprint, Terms, Privacy and Cookies.
 - Oscar photography. The hero and About images are campaign artwork, not portraits.
+- **A masked, transparent cut-out of Oscar.** No alpha-channel image of him exists
+  anywhere in the project, which is the hard ceiling on every hero option — see §20.
 - Module popup detail copy, from the current website.
 - Approved wording for the six value one-liners on the About page (currently filler).
 
 ### Decisions to make
+- **Homepage hero direction.** Five options are built and waiting in
+  `website-design/hero-sections.html` (§20). Bundled with this: whether the baked-in
+  logo pattern stays, which §10 settled by user request and the exploration reopens.
 - Calendly or meetergo. The embed slot is ready at `contact.html#book`, and every
   booking CTA already routes toward it.
 - Diagnostic platform — Typeform, Scoreapp or custom. The demo in
@@ -157,6 +170,9 @@ particular), and a formal accessibility audit.
 ## 7. Next steps
 
 1. Walk the client through `website-design/` and collect feedback on the working site.
+   Show `hero-sections.html` alongside it and get a hero direction picked (§20). If one
+   is approved, commission a masked transparent cut-out of Oscar before building it out,
+   and settle the baked-in-pattern question from §10 explicitly rather than by default.
 2. Confirm the booking platform and the diagnostic platform — these two unblock most of
    the remaining functional work.
 3. Collect the missing content: logos, testimonials, contact details, photography,
@@ -570,3 +586,106 @@ Two things to know:
 The `.gitignore` header says the repo is public. `website-design/assets/fonts/FormulaCondensed-Bold.otf`
 is the **trial** font and it is committed — see §9. Excluding `Brand assets/` removed one
 copy but not the one that actually gets served.
+
+## 20. Hero exploration page (14 October 2026)
+
+### What exists
+
+`website-design/hero-sections.html` — a standalone, self-contained comparison page
+holding **five alternative homepage hero treatments** behind a tab strip. It is a
+client-review artefact. **Nothing in `index.html` or `css/site.css` was changed.** The
+live hero still uses `hero-concept.png` exactly as §10 describes.
+
+The file carries its own `<style>` block rather than importing `css/site.css`, because
+the generic `.hero` rules there would collide with five parallel hero designs in one
+document. The tokens inside it are copied from site.css section 2 and must be kept in
+sync by hand if the palette ever moves.
+
+### The five options
+
+| Tab | Name | Ground | Device |
+|---|---|---|---|
+| A | The Arch | `--grad-hero` | Current layout, corrected; arch crop + lime hairline |
+| B | The Pipeline | Deep Green | `assets/patterns/section-break.png` drifting behind a scrim |
+| C | Detox Green Block | Flat `--lime` | Arch panel, Deep Green tape strip |
+| D | The Card Stack | Soft Ivory | Three stacked round-rect cards + lime diagonal tape |
+| E | Strike the Clutter | `--grad-hero` | MEETINGS/REPORTS/APPROVALS as live type with drawn-on lime rules |
+
+Tabs are keyboard-navigable (arrows, Home, End), deep-linkable (`#a`…`#e`), and
+`prefers-reduced-motion` disables the pipe drift, the ticker and the strike animation.
+Headline copy differs per option because the layouts want different lengths — treat
+that copy as placeholder, not as a recommendation.
+
+### Why the exploration happened
+
+The user judged the live hero "a tiny bit not looking as polished as his brand". The
+specific findings, which still stand:
+
+- The CO pattern and the three clutter cards are **painted into the PNG**, so they
+  scale with the photograph rather than with the layout, and the image's flat green
+  does not match `--grad-hero` — the arch reads as a patch of a different green.
+- The strikethrough rules on `MEETINGS` and `APPROVALS` overrun their cards; the grey
+  bars read as wireframe placeholder; the "speed lines" are not a brand device.
+- The lime rim light has a visible fringe along his right shoulder and leg.
+- `border-radius:999px 999px 0 0` on the arch clips the left edge of the card stack
+  mid-shape; nothing in the composite is composed to survive that crop.
+- It is a 1.8MB PNG of a photograph, next to a 56KB WebP of the same frame.
+
+### The pattern tension — read §10 before "fixing" anything
+
+The exploration drops the baked-in logo pattern, which puts it back in line with
+guideline V1.0 and with the comment at `css/site.css:227`. **That is not a licence to
+strip the pattern from the live hero.** §10 records the patterned hero as an explicit
+11 October user decision. The five options are an alternative for the client to judge,
+not a correction already agreed.
+
+### Source images
+
+- All five use `assets/img/oscar-portrait.webp` (1178×1700, 56KB) — the clean studio
+  plate. `hero-concept.png` is that same frame scaled to 0.886 with the compositing
+  painted over it. `css/site.css:240` already states `aspect-ratio:1178/1700`, the
+  original's ratio, so the arch frame was always built around the clean plate.
+- No earlier version of the composite exists in git; `hero-concept.png` landed whole in
+  `4ab5e0d` with no predecessors.
+- `Brand assets/Brand direction/Cards for the website.png` (duplicated in the repo as
+  `assets/img/hero-cards.png`) is the client's own card treatment — rounded cards, lime
+  diagonal tape reading "OPERATIONAL DETOX FOR SCALE-UPS ↗", cellophane texture. Option
+  D is that asset recoloured from its exploratory violet into the official palette and
+  rebuilt in CSS. It is a stronger card language than the composite's, and it is his.
+- `assets/img/portrait.png` is the LinkedIn-banner lockup — magenta polo on flat lime.
+  Different wardrobe from the suit plate, so the two do not mix in one composition.
+
+### The cut-out problem — the real constraint
+
+`oscar-portrait.webp` has **no alpha channel** (`hasAlpha: no`, RGB, 3 samples/pixel).
+There is no cut-out of Oscar anywhere in the project. Two consequences:
+
+1. No option can float him free of a shape. A, C and E frame him in the arch; B and D
+   in cards. A hero where he breaks the frame is not currently buildable.
+2. The plate is lit on neutral studio grey, which reads as a hole punched in the brand
+   green. The page handles this with a shared `.tint` layer: a brand-green fill in
+   `mix-blend-mode:color`, masked by `radial-gradient(64% 56% at 50% 38%, #0000 0 34%,
+   #000 100%)` so it only touches the outer frame.
+
+**The mask is an ellipse, not his silhouette**, so it grazes his shoulders in a couple
+of the options. If a direction is approved, the right next step is a properly masked
+transparent PNG of Oscar. That is a Photoshop job and it would visibly sharpen B, C
+and D.
+
+### A correction worth not repeating
+
+The first build of options C and D **duotoned Oscar's face** — greyscale plus
+`mix-blend-mode:multiply` onto the lime — and A, B and E ran a 42% green colour pass
+over the whole frame. The user rejected this immediately and was right to: the
+portrait is the credibility on that page, and recolouring a founder's face into neon
+green destroys it. The masked `.tint` described above is the replacement. **Tint the
+backdrop; never the man.** C's panel and D's front card are now Deep Green with the
+portrait in natural colour, and the lime is held back for tape, type and buttons.
+
+### Status
+
+Rendered and visually checked headless at 1440 for all five tabs across three
+revisions. **Not yet reviewed by the client** — the user intends to show it to them.
+Responsive CSS is written (single column below 900px) but has **not** been verified at
+the full breakpoint ladder the rest of the project has been held to; do that before it
+goes in front of anyone on a phone.
