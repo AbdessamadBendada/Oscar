@@ -1,6 +1,11 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 14 October 2026_
+_Last updated: 15 October 2026_
+
+> **15 Oct — the hero gradient was replaced with flat Deep Green, and a preloader was
+> added.** `--grad-hero` no longer paints anything: the homepage hero and the Outcomes
+> band are now flat `--ink` carrying the switcher pattern at 6%. A logo-toggle preloader
+> runs on every page load while it is under review. Both are pushed. See §21.
 
 > **14 Oct — five alternative hero treatments were built for client review.** They live
 > in `website-design/hero-sections.html`, a standalone tabbed page. **The live homepage
@@ -57,7 +62,7 @@ the client exactly how the thing behaves, without a backend behind it.
   interactions, responsive from 320px up. No backend, no build step, no dependencies.
 - `high-fidelity-design/` remains as the approved homepage visual reference.
 - The design system follows `OPS_DETOX_BRAND_GUIDELINE_V1.0.pdf` (see §8): Soft Ivory
-  and Deep Green grounds with the brand gradient, Detox Green only ever on Deep Green,
+  and Deep Green grounds, Detox Green only ever on Deep Green,
   mixed-case pill buttons, round-rect cards, logo-derived picture frames and the
   before/after switcher device.
 - Copy is the client’s, locked and unedited — including the known typos in the homepage
@@ -86,6 +91,8 @@ the client exactly how the thing behaves, without a backend behind it.
 - All forms validate (required fields, email format), show inline errors and a success state.
 - Noise / clarity switch, ticker, hero entrance and reveal-on-scroll, all respecting
   `prefers-reduced-motion`.
+- The logo-toggle preloader on every page — skippable, self-removing, and skipped
+  outright for reduced-motion users. See §21.
 - The diagnostic runs end to end: seven questions, 1–5 scale, back navigation, progress
   bar, clarity score, per-module bar profile and the two weakest modules named.
 - Hero and ticker fill the first screen exactly, at every viewport size tested.
@@ -194,12 +201,12 @@ Both now sit in `Brand assets/1_BRAND GUIDELINE/`. **Build against V1.0.**
 
 ### What the design now follows (V1.0)
 
-| Item | Spec | Page |
-|---|---|---|
+| Item | Spec | Page | Note |
+|---|---|---|---|
 | Detox Green | `#CCFE06` (Pantone 2297C) | 19 |
 | Deep Green | `#143318` (Pantone 350C) | 19 |
 | Soft Ivory | `#FEFDF2` (Pantone 9064C) | 20 |
-| Gradient | Detox Green → Deep Green | 20 |
+| Gradient | Detox Green → Deep Green | 20 | **No longer used on the site — see §21** |
 | Contrast rule | Detox Green is used **only** on Deep Green; Deep Green goes on White, Soft Ivory or Detox Green | 21 |
 | Watchouts | Never Detox Green on Soft Ivory or on White; never low-contrast pairs | 22 |
 | Display type | Formula Condensed Bold — headlines and statements. Short statements uppercase, letter-spacing 30; longer sentences in standard letterforms with tighter spacing | 25, 26 |
@@ -571,6 +578,12 @@ The 10–11 Oct work had never been committed anywhere. It is now in the `Oscar`
 - `4ab5e0d` — the working site, the high-fidelity design, the brand-system rework and
   this handoff. 45 files.
 - `b4f139d` — the §18 removed-block change.
+- `6b59543` — the §20 hero exploration page.
+- `10c44c8` — the §21 flat-green rework and the preloader. 8 files.
+
+**`origin/main` had been two commits behind local** until 14 Oct. `b4f139d` and
+`6b59543` were committed but never pushed, so anyone reading the GitHub repo before
+then was a week out of date. All four commits above are on `origin/main` now.
 
 Two things to know:
 
@@ -689,3 +702,130 @@ revisions. **Not yet reviewed by the client** — the user intends to show it to
 Responsive CSS is written (single column below 900px) but has **not** been verified at
 the full breakpoint ladder the rest of the project has been held to; do that before it
 goes in front of anyone on a phone.
+
+## 21. Flat Deep Green grounds and the preloader (15 October 2026)
+
+### Why the gradient went
+
+The user reported the gradient on the dark sections "not looking good for the client".
+Inspection found four separate problems, and they compounded:
+
+1. The radial's centre sat at `68% 96%` — just below the bottom edge — so what showed
+   was a clipped fragment of a circle, reading as a glow effect rather than as light.
+2. Five stops across a hue *and* lightness ramp, crossing saturated green in sRGB.
+   That is exactly where 8-bit displays band worst, because green carries most of the
+   luminance. Worst case is a projector or a mid-range laptop in a client meeting.
+3. The headline, eyebrow and CTAs are all `--lime`, and the brightest stop of the
+   gradient was also lime. Wherever the bloom passed behind type, contrast collapsed.
+4. **On Outcomes it was worse than on the hero.** The bloom sat directly under the stat
+   grid, so the four tiles each sat on a different background — the leftmost on
+   near-black green, the rightmost on bright green — and the translucent
+   `rgba(255,255,255,.07)` fill and lime hairline border all but vanished on the bright
+   side. The four tiles stopped reading as one set.
+
+### What replaced it
+
+Both bands are flat `var(--ink)` carrying `assets/patterns/section-break.png` — the
+switcher pattern, which guideline p.38 names as the *website* device — at **6%**
+opacity. The texture rule is shared: `.hero--brand::before, .outcomes::before`, so
+there is one place to tune both.
+
+Two implementation notes that cost a round each:
+
+- **6% is not an arbitrary number.** The first build used 14% and the bars fought the
+  headline directly. Above roughly 8% it stops being a surface and becomes a graphic.
+  Below 4% it stops registering at all.
+- **`cover` is wrong here.** On a narrow phone hero, `cover` fits the 16:9 artwork to
+  *height* and triples the bar size. It is now `center top/100% auto repeat-y` —
+  scaled to viewport width and repeated down. The artwork's top and bottom edges are
+  plain Deep Green, so the vertical repeat leaves no visible seam.
+
+The hero also fades the pattern out across its bottom 38% (`.hero--brand::after`),
+because the ticker beneath it is Deep Green too and without the fade the two bands read
+as one slab.
+
+`--grad-hero` is still **defined** at `css/site.css:69` and still referenced by
+`.on-gradient`, which no page currently uses. It was left in deliberately so the old
+look is a one-line revert. It is otherwise dead.
+
+### The preloader
+
+`#preloader` on all six pages: a full-screen Deep Green overlay holding the logo, which
+**switches itself on**.
+
+| | |
+|---|---|
+| 0–0.3s | Mark fades up, held at 1.9× |
+| 0.2–0.64s | The dot travels from the D socket into the O and seats |
+| 0.64–1.18s | Lockup scales back, anchored on the pill so the mark does not drift |
+| 0.78 / 0.84s | `OPS` and `DETOX` close in from left and right, staggered 60ms |
+| 1.45–1.97s | Overlay lifts upward off the hero |
+
+**It runs right to left, and that is deliberate.** The first build had the dot
+travelling left→right, the conventional "switch on" direction — and it ended on a mark
+that is not the logo. **That pill is an O + D monogram**: the left shape is an O and the
+dot is its counter, the right shape is a D. The dot has to finish inside the O. So the
+animation starts it in the D — a state that reads as unresolved — and clicks it home.
+The gesture still reads as a switch; it just resolves *into* the brand. Do not "fix"
+the direction.
+
+The SVG paths are lifted out of `assets/logo/primary-detoxgreen.svg`, so the geometry is
+exact rather than redrawn. The pill spans x 203.14–332.52, the two sockets sit at
+x 242.34 and x 293.32, and the travel is the **50.98** between them. That number is in
+**viewBox units, not CSS px** — SVG elements default to `transform-box:view-box`, so it
+stays correct at every width the logo scales to. The zoom is anchored at `43.06% 50%`,
+the pill's centre within the viewBox, which is *not* the viewBox centre — that is what
+keeps the mark still while the wordmarks arrive around it.
+
+One trap: the extracted paths carried `class="cls-2"`, and the fill lived in the logo
+file's internal `<style>`, which does not travel with them. `.pl-logo path,.pl-logo
+polygon{fill:var(--lime)}` supplies it. Without that rule the mark renders black and is
+nearly invisible on Deep Green.
+
+### Scroll-lock timing — two bugs, both fixed
+
+The scrollbar was appearing before the page did. Two independent causes:
+
+1. **The lock was set too late.** `js/site.js` loads at the end of `<body>`, so the
+   first paint happened with the scrollbar visible and it only vanished once the script
+   ran. `pl-lock` is now set by the inline `<head>` script, before anything renders.
+2. **It was released too early.** The JS timeout was still `1250` from the first draft
+   after the CSS lift had been retimed to `1.45s`, so the scrollbar popped in 200ms
+   *before* the overlay started moving. **Both are `1450` now** — if either is retimed,
+   retime the other. There is a comment on each.
+
+`scrollbar-gutter:stable` holds the track's width open while locked, so releasing it
+does not shift the layout sideways on Windows and Linux. macOS overlay scrollbars take
+no space either way, which is why this was invisible during local testing.
+
+### Behaviour and current review setting
+
+- **It runs on every page load.** The once-per-session gate was removed at the user's
+  request so the client can see it repeatedly. The `ops-preloaded` flag is *still
+  written* in `js/site.js`; restoring the gate means putting
+  `sessionStorage.getItem('ops-preloaded')||` back in front of the `matchMedia` test in
+  the inline `<head>` script. The comment in all six files says exactly that.
+- `prefers-reduced-motion` skips it entirely — `.no-preloader` is set before first
+  paint, so the overlay is never painted at all rather than being hidden after the fact.
+- Skippable on click, key, wheel or touch; 3s safety timeout in case a paint stalls in
+  a background tab; removed from the DOM afterwards so it cannot trap a click or a tab
+  stop.
+
+### Status and what is not done
+
+Verified headless at 1440 and 430 for the flat grounds, and frame-by-frame through the
+preloader timeline on all six pages — overlay clears the DOM and the lock releases on
+every one. **Not checked**: the full breakpoint ladder, Safari and Firefox, and real
+devices. The preloader has not been seen by the client yet.
+
+Two tuning knobs if it needs adjusting on the client's machine: the `1.45s` lift delay
+on `.preloader` (match the JS timeout) and the `1.9` start scale in `pl-zoom`.
+
+`hero-sections.html` was deliberately left out of the preloader rollout — it is a
+review artefact with its own `<style>` block, not a site page.
+
+**Open question this reopens:** §20 records the live hero as still using
+`hero-concept.png`, whose baked-in flat green never matched `--grad-hero` and read as
+"a patch of a different green". The ground behind it is now flat `--ink`, which changes
+that mismatch but does not remove it. Re-check the arch against the new ground before
+treating §20's first finding as still accurate.
