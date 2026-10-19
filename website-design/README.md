@@ -27,10 +27,16 @@ no build step, no dependencies, no CDN.
 | `contact.html` | Contact — message form + booking-embed slot |
 | `freebie.html` | Freebie opt-in (Startup Financial Model Template) |
 
-`hero-sections.html` also sits in this folder but is **not a page of the site**. It is a
-standalone tabbed comparison of five alternative homepage hero treatments, built for
-client review. It carries its own CSS and does not touch `index.html` or `css/site.css`.
-See §20 of the project handoff.
+Two more files sit in this folder but are **not pages of the site**. Neither is linked
+from the nav, and neither modifies the live site:
+
+| File | What it is |
+|---|---|
+| `hero-sections.html` | Five alternative homepage hero treatments, tabbed, for client review. Carries its own full CSS. See §20 of the handoff |
+| `home-comments.html` | The homepage with the 15 Oct client comments applied — desktop spacing, the cleanse restructured as free diagnostic → two offers, and a new Frameworks section. All overrides sit in one scoped `<style>` block in its own `<head>`. See §22 |
+
+When something in either is approved, lift the rule into `css/site.css` and delete it
+from the artefact. They are staging areas, not second stylesheets.
 
 ## What actually works
 
@@ -51,11 +57,15 @@ See §20 of the project handoff.
 
 Copy is the client's, locked and unedited — including the known typos in the
 homepage problem paragraph, **except** for the homepage material taken from the brand
-book during the 10 Oct rework, which still needs client sign-off: the H1 ("Cleanse
-your business systems. Win your time back."), the six cost-of-noise bullets, the three
-toggle-row pairs, and the CTA labels. See §8 of `HANDOFF.md`.
+book during the 10 Oct rework, which still needs client sign-off: the six cost-of-noise
+bullets, the three toggle-row pairs, and the CTA labels. See §8 of `HANDOFF.md`.
 
-Three further things on these pages are **not** client copy and need replacing before
+The live H1 is **"Cleanse your business systems of operational clutter"**, matching
+`content/copy.md`. (This README previously named a different H1, "Cleanse your business
+systems. Win your time back." That line is a *hero-exploration* headline, options B and
+C in `hero-sections.html`, and has never shipped on any page — see §22.6.)
+
+Four further things on these pages are **not** client copy and need replacing before
 anything goes live:
 
 1. **Diagnostic questions and scoring** (`js/diagnostic.js`) — written to demonstrate
@@ -65,6 +75,10 @@ anything goes live:
    then a note that the detail copy is still to come from the current website.
 3. **Six value one-liners on the About page** — the six values are the client's; the
    one-line explanations under them are mine, as filler.
+4. **The three framework descriptions in `home-comments.html`** — drafted from existing
+   site copy, not from Oscar's own wording. The page carries a visible dashed notice
+   saying so, which also asks the two open naming questions: the full expansion of
+   DRMT™, and whether See – Strip – Choose™ replaces The CORE method™.
 
 Still placeholder from the client's own side: trust-row logos, four testimonials,
 contact details, legal links, and Oscar photography (the About/hero images are

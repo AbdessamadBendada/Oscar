@@ -2,6 +2,14 @@
 
 _Last updated: 15 October 2026_
 
+> **15 Oct — the client's first round of comments came in, and the actionable ones were
+> built into `website-design/home-comments.html`.** A review copy of the homepage: the
+> desktop blank space, the cleanse restructured as free diagnostic → two offers, and a
+> new Frameworks section carrying See – Strip – Choose™, Truth Latency™ and DRMT™.
+> **`index.html` and `css/site.css` were not touched.** Two items were deliberately not
+> built: the audit page (the client is building a "Noise Tax" calculator) and the
+> founder repositioning, which is an open decision. See §22.
+
 > **15 Oct — the hero gradient was replaced with flat Deep Green, and a preloader was
 > added.** `--grad-hero` no longer paints anything: the homepage hero and the Outcomes
 > band are now flat `--ink` carrying the switcher pattern at 6%. A logo-toggle preloader
@@ -82,6 +90,7 @@ the client exactly how the thing behaves, without a backend behind it.
 | `contact.html` | Contact — message form plus a slot for the booking embed |
 | `freebie.html` | Freebie opt-in (Startup Financial Model Template) |
 | `hero-sections.html` | **Not a site page.** Five alternative hero treatments, tabbed, for client review — see §20 |
+| `home-comments.html` | **Not a site page.** The homepage with the 15 Oct client comments applied, for review — see §22 |
 
 ### What actually works
 
@@ -105,6 +114,7 @@ the client exactly how the thing behaves, without a backend behind it.
 | `website-design/` | The working site — see its README for what is live vs. placeholder |
 | `website-design/css/site.css` | Full design system, expanded and sectioned for editing |
 | `website-design/hero-sections.html` | Standalone hero exploration, self-contained CSS; tokens duplicated from site.css and kept in sync by hand — §20 |
+| `website-design/home-comments.html` | Client-comments review build of the homepage; all overrides in one scoped `<style>` block, `index.html`/`site.css` untouched — §22 |
 | `website-design/js/site.js` | Nav, module popups, forms, switch, reveal, ticker |
 | `website-design/js/diagnostic.js` | Demo diagnostic — questions and scoring live here |
 | `high-fidelity-design/` | Approved high-fidelity homepage (minified CSS, reference only) |
@@ -158,8 +168,24 @@ particular), and a formal accessibility audit.
   anywhere in the project, which is the hard ceiling on every hero option — see §20.
 - Module popup detail copy, from the current website.
 - Approved wording for the six value one-liners on the About page (currently filler).
+- **The two offers, named.** The client refers to "the two offers I have" without naming
+  them (§22). The build assumes the existing Operational flow / Organisational flow.
+- **Real framework copy**, and two naming questions: the full expansion of DRMT™, and
+  whether See – Strip – Choose™ replaces The CORE method™, which is still in the live
+  copy but absent from his updated list (§22).
+- **The updated audit page with the "Noise Tax" calculator.** The client is building it
+  and will send it. `diagnostic.html` is frozen until then. Note it is an interactive
+  tool, not a copy drop — budget build time, not layout time.
 
 ### Decisions to make
+- **Does the homepage lead with the founder's payoff or with the cleanse?** The client
+  wants the site to say the founder is released from the operational noise and claims
+  his time back for growth. The current `h1` and the whole page spine sell the method
+  instead. This is the highest-value open item and the one place his instruction and the
+  site's architecture pull against each other — see §22.6. Nothing was changed for it.
+- **Where the frameworks live** — their own section (what `home-comments.html` builds)
+  or woven into the two offers as what each delivers. The second ties the IP to what is
+  being bought; the first gives it standalone presence. Not yet put to the client.
 - **Homepage hero direction.** Five options are built and waiting in
   `website-design/hero-sections.html` (§20). Bundled with this: whether the baked-in
   logo pattern stays, which §10 settled by user request and the exploration reopens.
@@ -176,16 +202,20 @@ particular), and a formal accessibility audit.
 
 ## 7. Next steps
 
-1. Walk the client through `website-design/` and collect feedback on the working site.
+1. Show `home-comments.html` against `index.html` and get the three built changes
+   signed off (§22). Collect the two offer names and the real framework copy in the same
+   pass — both are blocking. Settle the founder-vs-cleanse positioning question
+   separately and deliberately; it is not a review-call item.
+2. Walk the client through `website-design/` and collect feedback on the working site.
    Show `hero-sections.html` alongside it and get a hero direction picked (§20). If one
    is approved, commission a masked transparent cut-out of Oscar before building it out,
    and settle the baked-in-pattern question from §10 explicitly rather than by default.
-2. Confirm the booking platform and the diagnostic platform — these two unblock most of
+3. Confirm the booking platform and the diagnostic platform — these two unblock most of
    the remaining functional work.
-3. Collect the missing content: logos, testimonials, contact details, photography,
+4. Collect the missing content: logos, testimonials, contact details, photography,
    module copy.
-4. Wire the booking embed, form backend and real diagnostic.
-5. Licence the typeface, add the legal pages, then cross-browser and real-device QA
+5. Wire the booking embed, form backend and real diagnostic.
+6. Licence the typeface, add the legal pages, then cross-browser and real-device QA
    before launch.
 
 ## 8. Brand-system rework (10 October 2026)
@@ -829,3 +859,153 @@ review artefact with its own `<style>` block, not a site page.
 "a patch of a different green". The ground behind it is now flat `--ink`, which changes
 that mismatch but does not remove it. Re-check the arch against the new ground before
 treating §20's first finding as still accurate.
+
+## 22. Client comments build — `home-comments.html` (15 October 2026)
+
+### What exists
+
+`website-design/home-comments.html` — a copy of `index.html` with the actionable parts
+of the client's 15 October comments applied. It is a **client-review artefact**, the
+same role `hero-sections.html` plays for the hero.
+
+**`index.html` and `css/site.css` were not touched.** Every rule the page adds lives in
+one `<style>` block in its own `<head>`, scoped to this document, so nothing can leak
+into the live site. When a change is approved, lift that rule into `css/site.css` and
+delete it from the block — the block is a staging area, not a parallel stylesheet.
+It carries `<meta name="robots" content="noindex">`.
+
+### The comments, and what was done with each
+
+| # | Client comment | Status |
+|---|---|---|
+| 1 | Desktop picture quality is off | **Not a code issue.** Hero only — the image is a placeholder (see below) |
+| 2 | A lot of blank space on desktop | Done — §22 desktop pass |
+| 3 | Step 1 above the two offers | Done — cleanse restructured |
+| 4 | Noise Tax calculator for the audit page | **Blocked**, client is building it |
+| 5 | Frameworks more prominent, three named | Done — new Frameworks section, copy needs his sign-off |
+| 6 | Founder released from operational noise | **Open decision**, see below |
+
+### 1 — the "picture quality" note
+
+The client's complaint is about **the hero image only**, not the site's images in
+general. That image is `hero-concept.png`, the placeholder §10 and §20 both describe,
+and it is already slated for replacement — §20 records it as a 1.8MB PNG of a
+photograph sitting next to a 56KB WebP of the same frame. **No image work was done
+here**, because the asset is being replaced anyway and a hero direction is still
+unpicked. Do not treat this comment as a request for new photography; it resolves when
+the hero direction from §20 is chosen.
+
+### 2 — the desktop pass
+
+Gated behind `@media(min-width:1001px)`. The mobile layout is the part the client
+explicitly approved, and it does not move.
+
+- **`.container` 1180px → 1320px.** The container capped at 1180 while the hero ran
+  full-bleed, so on a 1440 or 1920 screen everything sat in a narrow channel. The
+  hero's own padding is derived from the same cap (`calc((100% - 1180px) / 2)`) and had
+  to move with it, or the hero copy stops aligning with the sections below it.
+- **`--section-y` 120px → 96px**, plus Trust 75→60, Cleanse 130→100, Outcomes 115→96.
+- **The hero arch now takes the height the hero has.** This was the single largest
+  blank area on the page: the hero is a full viewport tall, the portrait was capped at
+  `min(640px,76vh)`, and on a 1440×900 laptop that left roughly 130px of empty Deep
+  Green under the arch. Now
+  `min(780px, calc(100svh - var(--header-h) - var(--ticker-h) - 32px))`.
+- **Measure caps widened** — hero body 46→56ch, `.problem .body-copy` to 68ch,
+  `.body-copy` 15→16px, and the 650px caps dropped from `.problem-copy` / `.about-copy`.
+  These were written for a 1180px container and left the right third of every text
+  column empty once it grew.
+- **`.cleanse-card` min-height 520px → 440px.** The two-column branch makes the cards
+  wider, so they need less height.
+
+**Verified headless at 1512×982 only.** The breakpoint ladder, real devices and
+non-Chromium browsers have not been checked.
+
+### 3 — how the cleanse works
+
+Was three cards numbered 01 / 02 / 03 in one flat `.cleanse-grid`. That reads as a
+three-step sequence and hides the funnel: the diagnostic is free and universal, and the
+two offers are a choice made *after* it, not steps two and three.
+
+Now: the diagnostic is one full-width `.cleanse-step` band on top, a `.cleanse-branch`
+connector carries the eye down, and the two offers sit below in `.cleanse-grid--two`.
+**The numbers are gone** — numbering alternatives implied you buy both, in order.
+
+`.cleanse-step` is the same `.cleanse-card` with a three-area grid laid over it
+(`tag`/`meta` on the top row, heading and body left, CTA right). It keeps the card's own
+`--lime` ground and button-hover handling. Below 850px it collapses back to the stacked
+card the mobile layout already used.
+
+**The two offers are assumed to be the existing "Operational flow" and "Organisational
+flow" cards.** The client said "the two offers I have" without naming them, and those
+two are already on the page. If he names something different, the two cards are the
+only thing that changes — the structure holds.
+
+### 5 — the frameworks section
+
+The IP previously existed in exactly two places: one six-item list buried mid-paragraph
+at `index.html:185`, and a bullet list at `about.html:95-100`. There was no prominence
+to increase, so a section was built.
+
+`.frameworks` sits **after the cleanse and before the outcomes** — it is the method the
+cleanse runs on, and the stats then arrive as the result of something named. Three
+cards, lead card on the `--lime` ground. The About paragraph was rewritten to point at
+the section instead of competing with it. The workshop material (Async Mastery™, Speak
+Up Gym™, Seven Contextual Gaps™) is one closing line, which is what the client asked
+for: present, not competing.
+
+**The card copy is drafted, not approved.** It was written from the existing site copy,
+not from the client's own wording, and the page carries a visible dashed `.fw-draft`
+notice saying so. Delete the element and its CSS rule together once real copy arrives.
+
+Two things the comments did not settle, both flagged in that notice:
+
+- **DRMT™ is shown as "the decision engine"**, which is how `about.html:100` describes
+  it. The full expansion is unknown and was not invented.
+- **The CORE method™ is still in the live copy but absent from the client's updated
+  list.** `See – Strip – Choose™` appears nowhere on the current site. The likely
+  explanation is that CORE was renamed into See – Strip – Choose, but that is a guess
+  and needs confirming before the live copy changes.
+
+### 6 — the open decision, deliberately not built
+
+The client wrote that the site is "really focussed on the cleansing of the system", but
+that it also needs to say the founder is **released from the operational noise and
+claims his time back, to concentrate on growth and the next phase**.
+
+That is a messaging-hierarchy change, not a layout one, and it conflicts with the
+current `h1` — "Cleanse your business systems of operational clutter" — and with the
+page's whole spine: *the cleanse*, *OPS DETOX OUTCOMES*, seven detox modules. Taken
+seriously it means the hero promises the founder's payoff and the cleanse becomes the
+method underneath it.
+
+**Nothing in the hero or the outcomes copy was changed.** This is the one comment where
+the client's instruction and the site's own architecture pull against each other, and
+it was left for a deliberate decision rather than settled by a WhatsApp line. It is the
+highest-value item in the list.
+
+**It is already half-answered by §20.** Two of the five hero options in
+`hero-sections.html` carry exactly this promise in their headline:
+
+| Tab | Headline |
+|---|---|
+| B | "Flush the pipelines. *Win your time back.*" |
+| C | "Cleanse your business systems. Win your time back." |
+
+§20 labels that copy as placeholder, written to suit each layout's line length rather
+than as a recommendation. It now reads as the answer to a comment the client had not yet
+made. **Put the hero decision and the positioning decision in the same conversation** —
+picking B or C settles both at once, and picking A, D or E leaves the repositioning
+still to do elsewhere on the page.
+
+Note also that `website-design/README.md` described the live H1 as "Cleanse your
+business systems. Win your time back." That was never the H1 on any page — `copy.md`,
+the mockup, the high-fidelity build and `index.html` all carry "…of operational
+clutter". The README has been corrected. Worth knowing that the time-back line has been
+circling this project since the 10 Oct brand rework.
+
+### Pre-existing bug noticed, not fixed
+
+Both `index.html` and `home-comments.html` have a **stray `</div>`** after the
+preloader markup (`index.html:19`). Browsers recover from it silently. It is not from
+this work — it is in every copy of the page — but it should be cleaned up next time
+`index.html` is edited.
