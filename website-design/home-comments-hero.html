@@ -230,80 +230,125 @@
      as black anyway. */
   .hero--type{
     --ht-gutter:max(24px,calc((100% - 1480px) / 2));
-    grid-template-columns:1fr;
-    grid-template-rows:1fr auto;
+    /* ONE row, not 1fr + auto. The first build gave the headline its own
+       1fr row and centred it there, so on a tall screen the leftover height
+       opened as a band of empty lime across the middle of the hero. The
+       whole block is now a single centred item: the leftover becomes even
+       margin above and below, which reads as framing rather than as a gap. */
+    grid-template-columns:1fr;grid-template-rows:1fr;
     align-items:stretch;gap:0;
     width:100%;max-width:none;padding:0;
     background:var(--lime);color:var(--ink);
     position:relative;overflow:hidden;
   }
-  .hero--type .ht-top{
-    display:flex;flex-direction:column;justify-content:center;
-    padding:30px var(--ht-gutter) 34px;
+  /* The eyebrow and headline stack normally; .ht-foot is deliberately placed
+     in the SAME grid cell as the headline, pinned bottom-right, so it fills
+     the empty space beside the short last line ("clutter") instead of being
+     parked in its own strip at the foot of the screen. The last line is one
+     word, so there is always room — but the overlap is only safe while the
+     headline is set in three lines, which is why it unwinds below 1100px. */
+  .hero--type .ht-inner{
+    display:grid;grid-template-columns:minmax(0,1fr);
+    align-content:center;
+    padding:40px var(--ht-gutter);
   }
   .hero--type .eyebrow{
-    color:var(--ink);font-size:15px;letter-spacing:.14em;margin:0 0 24px;
+    grid-area:1/1;align-self:start;
+    color:var(--ink);font-size:15px;letter-spacing:.14em;margin:0 0 26px;
   }
-  /* Uppercase, tight leading, filling the width — V1.0 p.25/26 treats short
-     statements exactly this way. Capped at 124px because beyond that the
-     fourth line starts losing its right-hand word on a 1440 laptop. */
-  /* The mockup draws a four-line block of type filling the screen. It is set
-     in a wide grotesque; Formula Condensed is roughly half that width per
-     character, so the same four-line break here only reaches 40% across and
-     the hero goes hollow on the right. Capping the measure instead of the
-     size makes it worse — short lines in a wide frame.
-     So the size does the work: 14vw sets the sentence in THREE full-width
-     lines, which lands at the mockup's density in the brand's own face.
-     The 200px ceiling is what keeps the hero and the ticker on the first
-     screen at 1920 — above it the third line pushes the strip under the
-     fold, which §5 holds the whole site to. */
+  /* Three lines, broken by hand. Left to itself the sentence breaks after
+     "Cleanse your", leaving line 1 at roughly 60% and a hole in the top
+     right corner. .ht-br forces two full-width lines and drops the single
+     short word onto line 3, which is what makes room for .ht-foot.
+
+     182px, not the 200px of the first build. The ceiling is set by the
+     LONGEST hand-broken line, "systems of operational" — measured off a
+     render at 200px it needs ~1564px and the container caps at 1480, so
+     anything above ~186px re-wraps and the three lines become five. It is
+     also still the fold constraint from §5: the hero and the ticker have to
+     land on the first screen. Re-measure both if the break ever changes. */
   .hero--type .ht-head{
+    grid-area:2/1;
     margin:0;color:var(--ink);max-width:none;
-    font-size:clamp(38px,14vw,200px);line-height:.88;
+    font-size:clamp(38px,12vw,182px);line-height:.88;
     letter-spacing:.01em;text-transform:uppercase;
   }
-  /* The one word the sentence is about removing, held back so it reads as
-     already fading out. Deep Green at 32%, not the mockup's olive grey —
-     a desaturated mud is off-palette and reads as a rendering fault. */
-  .hero--type .ht-fade{color:rgba(20,51,24,.32)}
-  /* The hand-drawn ring around the first word. It is NOT a V1.0 device —
-     it comes from the client's mockup — so it is kept to a hairline and is
-     a single element to delete if the designer objects. */
-  .hero--type .ht-circle{position:relative;display:inline-block}
+  .hero--type .ht-br{display:block;height:0}
+  /* "clutter" is the word the sentence is about removing. The first build
+     held it at 32% opacity, which made the least legible thing on the
+     screen the one word the promise turns on — and on a projector it reads
+     as a rendering fault rather than as intent. It is now legible at 55%
+     and struck through with a solid Deep Green rule: the removal is said
+     with a mark instead of with absence, which is also the See – Strip –
+     Choose idea drawn rather than described. */
+  .hero--type .ht-fade{position:relative;color:rgba(20,51,24,.55)}
+  .hero--type .ht-fade::after{
+    /* 40%, measured: the ::after is positioned against the inline box,
+        which is taller than the capitals, so 50% lands near the baseline. */
+    content:'';position:absolute;left:-1.5%;right:-1.5%;top:40%;
+    height:.07em;background:var(--ink);border-radius:999px;
+    transform:rotate(-1deg);
+  }
+  /* The ring now commits. A 1.5px hairline at 50% read as a scratch or a
+     scanning artefact; it is a 3px stroke at full strength on a path that
+     overshoots where it closes, so it reads as drawn by hand. It is still
+     NOT a V1.0 device — it comes from the client's mockup — so it is still
+     one element to delete if the designer objects. */
+  /* isolation + z-index:-1 puts the loop BEHIND the letterforms. Drawn on
+     top it crosses every stem and reads as a scribble over the word; behind,
+     it reads as a mark made around it. The isolation keeps the -1 inside
+     this span rather than dropping it behind the hero's own ground. */
+  .hero--type .ht-circle{position:relative;display:inline-block;isolation:isolate}
   .hero--type .ht-circle svg{
-    position:absolute;inset:-9% -4% 13% -1%;
+    /* A plain ellipse, not a hand-drawn path. The svg is stretched with
+        preserveAspectRatio="none", so an irregular path skews into what
+        reads as a scribble across the letters; an ellipse survives the
+        non-uniform scale. Bottom inset keeps it off the line beneath —
+        the headline leading is .88, so there is very little room. */
+    position:absolute;inset:-6% -3% 42% -1%;
     width:auto;height:auto;overflow:visible;
-    color:var(--ink);opacity:.5;pointer-events:none;
+    color:var(--ink);pointer-events:none;z-index:-1;
   }
-  /* The mockup rules a hairline above this row and another between the two
-     cells. They are gone: on a flat lime ground they read as a wireframe
-     grid, and the white space already does the separating. */
+  /* Same cell as the headline, pinned to its bottom right. */
   .hero--type .ht-foot{
-    display:grid;grid-template-columns:1fr minmax(300px,30%);
+    grid-area:2/1;align-self:end;justify-self:end;
+    /* Must stay SHORTER than the last headline line it sits beside, or it
+        rides up and collides with line 2. Wider column => the subline sets
+        in two lines instead of three, which is what buys the room. */
+    width:min(58%,700px);
+    display:flex;flex-direction:column;align-items:flex-start;gap:14px;
+    padding-bottom:.06em;
   }
-  .hero--type .ht-foot-copy{
-    padding:28px 52px 32px var(--ht-gutter);
-    display:flex;align-items:center;
+  .hero--type .ht-sub{
+    margin:0;max-width:58ch;color:var(--ink);font-size:16px;line-height:1.45;
   }
-  .hero--type .ht-foot-copy p{
-    margin:0;max-width:52ch;color:var(--ink);font-size:17px;line-height:1.5;
+  /* Emphasis only — the sentence is the locked site copy, word for word.
+     The underline the first build used reads as a hyperlink and nothing
+     else on the web; people try to click it. Weight carries it instead. */
+  .hero--type .ht-mark{font-weight:700}
+  /* Side by side, not stacked. Stacked buttons made the block taller than
+     the line it sits beside, which is what forced it down into its own
+     strip in the first build. */
+  .hero--type .ht-actions{
+    display:flex;flex-wrap:wrap;gap:12px;margin:0;
   }
-  /* Emphasis only — the sentence itself is the locked site copy, word for
-     word. The mockup marks these three phrases; this is the same marking. */
-  .hero--type .ht-mark{
-    font-weight:700;
-    box-shadow:inset 0 -2px 0 rgba(20,51,24,.45);
-  }
-  .hero--type .ht-foot-cta{
-    padding:28px var(--ht-gutter) 32px 52px;
-    display:flex;flex-direction:column;justify-content:center;gap:12px;
+  .hero--type .ht-proof{
+    margin:0;color:rgba(20,51,24,.68);
+    font:13px/1.4 var(--display);letter-spacing:.06em;text-transform:uppercase;
   }
   /* On a Detox Green ground the pair inverts: the primary becomes the Deep
      Green pill, because a lime pill on lime is invisible. */
-  .hero--type .button{background:var(--ink);color:var(--lime);border-color:var(--ink);width:100%;max-width:330px}
+  .hero--type .button{background:var(--ink);color:var(--lime);border-color:var(--ink)}
   .hero--type .button:hover{background:transparent;color:var(--ink);border-color:var(--ink)}
   .hero--type .button--line{background:transparent;color:var(--ink);border-color:var(--ink)}
   .hero--type .button--line:hover{background:var(--ink);color:var(--lime);border-color:var(--ink)}
+  /* The wide O/D alternates (§9) fire inside the CTA labels too, and next to
+     the run of caps in "FREE DIAGNOSTIC" they make one label look like two
+     typefaces collided. Suppressed in the hero buttons only.
+     NOTE: the caps run itself is the live label from index.html and is left
+     alone — whether it should be mixed case per V1.0 p.29 is the client's
+     copy decision, not a silent fix. */
+  .hero--type .button .od{font-feature-settings:normal}
 
   @keyframes htRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .hero--type .eyebrow,
@@ -317,24 +362,44 @@
     .hero--type .ht-foot{animation:none}
   }
 
+  /* The overlap only holds while .ht-foot is SHORTER than the last headline
+     line it sits beside — that line is .88 x the font size, and the font is
+     12vw, so it shrinks faster than the foot does. Left alone the subline
+     picks up a third line on the way down and collides with line 2 at about
+     1450px, which includes the 1440 laptop the client is most likely to open
+     this on. So the foot gets compact between 1300 and 1600 — a wider column
+     keeps the subline at two lines and the gaps tighten — and only unwinds
+     into a stack below 1300. Re-measure both if the subline, the buttons or
+     the proof line change. */
+  @media(max-width:1600px){
+    .hero--type .ht-foot{width:min(62%,760px);gap:10px}
+    .hero--type .ht-sub{font-size:15px;line-height:1.4}
+    .hero--type .ht-proof{font-size:12px}
+  }
+  @media(max-width:1300px){
+    .hero--type .ht-foot{
+      grid-area:3/1;justify-self:stretch;align-self:auto;
+      width:auto;margin-top:34px;padding-bottom:0;
+    }
+    .hero--type .ht-sub{max-width:62ch}
+  }
+
   @media(max-width:850px){
-    /* Rows stay 1fr/auto. Two auto rows let grid's default align-content
-       share the leftover height between them, which opened an identical
-       dead band under the headline and under the subline. */
     .hero--type{--ht-gutter:20px}
     /* The ring is drawn around one word. Once the headline wraps mid-phrase
        on a phone it scales down to a stray mark, so it is dropped. */
     .hero--type .ht-circle svg{display:none}
-    .hero--type .ht-top{padding:30px var(--ht-gutter) 32px}
+    /* The hand-forced breaks are sized for three full-width desktop lines.
+       On a phone the sentence has to wrap wherever it fits. */
+    .hero--type .ht-br{display:none}
+    .hero--type .ht-inner{padding:30px var(--ht-gutter) 34px}
     .hero--type .eyebrow{font-size:13px;margin-bottom:18px}
     .hero--type .ht-head{font-size:clamp(34px,10.2vw,62px)}
-    .hero--type .ht-foot{grid-template-columns:1fr}
-    .hero--type .ht-foot-copy{padding:26px var(--ht-gutter) 24px}
-    .hero--type .ht-foot-copy p{font-size:15px}
-    .hero--type .ht-foot-cta{
-      padding:4px var(--ht-gutter) 30px;
-    }
-    .hero--type .button{max-width:none}
+    .hero--type .ht-foot{margin-top:28px;gap:18px}
+    .hero--type .ht-sub{font-size:15px}
+    .hero--type .ht-actions{width:100%}
+    .hero--type .ht-actions .button{flex:1 1 220px}
+    .hero--type .ht-proof{font-size:12px}
     /* The mobile nav panel drops out of a now-Deep-Green header, so it
        cannot stay Soft Ivory with lime links on it. */
     .site-nav{background:var(--ink);border-bottom-color:rgba(204,254,6,.22)}
@@ -473,18 +538,30 @@
   <main id="main">
     <!-- Type-led hero. No portrait: see the note in the style block above.
          Every word here is the locked copy from index.html. -->
+    <!-- Revised 24 Oct. The first build broke as CLEANSE YOUR / BUSINESS
+         SYSTEMS OF / OPERATIONAL CLUTTER, which left line 1 at ~60% width
+         and a dead band of lime across the middle of the hero. The break is
+         now two full-width lines plus the single short word, and the subline
+         and CTAs sit in the space beside it. Copy is still word for word
+         index.html's. -->
     <section class="hero hero--type">
-      <div class="ht-top">
+      <div class="ht-inner">
         <span class="eyebrow">Operational detox for scale-ups</span>
-        <h1 class="ht-head"><span class="ht-circle">Cleanse<svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="100" cy="40" rx="97" ry="38" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke" transform="rotate(-1.6 100 40)"/></svg></span> your business systems of operational <span class="ht-fade">clutter</span></h1>
-      </div>
-      <div class="ht-foot">
-        <div class="ht-foot-copy">
-          <p>We help scale-ups cleanse the systems clogged by <b class="ht-mark">meetings nobody needs</b>, <b class="ht-mark">reports nobody reads</b> and <b class="ht-mark">decisions nobody takes</b>, so time flows back into growing the company.</p>
-        </div>
-        <div class="ht-foot-cta actions">
-          <a class="button" href="contact.html">Let’s talk</a>
-          <a class="button button--line" href="diagnostic.html">Book the FREE DIAGNOSTIC</a>
+
+        <h1 class="ht-head"><span class="ht-circle">Cleanse<svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="100" cy="40" rx="97" ry="37" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke" transform="rotate(-1.3 100 40)"/></svg></span> your business <span class="ht-br"></span>systems of operational <span class="ht-br"></span><span class="ht-fade">clutter</span></h1>
+
+        <div class="ht-foot">
+          <p class="ht-sub">We help scale-ups cleanse the systems clogged by <b class="ht-mark">meetings nobody needs</b>, <b class="ht-mark">reports nobody reads</b> and <b class="ht-mark">decisions nobody takes</b>, so time flows back into growing the company.</p>
+
+          <div class="ht-actions actions">
+            <a class="button" href="contact.html">Let’s talk</a>
+            <a class="button button--line" href="diagnostic.html">Book the FREE DIAGNOSTIC</a>
+          </div>
+
+          <!-- Recombined from copy already on the site (the Keynotes section
+               and the Frameworks intro), not new claims. Delete the element
+               if the client would rather the hero stayed claim-free. -->
+          <p class="ht-proof">TEDx speaker · 17 years inside complex international organizations</p>
         </div>
       </div>
     </section>

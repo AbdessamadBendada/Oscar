@@ -5,7 +5,7 @@ file is the short list of things that are easy to get wrong.
 
 ## Read first
 
-**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§24) and the dated banners
+**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§25) and the dated banners
 at the top are the change log. Read the banners plus any section a task touches before
 editing. Several decisions in it look like bugs and are not — see "Do not 'fix'" below.
 
@@ -15,8 +15,8 @@ editing. Several decisions in it look like bugs and are not — see "Do not 'fix
 dependencies, no backend. Open the files directly or serve the folder. There is nothing
 to install and nothing to compile — keep it that way.
 
-Two files in there are **not site pages**. They are standalone client-review artefacts
-and are not linked from the nav:
+Four files in there are **not site pages**. They are standalone artefacts and are not
+linked from the nav:
 
 | File | What it is |
 |---|---|
@@ -38,7 +38,8 @@ them drift and do not import one into the other.
 
 **There are now three near-identical copies of the homepage** — `index.html`,
 `home-comments.html` and `home-comments-hero.html`, the last being a copy of the
-second. A fix to a shared section has to be made in all three. That is the cost of
+second. A fix to a shared section has to be made in all three. (The two comments pages
+now share everything below the hero, and diverge above it.) That is the cost of
 showing the comment work and the hero direction as separate decisions, and it is
 acceptable for one review cycle only. As soon as the 15 Oct comments are signed off,
 lift `home-comments.html`'s block into `css/site.css` and retire that file.
@@ -85,9 +86,11 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
   under review. The restore is commented inline.
 - **Placeholder contact details, legal links and testimonials** — pending client input,
   labelled as such on the page.
-- **The `200px` headline ceiling in `home-comments-hero.html`** (§23) — load-bearing,
-  not a round number. Above it the third line pushes the ticker under the fold at 1920.
-  Re-check the fold if the type is retuned.
+- **The `182px` headline ceiling in `home-comments-hero.html`** (§23) — load-bearing,
+  not a round number. It is set by the longest hand-broken line, "systems of
+  operational", which needs ~1564px at 200px against a 1480px container; above ~186px
+  the three lines become five. It is also the §5 fold constraint. Re-measure both if the
+  line break or the type changes.
 - **The missing dividing rules in that hero** (§23) — the mockup has them; they were
   built and then removed by request. Do not restore them from the mockup.
 - **The testimonial row's four copies of the same four quotes** (§24) — the track must
@@ -104,8 +107,15 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
 - **The testimonial end-fades being gradient overlays rather than a `mask-image`** (§24)
   — a mask promotes the slider to its own composited layer and macOS Chrome tints it, so
   the whole row read as a paler band. Do not "simplify" it back to a mask.
-- **The hand-drawn ring around "CLEANSE"** (§23) — not a V1.0 device, deliberately one
-  deletable element, and deliberately hidden below 850px.
+- **The ring around "CLEANSE" sitting BEHIND the letterforms** (§23) — drawn on top it
+  crosses every stem and reads as a scribble. It is a plain ellipse, not a hand-drawn
+  path, because the svg is stretched with `preserveAspectRatio="none"` and an irregular
+  path skews into a mess. Still not a V1.0 device, still one deletable element, still
+  hidden below 850px.
+- **The `.ht-foot` overlapping the headline's grid cell, and the 1300/1600 breakpoints**
+  (§23) — the subline and CTAs sit in the empty space beside the short last line. That
+  only works while the foot is shorter than that line; the two breakpoints are where it
+  stops being true. Measured, not guessed.
 
 ## Verifying visual work
 
@@ -118,6 +128,11 @@ python3 -m http.server 8777          # from website-design/
   --screenshot=out.png --virtual-time-budget=5000 \
   "http://localhost:8777/index.html"
 ```
+
+Headless cannot hover, and `--virtual-time-budget` does **not** advance a CSS animation
+— screenshots at 4s and 30s are the same frame. To check either, force the state with a
+temporary rule: a negative `animation-delay` plus `animation-play-state:paused` to land
+on a chosen frame, or the hover rule applied to one `:nth-child()`.
 
 `--screenshot` captures the viewport only. For sections below the fold, temporarily cap
 the hero (`.hero{min-height:620px}`, `.hero--brand .hero-image{height:560px}`) and

@@ -2,6 +2,11 @@
 
 _Last updated: 24 October 2026_
 
+> **24 Oct — the type-led hero was revised after a design review.** The dead band across
+> the middle, the hole in the top right, the near-illegible "CLUTTER", the link-looking
+> underlines and the orphaned CTAs are all fixed; the headline re-breaks to two full
+> lines plus one short word and the subline and CTAs now sit beside it. See §23.
+
 > **24 Oct — the two parked sections moved out to `website-design/parked-sections.html`,
 > and the pattern divider moved below the final CTA.** The Cost and System sections are
 > gone from both comments pages but kept verbatim in a working holding file, because they
@@ -1110,13 +1115,54 @@ comes from the client's mockup — so it is deliberately one deletable element. 
 hidden below 850px: once the headline wraps mid-phrase on a phone the ring scales down
 to a stray mark.
 
+### Revised after a design review (24 Oct)
+
+The first build was shown back and had real problems. What changed:
+
+| Was | Now | Why |
+|---|---|---|
+| Break `CLEANSE YOUR / BUSINESS SYSTEMS OF / OPERATIONAL CLUTTER` | `CLEANSE YOUR BUSINESS / SYSTEMS OF OPERATIONAL / CLUTTER`, forced with `.ht-br` | Line 1 was ~60% wide, leaving a hole in the top right. Two full lines plus one short word is what makes room for the CTA block |
+| Headline cap `200px` | `182px` | The new break has longer lines. "systems of operational" needs ~1564px at 200px against a 1480px container, so anything above ~186px re-wraps into five lines |
+| Hero grid `1fr auto` | one `1fr` row, the whole block centred | The headline had its own row and was centred in it, so the leftover height opened as a **band of empty lime across the middle**. As one centred block the leftover becomes even margin top and bottom, which reads as framing |
+| Subline + CTAs in their own strip at the foot | `.ht-foot` placed in the **same grid cell** as the headline, pinned bottom-right | It fills the space beside the short last line instead of being parked at the bottom of the screen |
+| CTAs stacked | Side by side | Stacked made the block taller than the line it sits beside, which is what forced it into its own strip |
+| `clutter` at 32% opacity | 55% **plus a solid Deep Green strike** | At 32% the least legible thing on the screen was the one word the promise turns on, and on a projector it read as a rendering fault. A strike says "this is what we remove" with a mark instead of with absence — and it is See – Strip – Choose drawn rather than described |
+| Subline phrases underlined | Bold only | An underline reads as a hyperlink and nothing else on the web; people try to click it |
+| Ring: 1.5px hairline at 50%, drawn over the letters | 3px at full strength, **behind** the letterforms | A hairline read as a scratch. Drawn on top, a committed stroke crosses every stem and reads as a scribble; behind, it reads as a mark made around the word |
+| — | A proof line under the CTAs | The hero had no credibility signal at all, and testimonials now sit much lower down the page (§24). The line is recombined from copy already on the site, not a new claim, and is one deletable element |
+
+**Two measured breakpoints hold the overlap together**, and they are not round numbers.
+`.ht-foot` may only overlap the headline's cell while it is **shorter than the last
+line** it sits beside. That line is `.88 × font-size` and the font is `12vw`, so it
+shrinks faster than the foot does. Left alone the subline picks up a third line and
+collides with line 2 at about 1450px — which includes the 1440 laptop the client is most
+likely to open this on. So:
+
+- **≤1600px**: the foot goes compact — wider column, so the subline stays at two lines,
+  and the gaps tighten.
+- **≤1300px**: the overlap unwinds into a plain stack.
+
+Re-measure both if the subline, the buttons or the proof line change.
+
+One thing deliberately **not** changed: the CTA label still reads "Book the FREE
+DIAGNOSTIC", exactly as `index.html` has it. The caps run next to "Book the" is what
+makes the label look like two typefaces, and the wide O/D alternates (§9) made it worse —
+those are now suppressed in the hero buttons. Whether the label itself should be mixed
+case per V1.0 p.29 is a **copy decision for the client**, not a silent fix.
+
 ### Status
 
-Rendered headless at **1512×982 and 500×900 only**, and re-rendered at both after the
-rules came out. Hero + ticker land exactly on the fold at both. Everything below the ticker is byte-identical to `home-comments.html` and
-was not re-checked. **Not verified**: the full breakpoint ladder, the mobile nav panel
-open on the Deep Green header, Safari, Firefox, real devices. Not yet seen by the
-client.
+The first build was rendered headless at **1512×982 and 500×900 only**, and re-rendered
+at both after the rules came out. Hero + ticker land exactly on the fold at both.
+
+The revision was rendered at **1920, 1600, 1512, 1440, 1360, 1301, 1280, 1100, 1024 and
+500**, which is what found the 1450 collision and the 1300 unwind. Hero + ticker land on
+the fold at every one of them, the overlap holds from 1301 up, and the stack below it is
+clean. Everything below the ticker is identical to `home-comments.html` and was not
+re-checked here.
+
+**Not verified**: the mobile nav panel open on the Deep Green header, Safari, Firefox,
+real devices. Not yet seen by the client.
 
 ## 24. Revised section order, and the testimonial slider (24 October 2026)
 
