@@ -1131,6 +1131,28 @@ The first build was shown back and had real problems. What changed:
 | Ring: 1.5px hairline at 50%, drawn over the letters | 3px at full strength, **behind** the letterforms | A hairline read as a scratch. Drawn on top, a committed stroke crosses every stem and reads as a scribble; behind, it reads as a mark made around the word |
 | — | A proof line under the CTAs | The hero had no credibility signal at all, and testimonials now sit much lower down the page (§24). The line is recombined from copy already on the site, not a new claim, and is one deletable element |
 
+### The mobile pass (24 Oct, same day)
+
+Shown on a real phone, the revised hero had lost the point of the direction: at
+`10.2vw` the headline came out around 40px on a 390pt screen — barely larger than the
+subline under it — so the hierarchy went flat and the two full-width stacked buttons
+became the loudest thing on the screen.
+
+- **Headline `10.2vw` → `14.5vw`, cap 80px.** It now fills the width the way it does on
+  desktop. **Check this at 390, not at 500**: headless Chrome clamps to a 500px minimum
+  window, so 390 only scales on paper (§8 records the same limitation).
+- **Buttons size to their labels and sit side by side** instead of two full-width pills.
+- **The proof line is set in Inter, not Formula Condensed.** A long uppercase condensed
+  string at 12px was the hardest thing on the screen to read and the least important
+  thing on it.
+- Subline, eyebrow and the block's padding all tightened a little so the type has the
+  room.
+
+**The strike's `top:34%` is measured, at two sizes.** It is positioned against the
+inline box, which is taller than the capitals, so 50% lands near the baseline; 40% still
+read low at 500px. 34% centres it at both 1512 and 500. Re-measure if the type changes —
+and measure, do not eyeball it, because the inline box is not the glyph box.
+
 **Two measured breakpoints hold the overlap together**, and they are not round numbers.
 `.ht-foot` may only overlap the headline's cell while it is **shorter than the last
 line** it sits beside. That line is `.88 × font-size` and the font is `12vw`, so it

@@ -283,9 +283,10 @@
      Choose idea drawn rather than described. */
   .hero--type .ht-fade{position:relative;color:rgba(20,51,24,.55)}
   .hero--type .ht-fade::after{
-    /* 40%, measured: the ::after is positioned against the inline box,
-        which is taller than the capitals, so 50% lands near the baseline. */
-    content:'';position:absolute;left:-1.5%;right:-1.5%;top:40%;
+    /* 34%, measured off renders at 1512 and 500 — not a guess. The ::after
+        is positioned against the inline box, which is taller than the
+        capitals, so 50% lands near the baseline and 40% still read low. */
+    content:'';position:absolute;left:-1.5%;right:-1.5%;top:34%;
     height:.07em;background:var(--ink);border-radius:999px;
     transform:rotate(-1deg);
   }
@@ -392,14 +393,28 @@
     /* The hand-forced breaks are sized for three full-width desktop lines.
        On a phone the sentence has to wrap wherever it fits. */
     .hero--type .ht-br{display:none}
-    .hero--type .ht-inner{padding:30px var(--ht-gutter) 34px}
-    .hero--type .eyebrow{font-size:13px;margin-bottom:18px}
-    .hero--type .ht-head{font-size:clamp(34px,10.2vw,62px)}
-    .hero--type .ht-foot{margin-top:28px;gap:18px}
-    .hero--type .ht-sub{font-size:15px}
-    .hero--type .ht-actions{width:100%}
-    .hero--type .ht-actions .button{flex:1 1 220px}
-    .hero--type .ht-proof{font-size:12px}
+    .hero--type .ht-inner{padding:24px var(--ht-gutter) 26px}
+    .hero--type .eyebrow{font-size:12px;margin-bottom:14px}
+    /* 14.5vw, not 10.2. At 10.2 the headline came out ~40px on a 390pt
+       phone — barely larger than the subline under it, which loses the whole
+       point of a type-led hero. 14.5 puts it at ~57px there and fills the
+       width the way it does on desktop. Check at 390, not at 500: headless
+       Chrome clamps to a 500px minimum window, so 390 only scales on paper. */
+    .hero--type .ht-head{font-size:clamp(40px,14.5vw,80px)}
+    .hero--type .ht-foot{margin-top:26px;gap:16px}
+    /* Dropped a point, so the headline keeps a clear lead over it. */
+    .hero--type .ht-sub{font-size:15px;line-height:1.45}
+    /* Sized to their labels and sitting side by side where they fit. Two
+       full-width stacked pills took a quarter of the screen and out-shouted
+       the headline. */
+    .hero--type .ht-actions{gap:10px}
+    .hero--type .ht-actions .button{flex:0 1 auto;padding-left:26px;padding-right:26px}
+    /* Inter, not Formula Condensed. A long uppercase condensed string at
+       12px was the hardest thing on the screen to read and the least
+       important thing on it. */
+    .hero--type .ht-proof{
+      font:11px/1.45 var(--sans);letter-spacing:.04em;max-width:40ch;text-transform:none;
+    }
     /* The mobile nav panel drops out of a now-Deep-Green header, so it
        cannot stay Soft Ivory with lime links on it. */
     .site-nav{background:var(--ink);border-bottom-color:rgba(204,254,6,.22)}
