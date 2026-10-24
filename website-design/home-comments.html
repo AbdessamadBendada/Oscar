@@ -184,6 +184,112 @@
     .frameworks-grid{grid-template-columns:1fr}
     .frameworks-grid article:first-child{grid-column:span 1}
   }
+
+  /* ---------- 4. Testimonials: moved up, and turned into one sliding row ----------
+     Client, 24 Oct: the testimonials belong under the IP section, and they
+     should be a single row that slides smoothly. The section markup now sits
+     directly after .frameworks and before .outcomes, so the order reads
+     cleanse → the IP it runs on → who says it worked → the numbers.
+
+     The slide is a marquee, not a paged carousel: four placeholder quotes do
+     not need prev/next controls, and continuous motion was what was asked
+     for. The track holds the four cards FOUR TIMES and translates by exactly
+     one set, which lands set 2 where set 1 started, so the loop has no jump.
+
+     Why four copies and not two: the track has to stay wider than the
+     viewport plus one set, or the row runs dry at the right-hand edge before
+     it wraps. One set is four cards at 420 + 28 = 1792px, so two copies left
+     a growing empty gap on anything wider than ~1800px — which is what a
+     1920 or zoomed-out screen is.
+
+     It is CSS-only on purpose. js/site.js is shared with the live site and a
+     review artefact must not touch it (AGENTS.md). */
+  .testimonials{overflow:hidden}
+  .testimonial-slider{
+    /* Full-bleed, so the row runs off both edges and reads as continuing
+       rather than as a cropped grid. The head above it stays in .container. */
+    position:relative;width:100%;overflow:hidden;
+    /* Cancels the track's shadow padding below, so the row occupies exactly
+       the height of the cards in the page flow and the air above and below it
+       stays even. The overflow area just overlaps the section's own padding. */
+    margin:-30px 0 -64px;
+  }
+  /* The end fades are two gradient overlays in the ground colour, NOT a
+     mask-image on the slider. A mask promotes the element to its own
+     composited layer, and macOS Chrome colour-manages that layer slightly
+     differently from the Soft Ivory painted behind it — the whole row showed
+     as a visibly paler band. Overlays keep everything on one layer. */
+  .testimonial-slider::before,
+  .testimonial-slider::after{
+    content:'';position:absolute;top:0;bottom:0;width:clamp(28px,7%,120px);
+    z-index:2;pointer-events:none;
+  }
+  .testimonial-slider::before{left:0;background:linear-gradient(90deg,var(--paper),rgba(254,253,242,0))}
+  .testimonial-slider::after{right:0;background:linear-gradient(270deg,var(--paper),rgba(254,253,242,0))}
+  /* One card's width and the gap are variables because the slide distance is
+     derived from them — see @keyframes below. */
+  .testimonial-track{
+    --tcard:min(420px,78vw);
+    --tgap:28px;
+    display:flex;width:max-content;gap:var(--tgap);
+    /* Room for the hover shadow, which is clipped by the slider's
+       overflow:hidden otherwise — the cut showed as a hard horizontal line
+       under a hovered card. --shadow is 0 18px 44px, so it reaches 18+44=62px
+       below the card and 44-18=26px above it; site.css also lifts the card
+       3px on hover. 30/64 covers both ends with a little slack. The slider
+       cancels this with a matching negative margin.
+       No horizontal padding: the slide distance is an exact multiple of the
+       card pitch and side padding would offset it. */
+    padding:30px 0 64px;
+    animation:t-slide 54s linear infinite;
+  }
+  .testimonial-track article{
+    flex:0 0 var(--tcard);min-height:300px;
+    /* No resting shadow. --shadow is a 44px blur, and eight-plus cards tiled
+       into an unbroken row pool it into a grey slab behind the whole band
+       (measured rgb(240,240,229) against the ivory's rgb(254,253,242)). The
+       row needs no lift at rest — it is already separated by the gaps. */
+    box-shadow:none;
+  }
+  .testimonial-track article:hover{box-shadow:var(--shadow)}
+
+  /* Moves by exactly one set of four — one card pitch × 4 — so set 2 lands
+     where set 1 was. Derived from the variables above rather than written as
+     -25%, because a percentage would have to absorb the flex gaps and would
+     drift the seam. Change the card count and this 4 changes with it. */
+  @keyframes t-slide{to{transform:translateX(calc(-4 * (var(--tcard) + var(--tgap))))}}
+
+  /* Hovering or tabbing into the row holds it still so a quote can actually
+     be read. :active covers the touch case, where there is no hover. */
+  .testimonial-slider:hover .testimonial-track,
+  .testimonial-slider:active .testimonial-track,
+  .testimonial-track:focus-within{animation-play-state:paused}
+
+  /* Reduced motion: no marquee at all. The row becomes a normal swipeable,
+     snapping scroller, and the duplicate half is dropped so the same quote
+     does not appear twice in something the user scrolls by hand. */
+  @media(prefers-reduced-motion:reduce){
+    .testimonial-slider{
+      overflow-x:auto;scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      padding-bottom:6px;
+    }
+    /* The overlays are absolutely positioned inside what is now a scroll
+       container, so they would scroll away with the content. The row is
+       user-driven here and does not need the fades. */
+    .testimonial-slider::before,.testimonial-slider::after{display:none}
+    .testimonial-track{animation:none;padding-inline:max(20px,calc((100% - 1320px) / 2))}
+    .testimonial-track article{scroll-snap-align:center}
+    .testimonial-track article[aria-hidden="true"]{display:none}
+  }
+
+  /* ---------- 5. No hairlines between sections ----------
+     Client, 24 Oct. .section-rule draws a 1px --rule line under a section;
+     on the Soft Ivory stretches it read as a stray wireframe line rather
+     than as structure, and the sections already separate on their grounds
+     and their spacing. Killed here rather than stripped from the markup, so
+     the class stays available if any of them is wanted back. */
+  .section-rule{border-bottom:0}
   </style>
 </head>
 <body>
@@ -294,11 +400,123 @@
       </div>
     </section>
 
-    <!-- The IP, given a section of its own. It sits directly after the
-         cleanse because it is the method the cleanse runs on, and before the
-         outcomes, so the numbers arrive as the result of something named.
-         Only the three frameworks Oscar flagged as website-relevant appear as
-         cards; the workshop material is one closing line. -->
+    <!-- Client's revised section order, 24 Oct: the proof lands immediately
+         after the offer, before the IP. The four quotes are one continuously
+         sliding row — see section 4 of the style block for why the set is
+         repeated four times. -->
+    <section class="testimonials section-rule reveal" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <div class="testimonials-head">
+          <span class="eyebrow">Testimonials</span>
+          <h2 id="testimonials-heading">What leaders say</h2>
+        </div>
+      </div>
+      <div class="testimonial-slider">
+        <div class="testimonial-grid testimonial-track" role="list">
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+
+          <!-- Copy 2 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+
+          <!-- Copy 3 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+
+          <!-- Copy 4 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- The IP, given a section of its own. In the client's revised order it
+         follows the offer and the proof, and still sits before the outcomes,
+         so the numbers arrive as the result of something named. Only the
+         three frameworks Oscar flagged as website-relevant appear as cards;
+         the workshop material is one closing line. -->
     <section class="frameworks section-rule reveal" aria-labelledby="frameworks-heading">
       <div class="container">
         <div class="frameworks-head">
@@ -348,52 +566,6 @@
       </div>
     </section>
 
-    <section class="speak reveal" aria-labelledby="speak-heading">
-      <!-- Background slot. Drop Oscar's keynote / workshop photo in as the
-           .speak-media background-image; the scrim, sizing and focal point
-           are already set up for a wide stage shot. -->
-      <div class="speak-media" role="presentation"></div>
-      <div class="container speak-inner">
-        <div class="speak-copy">
-          <span class="eyebrow">Keynotes &amp; workshops</span>
-          <h2 id="speak-heading">Bring the DETOX into the room.</h2>
-          <p>Oscar de Grauw is a TEDx keynote speaker and workshop facilitator. Book him for a few intensive hours with your leadership team: in the Speak Up Gym and over the Out Loud card game, people practise saying the uncomfortable thing out loud, and the clutter starts to show.</p>
-          <a class="button" href="contact.html">Book Oscar to speak</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="testimonials section-rule reveal" aria-labelledby="testimonials-heading">
-      <div class="container">
-        <div class="testimonials-head">
-          <span class="eyebrow">Testimonials</span>
-          <h2 id="testimonials-heading">What leaders say</h2>
-        </div>
-        <div class="testimonial-grid">
-          <article>
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
-            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
-          </article>
-          <article>
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
-            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
-          </article>
-          <article>
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
-            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
-          </article>
-          <article>
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
-            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <section class="about container section-grid section-rule reveal" aria-labelledby="about-heading">
       <div class="about-copy">
         <span class="eyebrow">About Oscar de Grauw</span>
@@ -426,7 +598,25 @@
       </div>
     </section>
 
-    <div class="pattern-break" role="presentation"></div>
+    <!-- Keynotes moved down to sit just before the final CTA (client, 24 Oct).
+         It used to follow Outcomes, and §13 records that it deliberately has
+         no coloured separator above it because the photograph itself made the
+         transition. It now follows the Detox Green values strip, so the
+         photograph meets lime rather than Deep Green. -->
+    <section class="speak reveal" aria-labelledby="speak-heading">
+      <!-- Background slot. Drop Oscar's keynote / workshop photo in as the
+           .speak-media background-image; the scrim, sizing and focal point
+           are already set up for a wide stage shot. -->
+      <div class="speak-media" role="presentation"></div>
+      <div class="container speak-inner">
+        <div class="speak-copy">
+          <span class="eyebrow">Keynotes &amp; workshops</span>
+          <h2 id="speak-heading">Bring the DETOX into the room.</h2>
+          <p>Oscar de Grauw is a TEDx keynote speaker and workshop facilitator. Book him for a few intensive hours with your leadership team: in the Speak Up Gym and over the Out Loud card game, people practise saying the uncomfortable thing out loud, and the clutter starts to show.</p>
+          <a class="button" href="contact.html">Book Oscar to speak</a>
+        </div>
+      </div>
+    </section>
 
     <section class="choice">
       <div class="container">
@@ -450,67 +640,11 @@
       </div>
     </section>
 
-    <!-- Sections cut from the Canva deck, parked below the final CTA for review.
-         The neon frame and badge are review furniture, not design — delete the
-         .removed wrapper and the sections return to the flow unchanged. -->
-    <div class="removed">
-      <span class="removed-badge">Removed from Canva</span>
 
-      <section class="section-pad on-dark reveal" aria-labelledby="cost-heading">
-        <div class="container">
-          <div class="section-heading">
-            <div>
-              <span class="eyebrow">The cost</span>
-              <h2 id="cost-heading">The cost of operational noise</h2>
-            </div>
-            <p>Operational noise compounds. Every month it remains, the cost grows and the damage is already deeper than you think.</p>
-          </div>
-          <ul class="pill-list pill-list--two">
-            <li><b>1</b>Meetings multiply</li>
-            <li><b>4</b>Tool sprawl increases</li>
-            <li><b>2</b>Decisions slow down</li>
-            <li><b>5</b>High performers disengage</li>
-            <li><b>3</b>Reporting expands</li>
-            <li><b>6</b>Leaders become bottlenecks</li>
-          </ul>
-        </div>
-      </section>
-
-      <section id="system" class="system">
-        <div class="container reveal">
-          <div class="system-intro">
-            <div><span class="eyebrow">Seven modules. One detox.</span><h2>The OPS Detox SYSTEM</h2></div>
-            <p>A modular system for the real bottlenecks in how work flows. Each module stands alone; together, they reset how the company runs.</p>
-          </div>
-
-          <div class="module-grid">
-            <button class="module" type="button" data-title="Meetings Detox" data-sub="Win back your execution time.">
-              <img src="assets/icons/meetings.svg" alt=""><h3>Meetings Detox</h3><p>Win back your execution time.</p>
-            </button>
-            <button class="module" type="button" data-title="Decision Detox" data-sub="Weeks become hours.">
-              <img src="assets/icons/decision.svg" alt=""><h3>Decision Detox</h3><p>Weeks become hours.</p>
-            </button>
-            <button class="module" type="button" data-title="Communication Detox" data-sub="Information without rework.">
-              <img src="assets/icons/communication.svg" alt=""><h3>Communication Detox</h3><p>Information without rework.</p>
-            </button>
-            <button class="module" type="button" data-title="Reporting Detox" data-sub="Reports that create decisions.">
-              <img src="assets/icons/reporting.svg" alt=""><h3>Reporting Detox</h3><p>Reports that create decisions.</p>
-            </button>
-            <button class="module" type="button" data-title="Tool Stack Detox" data-sub="Strip what doesn't serve you.">
-              <img src="assets/icons/tool-stack.svg" alt=""><h3>Tool Stack Detox</h3><p>Strip what doesn't serve you.</p>
-            </button>
-            <button class="module" type="button" data-title="Psychological Safety Detox" data-sub="Say the expensive thing out loud.">
-              <img src="assets/icons/psychological-safety.svg" alt=""><h3>Psychological Safety Detox</h3><p>Say the expensive thing out loud.</p>
-            </button>
-            <button class="module" type="button" data-title="Ownership Detox" data-sub="Close the ownership vacuum.">
-              <img src="assets/icons/ownership.svg" alt=""><h3>Ownership Detox</h3><p>Close the ownership vacuum.</p>
-            </button>
-          </div>
-
-          <p class="system-cta"><a class="button button--line" href="detox.html">Learn more</a></p>
-        </div>
-      </section>
-    </div>
+    <!-- The switcher-pattern divider. Moved below the final CTA at the client's
+         request (24 Oct) so it closes the page into the footer instead of
+         separating Keynotes from the CTA. -->
+    <div class="pattern-break" role="presentation"></div>
 
   </main>
 

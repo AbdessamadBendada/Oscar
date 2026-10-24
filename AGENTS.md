@@ -5,7 +5,7 @@ file is the short list of things that are easy to get wrong.
 
 ## Read first
 
-**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§22) and the dated banners
+**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§24) and the dated banners
 at the top are the change log. Read the banners plus any section a task touches before
 editing. Several decisions in it look like bugs and are not — see "Do not 'fix'" below.
 
@@ -22,6 +22,8 @@ and are not linked from the nav:
 |---|---|
 | `hero-sections.html` | Five alternative hero treatments, tabbed (§20) |
 | `home-comments.html` | The homepage with the 15 Oct client comments applied (§22) |
+| `home-comments-hero.html` | That build plus the type-led Detox Green hero (§23) |
+| `parked-sections.html` | Holding file for the Cost and System sections, cut from the homepage but kept verbatim for reuse on another page (§25) |
 
 ## Review artefacts: the rule that matters
 
@@ -32,7 +34,14 @@ for the same reason.
 
 When a change in an artefact is approved, **lift the rule into `css/site.css` and delete
 it from the artefact.** The block is a staging area, not a second stylesheet. Do not let
-the two drift and do not import one into the other.
+them drift and do not import one into the other.
+
+**There are now three near-identical copies of the homepage** — `index.html`,
+`home-comments.html` and `home-comments-hero.html`, the last being a copy of the
+second. A fix to a shared section has to be made in all three. That is the cost of
+showing the comment work and the hero direction as separate decisions, and it is
+acceptable for one review cycle only. As soon as the 15 Oct comments are signed off,
+lift `home-comments.html`'s block into `css/site.css` and retire that file.
 
 `hero-sections.html` duplicates the design tokens from `css/site.css` section 2 by hand.
 If the palette moves, it has to be updated manually.
@@ -68,12 +77,35 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
   already agreed.
 - **`--grad-hero` still defined but unused** (§21) — left in so the old look is a
   one-line revert.
-- **The `.removed` wrapper below the final CTA** (§18) — the neon frame and badge are
-  review furniture. Delete the wrapper and the sections return to the flow unchanged.
+- **The `.removed` wrapper below the final CTA in `index.html`** (§18) — the neon frame
+  and badge are review furniture. Delete the wrapper and the sections return to the flow
+  unchanged. Both comments pages no longer have it: those two sections moved to
+  `parked-sections.html` (§25), deliberately **without** the frame.
 - **The preloader running on every load** rather than once per session (§21) — it is
   under review. The restore is commented inline.
 - **Placeholder contact details, legal links and testimonials** — pending client input,
   labelled as such on the page.
+- **The `200px` headline ceiling in `home-comments-hero.html`** (§23) — load-bearing,
+  not a round number. Above it the third line pushes the ticker under the fold at 1920.
+  Re-check the fold if the type is retuned.
+- **The missing dividing rules in that hero** (§23) — the mockup has them; they were
+  built and then removed by request. Do not restore them from the mockup.
+- **The testimonial row's four copies of the same four quotes** (§24) — the track must
+  stay wider than the viewport plus one set or the row runs dry at the right edge. Two
+  copies broke at 1920. The slide distance is one set, derived from `--tcard` and
+  `--tgap`; change the card count and change the `4` in the keyframe with it.
+- **The testimonial track's lopsided `30px 0 64px` padding and the slider's matching
+  negative margin** (§24) — those are the hover shadow's exact reach above and below the
+  card. Trim either and the shadow gets sliced off by `overflow:hidden`; drop the margin
+  and the row sits 94px taller than the cards.
+- **The testimonial cards having no shadow at rest** (§24) — `--shadow` is a 44px blur,
+  and tiled into an unbroken row it pools into a grey slab behind the whole band. Hover
+  only. Do not "unify" it back to the grid's shadow.
+- **The testimonial end-fades being gradient overlays rather than a `mask-image`** (§24)
+  — a mask promotes the slider to its own composited layer and macOS Chrome tints it, so
+  the whole row read as a paler band. Do not "simplify" it back to a mask.
+- **The hand-drawn ring around "CLEANSE"** (§23) — not a V1.0 device, deliberately one
+  deletable element, and deliberately hidden below 850px.
 
 ## Verifying visual work
 

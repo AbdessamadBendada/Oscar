@@ -1,6 +1,25 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 15 October 2026_
+_Last updated: 24 October 2026_
+
+> **24 Oct — the two parked sections moved out to `website-design/parked-sections.html`,
+> and the pattern divider moved below the final CTA.** The Cost and System sections are
+> gone from both comments pages but kept verbatim in a working holding file, because they
+> are likely wanted on another page. `index.html` still carries them. See §25.
+
+> **24 Oct — the homepage section order was rebuilt to the client's revised running
+> order, and the testimonials became a sliding row.** Hero → problem → offer →
+> testimonials → IP → about → keynotes → final CTA, with the four sections he did not
+> name placed rather than dropped. Built into `home-comments.html` **and**
+> `home-comments-hero.html`, which share these sections. `index.html` and `css/site.css`
+> were not touched. See §24.
+
+> **23 Oct — a type-led hero direction was built into a third review copy,
+> `website-design/home-comments-hero.html`.** A copy of `home-comments.html`, so it
+> carries all the 15 Oct comment work, with the hero replaced: full-bleed Detox Green,
+> no photograph, the headline set huge in Deep Green. The header is Deep Green on this
+> page. **The copy is unchanged** — same H1, same subline, same CTA labels.
+> `index.html`, `home-comments.html` and `css/site.css` were not touched. See §23.
 
 > **15 Oct — the client's first round of comments came in, and the actionable ones were
 > built into `website-design/home-comments.html`.** A review copy of the homepage: the
@@ -91,6 +110,8 @@ the client exactly how the thing behaves, without a backend behind it.
 | `freebie.html` | Freebie opt-in (Startup Financial Model Template) |
 | `hero-sections.html` | **Not a site page.** Five alternative hero treatments, tabbed, for client review — see §20 |
 | `home-comments.html` | **Not a site page.** The homepage with the 15 Oct client comments applied, for review — see §22 |
+| `home-comments-hero.html` | **Not a site page.** `home-comments.html` plus the type-led Detox Green hero — see §23 |
+| `parked-sections.html` | **Not a site page.** Holding file for the two sections cut from the homepage, kept for reuse — see §25 |
 
 ### What actually works
 
@@ -115,6 +136,7 @@ the client exactly how the thing behaves, without a backend behind it.
 | `website-design/css/site.css` | Full design system, expanded and sectioned for editing |
 | `website-design/hero-sections.html` | Standalone hero exploration, self-contained CSS; tokens duplicated from site.css and kept in sync by hand — §20 |
 | `website-design/home-comments.html` | Client-comments review build of the homepage; all overrides in one scoped `<style>` block, `index.html`/`site.css` untouched — §22 |
+| `website-design/home-comments-hero.html` | Type-led hero on top of the comments build; same scoped-`<style>` rule — §23 |
 | `website-design/js/site.js` | Nav, module popups, forms, switch, reveal, ticker |
 | `website-design/js/diagnostic.js` | Demo diagnostic — questions and scoring live here |
 | `high-fidelity-design/` | Approved high-fidelity homepage (minified CSS, reference only) |
@@ -1008,4 +1030,295 @@ circling this project since the 10 Oct brand rework.
 Both `index.html` and `home-comments.html` have a **stray `</div>`** after the
 preloader markup (`index.html:19`). Browsers recover from it silently. It is not from
 this work — it is in every copy of the page — but it should be cleaned up next time
-`index.html` is edited.
+`index.html` is edited. (It is already removed in `home-comments-hero.html`, §23.)
+
+## 23. Type-led hero — `home-comments-hero.html` (23 October 2026)
+
+### What exists and why it is a third file
+
+`website-design/home-comments-hero.html` — a copy of `home-comments.html` with the
+homepage hero replaced by a full-bleed, type-led Detox Green treatment, built from a
+client-supplied mockup. It is the third client-review artefact and follows the same
+rule as the other two: **every change lives in one scoped `<style>` block in its own
+`<head>`.** `index.html`, `home-comments.html` and `css/site.css` are untouched.
+
+It had to be a new file rather than an edit, because `home-comments.html` is itself
+still unapproved and the client needs to see the comment work and the hero direction
+as separate decisions.
+
+**This is now three near-identical copies of the homepage, each with its own override
+block.** That is survivable for one review cycle and not as a habit. As soon as the
+15 Oct comments are signed off, lift `home-comments.html`'s block into `css/site.css`
+and retire it, so the hero artefact sits on the real stylesheet instead of on a copy
+of a copy.
+
+### The copy is unchanged
+
+The H1, the subline and both CTA labels are exactly `index.html`'s. The mockup's own
+wording — "Book the systems audit", "See how the cleanse works" — was **not** carried
+across, and neither was its uppercase tracked button style, which §8 records as already
+corrected once to the guideline's mixed-case pills (p.29). The only markup change to the
+subline is `<b class="ht-mark">` around three phrases the mockup emphasises; the
+sentence is word for word the same.
+
+### Colour — what was changed from the mockup
+
+| Mockup | Built | Why |
+|---|---|---|
+| Black headline on lime | `--ink` Deep Green on `--lime` | Black is not in the palette. Deep Green on Detox Green is the sanctioned pairing (V1.0 p.21), and at this size it reads as black anyway |
+| Olive-grey "CLUTTER" | `rgba(20,51,24,.32)` | A desaturated mud is off-palette and on a projector reads as a rendering fault rather than as intent |
+| Ivory header | **Deep Green header** | Explicit user request. It also solves a real problem: a near-white band straight on top of the lime, with the Deep Green logo and an invisible `.button--line` header CTA. The lime logo, lime nav and a lime pill CTA all now sit on Deep Green, which is the only legal ground for them |
+
+The mobile nav panel drops out of that header, so it is Deep Green on this page too —
+otherwise it would have been lime links on Soft Ivory, a p.22 watchout.
+
+### Why there is no photograph
+
+That is the point of the direction, not an omission. §20 records that no alpha-channel
+cut-out of Oscar exists anywhere in the project, which is the ceiling on every
+portrait-led hero option. A hero built out of the headline needs no asset that does not
+exist, and it drops `hero-concept.png` — which is what client comment #1 ("desktop
+picture quality") was actually about (§22.1). **This direction resolves comment #1 by
+removing its subject.**
+
+### The one thing that could not be matched
+
+The mockup sets the headline in a wide grotesque, roughly twice Formula Condensed's
+width per character. Breaking the sentence into the mockup's four lines in the brand
+face reaches only about 40% across and leaves the hero hollow on the right; capping the
+measure makes it worse. **The size does the work instead**: `clamp(38px,14vw,200px)`
+sets it in three full-width lines at the mockup's density in the brand's own face.
+
+The `200px` ceiling is load-bearing — above it the third line pushes the ticker under
+the fold at 1920, and §5 holds the whole site to hero + ticker landing exactly on the
+first screen. If the type size is retuned, re-check the fold.
+
+### The dividing rules were removed (24 Oct)
+
+The mockup rules a hairline above the bottom row and another between the subline and
+the CTAs. Both were built, then **removed at the user's request**. On a flat Detox
+Green ground they read as a wireframe grid rather than as structure, and the white
+space separates the two cells on its own. The mobile gap between the subline and the
+buttons was tightened at the same time, because the rule had been carrying that
+spacing. If they are ever wanted back, it is a `border-top` on `.ht-foot` and a
+`border-left` on `.ht-foot-cta`.
+
+### The ring around "CLEANSE"
+
+A hairline ellipse, one inline SVG, at 50% opacity. **It is not a V1.0 device** — it
+comes from the client's mockup — so it is deliberately one deletable element. It is
+hidden below 850px: once the headline wraps mid-phrase on a phone the ring scales down
+to a stray mark.
+
+### Status
+
+Rendered headless at **1512×982 and 500×900 only**, and re-rendered at both after the
+rules came out. Hero + ticker land exactly on the fold at both. Everything below the ticker is byte-identical to `home-comments.html` and
+was not re-checked. **Not verified**: the full breakpoint ladder, the mobile nav panel
+open on the Deep Green header, Safari, Firefox, real devices. Not yet seen by the
+client.
+
+## 24. Revised section order, and the testimonial slider (24 October 2026)
+
+### The request
+
+The client's section **order** should change, and the testimonials should become **one
+row that slides smoothly** instead of a two-row grid. The order arrived in two passes on
+the same day — first "testimonials below the IP", then a full revised running order that
+puts them above it. The table below is the one that was built.
+
+### Where it was built
+
+In **both** `home-comments.html` and `home-comments-hero.html`. The section is shared
+between them — it was byte-identical before this change and still is after it — and
+AGENTS.md requires a shared-section fix to land in every copy. **`index.html` and
+`css/site.css` were not touched**; both files carry the change in their own scoped
+`<style>` block as section 4, under the same staging-area rule as everything else in
+them.
+
+### The order
+
+The client then sent a full revised running order, which supersedes the first move. His
+list, verbatim in shape: hero → problem → offer → testimonials → IP → about → keynotes →
+final CTA.
+
+| | Before | After |
+|---|---|---|
+| 1 | Hero | Hero |
+| 2 | Ticker | Ticker |
+| 3 | Trust logos | Trust logos |
+| 4 | The Problem | The Problem |
+| 5 | How the cleanse works (the offer) | How the cleanse works (the offer) |
+| 6 | Frameworks (IP) | **Testimonials** |
+| 7 | Testimonials | **Frameworks (IP)** |
+| 8 | Outcomes | Outcomes |
+| 9 | Keynotes & Workshops | **About Oscar** |
+| 10 | About Oscar | **How I work values strip** |
+| 11 | How I work values strip | **Keynotes & Workshops** |
+| 12 | Pattern divider | Pattern divider |
+| 13 | Final choice CTA | Final choice CTA |
+
+**Four sections are not named in the client's list** — the ticker, the trust row, the
+Outcomes stats and the values strip — so they were placed, not invented or dropped:
+
+- **Outcomes stayed directly after the IP.** The numbers still arrive as the result of
+  something named, which is the reading §22.5 built the Frameworks section for. He did
+  not ask for it to move and removing it was never on the table.
+- **The values strip stayed attached to About Oscar.** "How I work" is About's tail, not
+  a free-standing band.
+- **Ticker and trust row did not move**; both belong to the hero's first screen.
+
+If he meant Outcomes to sit somewhere else, that is a one-block move — ask when the
+order is reviewed rather than guessing again.
+
+One knock-on worth knowing: **§13 records that Keynotes deliberately has no coloured
+separator above it**, because the photograph itself made the transition from Outcomes.
+It now follows the Detox Green values strip, so the photograph meets lime instead of
+Deep Green. It reads fine — checked — but the reason behind that decision no longer
+applies, and there is a comment in the markup saying so.
+
+### The slider
+
+A **marquee, not a paged carousel.** Four placeholder quotes do not justify prev/next
+controls, and "slides smoothly" is continuous motion, not stepping.
+
+- **The track holds the four cards four times** and translates by exactly one set, so
+  set 2 lands where set 1 started and the loop has no jump. Copies 2–4 are `aria-hidden`.
+  **If a quote is added or removed, do it in all four copies.**
+- **Why four copies and not two.** The track has to stay wider than the viewport plus one
+  set, or the row runs dry at the right-hand edge before it wraps — which is exactly what
+  the user saw: a single card trailing into empty ivory. One set is 4 × (420 + 28) =
+  1792px, so two copies left a growing hole on anything wider than ~1800px, i.e. any
+  1920 screen. Four copies cover up to ~5400px.
+- `translateX(calc(-4 * (var(--tcard) + var(--tgap))))` — one card pitch × 4, derived
+  from the two variables rather than written as `-25%`. A percentage would have to absorb
+  the flex gaps and the seam would drift. **The `4` is the card count**; change one and
+  change the other.
+- **No resting shadow — only on hover.** The first build kept the grid's `--shadow`, a
+  44px blur offset 18px down, on every card. Tiled into an unbroken row it pooled into a
+  grey slab behind the whole band — measured `rgb(240,240,229)` against the ivory's
+  `rgb(254,253,242)`, with a hard top and bottom edge, reading as a stray background
+  panel. Softening it was not enough; it is now `box-shadow:none` at rest and `--shadow`
+  on hover only. The row is separated by its gaps and needs no lift.
+- **The track's `padding:30px 0 64px` is measured, not padding for looks.** The slider
+  is `overflow:hidden`, so a hover shadow taller than the padding gets sliced off — it
+  showed as a hard horizontal line under the hovered card. `--shadow` is `0 18px 44px`,
+  which reaches 18 + 44 = **62px below** the card and 44 − 18 = **26px above** it, and
+  site.css lifts the card 3px on hover as well. 30/64 clears both with a little slack.
+  The slider carries `margin:-30px 0 -64px` to cancel it, so the row still occupies
+  exactly the cards' height in the page flow and the air above and below stays even.
+  **Retune the pair together, and retune them if the hover shadow changes.**
+- **No horizontal padding on the track** — the slide distance is an exact multiple of the
+  card pitch and side padding would offset it.
+- Cards are a **fixed** `var(--tcard)` = `min(420px,78vw)`. A flexible width would make
+  the pitch depend on the viewport and the seam would drift.
+- The slider is full-bleed with both ends fading into the Soft Ivory ground, so the row
+  reads as continuing rather than as a cropped grid. The heading above it stays inside
+  `.container`.
+
+**The fades are gradient overlays, not a `mask-image` — and that matters.** The first
+build masked the slider element. A mask promotes it to its own composited layer, and
+macOS Chrome colour-manages that layer slightly differently from the Soft Ivory painted
+behind it, so **the entire row showed as a visibly paler band** across the section. The
+user spotted it immediately. Two `::before`/`::after` overlays in `var(--paper)` do the
+same job on one layer. `will-change:transform` came off the track for the same reason.
+Under `prefers-reduced-motion` the overlays are hidden, because the slider becomes a
+scroll container there and absolutely-positioned overlays would scroll away with the
+content. **Do not reintroduce the mask.**
+- Hover, `:active` (the touch case, where there is no hover) and `:focus-within` all
+  pause it, so a quote can actually be read.
+- `prefers-reduced-motion` drops the animation entirely: the row becomes a normal
+  swipeable scroll-snap scroller and copies 2–4 are hidden, so the same four quotes do
+  not repeat four times in something scrolled by hand.
+
+**It is CSS-only on purpose.** `js/site.js` is shared with the live site and a review
+artefact must not touch it.
+
+### Status
+
+Rendered headless from `home-comments.html` at **1512, 1024 and 500 × 982**, with the
+sections above testimonials temporarily hidden so the row came into frame (harness files
+deleted). Layout, card sizing, the end fades and the mobile row all read correctly, and **500 was
+re-rendered after the shadow and four-copy changes** — cards fall back to `78vw`, the row
+stays clean, no shadow band.
+
+The loop was then checked properly at **1920 × 900**, by forcing five frames of the
+cycle with a negative `animation-delay` and a paused play state (0s, 13.5s, 27s, 40.5s,
+53.9s) and measuring the rightmost card pixel in each. It sits within ~64px of the right
+edge — inside the end fade — at every frame, so the row never runs dry, and the 0s and
+53.9s frames match, so the seam is continuous. **This is the way to verify a marquee
+headless**; `--virtual-time-budget` does not advance a CSS animation, so plain
+screenshots at 4s and 30s are the same frame and tell you nothing.
+
+The clipped hover shadow was checked the same way — headless cannot hover, so the hover
+shadow and the 3px lift were forced onto one card with a temporary `:nth-child(3)` rule
+and the result rendered at 1512. The shadow now fades out completely with no cut edge.
+
+### Two further changes in the same pass
+
+- **The pattern divider moved below the final CTA**, so it closes the page into the
+  footer instead of separating Keynotes from the CTA. Because the footer is Deep Green
+  too, the divider now reads as the footer's top edge, which is what the client wanted.
+- **The hairlines between sections are gone.** `.section-rule` draws a 1px `--rule` line
+  under a section; across the Soft Ivory stretches it read as a stray wireframe line
+  rather than as structure, and the sections already separate on their grounds and their
+  spacing. Killed with `.section-rule{border-bottom:0}` in the override block rather
+  than stripped from the markup, so the class stays available if any single one is
+  wanted back.
+- **The two parked sections left the homepage entirely** — see §25.
+
+The reordered page was rendered end to end at **1300px wide** — offer → testimonials →
+IP reads correctly at the top, and Outcomes → About → values → Keynotes → CTA at the
+bottom, with no broken joins and no section losing its ground colour.
+
+`home-comments-hero.html` was patched identically throughout and was not re-rendered.
+Everything above the testimonials differs between the two files (the hero), everything
+from the testimonials down is the same.
+
+## 25. Parked sections moved to their own file (24 October 2026)
+
+### What moved
+
+`website-design/parked-sections.html` — a holding file for **The cost of operational
+noise** and **The OPS Detox system** (the seven module popups). Both were cut from the
+Canva deck on 12 Oct and had been sitting below the homepage's final CTA inside the loud
+`.removed` frame (§18). The client wants them kept because they are likely wanted on
+another page — most plausibly Work With Us.
+
+They are now **out of `home-comments.html` and `home-comments-hero.html` altogether**.
+`index.html` still carries them in the `.removed` wrapper and was not touched.
+
+### How they were moved
+
+**Verbatim.** No copy, markup, class or id changed, so `#system` and the seven module
+popups work on the holding page exactly as they do on the live site. The file loads
+`css/site.css` and `js/site.js` and carries the `#modal` markup the popups need, so it
+is a working page and not a snippet dump — you can click the modules and check them.
+
+The neon **`.removed` frame and badge did not come across**. They were review furniture
+for showing the client what had been cut from the homepage; on a holding file they would
+only be misleading. §18's note still applies to `index.html`, where the wrapper remains.
+
+### Reusing one
+
+Copy the `<section>` into the target page. It needs:
+
+- `css/site.css` — already shared by every page, nothing to add.
+- `js/site.js` — for the module popups and reveal-on-scroll.
+- The `#modal` block near the bottom of the holding file, **only** for the system
+  section. The cost section needs nothing beyond the stylesheet.
+
+The two `.parked-label` lime strips and the Deep Green note at the top are page furniture
+for the holding file. Delete them along with whatever you copy out.
+
+### Not a site page
+
+It is not linked from the nav and carries `<meta name="robots" content="noindex">`, the
+same as the three review artefacts. It has **no preloader** — it is a workbench, not
+something the client is walked through.
+
+### Status
+
+Rendered headless at 1300 × 2600: both sections render in full and keep their grounds.
+The module popups were not clicked through in this pass; the markup is byte-identical to
+the homepage's, where they are verified (§5).

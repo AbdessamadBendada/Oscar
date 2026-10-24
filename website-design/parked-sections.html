@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143318">
+  <title>OPS DETOX™ — Parked sections</title>
+  <meta name="description" content="Two homepage sections cut from the running order and kept for reuse on another page.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/logo/favicon.png">
+  <link rel="stylesheet" href="css/site.css">
+  <!-- ==========================================================
+       NOT A SITE PAGE. A holding file for sections that have been
+       taken out of the homepage but are still wanted — most likely
+       on the Work With Us page. Both sections below are VERBATIM:
+       no copy, markup, class or id was changed when they were
+       lifted, so #system and the seven module popups still work
+       exactly as they do on the live site.
+
+       To reuse one: copy the <section> into the target page. It
+       needs css/site.css (already shared), js/site.js for the
+       module popups and the reveal-on-scroll, and the #modal
+       markup near the bottom of this file for the popups.
+
+       The loud neon "Removed from Canva" frame they used to sit
+       inside was review furniture for the homepage and is NOT
+       carried over. Do not reintroduce it here.
+       ========================================================== -->
+  <style>
+    /* Page furniture for this holding file only. Nothing here belongs to
+       either section — delete it when a section is copied out. */
+    .parked-note{
+      background:var(--ink);color:var(--paper);
+      padding:26px 0;border-bottom:3px solid var(--lime);
+    }
+    .parked-note h1{
+      margin:0 0 10px;color:var(--lime);
+      font:clamp(24px,3vw,38px)/1 var(--display);
+      letter-spacing:.03em;text-transform:uppercase;
+    }
+    .parked-note p{margin:0;max-width:78ch;font-size:15px;line-height:1.6;opacity:.86}
+    .parked-note a{color:var(--lime)}
+    .parked-label{
+      background:var(--lime);color:var(--ink);
+      padding:12px 0;font:15px/1 var(--display);
+      letter-spacing:.05em;text-transform:uppercase;
+    }
+    /* .container sets a width and auto margins, which an inline span ignores. */
+    .parked-label>.container{display:block}
+  </style>
+</head>
+<body>
+  <div class="parked-note">
+    <div class="container">
+      <h1>Parked sections</h1>
+      <p>These two sections were cut from the homepage running order on 24 October 2026 and
+         kept here because they are likely wanted on another page. They are unchanged from the
+         homepage build. See §25 of <b>HANDOFF.md</b> for what was removed and why, and for how
+         to drop one back into a page.</p>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <p class="parked-label"><span class="container">1 — The cost of operational noise</span></p>
+
+    <section class="section-pad on-dark reveal" aria-labelledby="cost-heading">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">The cost</span>
+            <h2 id="cost-heading">The cost of operational noise</h2>
+          </div>
+          <p>Operational noise compounds. Every month it remains, the cost grows and the damage is already deeper than you think.</p>
+        </div>
+        <ul class="pill-list pill-list--two">
+          <li><b>1</b>Meetings multiply</li>
+          <li><b>4</b>Tool sprawl increases</li>
+          <li><b>2</b>Decisions slow down</li>
+          <li><b>5</b>High performers disengage</li>
+          <li><b>3</b>Reporting expands</li>
+          <li><b>6</b>Leaders become bottlenecks</li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="parked-label"><span class="container">2 — The OPS Detox system (seven module popups, working)</span></p>
+    <section id="system" class="system">
+      <div class="container reveal">
+        <div class="system-intro">
+          <div><span class="eyebrow">Seven modules. One detox.</span><h2>The OPS Detox SYSTEM</h2></div>
+          <p>A modular system for the real bottlenecks in how work flows. Each module stands alone; together, they reset how the company runs.</p>
+        </div>
+
+        <div class="module-grid">
+          <button class="module" type="button" data-title="Meetings Detox" data-sub="Win back your execution time.">
+            <img src="assets/icons/meetings.svg" alt=""><h3>Meetings Detox</h3><p>Win back your execution time.</p>
+          </button>
+          <button class="module" type="button" data-title="Decision Detox" data-sub="Weeks become hours.">
+            <img src="assets/icons/decision.svg" alt=""><h3>Decision Detox</h3><p>Weeks become hours.</p>
+          </button>
+          <button class="module" type="button" data-title="Communication Detox" data-sub="Information without rework.">
+            <img src="assets/icons/communication.svg" alt=""><h3>Communication Detox</h3><p>Information without rework.</p>
+          </button>
+          <button class="module" type="button" data-title="Reporting Detox" data-sub="Reports that create decisions.">
+            <img src="assets/icons/reporting.svg" alt=""><h3>Reporting Detox</h3><p>Reports that create decisions.</p>
+          </button>
+          <button class="module" type="button" data-title="Tool Stack Detox" data-sub="Strip what doesn't serve you.">
+            <img src="assets/icons/tool-stack.svg" alt=""><h3>Tool Stack Detox</h3><p>Strip what doesn't serve you.</p>
+          </button>
+          <button class="module" type="button" data-title="Psychological Safety Detox" data-sub="Say the expensive thing out loud.">
+            <img src="assets/icons/psychological-safety.svg" alt=""><h3>Psychological Safety Detox</h3><p>Say the expensive thing out loud.</p>
+          </button>
+          <button class="module" type="button" data-title="Ownership Detox" data-sub="Close the ownership vacuum.">
+            <img src="assets/icons/ownership.svg" alt=""><h3>Ownership Detox</h3><p>Close the ownership vacuum.</p>
+          </button>
+        </div>
+
+        <p class="system-cta"><a class="button button--line" href="detox.html">Learn more</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <button class="modal-close" type="button" aria-label="Close">✕</button>
+      <img class="modal-icon" src="assets/icons/meetings.svg" alt="">
+      <h2 class="modal-title" id="modal-title">Module</h2>
+      <p class="modal-sub">Tagline</p>
+      <p class="modal-note">Module detail copy still to come from the client’s current website. This popup is wired and ready for it.</p>
+    </div>
+  </div>
+
+  <script src="js/site.js"></script>
+</body>
+</html>
