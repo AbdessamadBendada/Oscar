@@ -1,6 +1,13 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 24 October 2026_
+_Last updated: 25 October 2026_
+
+> **25 Oct — the switcher pattern was rebuilt in CSS, and it replaced the text ticker.**
+> The strip under the hero is now moving pattern bars carrying the ticker's words; the
+> divider above the footer is two rows of bars running opposite ways; and the pattern on
+> the dark bands is a fixed tile instead of being scaled to the viewport. The client has
+> approved the strip. The headline also finally gained the brand's wide O/D. `index.html`
+> and `css/site.css` are untouched. See §26.
 
 > **24 Oct — the type-led hero was revised after a design review.** The dead band across
 > the middle, the hole in the top right, the near-illegible "CLUTTER", the link-looking
@@ -1390,3 +1397,106 @@ something the client is walked through.
 Rendered headless at 1300 × 2600: both sections render in full and keep their grounds.
 The module popups were not clicked through in this pass; the markup is byte-identical to
 the homepage's, where they are verified (§5).
+
+## 26. The pattern rebuilt in CSS, and the hero's brand details (24–25 October 2026)
+
+Everything here is in `home-comments.html` and `home-comments-hero.html` only.
+**`index.html`, the five interior pages and `css/site.css` were not touched**, so the
+live site still has the PNG pattern, the text ticker and a headline without the wide O.
+
+### The switcher pattern is now CSS, not a PNG
+
+`assets/patterns/section-break.png` is a 3841 × 2161 image. `css/site.css` sizes it to
+the full viewport width on the dark bands and `cover` on the divider, so on a 1920 screen
+it renders at half scale and the bars come out enormous — and they grow with the screen.
+The client's note was that the motif "looks big".
+
+**It cannot simply be tiled smaller.** The artwork is not seamless horizontally: bars run
+off both edges and do not line up — measured at 36 lime rows on the left edge against 53
+on the right. At 6% opacity a repeat seam is invisible, at full strength it reads as a
+rendering fault. So:
+
+| Where | What it is now |
+|---|---|
+| Hero / Outcomes dark bands | Still the PNG, but a fixed **760px tile** (`--pattern-w`) instead of `100% auto`, so the motif is a constant size at every viewport. The repeat seam is invisible at 6% |
+| Under the hero | **Rebuilt in CSS** as a moving strip of bars carrying the ticker's words — it replaced the text ticker entirely |
+| Above the footer | **Rebuilt in CSS**, bars only, two rows running opposite ways |
+
+Rebuilding in CSS is also what finally solved the "too big" note on the divider: the bar
+size is now a number, not whatever the artwork scales to.
+
+### The strip that replaced the ticker
+
+The original `.ticker` is **gone** from both pages. In its place, `.pt-strip`: one row of
+pills, each with the pattern's gradient — a long tail fading up out of the Deep Green
+ground, resolving to flat Detox Green where the word sits, so Deep Green type always
+lands on solid lime. It runs left to right, the reverse of the ticker it replaced. The
+words are the ticker's own, unchanged, and it carries the ticker's `aria-label` now that
+it is the only one.
+
+**Its height is `--ticker-h`, and that is load-bearing.** The hero is
+`calc(100svh - header - ticker-h)`, which is what lands the fold exactly under this strip
+(§5). Giving the bars breathing room therefore means **raising the token, not padding the
+strip** — pad it and the hero stops reaching the fold on every viewport. The token is now
+`92px` desktop and `74px` mobile, up from the text ticker's 46/42.
+
+### The divider above the footer
+
+`.pb`: two rows of bare bars, **travelling in opposite directions**. Each row travels the
+way its bars point — the gradient tail reads as the trail behind the bar, so a bar lit at
+its right end has to move right. Built the other way round first and both rows looked
+like they were sliding backwards.
+
+### The one rule all three marquees share
+
+Four copies of the set, a step of `translateX(-25%)`, spacing as **`margin-left`** so no
+margin trails the last flex item where it can be dropped from the track's `max-content`
+width, and **the `nth-child` cycle must equal one copy**.
+
+That last one is not theoretical. The strip's bar tails first cycled on `3n` and `4n`;
+4 does not divide the 6 bars in a copy, so copy 1 and copy 2 had different tails, the
+copies were not identical and the loop visibly jumped once a cycle. The cycle is `6n`
+everywhere now. **If a word or a bar is added or removed, that 6 changes with it.**
+
+Verified by measurement rather than by eye — all three tracks report
+`one copy == trackWidth / 4` exactly, delta `0.00`.
+
+### The hero's brand details
+
+- **The headline now has the wide O/D** (§9) and did not before. `js/site.js` splits on
+  uppercase `/([OD])/`, and the `h1` is typed in sentence case and uppercased by CSS, so
+  it never matched — the headline was the one piece of display type on the page without
+  the brand's signature O, while the eyebrow right above it had one. The letters are
+  wrapped by hand in the markup, because `site.js` is shared with the live site and
+  setting `ss01` on the whole heading swaps every letter and destroys the condensed face
+  (§9 records that being tried and rejected). **If the H1 copy changes, re-wrap by hand.**
+  The strip's words are wrapped the same way, for the same reason.
+- **The headline was resized twice for it.** The wide O is much wider: at the old `182px`
+  the three lines became five and overflowed. It is `150px` / `10.3vw` now, and mobile
+  dropped `14.5vw → 12.6vw` because at the old size `OF` was orphaned on its own line.
+- **Leading went `.88 → 1.0`, for the ring.** The hand-drawn loop around "cleanse" is
+  drawn *behind* the letterforms — on top it crosses every stem and reads as a scribble.
+  But at `.88` there was almost no open lime above or below the word either, so nearly
+  all of its path was hidden and it showed as disconnected arcs. The looser leading gives
+  it a clear band to travel through. **The ring was the reason for the leading change**;
+  tighten it again and the ring goes back to looking broken.
+- **The ring and the struck-out "clutter" both live in boxes forced to `line-height:1`.**
+  As default inline boxes their offsets came from the line-height and the font's metrics,
+  and neither a percentage nor an em offset tracked the capitals across sizes — the
+  strike sat centred at 182px and high at 57px. A 1em box makes the offsets a fixed
+  fraction of the font size, so one calibration holds everywhere. **Measure these, do not
+  eyeball them**: the inline box is not the glyph box.
+
+### Status
+
+Rendered at 1920, 1512, 1440, 1301, 1280, 1100, 900 and 500, plus a simulated 390 (see
+below). Three lines on desktop, four on mobile, the hero and the strip land exactly on
+the fold at every width, and all three marquee loops measure exact.
+
+**Headless cannot render below 500px** — Chrome clamps the layout viewport to 500 even
+when the window is smaller, so a "390" screenshot is a 500px layout cropped, not a 390px
+one. 390 was checked by constraining the body and substituting the `vw`-derived font size
+with what it computes to at 390. **The phone is still the only real check**, and the
+client has been viewing it over the LAN.
+
+Not verified: Safari, Firefox, real devices beyond the client's own phone.

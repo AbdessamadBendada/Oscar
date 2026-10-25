@@ -98,8 +98,37 @@
   .cleanse-branch{
     display:grid;justify-items:center;gap:0;margin:0;text-align:center;
   }
+  /* The connector is the switcher pattern turned on its side: one bar
+     instead of a hairline, at the pattern's own scale rather than the
+     band's — a single 7px pill, not a motif. The gradient is the same one
+     the strip and the divider use (dark tail, lime head), rotated to point
+     down, and it travels down the bar so the eye is handed from step 1 to
+     the two tracks. Dark-on-ivory here, so the lime is backed by a Deep
+     Green pill: lime on ivory is not a sanctioned pairing.
+     Short on purpose — 52px, under the old 46px line plus its weight. */
   .cleanse-branch::before{
-    content:'';width:2px;height:46px;background:var(--ink);opacity:.28;
+    content:'';
+    width:7px;height:52px;
+    border-radius:var(--r-pill);
+    background:
+      linear-gradient(180deg,
+        rgba(204,254,6,0) 0%,
+        rgba(204,254,6,.35) 42%,
+        rgba(204,254,6,.85) 68%,
+        var(--lime) 86%,
+        rgba(204,254,6,0) 100%) 0 -100% / 100% 200% no-repeat,
+      var(--ink);
+    animation:cleanse-flow 2.8s linear infinite;
+  }
+  /* The lime head enters at the top and leaves at the bottom, then the
+     cycle restarts off-screen above — a drip, not a loop you can see
+     wrapping. */
+  @keyframes cleanse-flow{
+    from{background-position:0 -100%,0 0}
+    to{background-position:0 100%,0 0}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .cleanse-branch::before{animation:none;background-position:0 30%,0 0}
   }
   .cleanse-branch span{
     display:block;padding:18px 0 22px;
@@ -120,7 +149,7 @@
     .cleanse-step .cleanse-meta{justify-self:start;margin:22px 0 0}
     .cleanse-step .cleanse-cta{justify-self:start;margin-top:26px}
     .cleanse-grid--two{grid-template-columns:1fr}
-    .cleanse-branch::before{height:34px}
+    .cleanse-branch::before{height:38px;width:6px}
   }
 
   /* ---------- 3. Frameworks ----------
@@ -426,6 +455,63 @@
   }
   @media(prefers-reduced-motion:reduce){
     .pt-track{animation:none}
+  }
+
+  /* ---------- 10. Pattern divider, rebuilt in CSS ----------
+     Replaces the stretched section-break.png above the footer. Same bar
+     language as the strip under the hero, but bars only — no words — and
+     two rows running opposite ways.
+
+     Same loop rule as every other marquee here: four copies, a step of
+     -25%, spacing as margin-LEFT so nothing trails the last flex item, and
+     the nth-child cycle is 6n — one copy — so all four copies are
+     identical. Break any of those and it jumps once a cycle (§24, §26). */
+  .pb{
+    background:var(--ink);
+    padding:18px 0 20px;
+    display:grid;gap:14px;
+    overflow:hidden;
+  }
+  .pb-row{overflow:hidden}
+  /* Each row travels the way its bars point. The gradient tail reads as the
+     trail behind the bar, so a bar lit at its right end has to move right —
+     lit at the left end, left. Built the other way round first and both rows
+     looked like they were sliding backwards. */
+  .pb-track{display:flex;width:max-content;animation:pb-right 46s linear infinite}
+  .pb-row--b .pb-track{animation:pb-left 62s linear infinite}
+  @keyframes pb-left{from{transform:none}to{transform:translateX(-25%)}}
+  @keyframes pb-right{from{transform:translateX(-25%)}to{transform:none}}
+
+  .pb-bar{
+    flex:none;height:34px;margin-left:34px;
+    border-radius:var(--r-pill);
+    background:linear-gradient(90deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+  }
+  /* The artwork's bars run short, long and very long. Widths cycle on 6n so
+     every copy matches. */
+  .pb-bar:nth-child(6n+1){width:300px}
+  .pb-bar:nth-child(6n+2){width:470px;margin-left:46px}
+  .pb-bar:nth-child(6n+3){width:190px;margin-left:28px}
+  .pb-bar:nth-child(6n+4){width:380px;margin-left:40px}
+  .pb-bar:nth-child(6n+5){width:560px;margin-left:30px}
+  .pb-bar:nth-child(6n+6){width:240px;margin-left:52px}
+  /* Row B's bars are lit from the other end, as they are in the artwork. */
+  .pb-row--b .pb-bar{
+    background:linear-gradient(270deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+  }
+
+  @media(max-width:850px){
+    .pb{padding:14px 0 16px;gap:10px}
+    .pb-bar{height:26px;margin-left:22px}
+    .pb-bar:nth-child(6n+1){width:170px}
+    .pb-bar:nth-child(6n+2){width:250px;margin-left:28px}
+    .pb-bar:nth-child(6n+3){width:120px;margin-left:18px}
+    .pb-bar:nth-child(6n+4){width:210px;margin-left:24px}
+    .pb-bar:nth-child(6n+5){width:300px;margin-left:20px}
+    .pb-bar:nth-child(6n+6){width:150px;margin-left:32px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pb-track{animation:none}
   }
   </style>
 </head>
@@ -820,10 +906,75 @@
     </section>
 
 
-    <!-- The switcher-pattern divider. Moved below the final CTA at the client's
-         request (24 Oct) so it closes the page into the footer instead of
-         separating Keynotes from the CTA. -->
-    <div class="pattern-break" role="presentation"></div>
+    <!-- The switcher-pattern divider, rebuilt in CSS to match the strip under
+         the hero (§26). Was a single stretched copy of section-break.png,
+         which could not be scaled down without tiling and the artwork is not
+         seamless horizontally. Bars only, no words. Two rows running opposite
+         ways. Decorative, so it is hidden from assistive tech. -->
+    <div class="pb" aria-hidden="true">
+      <div class="pb-row">
+        <div class="pb-track">
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+        </div>
+      </div>
+      <div class="pb-row pb-row--b">
+        <div class="pb-track">
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+          <span class="pb-bar"></span>
+        </div>
+      </div>
+    </div>
 
   </main>
 

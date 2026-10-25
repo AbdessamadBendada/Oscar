@@ -5,7 +5,7 @@ file is the short list of things that are easy to get wrong.
 
 ## Read first
 
-**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§25) and the dated banners
+**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§26) and the dated banners
 at the top are the change log. Read the banners plus any section a task touches before
 editing. Several decisions in it look like bugs and are not — see "Do not 'fix'" below.
 
@@ -21,8 +21,8 @@ linked from the nav:
 | File | What it is |
 |---|---|
 | `hero-sections.html` | Five alternative hero treatments, tabbed (§20) |
-| `home-comments.html` | The homepage with the 15 Oct client comments applied (§22) |
-| `home-comments-hero.html` | That build plus the type-led Detox Green hero (§23) |
+| `home-comments.html` | The homepage review build — 15 Oct comments (§22), the revised section order and testimonial slider (§24), and the CSS pattern work (§26) |
+| `home-comments-hero.html` | That build plus the type-led Detox Green hero (§23, revised §26) |
 | `parked-sections.html` | Holding file for the Cost and System sections, cut from the homepage but kept verbatim for reuse on another page (§25) |
 
 ## Review artefacts: the rule that matters
@@ -104,6 +104,23 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
 - **The testimonial cards having no shadow at rest** (§24) — `--shadow` is a 44px blur,
   and tiled into an unbroken row it pools into a grey slab behind the whole band. Hover
   only. Do not "unify" it back to the grid's shadow.
+- **The `6n` nth-child cycle on every marquee** (§26) — the strip under the hero and
+  both divider rows vary their bars on `nth-child`, and the cycle MUST equal one copy of
+  the set. A `4n` cycle against 6 bars made the copies differ and the loop jumped once
+  per cycle. Add or remove a bar and the 6 changes with it.
+- **Marquee spacing being `margin-left`, never `margin-right` or `gap`** (§24, §26) — a
+  trailing margin can be dropped from the track's `max-content` width, and a `gap` is not
+  part of the `-25%` step. Either way the seam drifts.
+- **`--ticker-h` being 92px, and the strip having no padding of its own** (§26) — the
+  strip's height IS that token and the hero subtracts it to land the fold. Pad the strip
+  instead of raising the token and the hero stops reaching the fold everywhere.
+- **The headline's `line-height:1.0` in `home-comments-hero.html`** (§26) — it was `.88`.
+  The looser leading is what gives the ring around "cleanse" a band of clear ground to
+  travel through; the ring is drawn behind the letterforms and at `.88` it read as
+  disconnected arcs. Tighten it and the ring breaks again.
+- **The hand-wrapped `<i class="od">` in the h1 and the strip's words** (§9, §26) —
+  `site.js` splits on uppercase and this copy is sentence case, so it never matched.
+  Do not "clean up" the wrappers, and re-wrap by hand if the copy changes.
 - **The testimonial end-fades being gradient overlays rather than a `mask-image`** (§24)
   — a mask promotes the slider to its own composited layer and macOS Chrome tints it, so
   the whole row read as a paler band. Do not "simplify" it back to a mask.
@@ -133,6 +150,11 @@ Headless cannot hover, and `--virtual-time-budget` does **not** advance a CSS an
 — screenshots at 4s and 30s are the same frame. To check either, force the state with a
 temporary rule: a negative `animation-delay` plus `animation-play-state:paused` to land
 on a chosen frame, or the hover rule applied to one `:nth-child()`.
+
+**Headless cannot render below 500px.** Chrome clamps the layout viewport to 500 even
+when `--window-size` is smaller, so a "390" screenshot is a 500px layout cropped — not a
+390px render. To check 390, constrain the body to 390px and substitute any `vw`-derived
+value with what it computes to at that width. Say which of the two you did.
 
 `--screenshot` captures the viewport only. For sections below the fold, temporarily cap
 the hero (`.hero{min-height:620px}`, `.hero--brand .hero-image{height:560px}`) and
