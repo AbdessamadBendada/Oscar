@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#143318">
-  <title>OPS DETOX™ — Homepage, type-led hero</title>
+  <title>OPS DETOX™: Homepage, type-led hero</title>
   <meta name="description" content="Review build of the OPS Detox homepage: the 15 October client comments plus the type-led Detox Green hero.">
   <meta name="robots" content="noindex">
   <link rel="icon" href="assets/logo/favicon.png">
@@ -104,46 +104,15 @@
      the old numbering was doing badly. */
   .cleanse-branch{
     display:grid;justify-items:center;gap:0;margin:0;text-align:center;
-    position:relative;
   }
-  /* No vertical line at all. Two tries at one failed for the same reason:
-     anything vertical and animated here reads as a progress bar, because a
-     thin upright bar that fills or has a segment running down it is what a
-     loading indicator IS. The brand's pattern is horizontal, so the
-     connector is now the pattern itself at small scale — a short row of
-     the switcher bars, the same shape as the strip under the hero and the
-     divider above the footer, drifting slowly and masked to nothing at
-     both ends so it sits in the space rather than cutting across it. */
-  .cleanse-pattern{
-    display:block;width:min(340px,70vw);height:10px;overflow:hidden;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);
-    mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);
-  }
-  /* Two identical copies, translated by half — so copy 2 lands exactly
-     where copy 1 began and the loop has no seam. Margins, not `gap`, for
-     the reason recorded on the hero strip: a gap is not part of the 50%. */
-  .cleanse-pattern-track{
-    display:flex;width:max-content;
-    animation:cleanse-drift 28s linear infinite;
-  }
-  .cleanse-bar{
-    flex:none;height:10px;margin-left:18px;border-radius:var(--r-pill);
-    /* Ink on ivory, fading out at the tail — the divider's gradient with
-       the lime swapped for ink, since lime on ivory is not a sanctioned
-       pairing and was what made the first attempt look like a stray
-       object. Kept light: this is a connector, not a band. */
-    background:linear-gradient(90deg,
-      rgba(19,43,23,0) 0%,rgba(19,43,23,.18) 50%,rgba(19,43,23,.4) 100%);
-  }
-  .cleanse-bar:nth-child(6n+1){width:46px}
-  .cleanse-bar:nth-child(6n+2){width:84px;margin-left:22px}
-  .cleanse-bar:nth-child(6n+3){width:32px;margin-left:14px}
-  .cleanse-bar:nth-child(6n+4){width:66px;margin-left:20px}
-  .cleanse-bar:nth-child(6n+5){width:104px;margin-left:16px}
-  .cleanse-bar:nth-child(6n+6){width:40px;margin-left:24px}
-  @keyframes cleanse-drift{from{transform:none}to{transform:translateX(-50%)}}
-  @media(prefers-reduced-motion:reduce){
-    .cleanse-pattern-track{animation:none}
+  /* A plain rule, no motion. Three graphic versions were tried and dropped:
+     a lime gradient pill, a segment running down a hairline, then the
+     switcher pattern at small scale. The first two read as a progress bar
+     (a thin upright bar with something moving down it is what a loading
+     indicator is), the third as a stray object. The sequencing this was
+     meant to carry belongs in the step tags, not in a graphic. */
+  .cleanse-branch::before{
+    content:'';width:2px;height:46px;background:var(--ink);opacity:.28;
   }
   .cleanse-branch span{
     display:block;padding:18px 0 22px;
@@ -164,8 +133,7 @@
     .cleanse-step .cleanse-meta{justify-self:start;margin:22px 0 0}
     .cleanse-step .cleanse-cta{justify-self:start;margin-top:26px}
     .cleanse-grid--two{grid-template-columns:1fr}
-    .cleanse-pattern,.cleanse-bar{height:8px}
-    .cleanse-branch span{padding:14px 0 18px}
+    .cleanse-branch::before{height:34px}
   }
 
   /* ---------- 3. Frameworks ----------
@@ -909,17 +877,14 @@
              everybody starts there. The two offers below are a choice taken
              after it, not steps two and three of a sequence. -->
         <article class="cleanse-card cleanse-card--lime cleanse-step">
-          <span class="cleanse-step-tag">Step 1 — free, for everyone</span>
+          <span class="cleanse-step-tag">Step 1, free for everyone</span>
           <p class="cleanse-meta"><span>Free</span><span>8 minute</span></p>
           <h3>OPS Detox Diagnostic™</h3>
           <p>Before anything is stripped, we measure where the time and the decisions actually go. You, your key people and your team answer the same questions, where the answers differ, the clutter sits.</p>
           <a class="button button--line cleanse-cta" href="diagnostic.html">Book the free diagnostic</a>
         </article>
 
-        <p class="cleanse-branch">
-          <i class="cleanse-pattern" aria-hidden="true"><i class="cleanse-pattern-track"><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i><i class="cleanse-bar"></i></i></i>
-          <span>Then we strip, on one of two tracks</span>
-        </p>
+        <p class="cleanse-branch"><span>Then we strip, on one of two tracks</span></p>
 
         <div class="cleanse-grid cleanse-grid--two">
           <article class="cleanse-card">
@@ -953,7 +918,7 @@
         <div class="testimonial-grid testimonial-track" role="list">
           <article role="listitem">
             <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
             <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
           </article>
           <article role="listitem">
@@ -978,7 +943,7 @@
                wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
           <article aria-hidden="true">
             <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
             <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
           </article>
           <article aria-hidden="true">
@@ -1003,7 +968,7 @@
                wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
           <article aria-hidden="true">
             <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
             <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
           </article>
           <article aria-hidden="true">
@@ -1028,7 +993,7 @@
                wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
           <article aria-hidden="true">
             <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
             <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
           </article>
           <article aria-hidden="true">
@@ -1085,7 +1050,7 @@
         </div>
 
         <!-- Placeholder copy. Remove this notice with the real descriptions. -->
-        <p class="fw-draft"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording — please correct them. DRMT™ is shown as “the decision engine” because that is how about.html describes it; send the full name if you want it spelled out. Confirm also whether <b>See – Strip – Choose™</b> replaces <b>The CORE method™</b>, which is still named in the current copy but absent from your updated list.</p>
+        <p class="fw-draft"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording, please correct them. DRMT™ is shown as “the decision engine” because that is how about.html describes it; send the full name if you want it spelled out. Confirm also whether <b>See – Strip – Choose™</b> replaces <b>The CORE method™</b>, which is still named in the current copy but absent from your updated list.</p>
 
         <p class="frameworks-note">Also part of the toolkit, and used mainly inside workshops rather than on this page: <b>Async Mastery™</b>, <b>Speak Up Gym™</b> and the <b>Seven Contextual Gaps™</b>.</p>
       </div>
@@ -1113,7 +1078,7 @@
         <!-- Was a six-item list of every framework. The three that matter now
              have their own section above, so this paragraph stops competing
              with it and simply points at it. -->
-        <p>My work is built on frameworks I developed myself — See – Strip – Choose™, Truth Latency™ and DRMT™ — not on someone else's playbook. You get a repeatable, structured approach that scales.</p>
+        <p>My work is built on frameworks I developed myself: See – Strip – Choose™, Truth Latency™ and DRMT™, not someone else's playbook. You get a repeatable, structured approach that scales.</p>
         <a class="button about-cta" href="about.html">More about Oscar</a>
       </div>
       <figure>
@@ -1273,7 +1238,7 @@
           </div>
         </div>
 
-        <form data-demo-form data-success-message="Subscribed — demo only, no email is sent yet.">
+        <form data-demo-form data-success-message="Subscribed, demo only, no email is sent yet.">
           <h2>Newsletter</h2>
           <div class="field">
             <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
@@ -1302,7 +1267,7 @@
           <a href="#">Cookies</a>
         </div>
       </div>
-      <p class="footer-legal">© 2026 OPS Detox™ — Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+      <p class="footer-legal">© 2026 OPS Detox™, Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
     </div>
   </footer>
 
