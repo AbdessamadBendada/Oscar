@@ -270,7 +270,7 @@
   .hero--type .ht-head{
     grid-area:2/1;
     margin:0;color:var(--ink);max-width:none;
-    font-size:clamp(38px,12vw,182px);line-height:.88;
+    font-size:clamp(38px,10.3vw,155px);line-height:.88;
     letter-spacing:.01em;text-transform:uppercase;
   }
   .hero--type .ht-br{display:block;height:0}
@@ -281,12 +281,21 @@
      and struck through with a solid Deep Green rule: the removal is said
      with a mark instead of with absence, which is also the See – Strip –
      Choose idea drawn rather than described. */
-  .hero--type .ht-fade{position:relative;color:rgba(20,51,24,.55)}
+  /* inline-block + line-height:1 so the span's box is exactly 1em tall at
+     every size. As a plain inline its box came from the line box and the
+     font's own metrics, and neither a percentage nor an em offset tracked
+     the capitals across sizes — the rule sat centred at 182px and high at
+     57px. With a 1em box the offset below is purely font-relative, so one
+     calibration holds at every size. */
+  .hero--type .ht-fade{
+    position:relative;display:inline-block;line-height:1;
+    color:rgba(20,51,24,.55);
+  }
   .hero--type .ht-fade::after{
-    /* 34%, measured off renders at 1512 and 500 — not a guess. The ::after
-        is positioned against the inline box, which is taller than the
-        capitals, so 50% lands near the baseline and 40% still read low. */
-    content:'';position:absolute;left:-1.5%;right:-1.5%;top:34%;
+    /* .42em from the top of a 1em box — the middle of the capitals.
+        Calibrated once; see the rule above for why the box is forced to
+        1em rather than left as the default inline box. */
+    content:'';position:absolute;left:-1.5%;right:-1.5%;top:.42em;
     height:.07em;background:var(--ink);border-radius:999px;
     transform:rotate(-1deg);
   }
@@ -299,14 +308,20 @@
      top it crosses every stem and reads as a scribble over the word; behind,
      it reads as a mark made around it. The isolation keeps the -1 inside
      this span rather than dropping it behind the hero's own ground. */
-  .hero--type .ht-circle{position:relative;display:inline-block;isolation:isolate}
+  /* line-height:1 so the span's box is exactly 1em tall, the same trick the
+     struck-through word uses. As a default inline-block its box came from
+     the .88 line-height and the insets below did not track the capitals —
+     the loop sat low and dipped into the line beneath it. */
+  .hero--type .ht-circle{
+    position:relative;display:inline-block;line-height:1;isolation:isolate;
+  }
   .hero--type .ht-circle svg{
     /* A plain ellipse, not a hand-drawn path. The svg is stretched with
         preserveAspectRatio="none", so an irregular path skews into what
         reads as a scribble across the letters; an ellipse survives the
         non-uniform scale. Bottom inset keeps it off the line beneath —
         the headline leading is .88, so there is very little room. */
-    position:absolute;inset:-6% -3% 42% -1%;
+    position:absolute;inset:1% -0.5% 28% -0.5%;
     width:auto;height:auto;overflow:visible;
     color:var(--ink);pointer-events:none;z-index:-1;
   }
@@ -343,13 +358,6 @@
   .hero--type .button:hover{background:transparent;color:var(--ink);border-color:var(--ink)}
   .hero--type .button--line{background:transparent;color:var(--ink);border-color:var(--ink)}
   .hero--type .button--line:hover{background:var(--ink);color:var(--lime);border-color:var(--ink)}
-  /* The wide O/D alternates (§9) fire inside the CTA labels too, and next to
-     the run of caps in "FREE DIAGNOSTIC" they make one label look like two
-     typefaces collided. Suppressed in the hero buttons only.
-     NOTE: the caps run itself is the live label from index.html and is left
-     alone — whether it should be mixed case per V1.0 p.29 is the client's
-     copy decision, not a silent fix. */
-  .hero--type .button .od{font-feature-settings:normal}
 
   @keyframes htRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .hero--type .eyebrow,
@@ -400,7 +408,7 @@
        point of a type-led hero. 14.5 puts it at ~57px there and fills the
        width the way it does on desktop. Check at 390, not at 500: headless
        Chrome clamps to a 500px minimum window, so 390 only scales on paper. */
-    .hero--type .ht-head{font-size:clamp(40px,14.5vw,80px)}
+    .hero--type .ht-head{font-size:clamp(36px,12.6vw,70px)}
     .hero--type .ht-foot{margin-top:26px;gap:16px}
     /* Dropped a point, so the headline keeps a clear lead over it. */
     .hero--type .ht-sub{font-size:15px;line-height:1.45}
@@ -526,6 +534,143 @@
      and their spacing. Killed here rather than stripped from the markup, so
      the class stays available if any of them is wanted back. */
   .section-rule{border-bottom:0}
+
+  /* ---------- 7. Switcher-pattern scale ----------
+     Client, 24 Oct: the pattern motif reads too big. site.css sizes the
+     artwork to the full viewport width (`100% auto`) on the dark bands and
+     `cover` on the divider, so on a 1920 screen the 3841px artwork renders
+     at half size — each bar ends up enormous. Here it is given an explicit
+     width and tiled instead, so the motif is a constant size at every
+     viewport rather than growing with the screen.
+     --pattern-w is the one knob: smaller value, smaller bars. */
+  :root{--pattern-w:760px}
+  .hero--brand::before,.outcomes::before{
+    background-size:var(--pattern-w) auto;
+    background-repeat:repeat;
+  }
+  /* The divider is deliberately NOT retiled. The artwork is not seamless
+     horizontally — bars run off both edges and do not line up (measured: 36
+     lime rows on the left edge against 53 on the right), so repeating it
+     puts a hard vertical cut every tile. At 6% that is invisible; at the
+     divider's full strength it reads as a rendering fault, which is worse
+     than the bars being large. Making the divider's motif smaller needs
+     either a seamless version of the asset from the designer, or the
+     divider rebuilt in CSS. */
+
+
+  /* ---------- 8. The wide O/D in the headline ----------
+     js/site.js (§9) wraps every O and D in display type in <i class="od">
+     and fires the font's ss01 set — but it splits on UPPERCASE /([OD])/,
+     and the h1 is typed in sentence case and uppercased by CSS. So the
+     headline never matched and was the one piece of display type on the
+     page WITHOUT the brand's wide O, while the eyebrow beside it had one.
+
+     The O/D are therefore wrapped by hand in the markup. site.js is shared
+     with the live site and a review artefact must not touch it (AGENTS.md),
+     and ss01 cannot be set on the whole heading — it swaps every letter
+     that has an alternate and the condensed character of the face is lost
+     (§9 records that this was tried and rejected).
+
+     If the copy changes, re-wrap the new o/d letters by hand. */
+
+  /* ---------- 9. Pattern ticker (experiment) ----------
+     The switcher pattern from V1.0 p.38 rebuilt as live CSS rather than a
+     PNG, so the bars can carry the ticker's words and move. Each bar is a
+     pill with the pattern's own gradient — dark at the tail, full Detox
+     Green where the word sits, so the type always lands on solid lime and
+     stays legible (Deep Green on Detox Green, the sanctioned pairing).
+
+     The loop uses margins on the bars rather than a flex `gap`, which is
+     what makes it exact: the track holds four copies and translates by
+     -25%, so copy 2 lands precisely where copy 1 began. With `gap` the
+     spacing between copies would not be part of the 25% and the seam would
+     drift — the trap §24 records on the testimonial row.
+
+     One row. It runs left to right, the reverse of the original ticker it
+     replaced.
+
+     It is locked to --ticker-h, the token the hero subtracts from the
+     viewport to put the fold exactly under this strip (§5). Letting it take
+     its natural height would break that promise on every page, so the bars
+     are centred inside the fixed height instead. */
+  /* The strip's height IS --ticker-h, the token the hero subtracts from the
+     viewport to land the fold under it (§5). So giving the bars more room
+     means raising the token, not padding the strip — pad it and the hero
+     stops reaching the fold. 46px was the old text ticker's height and left
+     the pills flush against both edges. */
+  :root{--ticker-h:92px}
+  .pt-strip{
+    background:var(--ink);
+    height:var(--ticker-h);
+    display:grid;align-content:center;
+    padding:0;
+    overflow:hidden;
+  }
+  .pt-row{overflow:hidden}
+  .pt-track{
+    display:flex;width:max-content;
+    animation:pt-slide 42s linear infinite;
+    will-change:transform;
+  }
+  /* Runs left to right. The track starts one copy to the left and ends at
+     zero, so the motion is the reverse of the ticker above it — the two
+     strips pull against each other instead of reading as one band. */
+  @keyframes pt-slide{from{transform:translateX(-25%)}to{transform:none}}
+
+  .pt{
+    flex:none;
+    /* margin-LEFT rather than margin-right, so no margin can end up
+       trailing the last flex item where it might be dropped from the
+       track's max-content width. Measured after the change: the track is
+       8850.88px and one copy is 2212.72px, exactly a quarter, so the -25%
+       step lands precisely on the next copy.
+
+       A long tail and a short head: the word sits in the right-hand third,
+       where the bar is flat Detox Green, so Deep Green type always lands on
+       solid lime. In the artwork the bar fades up out of the ground over
+       most of its length — that tail is the shape, not decoration. */
+    padding:12px 34px 10px 120px;
+    margin-left:34px;
+    border-radius:var(--r-pill);
+    background:linear-gradient(90deg,
+      rgba(204,254,6,0) 0%,
+      rgba(204,254,6,.18) 26%,
+      rgba(204,254,6,.55) 48%,
+      rgba(204,254,6,.92) 64%,
+      var(--lime) 72%);
+    color:var(--ink);
+    font:18px/1 var(--display);
+    letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
+  }
+  /* The artwork's bars are not a regular rhythm — they run short, long and
+     very long. The tail and the gap cycle on nth-child to break the grid
+     the equal-width version fell into.
+
+     THE CYCLE MUST BE 6n — one copy of the word list. The first build mixed
+     3n and 4n; 4 does not divide the 6 bars in a copy, so copy 1 and copy 2
+     got different tails, the copies stopped being identical and the loop
+     jumped once per cycle. If a word is added or removed, this 6 changes
+     with it. */
+  .pt:nth-child(6n+1){padding-left:190px;margin-left:22px}
+  .pt:nth-child(6n+2){padding-left:96px;margin-left:48px}
+  .pt:nth-child(6n+3){padding-left:150px;margin-left:34px}
+  .pt:nth-child(6n+4){padding-left:118px;margin-left:28px}
+  .pt:nth-child(6n+5){padding-left:212px;margin-left:26px}
+  .pt:nth-child(6n+6){padding-left:104px;margin-left:42px}
+
+  @media(max-width:850px){
+    :root{--ticker-h:74px}
+    .pt{font-size:14px;padding:9px 22px 7px 64px;margin-left:18px}
+    .pt:nth-child(6n+1){padding-left:88px;margin-left:14px}
+    .pt:nth-child(6n+2){padding-left:52px;margin-left:24px}
+    .pt:nth-child(6n+3){padding-left:74px;margin-left:18px}
+    .pt:nth-child(6n+4){padding-left:60px;margin-left:16px}
+    .pt:nth-child(6n+5){padding-left:96px;margin-left:14px}
+    .pt:nth-child(6n+6){padding-left:56px;margin-left:22px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pt-track{animation:none}
+  }
   </style>
 </head>
 <body>
@@ -563,7 +708,7 @@
       <div class="ht-inner">
         <span class="eyebrow">Operational detox for scale-ups</span>
 
-        <h1 class="ht-head"><span class="ht-circle">Cleanse<svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="100" cy="40" rx="97" ry="37" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke" transform="rotate(-1.3 100 40)"/></svg></span> your business <span class="ht-br"></span>systems of operational <span class="ht-br"></span><span class="ht-fade">clutter</span></h1>
+        <h1 class="ht-head"><span class="ht-circle">Cleanse<svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="100" cy="40" rx="97" ry="37" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke" transform="rotate(-1.3 100 40)"/></svg></span> y<i class="od">o</i>ur business <span class="ht-br"></span>systems <i class="od">o</i>f <i class="od">o</i>perati<i class="od">o</i>nal <span class="ht-br"></span><span class="ht-fade">clutter</span></h1>
 
         <div class="ht-foot">
           <p class="ht-sub">We help scale-ups cleanse the systems clogged by <b class="ht-mark">meetings nobody needs</b>, <b class="ht-mark">reports nobody reads</b> and <b class="ht-mark">decisions nobody takes</b>, so time flows back into growing the company.</p>
@@ -581,8 +726,50 @@
       </div>
     </section>
 
-    <div class="ticker" aria-label="OPS Detox principles">
-      <div>Flush the pipelines <span>•</span> UNCOMPLICATE the decision <span>•</span> CLEAN THE SYSTEMS <span>•</span> Unclog the approval queue <span>•</span> Strip the NOISE <span>•</span> Drain the decision backlog <span>•</span></div>
+
+    <!-- The switcher pattern (V1.0 p.38) rebuilt in CSS as a moving strip,
+         with the ticker's words riding the bars. Approved by the client on
+         25 Oct and it REPLACED the original text ticker, which is gone from
+         this page.
+
+         The O and D are wrapped by hand for the same reason as the headline:
+         js/site.js splits on uppercase /([OD])/ and this copy is sentence
+         case, uppercased by CSS, so it would never match.
+
+         It replaced the original scrolling ticker on 25 Oct, so it now
+         carries that strip's label. -->
+    <div class="pt-strip" aria-label="OPS Detox principles">
+      <div class="pt-row">
+        <div class="pt-track">
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+        </div>
+      </div>
     </div>
 
     <section class="trust container section-rule">
