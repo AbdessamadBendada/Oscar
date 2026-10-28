@@ -1,6 +1,15 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 25 October 2026_
+_Last updated: 28 October 2026_
+
+> **28 Oct — a round of client comments was worked through on the live homepage.**
+> The hero lost its ring and its strike; C and U joined the wide-letter set in the
+> headline; every section title is on one scale and the logo line became a real title;
+> the two offer cards name the bottleneck they fix; the values left their full-bleed band
+> for a panel under Oscar's portrait; and Keynotes has a new stage photograph whose slide
+> was blanked by rebuilding the screen behind it. A hover bug that made buttons vanish on
+> Deep Green is fixed locally. **`index.html` is the live homepage now, not a review copy
+> — `css/site.css` and the five interior pages were not touched.** See §27.
 
 > **25 Oct — the switcher pattern was rebuilt in CSS, and it replaced the text ticker.**
 > The strip under the hero is now moving pattern bars carrying the ticker's words; the
@@ -121,8 +130,8 @@ the client exactly how the thing behaves, without a backend behind it.
 | `contact.html` | Contact — message form plus a slot for the booking embed |
 | `freebie.html` | Freebie opt-in (Startup Financial Model Template) |
 | `hero-sections.html` | **Not a site page.** Five alternative hero treatments, tabbed, for client review — see §20 |
-| `home-comments.html` | **Not a site page.** The homepage with the 15 Oct client comments applied, for review — see §22 |
-| `home-comments-hero.html` | **Not a site page.** `home-comments.html` plus the type-led Detox Green hero — see §23 |
+| `home-comments.html` | **Not a site page, and now superseded.** The 15 Oct comments build — see §22. Its hero direction was approved and promoted into `index.html` (`0df3393`), so this file is a frozen record, not something to keep patching |
+| `home-comments-hero.html` | **Not a site page, and now superseded.** The type-led hero build — see §23. Its content is what `index.html` carries today |
 | `parked-sections.html` | **Not a site page.** Holding file for the two sections cut from the homepage, kept for reuse — see §25 |
 
 ### What actually works
@@ -200,6 +209,13 @@ particular), and a formal accessibility audit.
 - Oscar photography. The hero and About images are campaign artwork, not portraits.
 - **A masked, transparent cut-out of Oscar.** No alpha-channel image of him exists
   anywhere in the project, which is the hard ceiling on every hero option — see §20.
+- **A decision on the hero's two drawn marks** — the ring around "CLEANSE" and the
+  strike through "CLUTTER" were removed on 28 Oct because "too much was going on".
+  Keep it plain, or restore either. Both are in git (§27).
+- **Oscar's own line for the keynote slide**, if the branded-screen version is wanted.
+  The one that was built carries placeholder copy (§27).
+- **A decision on the AI keynote images** — they show an audience that did not exist,
+  and that is a credibility claim rather than a design choice (§27).
 - Module popup detail copy, from the current website.
 - Approved wording for the six value one-liners on the About page (currently filler).
 - **The two offers, named.** The client refers to "the two offers I have" without naming
@@ -236,14 +252,15 @@ particular), and a formal accessibility audit.
 
 ## 7. Next steps
 
-1. Show `home-comments.html` against `index.html` and get the three built changes
-   signed off (§22). Collect the two offer names and the real framework copy in the same
-   pass — both are blocking. Settle the founder-vs-cleanse positioning question
-   separately and deliberately; it is not a review-call item.
-2. Walk the client through `website-design/` and collect feedback on the working site.
-   Show `hero-sections.html` alongside it and get a hero direction picked (§20). If one
-   is approved, commission a masked transparent cut-out of Oscar before building it out,
-   and settle the baked-in-pattern question from §10 explicitly rather than by default.
+1. Close out the 28 Oct round (§27): the hero marks, the keynote slide copy and the AI
+   images all need the client's word. Collect the two offer names and the real framework
+   copy in the same pass — both still blocking since 15 Oct. Settle the
+   founder-vs-cleanse positioning question separately and deliberately; it is not a
+   review-call item.
+2. Walk the client through the rest of `website-design/`. **The homepage hero is settled**
+   — the type-led direction was approved and promoted into `index.html`, which retires
+   the §20 exploration and the §10 pattern question with it. The five interior pages have
+   had none of this attention and still follow the old structure.
 3. Confirm the booking platform and the diagnostic platform — these two unblock most of
    the remaining functional work.
 4. Collect the missing content: logos, testimonials, contact details, photography,
@@ -1500,3 +1517,203 @@ with what it computes to at 390. **The phone is still the only real check**, and
 client has been viewing it over the LAN.
 
 Not verified: Safari, Firefox, real devices beyond the client's own phone.
+
+## 27. The 28 October homepage review (28 October 2026)
+
+A round of client comments worked through one at a time. **Everything here is in
+`index.html`** — which is now the live homepage, not a review copy, since `0df3393`
+promoted the approved hero page to it. `css/site.css` and the five interior pages were
+not touched; every rule added lives in the page's own `<style>` block, sections 12–15.
+
+### The hero lost both of its drawn marks
+
+The client's note was that too much was going on in the hero. The **ring around
+"CLEANSE"** and the **strike through "CLUTTER"** are both gone — markup and rules.
+
+Neither was a V1.0 device: the ring came from the client's own mockup (§23) and the
+strike was this build's invention, added when 32% opacity made "clutter" the least
+legible word on the screen. **"clutter" is still set back at 55% with no mark on it**,
+which is the state §23 records as having been rejected once. It reads acceptably now
+that it is the only soft thing in the hero, but it is worth watching.
+
+**This is an open question for the client, not a settled change**: keep the hero plain,
+or put either mark back. Both are recoverable from this commit.
+
+One leftover: `.ht-head` keeps `line-height:1.0`, which existed only to give the ring a
+clear band to travel through. It stays because the 150px size and the three hand-forced
+line breaks were calibrated against it and the fold depends on the block's height (§5).
+Retune it only together with the size.
+
+### Wide letters: the client stated a rule
+
+> "The rule is to always have a wide O and D in Operational Detox."
+
+The hero eyebrow had a wide O and a narrow D. Cause is the trap §26 already records:
+`js/site.js` §3a splits on **uppercase** `/([OD])/`, and the eyebrow is typed in sentence
+case and uppercased by CSS, so only the literal capital O ever matched. The D is now
+wrapped by hand.
+
+**That rule is almost certainly broken elsewhere.** Any display-type instance of
+"Operational Detox" or "OPS Detox" typed in sentence case is rendering a narrow D, on
+this page and on the five interior pages. Not audited. The fix is either a sweep of hand
+wraps or making `site.js`'s regex case-insensitive — one line, but it is the shared file
+and it would change every page at once.
+
+She also asked whether letters beyond O could be widened in the H1. **They all can**:
+`ss01` is a complete wide alphabet — every uppercase letter has an alternate, almost all
+exactly 2× the normal width (`I` is 3.35×). §9's list of six was wrong.
+
+**C and U were widened and cost nothing.** Measured, not assumed: the headline's size
+ceiling is set by its longest line, `SYSTEMS OF OPERATIONAL`, which caps it at 161px in
+the 1480px container. Neither C nor U appears in that line. Widening **S** would cost
+real size — seven of them in the headline, ceiling drops to 136px — and at that point the
+device stops being a signature. **Re-measure that ceiling before widening any letter that
+appears in line 2.**
+
+### One size for the section titles
+
+The page carried six: 43px on The Problem and About, 55px on Keynotes, 58px on the
+Frameworks, 70px on the cleanse / testimonials / outcomes, 102px on the closing CTA.
+
+All section titles are now the cleanse's `clamp(42px,4.7vw,70px)`, which is what the
+client pointed at. The Problem and About were small because `site.css:123` caps any
+heading inside a two-column `.section-grid` at 44px — a rule written for the old 1180px
+container and shared with the interior pages, so it is overridden here rather than edited.
+
+**The override selectors are written long on purpose.** `.section-grid>div:first-child h2`
+is (0,2,1); a plain `.problem-heading` loses to it and nothing moves, which is exactly
+what the first attempt did.
+
+Two titles are deliberately off the scale: **"How I work"**, a label inside a compact
+panel, and **"What will you choose?"** at 102px, the page's closing statement.
+
+### The logo line became a title
+
+"Trusted by ambitious leaders and founders at" was a 13px bold Inter `<p>` — the only
+section lead on the page set in body type. It is an `<h2>` now in Formula Condensed
+uppercase at `clamp(20px,2.5vw,38px)`, one step below the section scale at the client's
+instruction ("big, not as big as the others").
+
+Started at 48px and came down. **The weight cannot be reduced** — the site self-hosts
+exactly one cut, Formula Condensed Bold (§9), so a lighter `font-weight` only makes the
+browser synthesise one and distort the letterforms. Size and tracking are the only knobs.
+
+`site.css` caps `h2` at 21ch, which would break this 46-character sentence into three
+lines in the middle of a centred section, hence `max-width:none`.
+
+### The two offer cards
+
+- **"Founder Bottleneck"** and **"Team Bottleneck"** added under the headings, naming the
+  bottleneck each track fixes. Placed under the heading rather than as an eyebrow above
+  it: the cards already open with the `.cleanse-meta` chips, and a third stacked label
+  would mean three lines of small type before the card says anything.
+- `.cleanse-bottleneck` needs the `:not(.cleanse-meta)` in its selector — `site.css:465`
+  paints every `<p>` in these cards at 84% white, so without matching that specificity the
+  line comes out body-white instead of lime.
+- **Copy change, by the client**: "For companies where…" → "For **teams** where…" on the
+  Organisational card. Her own locked copy, changed by her. Do not "restore" it against
+  `content/copy.md`.
+
+### Truth Latency™ gained "the truth"
+
+In the **description**, not the one-liner: "In most companies someone knew **the truth**
+weeks before it was said out loud." The first attempt put it in the one-liner above and
+was wrong. The one-liner is unchanged.
+
+### The values left the full-bleed band
+
+The lime `.values-strip` that ran across the page between About and Keynotes is gone —
+the client's note was that it broke the flow. The six values are now a `<figcaption>`
+panel under Oscar's portrait inside About, which is where they belong: §24 already
+treated "How I work" as About's tail rather than a free-standing band.
+
+**`site.css:660` makes the `<figure>` itself the arch** — `aspect-ratio:3/4`,
+`overflow:hidden`, the 260px top radius — so a caption inside it is clipped away and
+renders invisibly. The arch moved onto the `<img>`; the figure is a plain column now. The
+portrait is unchanged.
+
+The values are **chips, not a two-column grid**. In columns nothing lines up — they run
+from "Clarity" to "Uncomfortable honesty" — and the right half empties out. Chips size to
+their words, wrap evenly, and reuse the outlined pill the offer cards already use.
+
+`.values-strip` CSS is still in `site.css`, unused, if the band is ever wanted back.
+
+**Still open**: the panel and the photo read as two cards — there is a gap and two sets of
+rounded corners between them. Squaring the join (photo bottom corners to 0, panel top
+corners to 0, gap to 0) makes them one arch-topped object. Raised, not yet built.
+
+### Keynotes: a new stage photograph, and how it was made
+
+Two AI-generated keynote frames were supplied. The first is now in the section as
+`assets/img/speaking-keynote.jpg` / `.webp`.
+
+**The slide in it was blanked.** It originally read "Surviving ≠ Living / Break free from
+autopilot", which sells a personal-development keynote, not operational detox for
+scale-ups. The type was removed and the backdrop rebuilt from the screen's own navy:
+sample the clean bands above and below the block, interpolate per column so the screen's
+vignette survives, add grain matched to the photo's own noise, feather the patch edge.
+Verified numerically — peak brightness inside the old type block is 59/255, which is
+backdrop, not a surviving letter edge; the seam measures about 1 level out of 255.
+
+Oscar never needed masking: his hand stops at x=700 and the type block starts there.
+
+**An intermediate version exists with OPS Detox copy set on the slide** in real Formula
+Condensed ("BUSY ≠ PRODUCTIVE / STRIP THE CLUTTER. WIN YOUR TIME BACK.", placeholder
+copy). The client preferred the blank screen. The method is reusable: render the type with
+headless Chrome, warp, composite. `~/Downloads/Keynote picture start - OPS DETOX.png`.
+
+**The layout mirrored.** The old photo had Oscar centre-right, so the copy sat in a left
+column. In this frame he is at roughly 21–46% from the left and the screen fills the
+rest, so a left column lands on his chest. Same device — full-bleed photo, narrow column,
+scrim behind it — on the other side, and the section is taller (860px, was 680px) at the
+client's request.
+
+A stacked version was built and rejected: photograph as its own band, copy beneath it on
+Deep Green. Worth knowing it exists in this commit's history if the overlay ever stops
+working.
+
+The green colour pass (`.speak-media::after`, 18%) is **off**. It existed to pull a cool
+blue-grey photo toward the palette; this frame is already dark navy and the pass only
+muddied it.
+
+**The scrim can stay soft because the screen is blank.** While the slide still carried
+type it had to run near-solid — white type at even 10% opacity read straight through the
+copy — and that flattened the photograph.
+
+### A pattern bug, fixed locally
+
+`site.css:181` inverts a primary button on hover to a **Deep Green pill with lime type**.
+On a Deep Green ground that pill is invisible and the button appears to dissolve into
+floating text. The client caught it on "Book Oscar to speak".
+
+V1.0 p.29 already answers it: on Deep Green the inverted state is an **outlined lime
+pill**. Fixed for `.speak-copy .button`. The `.button` rule already carries a 2px
+transparent border at rest, so nothing shifts when the outline lights up.
+
+**This is a pattern bug, not a one-off.** Any primary button on a Deep Green ground does
+it. The cleanse cards were patched for it separately. Fixing it once in `site.css` is the
+right answer but touches all six pages.
+
+### Status
+
+Rendered headless at 1920, 1512, 1440, 1301, 1280 and 500 across the changed sections.
+Three headline lines on desktop, four on mobile, hero and pattern strip still land exactly
+on the fold at every width. No heading exceeds three lines. Hover states were verified by
+forcing the state in CSS — headless cannot hover.
+
+**Not verified**: Safari, Firefox, real devices. Below 500px is still unreachable headless
+(§26). The client views it over the LAN on her phone.
+
+### Open with the client
+
+1. **The hero marks** — keep it plain, or restore the ring, the strike, or both.
+2. **The slide copy**, if the branded-screen version is ever wanted: it needs Oscar's own
+   line, not the placeholder.
+3. **The second keynote image** — same treatment available, not done.
+4. **The AI images themselves.** They show an audience that did not exist. Oscar is a real
+   TEDx speaker with a real speaking photo already in the project
+   (`assets/img/speaking.jpg`, still present and unused by the homepage now). A fabricated
+   audience is a credibility claim and the foreground heads are the usual tell. **Raised
+   with the user; it is Oscar's call to make knowingly, not ours by default.**
+5. **Whether the wide-letter rule extends beyond "Operational Detox"** to the headline's
+   C and U, so it can be applied consistently.

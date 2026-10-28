@@ -276,67 +276,31 @@
   .hero--type .ht-head{
     grid-area:2/1;
     margin:0;color:var(--ink);max-width:none;
-    /* 1.0, not .88. The ring around "cleanse" is drawn behind the
-       letterforms, so at .88 almost none of its path fell on open lime —
-       it showed as disconnected arcs between the letters rather than as a
-       loop. The looser leading gives it a band of clear ground to travel
-       through above and below the word. */
+    /* 1.0, not .88. The original reason was the ring around "cleanse",
+       which needed a band of clear lime to travel through. The ring is
+       gone (28 Oct), but the leading stays: the 150px / 10.3vw size and
+       the three hand-forced lines were both calibrated against 1.0, and
+       tightening it now changes the block's height and so the fold that
+       §5 holds the hero to. Only retune it together with the size, and
+       re-check the fold if you do. */
     font-size:clamp(38px,10.3vw,150px);line-height:1.0;
     letter-spacing:.01em;text-transform:uppercase;
   }
   .hero--type .ht-br{display:block;height:0}
-  /* "clutter" is the word the sentence is about removing. The first build
-     held it at 32% opacity, which made the least legible thing on the
-     screen the one word the promise turns on — and on a projector it reads
-     as a rendering fault rather than as intent. It is now legible at 55%
-     and struck through with a solid Deep Green rule: the removal is said
-     with a mark instead of with absence, which is also the See – Strip –
-     Choose idea drawn rather than described. */
-  /* inline-block + line-height:1 so the span's box is exactly 1em tall at
-     every size. As a plain inline its box came from the line box and the
-     font's own metrics, and neither a percentage nor an em offset tracked
-     the capitals across sizes — the rule sat centred at 182px and high at
-     57px. With a 1em box the offset below is purely font-relative, so one
-     calibration holds at every size. */
+  /* "clutter" is the word the sentence is about removing, and it is set
+     back from the rest of the line so the sentence still points at it.
+
+     The ring that used to loop around "cleanse" and the Deep Green strike
+     that used to cross this word are both GONE — the client's note was
+     that too much was going on in the hero, and those two marks were the
+     two decorative devices in it. Neither was a V1.0 device; the ring came
+     from the client's own mockup and the strike was this build's own
+     invention. The word now carries the idea with weight alone.
+
+     Everything in the deleted rules is recoverable from git if either mark
+     is ever wanted back — see the 28 Oct commit. */
   .hero--type .ht-fade{
-    position:relative;display:inline-block;line-height:1;
     color:rgba(20,51,24,.55);
-  }
-  .hero--type .ht-fade::after{
-    /* .42em from the top of a 1em box — the middle of the capitals.
-        Calibrated once; see the rule above for why the box is forced to
-        1em rather than left as the default inline box. */
-    content:'';position:absolute;left:-1.5%;right:-1.5%;top:.42em;
-    height:.07em;background:var(--ink);border-radius:999px;
-    transform:rotate(-1deg);
-  }
-  /* The ring now commits. A 1.5px hairline at 50% read as a scratch or a
-     scanning artefact; it is a 3px stroke at full strength on a path that
-     overshoots where it closes, so it reads as drawn by hand. It is still
-     NOT a V1.0 device — it comes from the client's mockup — so it is still
-     one element to delete if the designer objects. */
-  /* isolation + z-index:-1 puts the loop BEHIND the letterforms. Drawn on
-     top it crosses every stem and reads as a scribble over the word; behind,
-     it reads as a mark made around it. The isolation keeps the -1 inside
-     this span rather than dropping it behind the hero's own ground. */
-  /* line-height:1 so the span's box is exactly 1em tall, the same trick the
-     struck-through word uses. As a default inline-block its box came from
-     the .88 line-height and the insets below did not track the capitals —
-     the loop sat low and dipped into the line beneath it. */
-  .hero--type .ht-circle{
-    position:relative;display:inline-block;line-height:1;isolation:isolate;
-  }
-  .hero--type .ht-circle svg{
-    /* A plain ellipse, not a hand-drawn path. The svg is stretched with
-        preserveAspectRatio="none", so an irregular path skews into what
-        reads as a scribble across the letters; an ellipse survives the
-        non-uniform scale. Bottom inset keeps it off the line beneath —
-        the headline leading is .88, so there is very little room. */
-    /* Sized to sit in the clear band the 1.0 leading opens up: above the
-       capitals and below them, clear of the next line. */
-    position:absolute;inset:-9% -1% 10% -1%;
-    width:auto;height:auto;overflow:visible;
-    color:var(--ink);pointer-events:none;z-index:-1;
   }
   /* Same cell as the headline, pinned to its bottom right. */
   .hero--type .ht-foot{
@@ -408,9 +372,6 @@
 
   @media(max-width:850px){
     .hero--type{--ht-gutter:20px}
-    /* The ring is drawn around one word. Once the headline wraps mid-phrase
-       on a phone it scales down to a stray mark, so it is dropped. */
-    .hero--type .ht-circle svg{display:none}
     /* The hand-forced breaks are sized for three full-width desktop lines.
        On a phone the sentence has to wrap wherever it fits. */
     .hero--type .ht-br{display:none}
@@ -741,6 +702,257 @@
   @media(prefers-reduced-motion:reduce){
     .pb-track{animation:none}
   }
+
+  /* ---------- 11. The Noise / Clarity switch, read the other way ----------
+     Clarity now sits on the left and Noise on the right, and the switch
+     rests OFF: knob to the left, track empty.
+
+     Only the visuals are flipped, not the state. js/site.js (§3b) treats
+     aria-pressed="true" as the resting state — it snaps the choice-toggle
+     back to it 350ms after a click — and that file is shared with the live
+     site, so it must not be touched (AGENTS.md). "true" therefore still
+     means clarity, exactly as before; what changes is which side it
+     lights and which way the knob sits. Flipping the attribute instead
+     would have made the switch snap back to Noise, the opposite of the
+     section's point.
+
+     The colours are untouched: clarity is still the lime card with the
+     ink type, noise still the dark one. */
+  /* Left label (now Clarity) is lit at rest, right label (Noise) dimmed:
+     the reverse of the shared rule, so both states are overridden. */
+  .choice-toggle[aria-pressed="true"] .t-before{opacity:1}
+  .choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-after{opacity:1}
+
+  /* The switch IS the logo mark: a lime pill carrying the O of the OD
+     monogram, so the knob is an ink RING with the track showing through
+     it, not a solid dot. That is the one detail that makes it read as the
+     brand's own switch rather than a generic iOS toggle.
+
+     Hence no inset highlight and no drop shadow on the knob — the mark is
+     flat, and both were what made the old knob look like a UI control
+     borrowed from somewhere else. */
+  .choice-toggle .t-switch{
+    background:var(--lime);
+    border:3px solid var(--ink);
+    box-shadow:none;
+  }
+  /* box-sizing MUST be border-box here. The shared rule sizes the knob
+     34x34 as a solid dot, where no border is in play; turning it into a
+     ring added 7px of stroke on every side, so it came out 48px wide in a
+     42px track and hung over both edges. With border-box the 34 is the
+     whole ring, stroke included.
+
+     Geometry: track 92 wide, 3px border, so the inner box is 86. Ring 34
+     at 4px from the left leaves 48 to the right edge, hence the 44px
+     travel below — 4px of lime left showing at either end. */
+  .choice-toggle .t-switch::before{
+    box-sizing:border-box;
+    top:4px;left:4px;width:34px;height:34px;
+    background:transparent;
+    border:6px solid var(--ink);
+    box-shadow:none;
+  }
+  /* At rest the ring sits left, as the O does in the mark. Pressed (noise)
+     slides it to the D's end. */
+  .choice-toggle[aria-pressed="true"] .t-switch::before{transform:none}
+  .choice-toggle[aria-pressed="false"] .t-switch::before{transform:translateX(44px)}
+
+  /* ---------- 12. One size for the section titles ----------
+     The homepage carried six different title sizes — 43px on The Problem
+     and About, 58px on the Frameworks, 55px on Keynotes, 70px on the
+     cleanse, the testimonials and the outcomes. The client's reference is
+     "How the cleanse works:", so its scale becomes the homepage's section
+     title: clamp(42px,4.7vw,70px), which is 70px at 1512.
+
+     The Problem and About were not small by choice. site.css:123 caps any
+     heading inside a two-column .section-grid at 44px, a rule written for
+     the old 1180px container and shared with the five interior pages.
+     Overriding it HERE rather than editing site.css keeps those pages where
+     they are until they get their own rework (§8).
+
+     Two sections are deliberately NOT on this scale, and both are
+     deliberate rather than overlooked:
+       - .values-inner h2 ("How I work") is a label inside a compact lime
+         strip, not a section title. At 70px it stops being a strip.
+       - .choice h2 ("What will you choose?") is 102px because it is the
+         page's closing statement. Levelling it down would flatten the end
+         of the page. */
+  /* The two .section-grid selectors are written long ON PURPOSE. The rule
+     being overridden is `.section-grid>div:first-child h2` (0,2,1), so a
+     plain `.problem-heading` (0,1,0) loses to it and nothing moves — which
+     is exactly what happened on the first attempt. These match its shape and
+     add the section class to win. */
+  .problem.section-grid>div:first-child h2,
+  .about.section-grid>div:first-child h2,
+  .frameworks-head h2,
+  .speak-copy h2{
+    font-size:clamp(42px,4.7vw,70px);
+    max-width:none;
+  }
+
+  /* The logo line is a title, but one step DOWN from the 70px section scale,
+     at the client's instruction: big, not as big as the others. It is a
+     lead-in to the logo row rather than a section of its own, and it is a
+     46-character sentence — at 70px it would wrap and outweigh the logos it
+     introduces. 48px holds it on one line to about 1150px wide.
+
+     max-width:none because site.css caps h2 at 21ch, which would break this
+     sentence into three lines in the middle of a centred section.
+
+     Taken down from 48px to 38px (28 Oct): at 48 it was pulling too much
+     weight for a lead-in. Note the weight itself CANNOT be reduced — the
+     site self-hosts exactly one cut, Formula Condensed Bold (§9), so a
+     lighter font-weight would only make the browser synthesise one, which
+     distorts the letterforms. Size and tracking are the only two knobs, so
+     the size comes down and the tracking opens slightly to let it breathe. */
+  .trust h2{
+    max-width:none;margin:0 0 6px;
+    font-size:clamp(20px,2.5vw,38px);line-height:1.15;letter-spacing:.05em;
+    color:var(--ink);
+  }
+
+  /* ---------- 13. The bottleneck each track fixes ----------
+     Sits directly under the card's h3 as part of the title block, not as a
+     lead-in to the paragraph — hence the negative top margin pulling it up
+     into the h3's 16px bottom gap, and the full gap kept below it.
+
+     Set in the display face, uppercase and tracked, one clear step smaller
+     than the h3 so it reads as a qualifier rather than a second heading.
+     Lime on Deep Green is the sanctioned pairing (V1.0 p.21).
+
+     The :not() is load-bearing: site.css:465 paints every <p> in these cards
+     at rgba(255,255,255,.84), so without matching that rule's specificity
+     this line would come out body-white. */
+  .cleanse-card>p.cleanse-bottleneck:not(.cleanse-meta){
+    margin:-10px 0 16px;color:var(--lime);
+    font:clamp(14px,1.15vw,17px)/1.2 var(--display);
+    letter-spacing:.12em;text-transform:uppercase;
+  }
+
+  /* ---------- 14. The values, as a caption under the portrait ----------
+     Sized to the photo above it, so the two read as one object. The lime is
+     kept — it is what made the values register at all — but as a panel the
+     width of the portrait rather than as a band across the whole page.
+
+     Two columns, not the old single dot-separated row: six values in a ~460px
+     column would run to three ragged lines. Two columns of three give it a
+     shape, and the dots that separated the old row are dropped because the
+     grid does that job now. */
+  /* The arch moves from the figure to the image. site.css:660 makes the
+     figure itself the arch — aspect-ratio:3/4, overflow:hidden, the 260px
+     top radius — so a caption placed inside it is simply clipped away, which
+     is exactly what happened on the first attempt: the panel rendered and was
+     invisible. The figure becomes a plain column; the img keeps the ratio,
+     the radius and the panel ground, so the portrait is unchanged. */
+  .about figure{
+    display:flex;flex-direction:column;
+    aspect-ratio:auto;overflow:visible;border-radius:0;background:none;
+  }
+  .about figure img{
+    height:auto;aspect-ratio:3/4;background:var(--panel);
+    border-radius:260px 260px var(--r-card) var(--r-card);
+  }
+  .about-values{
+    background:var(--lime);color:var(--ink);
+    margin-top:14px;padding:20px 24px 22px;border-radius:18px;
+  }
+  .about-values h3{
+    margin:0 0 12px;color:var(--ink);
+    font:clamp(19px,1.6vw,23px)/1 var(--display);
+    letter-spacing:.03em;text-transform:uppercase;
+  }
+  /* Chips, not a two-column grid. The six values range from "Clarity" to
+     "Uncomfortable honesty", so in columns nothing lines up and the right
+     half empties out. Chips size to their own words and wrap to fill the
+     panel evenly, and they are already the site's device for a list like
+     this — the offer cards use the same outlined pill for their topic rows
+     (site.css:452). Ink outline on lime matches .cleanse-card--lime. */
+  .about-values ul{
+    list-style:none;margin:0;padding:0;
+    display:flex;flex-wrap:wrap;gap:8px;
+  }
+  .about-values li{
+    border:1.5px solid rgba(20,51,24,.45);border-radius:999px;
+    padding:6px 13px 5px;
+    font-size:13px;font-weight:650;line-height:1.15;white-space:nowrap;
+  }
+  @media(max-width:520px){
+    .about-values{padding:18px 20px 20px}
+    .about-values li{font-size:12px;padding:5px 11px 4px}
+  }
+
+  /* ---------- 15. Keynotes: the new stage photograph ----------
+     The AI-generated keynote frame, with the slide's type replaced by OPS
+     Detox copy set in Formula Condensed (the original read "Surviving ≠
+     Living / Break free from autopilot", which sold a different business).
+     Source and method are in HANDOFF; the backdrop behind the old type was
+     rebuilt from the screen's own navy rather than painted over.
+
+     THE COPY ON THE SLIDE IS A PLACEHOLDER awaiting Oscar's own line.
+
+     The layout had to change with the picture. The old photo put Oscar
+     centre-right, so the copy sat in a left column with a left-to-right
+     scrim. In this frame Oscar stands at roughly 21-46% from the left and
+     the slide fills the rest, so there is no empty column anywhere across
+     the width — a left column lands on Oscar, a right one covers the slide
+     we just branded.
+
+     The layout stays exactly as it was — full-bleed photograph, copy in a
+     narrow column over it, scrim behind the column — but it MIRRORS. Oscar
+     stands at roughly 21-46% from the left in this frame where the old photo
+     had him centre-right, so the copy has to move to the right or it lands
+     on him. Same device, other side.
+
+     The section is also taller, as asked. */
+  .speak{min-height:860px}
+  .speak-media{
+    background-image:image-set(
+      url('assets/img/speaking-keynote.webp') type('image/webp'),
+      url('assets/img/speaking-keynote.jpg')  type('image/jpeg'));
+    /* 28% keeps Oscar's head clear of the top edge and holds the audience
+       along the bottom. */
+    background-position:center 28%;
+  }
+  /* The green colour pass comes off. It was there to pull a cool blue-grey
+     photo toward the palette; this frame is already dark navy and the pass
+     only muddies the lime on the slide. */
+  .speak-media::after{opacity:0}
+  /* The same column wash, running right-to-left instead of left-to-right,
+     and fading out before it reaches Oscar so the photograph keeps its
+     contrast exactly as the original rule intended. */
+  /* The original ramp, simply reversed. An earlier pass had to run this
+     near-solid because the slide still carried type and it read through the
+     copy; with the screen blank the wash can go back to being a wash, so the
+     photograph keeps its contrast. */
+  .speak::before{
+    background:linear-gradient(to left,
+      rgba(20,51,24,.97) 0%,
+      rgba(20,51,24,.95) 30%,
+      rgba(20,51,24,.86) 39%,
+      rgba(20,51,24,.34) 49%,
+      rgba(20,51,24,.10) 61%,
+      rgba(20,51,24,.06) 80%,
+      rgba(20,51,24,.12) 100%);
+  }
+  /* The global hover inverts a primary button to a Deep Green pill with lime
+     type (site.css:181). On a Deep Green ground that pill is invisible — the
+     button appears to dissolve into bare lime text on hover, which is what
+     the client saw. V1.0 p.29 already answers this: on Deep Green the
+     inverted state is an OUTLINED lime pill, which is what the cleanse cards
+     do and what this now does too. The 2px border is already on .button,
+     transparent at rest, so nothing shifts by a pixel when it lights up. */
+  .speak-copy .button:hover{
+    background:transparent;color:var(--lime);border-color:var(--lime);
+  }
+  .speak-inner{min-height:840px;justify-content:flex-end}
+  .speak-copy{max-width:min(520px,45%)}
+  @media(max-width:850px){
+    .speak{min-height:0}
+    .speak-inner{min-height:0;justify-content:flex-start}
+    .speak-copy{max-width:none}
+  }
   </style>
 </head>
 <body>
@@ -776,9 +988,37 @@
          index.html's. -->
     <section class="hero hero--type">
       <div class="ht-inner">
-        <span class="eyebrow">Operational detox for scale-ups</span>
+        <!-- The D is wrapped BY HAND, like the headline's letters (§26).
+             js/site.js §3a wraps the wide O/D alternates itself, but it
+             splits on UPPERCASE /([OD])/ and this line is typed in sentence
+             case and uppercased by CSS — so the script only ever matched the
+             one literal capital O, and the D stayed narrow. site.js is shared
+             with the five live interior pages and must not be touched.
 
-        <h1 class="ht-head"><span class="ht-circle">Cleanse<svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="100" cy="40" rx="97" ry="37" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke" transform="rotate(-1.3 100 40)"/></svg></span> y<i class="od">o</i>ur business <span class="ht-br"></span>systems <i class="od">o</i>f <i class="od">o</i>perati<i class="od">o</i>nal <span class="ht-br"></span><span class="ht-fade">clutter</span></h1>
+             Client rule, 28 Oct: "Operational Detox" always carries a wide O
+             and a wide D. One letter each — never ss01 on the whole word,
+             which swaps every alternate and destroys the condensed face (§9). -->
+        <span class="eyebrow">Operational <i class="od">d</i>etox for scale-ups</span>
+
+        <!-- The wide letters are wrapped BY HAND; site.js is shared with the
+             live interior pages and setting ss01 on the whole heading swaps
+             every letter and destroys the condensed face (§9). If this copy
+             changes, re-wrap by hand.
+
+             C and U are widened as well as O (28 Oct). ss01 is a full wide
+             alphabet — every uppercase letter has a 2x alternate — so the
+             choice is editorial, not technical. C and U are the other round
+             letters, so they share the O's geometry and the line reads as one
+             system rather than as random letters inflating.
+
+             They are also FREE: the headline's size ceiling is set by its
+             longest line, "systems of operational", which caps it at 161px in
+             the 1480px container. Neither C nor U occurs in that line, so
+             widening them costs no size — measured, not assumed. Widening S
+             would: seven of them in this headline, and the ceiling drops to
+             136px. Check that ceiling again before widening any letter that
+             appears in line 2. -->
+        <h1 class="ht-head"><i class="od">C</i>leanse y<i class="od">o</i><i class="od">u</i>r b<i class="od">u</i>siness <span class="ht-br"></span>systems <i class="od">o</i>f <i class="od">o</i>perati<i class="od">o</i>nal <span class="ht-br"></span><span class="ht-fade"><i class="od">C</i>l<i class="od">u</i>tter</span></h1>
 
         <div class="ht-foot">
           <p class="ht-sub">We help scale-ups cleanse the systems clogged by <b class="ht-mark">meetings nobody needs</b>, <b class="ht-mark">reports nobody reads</b> and <b class="ht-mark">decisions nobody takes</b>, so time flows back into growing the company.</p>
@@ -842,8 +1082,11 @@
       </div>
     </div>
 
-    <section class="trust container section-rule">
-      <p>Trusted by ambitious leaders and founders at</p>
+    <!-- This line is a title, so it is an h2 now and not a bold <p>. It was
+         the only section lead on the page set in Inter at body size, which is
+         why it read as a stray caption above the logo row. -->
+    <section class="trust container section-rule" aria-labelledby="trust-heading">
+      <h2 id="trust-heading">Trusted by ambitious leaders and founders at</h2>
       <div class="trust-logos">
         <span>LOGO</span><span>LOGO</span><span>LOGO</span><span>LOGO</span>
       </div>
@@ -890,13 +1133,25 @@
           <article class="cleanse-card">
             <p class="cleanse-meta"><span>Meetings</span><span>Reporting</span><span>Decisions</span></p>
             <h3>Operational flow</h3>
+            <!-- Client, 28 Oct: name the bottleneck each track fixes. Placed
+                 under the heading rather than as an eyebrow above it, because
+                 the card already opens with the .cleanse-meta chips and a
+                 third stacked label would mean three lines of small type
+                 before the card says anything. Under the heading it reads as
+                 what the heading means, and the pair — founder vs team — is
+                 the actual choice between the two tracks. -->
+            <p class="cleanse-bottleneck">Founder Bottleneck</p>
             <p>For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
             <a class="button cleanse-cta" href="detox.html">Learn more</a>
           </article>
           <article class="cleanse-card">
             <p class="cleanse-meta"><span>Communication</span><span>Ownership</span><span>Psychological Safety</span></p>
             <h3>Organisational flow</h3>
-            <p>For companies where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
+            <p class="cleanse-bottleneck">Team Bottleneck</p>
+            <!-- "companies" -> "teams" at the client's instruction, 28 Oct.
+                 This is the locked copy being changed by its owner, not an
+                 edit; the rest of the sentence is untouched. -->
+            <p>For teams where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
             <a class="button cleanse-cta" href="detox.html#modules">Learn more</a>
           </article>
         </div>
@@ -1039,7 +1294,9 @@
             <span class="fw-mark" aria-hidden="true">02</span>
             <h3>Truth Latency™</h3>
             <p class="fw-line">The delay between knowing and saying.</p>
-            <p>In most companies someone knew weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
+            <!-- "the truth" added to the description at the client's mark,
+                 28 Oct. The one-liner above it is unchanged. -->
+            <p>In most companies someone knew the truth weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
           </article>
           <article>
             <span class="fw-mark" aria-hidden="true">03</span>
@@ -1084,28 +1341,39 @@
       <figure>
         <img src="assets/img/oscar-about.jpg" width="1201" height="1800"
              alt="Oscar de Grauw holding a laptop" loading="lazy" decoding="async">
+        <!-- The values moved in here from the full-bleed lime band that used
+             to sit between About and Keynotes (client, 28 Oct: it broke the
+             flow of the page). They belong to About — "How I work" is About's
+             tail, which is why §24 kept the band attached to this section when
+             the running order changed — so putting them under the photo keeps
+             the content and removes the interruption.
+
+             As a figcaption they are semantically part of the figure, and the
+             panel reads as a caption to the portrait rather than as a section
+             of its own. -->
+        <figcaption class="about-values">
+          <h3 id="values-heading">How I work</h3>
+          <ul aria-label="How Oscar works">
+            <li>Uncomfortable honesty</li>
+            <li>Clarity</li>
+            <li>Ownership</li>
+            <li>Substance</li>
+            <li>Courage</li>
+            <li>Depth</li>
+          </ul>
+        </figcaption>
       </figure>
     </section>
 
-    <section class="values-strip reveal" aria-labelledby="values-heading">
-      <div class="container values-inner">
-        <h2 id="values-heading">How I work</h2>
-        <ul aria-label="How Oscar works">
-          <li>Uncomfortable honesty</li>
-          <li>Clarity</li>
-          <li>Ownership</li>
-          <li>Substance</li>
-          <li>Courage</li>
-          <li>Depth</li>
-        </ul>
-      </div>
-    </section>
+    <!-- The .values-strip band that used to sit here has moved into the About
+         figure above (client, 28 Oct). Its CSS is still in site.css, unused by
+         this page but still reachable if the band is ever wanted back. -->
 
     <!-- Keynotes moved down to sit just before the final CTA (client, 24 Oct).
          It used to follow Outcomes, and §13 records that it deliberately has
          no coloured separator above it because the photograph itself made the
-         transition. It now follows the Detox Green values strip, so the
-         photograph meets lime rather than Deep Green. -->
+         transition. With the values band gone it now follows the ivory About
+         section, so the photograph meets Soft Ivory. -->
     <section class="speak reveal" aria-labelledby="speak-heading">
       <!-- Background slot. Drop Oscar's keynote / workshop photo in as the
            .speak-media background-image; the scrim, sizing and focal point
@@ -1129,10 +1397,10 @@
 
         <div class="toggle-rows">
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
-                  aria-label="Switch between Operational Noise and Operational Clarity">
-            <span class="t-before">Operational Noise</span>
+                  aria-label="Switch between Operational Clarity and Operational Noise">
+            <span class="t-before">Operational Clarity</span>
             <span class="t-switch" aria-hidden="true"></span>
-            <span class="t-after">Operational Clarity</span>
+            <span class="t-after">Operational Noise</span>
           </button>
         </div>
 
