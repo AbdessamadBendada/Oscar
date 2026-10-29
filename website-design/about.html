@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fbfbf9">
+  <!-- Deep Green, not the ivory the other pages use: the header is Deep
+       Green on this page now (see the style block) and the browser chrome
+       sits directly above it. -->
+  <meta name="theme-color" content="#143318">
   <title>About Oscar de Grauw — OPS DETOX™</title>
   <meta name="description" content="Seventeen years inside Sony Europe. OPS Detox exists to clear operational clutter and give those hours back.">
   <link rel="icon" href="assets/logo/favicon.png">
@@ -12,6 +15,209 @@
        runs on every load; restore the once-per-session behaviour by putting
        sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
   <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+
+  <style>
+  /* ==========================================================
+     About hero — framed picture opening to full bleed (29 Oct)
+     Promoted from about-hero.html. Everything here is scoped to this
+     document; css/site.css is untouched. Lift it into site.css if the
+     same treatment is ever wanted on another page.
+     ========================================================== */
+
+  /* ---------- The header goes Deep Green ----------
+     Same move as index.html §5 and for the same reason. The hero below is
+     a Deep Green ground, so an ivory header would put a near-white band
+     straight on top of it; and once the header is Deep Green the lime
+     logo, lime nav and lime pill CTA all have the only ground V1.0 p.21
+     allows them. It stays STICKY, as site.css has it — the hero's height
+     already subtracts --header-h, so the two do not fight. */
+  .site-header{
+    background:var(--ink);
+    border-bottom-color:rgba(204,254,6,.22);
+  }
+  @supports(backdrop-filter:blur(1px)){
+    .site-header{background:rgba(20,51,24,.94)}
+  }
+  .site-nav a{color:var(--lime)}
+  .nav-toggle{border-color:var(--lime)}
+  .nav-toggle i,
+  .nav-toggle i::before,
+  .nav-toggle i::after{background:var(--lime)}
+  .nav-toggle[aria-expanded="true"] i{background:transparent}
+  /* .button--line is a Deep Green pill and vanishes on a Deep Green
+     header — the same swap site.css already makes inside .on-dark. */
+  .site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+  .site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
+
+  /* ---------- The hero ----------
+     The page opens on the framed picture, holds, then the frame grows to
+     full width and full height while the lime border and the corner
+     radius resolve away.
+
+     The animation is on the BOX, not on a transform. transform:scale is
+     cheaper to composite but it scales the name and the caption with the
+     picture, so the type would arrive at the wrong size and read soft on
+     the way. Growing width/height keeps the type fixed while the picture
+     opens around it. It costs a layout pass per frame on one element with
+     no siblings in flow, which is affordable for a one-shot hero. */
+  .ah{
+    display:grid;place-items:center;
+    background:var(--ink);
+    /* The section's own padding is what insets the frame at rest, so it
+       animates to zero in step with the frame reaching 100vw — otherwise
+       the frame hits full width and the padding holds it off the edge. */
+    padding:var(--ah-pad);
+    --ah-pad:clamp(28px,5vw,70px);
+    overflow:hidden;
+    animation:ahPad 1.15s .45s cubic-bezier(.65,0,.2,1) both;
+  }
+
+  /* ---------- Held until the preloader lifts ----------
+     The animation used to run off a fixed delay measured from page load,
+     which meant it played out BEHIND the Deep Green preloader overlay and
+     was already finished by the time anyone saw the page.
+
+     A longer delay would not fix it. The preloader does not end at a fixed
+     time: js/site.js lifts it at 1450ms normally, IMMEDIATELY on the first
+     click, keypress, wheel or touch, and at 3000ms on its safety net. Any
+     constant is wrong for two of those three.
+
+     So the four animations start paused and are released by .hero-go. With
+     fill-mode both, a paused animation holds its from-state, so the page
+     sits on the framed picture until the overlay is gone. The delay is now
+     .45s rather than .85s, measured from the lift instead of from load —
+     the overlay's own lift runs .52s, and the hold reads from the moment
+     the picture is actually visible. */
+  .ah,.ah-frame,.ah-pic{animation-play-state:paused}
+  .hero-go .ah,
+  .hero-go .ah-frame,
+  .hero-go .ah-pic{animation-play-state:running}
+  .ah-frame{
+    position:relative;
+    /* The row MUST be definite. Left as the implicit auto row it sizes to
+       the photograph's intrinsic height — a tall portrait — so the row
+       grows far past the frame and the bottom-aligned plate goes with it,
+       clipped by the overflow:hidden below. */
+    display:grid;grid-template-areas:"stack";grid-template-rows:minmax(0,1fr);
+    width:var(--ah-w);height:var(--ah-h);
+    --ah-w:min(1180px,100%);
+    --ah-h:min(664px,calc((100vw - var(--ah-pad) * 2) * .5625));
+    border:6px solid var(--lime);
+    border-radius:var(--r-card);
+    overflow:hidden;
+    /* TWO animations, not one. The border and the radius started out in
+       the same keyframes as --ah-w / --ah-h and did not interpolate: the
+       frame reached full width still carrying its 6px lime edge and its
+       36px corners. Custom properties and ordinary properties do not have
+       to share a block, and keeping them apart means a problem in one
+       cannot take the other down. Same duration, delay and curve, so they
+       still resolve together. Literal values in ahEdge — no var() — for
+       the same reason. Verified mid-flight: 6px/36px at 1100ms, 1px/9.9px
+       at 1450ms, 0/0 at the end. */
+    animation:
+      ahOpen 1.15s .45s cubic-bezier(.65,0,.2,1) both,
+      ahEdge 1.15s .45s cubic-bezier(.65,0,.2,1) both;
+  }
+  .ah-frame>*{grid-area:stack}
+  .ah-pic{
+    width:100%;height:100%;object-fit:cover;display:block;
+    /* The crop is animated, not fixed. The frame does not just grow, it
+       grows WIDER relative to its height, so a single object-position that
+       frames him at rest crops into his head once the picture is
+       full-bleed. 46% suits the small frame, 34% the full-bleed one.
+       Re-measure both ends if either ratio changes. */
+    object-position:50% var(--ah-crop);
+    --ah-crop:46%;
+    animation:ahCrop 1.15s .45s cubic-bezier(.65,0,.2,1) both;
+  }
+
+  /* Name and caption share one scrim so they read as a single plate
+     rather than as two things that happen to be over a photograph. */
+  .ah-plate{
+    align-self:end;justify-self:stretch;
+    padding:14vh 24px 26px;
+    background:linear-gradient(to top,
+      rgba(20,51,24,.94) 0%,rgba(20,51,24,.86) 42%,rgba(20,51,24,0) 100%);
+    text-align:center;
+  }
+  .ah-name{
+    margin:0;color:var(--lime);
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(34px,9.4vw,118px);line-height:.92;
+    letter-spacing:.015em;text-transform:uppercase;
+  }
+  .ah-cap{
+    display:flex;flex-wrap:wrap;gap:8px 22px;
+    align-items:baseline;justify-content:center;
+    margin:16px 0 0;color:rgba(204,254,6,.78);
+    font:13px/1.3 var(--display);letter-spacing:.1em;text-transform:uppercase;
+  }
+
+  /* The frame opens to the viewport MINUS the header, not to 100vh: the
+     header is sticky and occupies its space at the top of the document,
+     so a 100vh frame would push its own bottom edge — and the caption —
+     off the screen. --header-h is the token site.css keeps for this.
+
+     svh, not vh, so mobile browser chrome collapsing mid-animation does
+     not retarget the end state halfway through. */
+  @keyframes ahOpen{
+    from{
+      --ah-w:min(1180px,100%);
+      --ah-h:min(664px,calc((100vw - var(--ah-pad) * 2) * .5625));
+    }
+    to{
+      --ah-w:100vw;
+      --ah-h:calc(100svh - var(--header-h));
+    }
+  }
+  /* 36px is --r-card's value, written out. */
+  @keyframes ahEdge{
+    from{border-width:6px;border-radius:36px}
+    to{border-width:0px;border-radius:0px}
+  }
+  @keyframes ahCrop{from{--ah-crop:46%}to{--ah-crop:34%}}
+  @keyframes ahPad{from{--ah-pad:clamp(28px,5vw,70px)}to{--ah-pad:0px}}
+
+  /* Custom properties only animate once registered with a type — without
+     these the values snap at the halfway point instead of interpolating. */
+  @property --ah-w{syntax:"<length-percentage>";inherits:false;initial-value:0px}
+  @property --ah-h{syntax:"<length-percentage>";inherits:false;initial-value:0px}
+  @property --ah-crop{syntax:"<percentage>";inherits:false;initial-value:50%}
+  @property --ah-pad{syntax:"<length>";inherits:true;initial-value:0px}
+
+  /* Reduced motion: no growth, just the end state. The full-bleed picture
+     is the destination, so landing there immediately is the honest
+     fallback — holding the small framed version would show a different
+     design, not a calmer one. */
+  @media(prefers-reduced-motion:reduce){
+    .ah,.ah-frame,.ah-pic{animation:none}
+    .ah{--ah-pad:0px}
+    .ah-frame{--ah-w:100vw;--ah-h:calc(100svh - var(--header-h));border-width:0;border-radius:0}
+    .ah-pic{--ah-crop:34%}
+  }
+
+  /* ---------- The copy the old hero carried ----------
+     The previous hero held the eyebrow, "Why work with me", the intro
+     paragraph and both CTAs. The new hero carries only his name, so that
+     copy moves here, directly beneath it, rather than being lost. It is
+     locked client copy and is reproduced word for word; only the heading
+     level changed, since the page's h1 is now the name. */
+  .ah-intro{padding:clamp(54px,6vw,80px) 0 clamp(40px,5vw,62px)}
+  .ah-intro h2{margin:6px 0 0;max-width:18ch}
+  .ah-intro p{margin:18px 0 0;max-width:58ch;font-size:18px}
+  .ah-intro .actions{margin-top:28px}
+
+  @media(max-width:700px){
+    .ah-frame{
+      --ah-h:min(520px,calc((100vw - var(--ah-pad) * 2) * 1.25));
+      border-width:4px;
+    }
+    .ah-plate{padding:18vh 16px 20px}
+    .ah-name{font-size:clamp(28px,11.5vw,54px)}
+    .ah-cap{font-size:11px;gap:6px 14px}
+    .ah-intro p{font-size:16px}
+  }
+  </style>
 </head>
 <body>
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
@@ -22,7 +228,8 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="OPS DETOX home">
-        <img src="assets/logo/primary-deepgreen.svg" alt="OPS DETOX">
+        <!-- Lime, not Deep Green: the header is Deep Green on this page. -->
+        <img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
       </a>
       <nav class="site-nav" id="nav" aria-label="Main navigation">
         <a href="detox.html">The DETOX</a>
@@ -37,19 +244,29 @@
   </header>
 
   <main id="main">
-    <section class="hero hero--page container">
-      <div class="hero-copy">
-        <span class="eyebrow">About Oscar de Grauw</span>
-        <h1>Why work with me</h1>
-        <p>Founder of OPS Detox™. Seventeen years inside complex, international organizations — and the conviction that the truth is always already in the building.</p>
-        <div class="actions">
-          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
-          <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+    <section class="ah">
+      <div class="ah-frame">
+        <img class="ah-pic" src="assets/img/oscar-steps.jpg" alt="Oscar de Grauw sitting on steps">
+        <div class="ah-plate">
+          <!-- Wide O and D wrapped by hand: js/site.js splits on uppercase
+               /([OD])/ and this is sentence case uppercased by CSS, so the
+               script would never match it. -->
+          <h1 class="ah-name"><i class="od">O</i>scar <i class="od">d</i>e Grauw</h1>
+          <p class="ah-cap"><span>Founder, OPS Detox™</span><span>TEDx speaker</span><span>17 years inside complex international organizations</span></p>
         </div>
       </div>
-      <figure class="hero-image">
-        <img src="assets/img/portrait.png" alt="Oscar de Grauw">
-      </figure>
+    </section>
+
+    <!-- The old hero's copy, word for word. Only the heading level moved:
+         the page's h1 is now his name, in the hero above. -->
+    <section class="ah-intro container reveal">
+      <span class="eyebrow">About Oscar de Grauw</span>
+      <h2>Why work with me</h2>
+      <p>Founder of OPS Detox™. Seventeen years inside complex, international organizations — and the conviction that the truth is always already in the building.</p>
+      <div class="actions">
+        <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+        <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+      </div>
     </section>
 
     <div class="ticker" aria-label="OPS Detox principles">
@@ -175,5 +392,40 @@
   </footer>
 
   <script src="js/site.js"></script>
+
+  <!-- Releases the hero animation when the preloader lifts, so it is seen
+       instead of playing out behind the overlay.
+
+       It watches for .pl-lock coming OFF <html> rather than calling into
+       the preloader, because js/site.js is shared with the five other
+       pages and must not be touched for a change that concerns one hero.
+       site.js removes that class in endPreloader() at the moment the lift
+       starts, which is exactly the cue wanted — and it fires on all three
+       of its exits: the 1450ms timer, the skip-on-interaction path and the
+       3000ms safety net.
+
+       Three ways in, so the hero can never be left stranded on the framed
+       state: the class is already gone or was never set (reduced motion
+       takes the .no-preloader branch in the <head> script); the observer
+       sees it go; or the 4s backstop fires if script or observer fails.
+       The backstop clears the 3000ms safety net plus its 560ms removal. -->
+  <script>
+  (function () {
+    var root = document.documentElement;
+    function go() {
+      if (root.classList.contains('hero-go')) return;
+      root.classList.add('hero-go');
+    }
+    if (!root.classList.contains('pl-lock')) {
+      go();
+    } else if (window.MutationObserver) {
+      var mo = new MutationObserver(function () {
+        if (!root.classList.contains('pl-lock')) { mo.disconnect(); go(); }
+      });
+      mo.observe(root, { attributes: true, attributeFilter: ['class'] });
+    }
+    window.setTimeout(go, 4000);
+  })();
+  </script>
 </body>
 </html>
