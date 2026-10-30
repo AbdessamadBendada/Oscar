@@ -1,6 +1,18 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 28 October 2026_
+_Last updated: 30 October 2026_
+
+> **29–30 Oct — the About page was rebuilt.** Its hero is now a framed portrait that
+> grows to full bleed once the preloader lifts; three new sections were built (Leader /
+> Innovator / Speaker, an operations-leader credentials block modelled on
+> stevenbartlett.com/about, and a timeline); two sections were deleted; and the
+> testimonial row and final CTA were copied from the homepage. **A real transparent
+> cut-out of Oscar now exists in the project**, which lifts the §20 ceiling. `site.css`
+> and `js/site.js` are still untouched; every rule is scoped inside `about.html`. See §29.
+
+> **29 Oct — a Soft Ivory variant of the homepage hero was built for comparison**
+> (`hero-ivory.html`). `index.html` is unchanged; the variant is a decision waiting on
+> the client. See §28.
 
 > **28 Oct — a round of client comments was worked through on the live homepage.**
 > The hero lost its ring and its strike; C and U joined the wide-letter set in the
@@ -158,6 +170,8 @@ the client exactly how the thing behaves, without a backend behind it.
 | `website-design/hero-sections.html` | Standalone hero exploration, self-contained CSS; tokens duplicated from site.css and kept in sync by hand — §20 |
 | `website-design/home-comments.html` | Client-comments review build of the homepage; all overrides in one scoped `<style>` block, `index.html`/`site.css` untouched — §22 |
 | `website-design/home-comments-hero.html` | Type-led hero on top of the comments build; same scoped-`<style>` rule — §23 |
+| `website-design/hero-ivory.html` | `index.html` with the hero ground changed to Soft Ivory; a comparison build, not a decision — §28 |
+| `website-design/about-hero.html` | Standalone demo the About hero options were reviewed in — §29 |
 | `website-design/js/site.js` | Nav, module popups, forms, switch, reveal, ticker |
 | `website-design/js/diagnostic.js` | Demo diagnostic — questions and scoring live here |
 | `high-fidelity-design/` | Approved high-fidelity homepage (minified CSS, reference only) |
@@ -207,8 +221,11 @@ particular), and a formal accessibility audit.
 - Real contact details — address, email, phone (currently Canva placeholders).
 - Legal content for Imprint, Terms, Privacy and Cookies.
 - Oscar photography. The hero and About images are campaign artwork, not portraits.
-- **A masked, transparent cut-out of Oscar.** No alpha-channel image of him exists
-  anywhere in the project, which is the hard ceiling on every hero option — see §20.
+- ~~**A masked, transparent cut-out of Oscar.**~~ **DONE, 30 Oct.** One was made in-house
+  from `assets/img/oscar-about.jpg` with the macOS Vision foreground-mask API and is in
+  the repo as `assets/img/oscar-cutout.avif` (46KB) with a `.png` fallback. The §20
+  ceiling is lifted: portrait-led layouts are now possible. The tooling is reusable — see
+  §29 — so any supplied photograph can be cut the same way.
 - **A decision on the hero's two drawn marks** — the ring around "CLEANSE" and the
   strike through "CLUTTER" were removed on 28 Oct because "too much was going on".
   Keep it plain, or restore either. Both are in git (§27).
@@ -218,8 +235,31 @@ particular), and a formal accessibility audit.
   and that is a credibility claim rather than a design choice (§27).
 - Module popup detail copy, from the current website.
 - Approved wording for the six value one-liners on the About page (currently filler).
-- **The two offers, named.** The client refers to "the two offers I have" without naming
-  them (§22). The build assumes the existing Operational flow / Organisational flow.
+- ~~**The two offers, named.**~~ **ANSWERED, 29 Oct**, by email: *Operational flow — The
+  Execution package (Founder Bottleneck)* and *Organisational flow — The Leadership
+  package (Team Bottleneck)*. He gave three labels per offer and a page can only lead with
+  one; the site already carries the two tracks inside "How the cleanse works", so this is
+  now a naming edit, not a build. **Not yet applied to the page.** His breakdown also
+  answers, in passing, the open question of where the frameworks live: Execution =
+  meetings + decisions + reporting, Leadership = communication + ownership + psychological
+  safety, which are six of the seven DETOX modules. Worth confirming he meant it.
+- **Where Tool Stack Detox goes.** It is the seventh module and fits neither bottleneck,
+  which is why he proposed it as an add-on. It carries the hardest number on the site
+  (10–30% tooling spend, €150–300K on a €1M spend) and is not on the homepage at all.
+- **Photography for the About timeline.** All six images in §29's timeline are
+  placeholders: they are the only real photographs of Oscar in the project, rotated, and
+  none depicts the moment its entry describes. There is no childhood, flight-attendant or
+  Kilimanjaro photography anywhere.
+- **Approximate years for the timeline.** The reference timeline is driven by big year
+  numbers; the client's copy gives phases instead ("EARLY YEARS", "NOW"), two of which are
+  editorial rather than temporal. The Sony period and the sabbatical are datable.
+- **Access to the `Pictures & videos` Drive folder.** Shared with the account on 30 Oct,
+  but the images cannot be read: Drive's reader returns empty for them, the thumbnail
+  endpoint needs auth, and raw download is base64 at 8–14MB each. The `HFS###` series
+  (19+ files, 13 July 2026) is a professional studio shoot and the most likely source of
+  better photography. Either drop those files locally or make the folder link-public.
+- **A decision on the packages document and the legal documents** the client uploaded to
+  Drive on 29 Oct. Neither has been read — same access problem as above.
 - **Real framework copy**, and two naming questions: the full expansion of DRMT™, and
   whether See – Strip – Choose™ replaces The CORE method™, which is still in the live
   copy but absent from his updated list (§22).
@@ -228,6 +268,12 @@ particular), and a formal accessibility audit.
   tool, not a copy drop — budget build time, not layout time.
 
 ### Decisions to make
+- **Six values vs. three principles on the About page.** The page now states both:
+  *Uncomfortable honesty*, *Ownership* and *Courage* appear in "Three principles behind
+  every detox" and again in "Six values, no exceptions", two sections apart. Both are
+  client copy, so nothing was deleted. Cut one, or merge into a single six with those
+  three leading (§29).
+- **The Soft Ivory homepage hero** (§28) — keep the Detox Green hero or switch.
 - **Does the homepage lead with the founder's payoff or with the cleanse?** The client
   wants the site to say the founder is released from the operational noise and claims
   his time back for growth. The current `h1` and the whole page spine sell the method
@@ -246,6 +292,11 @@ particular), and a formal accessibility audit.
   such on the page.
 
 ### Technical
+- **Three blocks of CSS are now duplicated between `index.html` and `about.html`**: the
+  testimonial slider, and the Noise/Clarity switch override (§11). Both were copied with
+  their markup on 30 Oct because they live in `index.html`'s own style block rather than
+  in `site.css`. **Change one and the pages drift apart silently.** They belong in
+  `css/site.css`; that edit touches all six pages, which is why it was not done in-flight.
 - Licence the Formula Condensed typeface. The file in the repo is the **trial** version.
 - Connect a form backend or email platform for the newsletter, contact and freebie forms.
 - Supply the actual Startup Financial Model Template file.
@@ -1717,3 +1768,229 @@ forcing the state in CSS — headless cannot hover.
    with the user; it is Oscar's call to make knowingly, not ours by default.**
 5. **Whether the wide-letter rule extends beyond "Operational Detox"** to the headline's
    C and U, so it can be applied consistently.
+
+---
+
+## 28. Soft Ivory homepage hero — `hero-ivory.html` (29 October 2026)
+
+A comparison build, not a decision. `hero-ivory.html` is `index.html` with **one** change:
+the type-led hero's ground goes from Detox Green `#CCFE06` to Soft Ivory `#FEFDF2`.
+Everything from the switcher strip down is identical, so the two files can be opened side
+by side and only the first screen differs. `index.html` and `css/site.css` are untouched.
+
+### What the swap forces
+
+V1.0 p.22 names Detox Green on Soft Ivory as a watchout, so nothing in the hero may be
+lime any more. Three knock-on changes, all scoped to that document:
+
+| Change | Why |
+|---|---|
+| Buttons invert back to the V1.0 default pair | Primary becomes the Deep Green pill with lime type. On the lime hero the primary *had* to be Deep Green, because a lime pill on lime is invisible. |
+| `clutter` goes from 55% to 62% Deep Green | Ivory is lighter than lime, so the same alpha reads weaker against it. |
+| A hairline is added at the hero's bottom edge | Against lime, the Deep Green switcher strip was a hard colour break. On ivory the hero stops reading as a block. |
+
+The header stays Deep Green. The §5 reason (a lime hero needs a legal top edge) is gone,
+but an ivory header on an ivory hero erases the band entirely and the lime logo, nav and
+pill CTA have nowhere legal to sit.
+
+### The trade, for the client conversation
+
+Ivory is calmer and the headline is genuinely more legible — Deep Green on ivory is a
+higher-contrast pair than Deep Green on lime. The faded `clutter` also reads as a clean
+grey-green rather than the muddy olive it becomes on lime.
+
+Against that: **the brand is no longer stated on the first screen.** Lime is the
+signature; ivory is the neutral. The only lime above the fold becomes the logo and one
+button, and the page stops announcing itself. The switcher strip below also loses its
+punch — on lime it was a hard cut and the lime bars rhymed with the hero across it; from
+ivory it is a softer transition and the strip carries all the lime on the screen alone.
+The preloader compounds it: the sequence becomes green flash → ivory, which lands flatter
+than green flash → lime.
+
+---
+
+## 29. The About page rebuilt (29–30 October 2026)
+
+`about.html` was rebuilt around a new hero and three new sections, with two sections
+deleted and the page's ending taken from the homepage. **Every rule is scoped inside
+`about.html`; `css/site.css` and `js/site.js` are untouched** — the latter matters because
+it is shared with the five other pages (AGENTS.md).
+
+Section order now: hero → Leader / Innovator / Speaker → operations leader + credentials →
+ticker → Oscar's path → three principles → six values → testimonials → CTA.
+
+### 29.1 The hero: framed portrait opening to full bleed
+
+The page opens on `assets/img/oscar-steps.jpg` in a lime frame at 1180×664, holds, then
+the frame grows to the full viewport while the border thins to nothing and the corners
+square off. The name and caption sit inside the picture on one scrim and stay fixed size
+while it opens around them.
+
+**It animates the box, not a transform.** `transform: scale` composites more cheaply but
+scales the name and caption with the picture, so the type would arrive at the wrong size
+and read soft on the way. Growing width/height keeps the type fixed. It costs a layout
+pass per frame on one element with no siblings in flow.
+
+Four things cost real time and are all load-bearing:
+
+1. **The grid row must be definite.** Left as the implicit auto row it sized to the
+   photograph's intrinsic height — a tall portrait — so the row grew far past the frame
+   and the bottom-aligned name plate went with it, clipped by the `overflow:hidden`.
+   `grid-template-rows: minmax(0,1fr)` pins it.
+2. **The crop is animated, 46% → 34%.** The frame does not just grow, it grows *wider
+   relative to its height*, so a single `object-position` that frames him at rest crops
+   into his head at full bleed.
+3. **Border and radius are in their own `@keyframes`.** Sharing a block with the custom
+   properties `--ah-w`/`--ah-h`, they did not interpolate: the frame reached full width
+   still carrying its 6px lime edge and 36px corners, then dropped them at the end.
+   Separate keyframes with literal values — no `var()` — same duration, delay and curve.
+   Verified mid-flight: 6px/36px at 1100ms, 1px/9.9px at 1450ms, 0/0 at the end.
+4. **The whole thing is held until the preloader lifts.** A fixed delay measured from load
+   played the animation out behind the Deep Green overlay, finished before anyone saw it.
+   A longer delay cannot fix it: `js/site.js` lifts the preloader at 1450ms normally,
+   **immediately** on the first click/keypress/wheel/touch, and at 3000ms on its safety
+   net. The four animations therefore start `paused` (with `fill-mode: both` they hold
+   their from-state) and are released by a `.hero-go` class set when `.pl-lock` comes off
+   `<html>` — the exact moment `endPreloader()` starts the lift, and it fires on all three
+   exits. Three ways in so the hero cannot strand: class already absent (reduced motion),
+   a MutationObserver, or a 4s backstop.
+
+> **`animation-play-state` must be declared BELOW every rule that sets the `animation`
+> shorthand.** It is part of that shorthand, so a later `animation:` declaration resets it
+> to `running`. Declared first, only `.ah` paused and the picture grew behind the overlay
+> anyway. There is a note in the file; keep it last.
+
+The header goes Deep Green on this page, as on `index.html` §5, and stays sticky.
+
+### 29.2 The cut-out, and the tooling that made it
+
+**§20's ceiling is lifted: a transparent cut-out of Oscar now exists.** It was made from
+`assets/img/oscar-about.jpg` using the macOS Vision foreground-instance mask — the same
+engine as Preview's "Remove Background" — so hair and jacket edges come out usable.
+
+Weight mattered, since the client has already complained about a 1.8MB image:
+
+| Stage | Size |
+|---|---|
+| Raw mask output | 1.5 MB |
+| Trimmed of empty canvas, resized to 860px | 516 KB PNG |
+| **AVIF, what almost everyone gets** | **46 KB** |
+
+Served through `<picture>` — AVIF first, PNG fallback — with `loading="lazy"`,
+`decoding="async"` and explicit `width`/`height`. There is no WebP encoder on the build
+machine; AVIF with alpha covers Chrome, Firefox and Safari 16.4+.
+
+Four candidates were cut and compared on Deep Green: `oscar-about` (chosen),
+`oscar-portrait` (clean but a stiff, symmetrical hands-on-hips pose),
+`oscar-problem` (looking down, hands cut mid-gesture) and `speaking` (unusable — he
+occupies only 198×441 of the frame, so it is badly soft). `speaking-keynote.jpg` was
+deliberately excluded: §27 flags it as showing an audience that never existed.
+
+### 29.3 The three new sections
+
+**Leader / Innovator / Speaker.** Built from the client's own mockup. Three words set as
+large as the column allows with the leading closed to .86 — in the mockup they sit at
+body-headline size and read as a list of job titles. The portrait goes in an arch, which
+is V1.0's own picture-frame device, with a Deep Green offset behind it for depth. Soft
+Ivory ground with the logo pattern at 6%; no lime, because lime on ivory is the p.22
+watchout. Hairline rules were tried under each word and **removed on request (30 Oct)** —
+at that size they read as underlines rather than as structure.
+
+**Operations leader + credentials.** Modelled on `stevenbartlett.com/about`, whose source
+was read. Two findings, both reproduced:
+
+1. **It is two blocks there, not one** — a plain two-column statement, then a separate
+   block where the cut-out occupies an empty left half and the credentials sit right
+   (`offset-md-6`). Our mockup fused them, which is what made it feel crowded.
+2. **The credentials arrive one at a time** — AOS `fade-left`, delays 0/500/1000ms.
+
+Reproduced with the project's own machinery: the existing `.reveal`
+IntersectionObserver plus two `transition-delay` lines, and **no new library**. His page
+loads AOS *and* simple-parallax (~6KB plus a main-thread scroll handler) for this. The
+portrait's drift uses a CSS scroll-driven animation (`animation-timeline: view()`) — no
+JS, off the compositor, and it simply does nothing in Safari and Firefox, which is the
+right failure since the photo is already in position.
+
+Deep Green ground: the direct translation of his black, and the only ground where the
+lime lead-ins are legal (p.21). On the mockup's ivory they would have had to stay bold
+black. His feet land exactly on the ticker — the figure is a normal grid item,
+bottom-aligned, so the section sizes to the photograph.
+
+**Oscar's path (timeline).** Also from his page: a `.timeline-line` spine with `.tl-block`s
+alternating photo/text across it. Three deliberate differences — **his timeline is desktop
+only** (`d-none d-md-block`), not copied; no years, because the client's copy gives phases
+instead; and no blurred duplicate image behind the text, his signature touch, which would
+only draw attention to placeholder photography.
+
+> `grid-row: 1` on both halves is **required**, not tidiness. Setting only `grid-column`
+> leaves auto-placement to pick the row, and it never moves backwards: on the even blocks
+> the figure is placed first into row 1 / column 2, so the text — asking for column 1,
+> already behind the cursor — is pushed into row 2. That is why the even blocks had their
+> copy below the photograph and out of line with the dot.
+
+**Three principles.** The mockup is three columns of centred black body copy on a dotted
+field, with no brand colour and no hierarchy. Rather than invent a card, this reuses the
+site's **own** `.cleanse-card` pattern from `site.css` — circular numeral, name in Formula,
+and the first card taking the lime ground while the others do not — so readers meet a
+pattern they already know from the homepage. Deep Green section; card 01 Detox Green,
+cards 02/03 Soft Ivory, all with Deep Green type; the numeral disc inverts on the lime
+card exactly as `.cleanse-num` does. Left-aligned, not centred: centred body copy means
+every line starts in a different place, so the eye re-finds the left edge on every line.
+
+### 29.4 Deletions, and copy
+
+Deleted on request: **"The truth was always in the building"** (which took `poster.png`
+with it) and **"A system, not opinions"** (the frameworks lists). No orphaned markup.
+
+Also gone, earlier in the rebuild: the band carrying the old hero's copy — *"About Oscar
+de Grauw / Why work with me / Founder of OPS Detox™. Seventeen years inside complex,
+international organizations…"*. **That is locked client copy and it is now nowhere on the
+page.** It is in git. Its two CTAs were kept.
+
+All copy in the new sections is the client's, word for word, including the US spelling of
+"organization" and the missing full stop at the end of the ops section's first paragraph
+("…finding them and taking them out") — flagged, not fixed, per the copy rules. The stray
+`1.` before the Courage paragraph in the mockup is a list artefact from the source
+document and was not reproduced.
+
+**Em dashes were removed from all visible copy on 30 October, on request** — eight of
+them, including one in the `<title>`, which shows in the browser tab. Five were
+pre-existing locked copy, not new: the signature line, the DRMT frameworks line, the
+newsletter demo message and the footer. **Those five need the client's sign-off.**
+Remaining em dashes in the file are inside HTML/CSS comments only.
+
+### 29.5 The ending, copied from the homepage
+
+The testimonial row and the final CTA were copied from `index.html` verbatim so both
+pages end the same way. The `section-rule` hairlines between sections were removed.
+
+> The CTA needed **markup only** — `site.css` and `js/site.js` already carry `.choice`,
+> `.toggle-row` and the switch behaviour. **This was initially wrong and shipped broken.**
+> `index.html` §11 holds a block that flips the switch's *appearance*: knob resting left
+> as a Deep Green ring rather than a solid dot, Clarity lit and Noise dimmed. Without it
+> the toggle falls back to `site.css`'s shared state — knob right, Clarity dimmed, Noise
+> lit — the reverse of the homepage. Markup and `aria-pressed` were identical on both
+> pages the whole time; that CSS block was the entire difference. It is copied now.
+>
+> Why it is built that way: `site.js` treats `aria-pressed="true"` as the *resting* state
+> and snaps the toggle back to it 350ms after a click. `site.js` is shared, so the
+> homepage flips the visuals rather than the attribute — flipping the attribute would make
+> the switch snap back to **Noise**, the opposite of the section's point.
+
+### Status
+
+Rendered headless at 1400 and 520 across every changed section, plus the hero animation
+probed frame by frame at 900/1500/1700/2100/2600/3400ms.
+
+**Headless gotchas worth knowing, both of which cost time here:**
+
+- `decoding="async"` images screenshot **blank** — the capture does not wait for the
+  decode. They load correctly (`complete: true`, correct `naturalWidth`). Strip the
+  attribute in a throwaway copy when screenshotting.
+- `.reveal` elements far below the fold never fire their IntersectionObserver in a
+  headless capture, so they screenshot at `opacity: 0`. Force `.reveal{opacity:1}` in the
+  copy.
+- Chrome headless has a **~500px minimum window width**. A `--window-size=390` screenshot
+  is a 500px render cropped to 390 and will look like a layout bug that is not there.
+
+**Not verified**: Safari, Firefox, real devices, below 500px, and hover states.

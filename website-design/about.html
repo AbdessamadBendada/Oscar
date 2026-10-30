@@ -7,7 +7,7 @@
        Green on this page now (see the style block) and the browser chrome
        sits directly above it. -->
   <meta name="theme-color" content="#143318">
-  <title>About Oscar de Grauw — OPS DETOX™</title>
+  <title>About Oscar de Grauw | OPS DETOX™</title>
   <meta name="description" content="Seventeen years inside Sony Europe. OPS Detox exists to clear operational clutter and give those hours back.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
@@ -87,11 +87,14 @@
      sits on the framed picture until the overlay is gone. The delay is now
      .45s rather than .85s, measured from the lift instead of from load —
      the overlay's own lift runs .52s, and the hold reads from the moment
-     the picture is actually visible. */
-  .ah,.ah-frame,.ah-pic{animation-play-state:paused}
-  .hero-go .ah,
-  .hero-go .ah-frame,
-  .hero-go .ah-pic{animation-play-state:running}
+     the picture is actually visible.
+
+     The paused/running pair is declared AFTER all three rules below, not
+     here. animation-play-state is part of the `animation` shorthand, so a
+     later `animation:` declaration resets it to running — put this block
+     first and .ah-frame and .ah-pic silently un-pause themselves, which is
+     exactly what happened: only .ah held, and the picture grew behind the
+     overlay anyway. Keep it last. */
   .ah-frame{
     position:relative;
     /* The row MUST be definite. Left as the implicit auto row it sizes to
@@ -130,6 +133,13 @@
     --ah-crop:46%;
     animation:ahCrop 1.15s .45s cubic-bezier(.65,0,.2,1) both;
   }
+
+  /* Must stay BELOW every rule that sets the `animation` shorthand — see
+     the note above. */
+  .ah,.ah-frame,.ah-pic{animation-play-state:paused}
+  .hero-go .ah,
+  .hero-go .ah-frame,
+  .hero-go .ah-pic{animation-play-state:running}
 
   /* Name and caption share one scrim so they read as a single plate
      rather than as two things that happen to be over a photograph. */
@@ -202,10 +212,414 @@
      copy moves here, directly beneath it, rather than being lost. It is
      locked client copy and is reproduced word for word; only the heading
      level changed, since the page's h1 is now the name. */
-  .ah-intro{padding:clamp(54px,6vw,80px) 0 clamp(40px,5vw,62px)}
-  .ah-intro h2{margin:6px 0 0;max-width:18ch}
-  .ah-intro p{margin:18px 0 0;max-width:58ch;font-size:18px}
-  .ah-intro .actions{margin-top:28px}
+  /* ---------- Leader / Innovator / Speaker ----------
+     Built from the client's own section-2 mockup. Copy is reproduced word
+     for word; everything else is translated out of the mockup's black and
+     grey into V1.0.
+
+     What changed from the mockup, and why:
+
+     - The three words are the whole idea, so they are set as a stack with
+       the type as large as the column allows and the leading closed right
+       up (.86). In the mockup they sit at body-headline size with normal
+       leading and read as a list of job titles rather than as a statement.
+       The hairline rules this build briefly put under each word are gone
+       (30 Oct, by request): at this size they read as underlines rather
+       than as structure. The words carry it on weight alone.
+     - The picture gets a Deep Green arch offset behind it. The mockup's
+       arch is a plain cut-out on a dotted field and reads flat. The offset
+       gives it depth and is the one place a brand colour can carry weight
+       on this ground — V1.0 p.21 allows Deep Green on Soft Ivory, and the
+       arch is the guideline's own picture-frame device (p.38).
+     - The dotted field becomes the logo pattern at 6% rather than the
+       mockup's hard grey dots, which were competing with the photograph.
+
+     No lime anywhere in this section. The ground is Soft Ivory and V1.0
+     p.22 names Detox Green on Soft Ivory as a watchout, so the accent has
+     to be Deep Green. The lime arrives in the ticker directly below. */
+  .lis{
+    position:relative;
+    padding:clamp(64px,7vw,104px) 0 clamp(60px,6.5vw,96px);
+    background:var(--paper);
+    overflow:hidden;
+  }
+  /* The pattern is on a pseudo-element, not the section, so its opacity
+     can be dropped without taking the content down with it. */
+  .lis::before{
+    content:"";position:absolute;inset:0;
+    background:url("assets/patterns/logo-pattern.png") 0 0/240px auto;
+    opacity:.06;pointer-events:none;
+  }
+  .lis .container{position:relative}
+  .lis-grid{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.86fr);
+    gap:clamp(32px,5vw,72px);align-items:center;
+  }
+  .lis-head{margin:0}
+  .lis-head span{
+    display:block;
+    font-family:var(--display);font-weight:400;color:var(--ink);
+    /* 10.2vw is the ceiling set by the LONGEST word, "INNOVATOR", against
+       this column. Above it the word breaks and the stack becomes four
+       lines. Re-measure if the copy ever changes. */
+    font-size:clamp(40px,10.2vw,104px);line-height:.86;
+    letter-spacing:.01em;text-transform:uppercase;
+  }
+  .lis-copy{margin:26px 0 0;max-width:46ch;font-size:17px;line-height:1.6}
+  .lis .actions{margin-top:30px}
+
+  /* The arch: V1.0's picture frame. The radius is a PERCENTAGE pair so the
+     curve stays a true arch at any width — a fixed px radius flattens
+     into a stadium shape on a wide column. */
+  .lis-figure{position:relative;margin:0;justify-self:end;width:100%}
+  .lis-figure img{
+    position:relative;display:block;width:100%;
+    aspect-ratio:3/4;object-fit:cover;object-position:50% 22%;
+    border-radius:50% 50% 14px 14px / 42% 42% 14px 14px;
+  }
+  /* Offset arch behind. Inset 0 then nudged, so it tracks the picture's
+     size instead of needing its own measurements. */
+  .lis-figure::before{
+    content:"";position:absolute;inset:0;
+    transform:translate(16px,16px);
+    background:var(--ink);
+    border-radius:50% 50% 14px 14px / 42% 42% 14px 14px;
+  }
+
+  /* ---------- Operations leader + credentials ----------
+     Modelled on stevenbartlett.com/about, which is what the client asked
+     for. Two things were learned from reading that page's source and both
+     are reproduced here with the project's own machinery rather than his:
+
+     1. It is TWO blocks, not one. A plain two-column statement
+        (.about-sect-2), then a separate block where the cut-out occupies
+        an empty left half and the credentials sit in the right
+        (.intro-section-about, `offset-md-6`). Our mockup fused them, which
+        is what made it feel crowded. Split here, sharing one ground so
+        there is no seam between them.
+     2. The credentials arrive one at a time. He uses AOS with
+        data-aos="fade-left" and delays of 0 / 500 / 1000ms. We already
+        have an IntersectionObserver reveal in js/site.js, so this is three
+        transition-delays on .reveal and NO new library.
+
+     Ground is Deep Green, which is both the direct translation of his
+     black and the thing that makes the lime lead-ins legal — lime on Deep
+     Green is the one sanctioned pairing (V1.0 p.21). On the mockup's ivory
+     it would have been a watchout (p.22), and the lead-ins would have had
+     to stay bold-black as in the mockup.
+
+     Both blocks sit inside one .ops wrapper so the cut-out can bleed past
+     the first block's baseline without a background seam showing. */
+  .ops{background:var(--ink);color:#fff;padding:clamp(72px,8vw,120px) 0 0}
+  .ops-lead{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(28px,4.5vw,64px);align-items:start;
+  }
+  /* Bigger, and no 15ch cap. The cap was forcing the sentence into six
+     short lines, which made a statement headline read as a narrow column
+     of small type — the opposite of the reference, where it is three big
+     lines. The column itself is the only limit it needs. */
+  .ops-lead h2{
+    margin:0;color:#fff;max-width:none;
+    font-size:clamp(30px,4vw,56px);line-height:1.02;
+    letter-spacing:.015em;text-transform:uppercase;
+  }
+  /* The one highlighted phrase, exactly as his headline does it. This is
+     styling, not a copy change — the sentence is unaltered. */
+  .ops-lead h2 em{font-style:normal;color:var(--lime)}
+  .ops-lead p{margin:0 0 18px;color:rgba(255,255,255,.82);font-size:17px;line-height:1.6}
+  .ops-lead p:last-child{margin-bottom:0}
+
+  /* The credentials block. The left column is empty in the flow and the
+     cut-out is absolutely placed into it, so the photograph can run off
+     the bottom edge without adding height to the section — the same trick
+     his page uses, and the reason the portrait reads as part of the page
+     instead of as a picture in a box. */
+  .ops-cred{
+    position:relative;
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(28px,4.5vw,64px);
+    padding:clamp(56px,6vw,90px) 0 0;
+  }
+  /* align-self:end puts his feet on the row's baseline. The figure is a
+     normal grid item, so the row — and the section — size to the
+     photograph, and the ground ends exactly at his feet with the ticker
+     starting there. That is the effect his page gets by bleeding the
+     cut-out; this gets it without anything overflowing. */
+  .ops-figure{
+    grid-column:1;margin:0;align-self:end;
+    display:flex;align-items:flex-end;justify-content:center;
+  }
+  .ops-figure img{display:block;width:100%;max-width:440px;height:auto}
+  .ops-list{
+    grid-column:2;list-style:none;margin:0;padding:0;
+    display:flex;flex-direction:column;gap:0;
+  }
+  .ops-list li{padding:26px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .ops-list li:first-child{border-top:0;padding-top:0}
+  .ops-list p{margin:0;color:rgba(255,255,255,.82);font-size:17px;line-height:1.6}
+  /* The lead-in. His is a <span> in lime; ours is a <b>, which keeps the
+     emphasis the mockup's bold already carried for anyone who cannot see
+     the colour. */
+  .ops-list b{color:var(--lime);font-weight:600}
+
+  /* The stagger. Delays only — the opacity/transform transition is the
+     one site.css already defines on .reveal, so this adds no new motion
+     code and inherits the reduced-motion opt-out with it. */
+  .ops-list .reveal:nth-child(2){transition-delay:.14s}
+  .ops-list .reveal:nth-child(3){transition-delay:.28s}
+
+  /* Parallax drift on the cut-out, done with a scroll-driven animation
+     rather than a library and a scroll listener. Zero JS, runs off the
+     compositor, and simply does nothing in browsers without it — which is
+     the right failure, since the photograph is in the correct place
+     already and the drift is a refinement. simple-parallax-js, which his
+     page loads for this, is ~6KB plus a scroll handler on the main thread. */
+  @supports(animation-timeline:view()){
+    @media(prefers-reduced-motion:no-preference){
+      .ops-figure img{
+        animation:opsDrift linear both;
+        animation-timeline:view();
+        animation-range:entry 0% exit 100%;
+      }
+      @keyframes opsDrift{from{transform:translateY(36px)}to{transform:translateY(-36px)}}
+    }
+  }
+
+  /* ---------- Three principles ----------
+     The mockup is three columns of centred body copy on a dotted field,
+     in black, with no brand colour anywhere and no hierarchy between the
+     three. What is kept: the copy, and the fact that there are three.
+
+     Rather than invent a card, this reuses the site's OWN numbered-card
+     pattern from .cleanse-card (site.css): a circular numeral, the name in
+     Formula, body beneath, and the FIRST card taking the lime ground while
+     the others do not. Reusing it costs no new vocabulary and ties the
+     About page to the homepage, where readers have already met it.
+
+     Grounds, all legal under V1.0 p.21:
+       section  Deep Green      (alternates with the ivory timeline above)
+       card 01  Detox Green     Deep Green type
+       card 02  Soft Ivory      Deep Green type
+       card 03  Soft Ivory      Deep Green type
+     The numeral circle inverts per card, exactly as .cleanse-num does:
+     lime disc with Deep Green figure on the ivory cards, Deep Green disc
+     with a lime figure on the lime one.
+
+     Left-aligned, not centred. Centred body copy at this measure is the
+     mockup's main readability problem — every line starts in a different
+     place, so the eye has to re-find the left edge three times per card. */
+  .prin{
+    background:var(--ink);color:#fff;
+    padding:clamp(72px,8vw,112px) 0;
+  }
+  .prin-head{margin:0 0 clamp(36px,4.5vw,64px)}
+  .prin-head .eyebrow{color:var(--lime);display:block;margin-bottom:14px}
+  .prin-head h2{
+    margin:0;max-width:none;color:#fff;
+    font-size:clamp(28px,4vw,54px);line-height:1.02;letter-spacing:.02em;
+  }
+  .prin-grid{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:clamp(16px,1.8vw,24px);align-items:stretch;
+  }
+  .prin-card{
+    display:flex;flex-direction:column;align-items:flex-start;
+    padding:34px 32px 32px;border-radius:var(--r-card);
+    background:var(--paper);color:var(--ink);
+    transition:transform .2s ease;
+  }
+  .prin-card:first-child{background:var(--lime)}
+  .prin-num{
+    width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+    background:var(--lime);color:var(--ink);
+    font:20px/1 var(--display);letter-spacing:.04em;
+    /* A lime disc would vanish on the lime card, so it inverts there —
+       the same swap .cleanse-num makes. */
+  }
+  .prin-card:first-child .prin-num{background:var(--ink);color:var(--lime)}
+  .prin-card h3{
+    margin:24px 0 14px;color:var(--ink);
+    font:clamp(21px,1.9vw,28px)/1.05 var(--display);
+    letter-spacing:.03em;text-transform:uppercase;
+  }
+  .prin-card p{
+    margin:0;color:rgba(20,51,24,.78);
+    font-size:clamp(15px,1.25vw,17px);line-height:1.55;
+  }
+  .prin-grid .reveal:nth-child(2){transition-delay:.1s}
+  .prin-grid .reveal:nth-child(3){transition-delay:.2s}
+  @media(hover:hover){
+    .prin-card:hover{transform:translateY(-4px)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .prin-card{transition:none}
+  }
+  @media(max-width:900px){
+    .prin-grid{grid-template-columns:minmax(0,1fr)}
+    .prin-card{padding:28px 26px}
+  }
+
+  /* ---------- Oscar's path (timeline) ----------
+     Built to the structure of the timeline on stevenbartlett.com/about,
+     read from that page's source. His .tl-block is a big year plus two
+     halves — one photograph, one text — alternating left/right across a
+     centre spine, with AOS fades on each block.
+
+     Three deliberate differences:
+
+     1. HIS TIMELINE IS DESKTOP ONLY. The whole .timeline-wrap carries
+        `d-none d-md-block`, so phones never see it. Not copied: this one
+        collapses to a single left-hand spine instead of disappearing.
+     2. No years. His spine is driven by 1992 / 1994 / 2010, which is what
+        makes it scan as a timeline. The client's copy gives phases instead
+        ("EARLY YEARS", "NOW"), so the era label takes the year's place and
+        is set in Formula to hold the same weight. If approximate years ever
+        arrive they drop straight into .tl-era with no structural change.
+     3. No blurred duplicate image behind the text. That is his signature
+        touch and it depends on photographs chosen for it; with placeholder
+        images it would only draw attention to them.
+
+     The reveal is the project's own .reveal observer with nth-child delays
+     — same as .ops-list, no new library.
+
+     Soft Ivory ground, so the page alternates ivory / Deep Green / ivory
+     down its length. No lime anywhere here: V1.0 p.22 makes lime on Soft
+     Ivory a watchout, so the spine, the dots and the era labels are all
+     Deep Green. */
+  .path{
+    position:relative;
+    padding:clamp(72px,8vw,110px) 0 clamp(64px,7vw,100px);
+    background:var(--paper);overflow:hidden;
+  }
+  .path::before{
+    content:"";position:absolute;inset:0;
+    background:url("assets/patterns/logo-pattern.png") 0 0/240px auto;
+    opacity:.05;pointer-events:none;
+  }
+  .path .container{position:relative}
+  /* max-width:none — site.css caps every h2 at 21ch, so without this the
+     heading centres inside a narrow box and reads as left-aligned. */
+  .path-head{
+    margin:0 0 clamp(40px,5vw,72px);text-align:center;color:var(--ink);
+    max-width:none;
+    font-size:clamp(28px,4.2vw,56px);line-height:1;
+    letter-spacing:.02em;text-transform:uppercase;
+  }
+
+  /* The spine is a pseudo-element on the list, not a separate div as in
+     his markup — one less empty element, and it cannot drift out of step
+     with the blocks because it is the same box. */
+  .path-list{
+    position:relative;list-style:none;margin:0;padding:0;
+    display:flex;flex-direction:column;gap:clamp(44px,5vw,78px);
+  }
+  .path-list::before{
+    content:"";position:absolute;top:0;bottom:0;left:50%;
+    width:1px;margin-left:-.5px;background:rgba(20,51,24,.22);
+  }
+
+  .tl-block{
+    position:relative;
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:clamp(28px,4vw,64px);align-items:center;
+  }
+  /* The dot. Ringed in the ground colour so the spine appears to pass
+     behind it rather than through it. */
+  .tl-block::before{
+    content:"";position:absolute;left:50%;top:50%;
+    width:13px;height:13px;margin:-6.5px 0 0 -6.5px;
+    border-radius:50%;background:var(--ink);
+    box-shadow:0 0 0 5px var(--paper);
+    z-index:1;
+  }
+  /* Alternate. Explicit grid-column on both halves rather than
+     direction:rtl, which would also flip the text inside them.
+
+     grid-row:1 is REQUIRED, not tidiness. Setting only the column leaves
+     auto-placement to pick the row, and it never moves backwards: on the
+     even blocks the figure is placed first (DOM order) into row 1 column 2,
+     so the text — asking for column 1, which is already behind the cursor —
+     gets pushed down into row 2. That is why the even blocks had their copy
+     sitting below the photograph instead of beside it, out of line with the
+     dot. Pinning both to row 1 puts them back on one line, and
+     align-items:center then lines the copy up with the dot. */
+  .tl-block>*{grid-row:1}
+  .tl-block:nth-child(odd) .tl-figure{grid-column:1}
+  .tl-block:nth-child(odd) .tl-text{grid-column:2}
+  .tl-block:nth-child(even) .tl-text{grid-column:1}
+  .tl-block:nth-child(even) .tl-figure{grid-column:2}
+  /* The text always sits away from the spine, so it reads outward from the
+     line on both sides instead of both columns running left-aligned. */
+  .tl-block:nth-child(even) .tl-text{text-align:right}
+
+  .tl-figure{margin:0}
+  .tl-figure img{
+    display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
+    object-position:50% 30%;border-radius:var(--r-card);
+  }
+  .tl-era{
+    margin:0 0 10px;color:rgba(20,51,24,.62);
+    font:13px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;
+  }
+  .tl-text h3{
+    margin:0;color:var(--ink);
+    font-size:clamp(19px,2.1vw,28px);line-height:1.18;letter-spacing:.01em;
+  }
+  .tl-text p{margin:12px 0 0;color:rgba(20,51,24,.76);font-size:16px;line-height:1.6}
+
+  /* Stagger, as on .ops-list. Six blocks, so the cycle is stated six
+     times; a 7th entry needs a 7th line here. */
+  .path-list .reveal:nth-child(2){transition-delay:.08s}
+  .path-list .reveal:nth-child(3){transition-delay:.16s}
+  .path-list .reveal:nth-child(4){transition-delay:.08s}
+  .path-list .reveal:nth-child(5){transition-delay:.16s}
+  .path-list .reveal:nth-child(6){transition-delay:.08s}
+
+  @media(max-width:860px){
+    /* Single column with the spine moved to the left edge. The dots sit on
+       it and every block reads the same way down — no alternating, which
+       needs two columns to mean anything. */
+    .path-list::before{left:7px;margin-left:0}
+    .path-list{gap:38px}
+    /* grid-row back to auto. One column plus the pinned row:1 above would
+       stack both halves into the same cell, on top of each other. */
+    .tl-block>*{grid-row:auto}
+    .tl-block{grid-template-columns:minmax(0,1fr);gap:16px;padding-left:36px}
+    .tl-block::before{left:7px;top:8px;margin:0 0 0 -6px}
+    .tl-block:nth-child(odd) .tl-figure,
+    .tl-block:nth-child(even) .tl-figure{grid-column:1;order:2}
+    .tl-block:nth-child(odd) .tl-text,
+    .tl-block:nth-child(even) .tl-text{grid-column:1;order:1;text-align:left}
+    .tl-figure img{aspect-ratio:16/10}
+    .tl-text p{font-size:15px}
+  }
+
+  @media(max-width:860px){
+    .ops-lead{grid-template-columns:minmax(0,1fr);gap:22px}
+    .ops-lead h2{max-width:20ch}
+    /* One column: the list comes first so the credentials are not pushed
+       below a tall photograph on a phone, and the cut-out follows it. */
+    .ops-cred{grid-template-columns:minmax(0,1fr);gap:34px}
+    .ops-list{grid-column:1;order:1}
+    .ops-figure{grid-column:1;order:2;justify-content:flex-start}
+    .ops-figure img{max-width:300px}
+  }
+
+  @media(max-width:860px){
+    /* minmax(0,1fr), NOT 1fr. A bare 1fr is minmax(auto,1fr), so the
+       column refuses to shrink below its widest item — the headline — and
+       at 390px that pushed the column past the container and clipped the
+       paragraph's right-hand edge against .lis's overflow:hidden. */
+    .lis-grid{grid-template-columns:minmax(0,1fr);gap:34px}
+    /* On one column the headline is no longer capped by a narrow column,
+       so the vw term has to come down or "INNOVATOR" overflows. */
+    .lis-head span{font-size:clamp(38px,13vw,78px)}
+    .lis-copy{max-width:60ch;font-size:16px}
+    /* The offset arch is pushed 16px right of the picture, so the picture
+       has to stop 16px short of the column or the offset is what clips. */
+    .lis-figure{max-width:min(420px,100%);justify-self:start;padding-right:16px}
+  }
 
   @media(max-width:700px){
     .ah-frame{
@@ -215,8 +629,180 @@
     .ah-plate{padding:18vh 16px 20px}
     .ah-name{font-size:clamp(28px,11.5vw,54px)}
     .ah-cap{font-size:11px;gap:6px 14px}
-    .ah-intro p{font-size:16px}
   }
+  
+  /* ---------- Testimonials slider (copied from index.html) ----------
+     The testimonial row and the final CTA are the homepage's, copied
+     verbatim on request so the two pages end the same way.
+
+     The CTA needed markup only — site.css and site.js already carry
+     .choice, .toggle-row and the switch behaviour. The slider did NOT:
+     these rules live in index.html's own style block, so they are
+     reproduced here. THEY ARE NOW IN TWO PLACES — change one and the
+     pages drift apart. Lift the pair into css/site.css the moment a
+     third page wants this row. */
+  /* ---------- 4. Testimonials: moved up, and turned into one sliding row ----------
+     Client, 24 Oct: the testimonials belong under the IP section, and they
+     should be a single row that slides smoothly. The section markup now sits
+     directly after .frameworks and before .outcomes, so the order reads
+     cleanse → the IP it runs on → who says it worked → the numbers.
+
+     The slide is a marquee, not a paged carousel: four placeholder quotes do
+     not need prev/next controls, and continuous motion was what was asked
+     for. The track holds the four cards FOUR TIMES and translates by exactly
+     one set, which lands set 2 where set 1 started, so the loop has no jump.
+
+     Why four copies and not two: the track has to stay wider than the
+     viewport plus one set, or the row runs dry at the right-hand edge before
+     it wraps. One set is four cards at 420 + 28 = 1792px, so two copies left
+     a growing empty gap on anything wider than ~1800px — which is what a
+     1920 or zoomed-out screen is.
+
+     It is CSS-only on purpose. js/site.js is shared with the live site and a
+     review artefact must not touch it (AGENTS.md). */
+  .testimonials{overflow:hidden}
+  .testimonial-slider{
+    /* Full-bleed, so the row runs off both edges and reads as continuing
+       rather than as a cropped grid. The head above it stays in .container. */
+    position:relative;width:100%;overflow:hidden;
+    /* Cancels the track's shadow padding below, so the row occupies exactly
+       the height of the cards in the page flow and the air above and below it
+       stays even. The overflow area just overlaps the section's own padding. */
+    margin:-30px 0 -64px;
+  }
+  /* The end fades are two gradient overlays in the ground colour, NOT a
+     mask-image on the slider. A mask promotes the element to its own
+     composited layer, and macOS Chrome colour-manages that layer slightly
+     differently from the Soft Ivory painted behind it — the whole row showed
+     as a visibly paler band. Overlays keep everything on one layer. */
+  .testimonial-slider::before,
+  .testimonial-slider::after{
+    content:'';position:absolute;top:0;bottom:0;width:clamp(28px,7%,120px);
+    z-index:2;pointer-events:none;
+  }
+  .testimonial-slider::before{left:0;background:linear-gradient(90deg,var(--paper),rgba(254,253,242,0))}
+  .testimonial-slider::after{right:0;background:linear-gradient(270deg,var(--paper),rgba(254,253,242,0))}
+  /* One card's width and the gap are variables because the slide distance is
+     derived from them — see @keyframes below. */
+  .testimonial-track{
+    --tcard:min(420px,78vw);
+    --tgap:28px;
+    display:flex;width:max-content;gap:var(--tgap);
+    /* Room for the hover shadow, which is clipped by the slider's
+       overflow:hidden otherwise — the cut showed as a hard horizontal line
+       under a hovered card. --shadow is 0 18px 44px, so it reaches 18+44=62px
+       below the card and 44-18=26px above it; site.css also lifts the card
+       3px on hover. 30/64 covers both ends with a little slack. The slider
+       cancels this with a matching negative margin.
+       No horizontal padding: the slide distance is an exact multiple of the
+       card pitch and side padding would offset it. */
+    padding:30px 0 64px;
+    animation:t-slide 54s linear infinite;
+  }
+  .testimonial-track article{
+    flex:0 0 var(--tcard);min-height:300px;
+    /* No resting shadow. --shadow is a 44px blur, and eight-plus cards tiled
+       into an unbroken row pool it into a grey slab behind the whole band
+       (measured rgb(240,240,229) against the ivory's rgb(254,253,242)). The
+       row needs no lift at rest — it is already separated by the gaps. */
+    box-shadow:none;
+  }
+  .testimonial-track article:hover{box-shadow:var(--shadow)}
+
+  /* Moves by exactly one set of four — one card pitch × 4 — so set 2 lands
+     where set 1 was. Derived from the variables above rather than written as
+     -25%, because a percentage would have to absorb the flex gaps and would
+     drift the seam. Change the card count and this 4 changes with it. */
+  @keyframes t-slide{to{transform:translateX(calc(-4 * (var(--tcard) + var(--tgap))))}}
+
+  /* Hovering or tabbing into the row holds it still so a quote can actually
+     be read. :active covers the touch case, where there is no hover. */
+  .testimonial-slider:hover .testimonial-track,
+  .testimonial-slider:active .testimonial-track,
+  .testimonial-track:focus-within{animation-play-state:paused}
+
+  /* Reduced motion: no marquee at all. The row becomes a normal swipeable,
+     snapping scroller, and the duplicate half is dropped so the same quote
+     does not appear twice in something the user scrolls by hand. */
+  @media(prefers-reduced-motion:reduce){
+    .testimonial-slider{
+      overflow-x:auto;scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      padding-bottom:6px;
+    }
+    /* The overlays are absolutely positioned inside what is now a scroll
+       container, so they would scroll away with the content. The row is
+       user-driven here and does not need the fades. */
+    .testimonial-slider::before,.testimonial-slider::after{display:none}
+    .testimonial-track{animation:none;padding-inline:max(20px,calc((100% - 1320px) / 2))}
+    .testimonial-track article{scroll-snap-align:center}
+    .testimonial-track article[aria-hidden="true"]{display:none}
+  }
+  
+  /* ---------- The Noise / Clarity switch (copied from index.html §11) ----------
+     Copied with the CTA, and it is NOT optional decoration: without it
+     the toggle renders in site.css's shared state — knob to the RIGHT,
+     Clarity dimmed and Noise lit — which is the reverse of the
+     homepage. The markup and aria-pressed are identical on both pages;
+     this block is the entire difference.
+
+     Second copy of these rules, like the testimonial slider above.
+     Both belong in css/site.css. */
+  /* ---------- 11. The Noise / Clarity switch, read the other way ----------
+     Clarity now sits on the left and Noise on the right, and the switch
+     rests OFF: knob to the left, track empty.
+
+     Only the visuals are flipped, not the state. js/site.js (§3b) treats
+     aria-pressed="true" as the resting state — it snaps the choice-toggle
+     back to it 350ms after a click — and that file is shared with the live
+     site, so it must not be touched (AGENTS.md). "true" therefore still
+     means clarity, exactly as before; what changes is which side it
+     lights and which way the knob sits. Flipping the attribute instead
+     would have made the switch snap back to Noise, the opposite of the
+     section's point.
+
+     The colours are untouched: clarity is still the lime card with the
+     ink type, noise still the dark one. */
+  /* Left label (now Clarity) is lit at rest, right label (Noise) dimmed:
+     the reverse of the shared rule, so both states are overridden. */
+  .choice-toggle[aria-pressed="true"] .t-before{opacity:1}
+  .choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-after{opacity:1}
+
+  /* The switch IS the logo mark: a lime pill carrying the O of the OD
+     monogram, so the knob is an ink RING with the track showing through
+     it, not a solid dot. That is the one detail that makes it read as the
+     brand's own switch rather than a generic iOS toggle.
+
+     Hence no inset highlight and no drop shadow on the knob — the mark is
+     flat, and both were what made the old knob look like a UI control
+     borrowed from somewhere else. */
+  .choice-toggle .t-switch{
+    background:var(--lime);
+    border:3px solid var(--ink);
+    box-shadow:none;
+  }
+  /* box-sizing MUST be border-box here. The shared rule sizes the knob
+     34x34 as a solid dot, where no border is in play; turning it into a
+     ring added 7px of stroke on every side, so it came out 48px wide in a
+     42px track and hung over both edges. With border-box the 34 is the
+     whole ring, stroke included.
+
+     Geometry: track 92 wide, 3px border, so the inner box is 86. Ring 34
+     at 4px from the left leaves 48 to the right edge, hence the 44px
+     travel below — 4px of lime left showing at either end. */
+  .choice-toggle .t-switch::before{
+    box-sizing:border-box;
+    top:4px;left:4px;width:34px;height:34px;
+    background:transparent;
+    border:6px solid var(--ink);
+    box-shadow:none;
+  }
+  /* At rest the ring sits left, as the O does in the mark. Pressed (noise)
+     slides it to the D's end. */
+  .choice-toggle[aria-pressed="true"] .t-switch::before{transform:none}
+  .choice-toggle[aria-pressed="false"] .t-switch::before{transform:translateX(44px)}
   </style>
 </head>
 <body>
@@ -257,15 +843,73 @@
       </div>
     </section>
 
-    <!-- The old hero's copy, word for word. Only the heading level moved:
-         the page's h1 is now his name, in the hero above. -->
-    <section class="ah-intro container reveal">
-      <span class="eyebrow">About Oscar de Grauw</span>
-      <h2>Why work with me</h2>
-      <p>Founder of OPS Detox™. Seventeen years inside complex, international organizations — and the conviction that the truth is always already in the building.</p>
-      <div class="actions">
-        <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
-        <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+    <!-- Section 2, from the client's own mockup. The headline and the
+         paragraph are his copy, word for word.
+
+         This replaced the band that briefly carried the OLD hero's copy
+         ("About Oscar de Grauw / Why work with me / Founder of OPS Detox™.
+         Seventeen years inside complex, international organizations…").
+         That copy is locked client copy and is NOT currently anywhere on
+         this page — it is in git if it should come back lower down. The
+         two CTAs from it are kept here so no booking route was lost.
+
+         The photograph is a STAND-IN. The mockup uses a studio shot of
+         Oscar on a stool which is not in the project; oscar-about.jpg is
+         from the same shoot and sits correctly in the arch. Swap the src
+         when the real file arrives — nothing else needs to change. -->
+    <section class="lis reveal" aria-labelledby="lis-heading">
+      <div class="container">
+        <div class="lis-grid">
+          <div>
+            <!-- Three spans rather than <br>: each word takes the rule
+                 under it, and a screen reader still reads one heading. -->
+            <h2 class="lis-head" id="lis-heading"><span>Leader</span><span>Inn<i class="od">o</i>vat<i class="od">o</i>r</span><span>Speaker</span></h2>
+            <p class="lis-copy">Founder of OPS Detox™ and TEDx speaker. At Sony Europe Oscar worked across seven functions and 29 countries, leading the work that halved the reporting, removed close to a third of the meeting time and moved decisions closer to the people doing the work. Today he brings that experience to scale-up founders.</p>
+            <div class="actions">
+              <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+              <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+            </div>
+          </div>
+          <figure class="lis-figure">
+            <img src="assets/img/oscar-chair.jpg" alt="Oscar de Grauw">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Operations leader + credentials. Copy is the client's, word for
+         word, including the missing full stop at the end of the first
+         paragraph ("…finding them and taking them out") — flagged, not
+         fixed, per the copy rules.
+
+         The portrait is a real cut-out now: assets/img/oscar-cutout.avif,
+         lifted from assets/img/oscar-about.jpg with the macOS Vision foreground mask. AVIF
+         is 48KB and carries the alpha; the PNG fallback is 516KB and is
+         only fetched by browsers without AVIF. This partly answers §20 —
+         a cut-out of Oscar now exists in the project. -->
+    <section class="ops" aria-labelledby="ops-heading">
+      <div class="container">
+        <div class="ops-lead reveal">
+          <h2 id="ops-heading">Oscar is an operations leader helping scale-ups <em>run faster and leaner as they grow.</em></h2>
+          <div>
+            <p>Oscar de Grauw spent seventeen years at Sony Europe, across sales, marketing, procurement, business planning, operational excellence, reporting and transformation. In a global organisation, meetings, reports and approval layers often outlive the reason they were created. Much of his work was finding them and taking them out</p>
+            <p>Before Sony, an expat childhood in the United States, Germany and the Netherlands and two years as a flight attendant taught him to notice what people feel but do not say. After Sony, a sabbatical across Asia and the Pacific turned seventeen years of hands-on work into a method.</p>
+          </div>
+        </div>
+
+        <div class="ops-cred">
+          <figure class="ops-figure">
+            <picture>
+              <source srcset="assets/img/oscar-cutout.avif" type="image/avif">
+              <img src="assets/img/oscar-cutout.png" alt="Oscar de Grauw" width="860" height="1468" loading="lazy" decoding="async">
+            </picture>
+          </figure>
+          <ul class="ops-list">
+            <li class="reveal"><p><b>Led the operational detox at Sony Europe</b>: reporting reduced from 167 reports to 78, close to a third of the meeting time removed across 29 countries and decision authority raised from €500 to €10,000.</p></li>
+            <li class="reveal"><p><b>Founded OPS Detox™</b>: a consultancy that helps scale-up founders strip operational clutter together with their team, through Operational Flow and Organisational Flow.</p></li>
+            <li class="reveal"><p><b>TEDx speaker and workshop facilitator</b>: keynotes and leadership workshops, including the Speak Up Gym and the Out Loud card game, where teams practise saying the uncomfortable thing out loud.</p></li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -273,20 +917,111 @@
       <div>Flush the pipelines <span>•</span> UNCOMPLICATE the decision <span>•</span> CLEAN THE SYSTEMS <span>•</span> Unclog the approval queue <span>•</span> Strip the NOISE <span>•</span> Drain the decision backlog <span>•</span></div>
     </div>
 
-    <section class="container section-grid section-rule reveal">
-      <div>
-        <span class="eyebrow">The background</span>
-        <h2>The truth was always in the building</h2>
+    <!-- Oscar's path. Copy is the client's, word for word, including the
+         US spelling of "organization" in the FIRST CHAPTER and NOW entries,
+         which the rest of the site also uses.
+
+         EVERY PHOTOGRAPH HERE IS A PLACEHOLDER. The six images are the only
+         real photographs of Oscar in the project, rotated so no two blocks
+         repeat; none of them depicts the moment its entry describes — there
+         is no childhood, flight-attendant or Kilimanjaro photography in the
+         project at all. Swap the six src attributes when the real images
+         arrive; nothing else needs to change.
+
+         The AI keynote image (speaking-keynote.jpg) is deliberately NOT
+         used: §27 flags it as showing an audience that never existed. -->
+    <section class="path reveal" aria-labelledby="path-heading">
+      <div class="container">
+        <h2 class="path-head" id="path-heading"><i class="od">O</i>scar’s path</h2>
+        <ol class="path-list">
+          <li class="tl-block reveal">
+            <figure class="tl-figure"><img src="assets/img/oscar-steps.jpg" alt="" loading="lazy" decoding="async"></figure>
+            <div class="tl-text">
+              <p class="tl-era">Early years</p>
+              <h3>An expat childhood across three countries</h3>
+              <p>USA, Germany, Netherlands. Multiple schools, cultures and languages. Learning to adapt before it was a skill anyone was talking about.</p>
+            </div>
+          </li>
+          <li class="tl-block reveal">
+            <figure class="tl-figure"><img src="assets/img/oscar-problem.jpg" alt="" loading="lazy" decoding="async"></figure>
+            <div class="tl-text">
+              <p class="tl-era">Pre-corporate</p>
+              <h3>Flight attendant: two years at altitude</h3>
+              <p>Service, safety, cultural intelligence, non-verbal communication. The ability to read a room without anyone saying a word.</p>
+            </div>
+          </li>
+          <li class="tl-block reveal">
+            <figure class="tl-figure"><img src="assets/img/oscar-portrait.jpg" alt="" loading="lazy" decoding="async"></figure>
+            <div class="tl-text">
+              <p class="tl-era">First chapter</p>
+              <h3>Time management consulting: the first seed</h3>
+              <p>An early role that planted the question he would spend the next two decades answering: where does time actually go inside an organization?</p>
+            </div>
+          </li>
+          <li class="tl-block reveal">
+            <figure class="tl-figure"><img src="assets/img/oscar-about.jpg" alt="" loading="lazy" decoding="async"></figure>
+            <div class="tl-text">
+              <p class="tl-era">17 years</p>
+              <h3>Sony Europe: the real education</h3>
+              <p>Sales, deployment, procurement, business planning, marketing, process design and strategic operational excellence. Seven functions. One recurring pattern.</p>
+            </div>
+          </li>
+          <li class="tl-block reveal">
+            <figure class="tl-figure"><img src="assets/img/speaking.jpg" alt="" loading="lazy" decoding="async"></figure>
+            <div class="tl-text">
+              <p class="tl-era">The turning point</p>
+              <h3>Sabbatical, Kilimanjaro, and a new perspective</h3>
+              <p>A deliberate pause. Travel. Two ebooks. A mountain summit. A relationship that changed the lens. A coaching trajectory that turned insight into clarity.</p>
+            </div>
+          </li>
+          <li class="tl-block reveal">
+            <figure class="tl-figure"><img src="assets/img/oscar-chair.jpg" alt="" loading="lazy" decoding="async"></figure>
+            <div class="tl-text">
+              <p class="tl-era">Now</p>
+              <h3>OPS Detox: the practice built on everything before it</h3>
+              <p>Senior IP-driven consultant. Seven modules. Proprietary frameworks. A clear mission: help growing organizations remove the friction that keeps them stuck.</p>
+            </div>
+          </li>
+        </ol>
       </div>
-      <div class="body-copy" style="padding-top:56px">
-        <p>For seventeen years I worked inside Sony Europe, across sales, marketing, procurement, business planning, operational excellence, reporting and transformation. What I saw there, I now see in every growing company: good people, working hard, inside systems that piled up as the company grew. The truth was always in the building. It simply could not reach the people who could act on it.</p>
-        <p>Every hour a good person spends in a meeting without a decision, on a report nobody reads, or waiting for permission they should already have, is an hour of a life. OPS Detox exists to clear that clutter and give those hours back.</p>
-        <p class="signature">— Oscar de Grauw, Founder of OPS Detox™</p>
-      </div>
-      <figure class="artwork"><img src="assets/img/poster.png" alt="OPS Detox campaign artwork"></figure>
     </section>
 
-    <section class="container section-pad section-rule reveal">
+    <!-- Three principles. Copy is the client's, word for word.
+         The stray "1." sitting before the Courage paragraph in the mockup
+         is a list artefact from the document it was pasted out of, not
+         copy, so it is not reproduced.
+
+         NOTE — this overlaps the "Six values, no exceptions" section
+         further down this same page: Uncomfortable honesty, Ownership and
+         Courage are three of those six. The page currently says both. See
+         the handoff note; it needs a decision, not a silent deletion. -->
+    <section class="prin reveal" aria-labelledby="prin-heading">
+      <div class="container">
+        <div class="prin-head">
+          <span class="eyebrow">How Oscar works</span>
+          <h2 id="prin-heading">Three principles behind every detox</h2>
+        </div>
+        <div class="prin-grid">
+          <article class="prin-card reveal">
+            <span class="prin-num" aria-hidden="true">01</span>
+            <h3>Uncomfortable honesty</h3>
+            <p>You hear what is really happening early, while it is still cheap to fix. Polite advice costs you a year; an honest conversation costs you an hour.</p>
+          </article>
+          <article class="prin-card reveal">
+            <span class="prin-num" aria-hidden="true">02</span>
+            <h3>Ownership</h3>
+            <p>Every decision and every process leaves the engagement with a named owner. The new structure belongs to your team, not to OPS Detox.</p>
+          </article>
+          <article class="prin-card reveal">
+            <span class="prin-num" aria-hidden="true">03</span>
+            <h3>Courage</h3>
+            <p>Adding a meeting is easy. Stripping one out takes nerve. OPS Detox helps you make the deliberate choices that habit has been making for you.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section-pad reveal">
       <div class="section-heading">
         <div><span class="eyebrow">How I work</span><h2>Six values, no exceptions</h2></div>
       </div>
@@ -300,32 +1035,111 @@
       </div>
     </section>
 
-    <section class="container section-pad section-rule reveal">
-      <div class="section-heading">
-        <div><span class="eyebrow">The frameworks</span><h2>A system, not opinions</h2></div>
-        <p>My work is built on proprietary frameworks, so you get a repeatable, structured approach that scales.</p>
+    <section class="testimonials reveal" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <div class="testimonials-head">
+          <span class="eyebrow">Testimonials</span>
+          <h2 id="testimonials-heading">What leaders say</h2>
+        </div>
       </div>
-      <div class="split-lists" style="padding:0">
-        <ul class="marked-list">
-          <li>The CORE method™</li>
-          <li>OPS Detox™</li>
-          <li>Truth Latency™</li>
-        </ul>
-        <ul class="marked-list">
-          <li>Async Mastery™</li>
-          <li>Speak Up Gym™</li>
-          <li>DRMT™ — the decision engine</li>
-        </ul>
-      </div>
-    </section>
+      <div class="testimonial-slider">
+        <div class="testimonial-grid testimonial-track" role="list">
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
 
-    <section class="testimonials container section-rule reveal">
-      <span class="eyebrow">Testimonials</span>
-      <div class="testimonial-grid">
-        <article>Testimonial</article>
-        <article>Testimonial</article>
-        <article>Testimonial</article>
-        <article>Testimonial</article>
+
+          <!-- Copy 2 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+
+          <!-- Copy 3 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+
+          <!-- Copy 4 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -333,14 +1147,20 @@
       <div class="container">
         <span class="eyebrow">The choice</span>
         <h2>What will you choose?</h2>
-        <div class="switch-line">
-          <span class="is-on">Operational noise</span>
-          <button class="switch" type="button" aria-pressed="false" aria-label="Operational noise or operational clarity"><i></i></button>
-          <span>Operational clarity</span>
+        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+
+        <div class="toggle-rows">
+          <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
+                  aria-label="Switch between Operational Clarity and Operational Noise">
+            <span class="t-before">Operational Clarity</span>
+            <span class="t-switch" aria-hidden="true"></span>
+            <span class="t-after">Operational Noise</span>
+          </button>
         </div>
+
         <div class="actions">
-          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
-          <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+          <a class="button" href="diagnostic.html">Free OPS Diagnostic</a>
+          <a class="button button--line" href="contact.html">Let us talk</a>
         </div>
       </div>
     </section>
@@ -358,7 +1178,7 @@
           </div>
         </div>
 
-        <form data-demo-form data-success-message="Subscribed — demo only, no email is sent yet.">
+        <form data-demo-form data-success-message="Subscribed. Demo only, no email is sent yet.">
           <h2>Newsletter</h2>
           <div class="field">
             <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
@@ -387,7 +1207,7 @@
           <a href="#">Cookies</a>
         </div>
       </div>
-      <p class="footer-legal">© 2026 OPS Detox™ — Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+      <p class="footer-legal">© 2026 OPS Detox™. Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
     </div>
   </footer>
 
