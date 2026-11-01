@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#143318">
-  <title>OPS DETOX™: Homepage, type-led hero</title>
-  <meta name="description" content="Review build of the OPS Detox homepage: the 15 October client comments plus the type-led Detox Green hero.">
+  <title>OPS DETOX™: Homepage</title>
+  <meta name="description" content="OPS Detox™ — operational detox for scale-ups. Cleanse your business systems of operational clutter and win your time back.">
   <meta name="robots" content="noindex">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
@@ -953,6 +953,56 @@
     .speak-inner{min-height:0;justify-content:flex-start}
     .speak-copy{max-width:none}
   }
+
+  /* ---------- 16. Soft Ivory hero ----------
+     APPROVED AND LIVE, 31 October. The type-led hero's ground is Soft Ivory
+     #FEFDF2, not Detox Green #CCFE06. Promoted from hero-ivory.html, which
+     was the 29 Oct comparison build (§28) and is now a frozen record — do
+     not keep patching that file.
+
+     This block must stay LAST in the stylesheet. It overrides rules in
+     section 6 above at equal specificity, so it wins on source order alone.
+     Move it up and the hero goes back to lime silently.
+
+     Changing the ground forces four other changes, because V1.0 p.21 bans
+     Detox Green on Soft Ivory. Nothing in the hero may be lime any more:
+
+     1. The buttons invert back. On lime the primary had to be a Deep Green
+        pill (a lime pill on lime is invisible) with lime type. On ivory the
+        sanctioned primary returns: Deep Green pill, and its type can be
+        lime, because lime ON Deep Green is the one legal lime pairing.
+     2. The hero needs a bottom edge. Against lime the Deep Green switcher
+        strip below it was a hard colour change; ivory to Deep Green is
+        still a change, but the hero no longer reads as a block, so a
+        hairline keeps the first screen from bleeding into the strip.
+     3. The faded word "clutter" is re-weighted. .55 Deep Green on lime and
+        .55 Deep Green on ivory are not the same contrast — ivory is lighter,
+        so the same alpha reads weaker. It goes to .62.
+     4. The header stays Deep Green. It was made Deep Green in §5 to give the
+        lime hero a legal top edge, and that reason is gone — but an ivory
+        header on an ivory hero erases the band entirely and the lime logo
+        has nowhere legal to sit. Deep Green is still the only ground the
+        lime logo, lime nav and lime pill CTA can all share.
+
+     The trade the client accepted (§28): ivory is calmer and Deep Green on
+     ivory is a higher-contrast pair than Deep Green on lime, but the brand
+     is no longer stated on the first screen — the only lime above the fold
+     is the logo and one button. */
+  .hero--type{background:var(--paper)}
+  .hero--type::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:rgba(20,51,24,.14);
+  }
+  .hero--type .ht-fade{color:rgba(20,51,24,.62)}
+  .hero--type .ht-proof{color:rgba(20,51,24,.6)}
+  /* The V1.0 default pair, restored: primary = Deep Green pill with lime
+     type; secondary = Deep Green outline. On hover the primary empties out
+     to the outline rather than flipping to a lime fill, which is illegal
+     here. */
+  .hero--type .button{background:var(--ink);color:var(--lime);border-color:var(--ink)}
+  .hero--type .button:hover{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .hero--type .button--line{background:transparent;color:var(--ink);border-color:rgba(20,51,24,.5)}
+  .hero--type .button--line:hover{background:var(--ink);color:var(--lime);border-color:var(--ink)}
   </style>
 </head>
 <body>

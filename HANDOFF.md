@@ -1,6 +1,32 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 30 October 2026_
+_Last updated: 1 November 2026_
+
+> **1 Nov — the repository was flattened and cleaned.** `website-design/` is gone: the
+> seven site pages, `css/`, `js/` and `assets/` now sit at the **repo root**. Everything
+> that is not a site page moved into **`playground/`** with its relative paths rewritten
+> to `../`. `mockup/`, `high-fidelity-design/` and the empty root `assets/` stubs were
+> deleted (all recoverable from git). **Sections §1–§31 below still write paths as
+> `website-design/…` — read them as root-relative.** See §32.
+
+> **31 Oct — a new Work With Us page was built, five sections deep.** `work-with-us.html`
+> is a fresh page, **not** the old `detox.html`, built section by section from the client's
+> supplied designs: hero, "Nobody designed it this way", "There is a cleaner way",
+> testimonials, and the two offer tracks plus the Tool Stack Detox add-on. It also settles
+> where the seventh module lives, which had been open since 29 Oct. Two photographs are
+> still placeholders. See §30.
+
+> **31 Oct — the Soft Ivory hero was approved and is now the live homepage hero.**
+> `index.html` carries it as section 16, which must stay last in that stylesheet or the
+> hero silently reverts to lime. `hero-ivory.html` is a frozen record now. See §28.
+
+> **31 Oct — the About hero animation was fixed for Safari, after four failed CSS builds.**
+> Safari will not run the border/radius animation from a stylesheet at all; it is driven by
+> `Element.animate()` from the page's own inline script now. The name plate was also
+> left-aligned so the caption sits under the name. See §29.1.
+
+> **31 Oct — the About hero image went from 15.1 MB to 262 KB**, a 98% cut, with no visible
+> change. It was the camera original. See §31.
 
 > **29–30 Oct — the About page was rebuilt.** Its hero is now a framed portrait that
 > grows to full bleed once the preloader lifts; three new sections were built (Leader /
@@ -118,9 +144,10 @@ the client exactly how the thing behaves, without a backend behind it.
 
 ## 2. Current state
 
-- `website-design/` is the live deliverable — six pages, real navigation, working
+- **The repo root is the live deliverable** — seven pages, real navigation, working
   interactions, responsive from 320px up. No backend, no build step, no dependencies.
-- `high-fidelity-design/` remains as the approved homepage visual reference.
+  Flattened out of `website-design/` on 1 Nov; see §32.
+- `playground/` holds the review artefacts and frozen records, none of them site pages.
 - The design system follows `OPS_DETOX_BRAND_GUIDELINE_V1.0.pdf` (see §8): Soft Ivory
   and Deep Green grounds, Detox Green only ever on Deep Green,
   mixed-case pill buttons, round-rect cards, logo-derived picture frames and the
@@ -131,20 +158,31 @@ the client exactly how the thing behaves, without a backend behind it.
   holds only `website-design/`, `high-fidelity-design/` and the brand assets they
   reference, but **it is stale — still at 6 October**. See §19.
 
-### Pages in `website-design/`
+### Pages — at the repo root (§32)
 
 | File | Page |
 |---|---|
 | `index.html` | Homepage |
-| `detox.html` | The DETOX / Work With Us — full service page, client wireframe order |
-| `diagnostic.html` | OPS Detox Diagnostic™, with a working demo of the audit |
 | `about.html` | About Oscar de Grauw |
+| `work-with-us.html` | **New page, in progress** — see §30. A fresh Work With Us page; `detox.html` is untouched |
+| `detox.html` | The DETOX — the older full service page, client wireframe order |
+| `diagnostic.html` | OPS Detox Diagnostic™, with a working demo of the audit |
 | `contact.html` | Contact — message form plus a slot for the booking embed |
 | `freebie.html` | Freebie opt-in (Startup Financial Model Template) |
-| `hero-sections.html` | **Not a site page.** Five alternative hero treatments, tabbed, for client review — see §20 |
-| `home-comments.html` | **Not a site page, and now superseded.** The 15 Oct comments build — see §22. Its hero direction was approved and promoted into `index.html` (`0df3393`), so this file is a frozen record, not something to keep patching |
-| `home-comments-hero.html` | **Not a site page, and now superseded.** The type-led hero build — see §23. Its content is what `index.html` carries today |
-| `parked-sections.html` | **Not a site page.** Holding file for the two sections cut from the homepage, kept for reuse — see §25 |
+
+### Not site pages — `playground/` (§32)
+
+Nothing here is linked from the nav, and nothing here is a dependency of a site page.
+All of it reaches `css/`, `js/` and `assets/` with `../`.
+
+| File | What it is |
+|---|---|
+| `playground/hero-sections.html` | Five alternative hero treatments, tabbed, for client review — see §20 |
+| `playground/hero-ivory.html` | **Superseded.** The Soft Ivory hero comparison; approved 31 Oct and promoted into `index.html` stylesheet section 16, so this is a frozen record — §28 |
+| `playground/home-comments.html` | **Superseded.** The 15 Oct comments build — §22. Its hero was approved and promoted into `index.html` (`0df3393`), so this is a frozen record, not something to keep patching |
+| `playground/about-hero.html` | Standalone demo the About hero options were reviewed in — §29 |
+| `playground/index-old.html` | The pre-rework homepage, kept as a reference |
+| `playground/parked-sections.html` | Holding file for the two sections cut from the homepage, kept for reuse — see §25 |
 
 ### What actually works
 
@@ -165,17 +203,17 @@ the client exactly how the thing behaves, without a backend behind it.
 
 | File | Purpose |
 |---|---|
-| `website-design/` | The working site — see its README for what is live vs. placeholder |
-| `website-design/css/site.css` | Full design system, expanded and sectioned for editing |
-| `website-design/hero-sections.html` | Standalone hero exploration, self-contained CSS; tokens duplicated from site.css and kept in sync by hand — §20 |
-| `website-design/home-comments.html` | Client-comments review build of the homepage; all overrides in one scoped `<style>` block, `index.html`/`site.css` untouched — §22 |
-| `website-design/home-comments-hero.html` | Type-led hero on top of the comments build; same scoped-`<style>` rule — §23 |
-| `website-design/hero-ivory.html` | `index.html` with the hero ground changed to Soft Ivory; a comparison build, not a decision — §28 |
-| `website-design/about-hero.html` | Standalone demo the About hero options were reviewed in — §29 |
-| `website-design/js/site.js` | Nav, module popups, forms, switch, reveal, ticker |
-| `website-design/js/diagnostic.js` | Demo diagnostic — questions and scoring live here |
-| `high-fidelity-design/` | Approved high-fidelity homepage (minified CSS, reference only) |
-| `mockup/` | Original static mockups and client wireframe reference |
+| `css/site.css` | Full design system, expanded and sectioned for editing. Shared by all seven pages |
+| `js/site.js` | Nav, module popups, forms, switch, reveal, wide O/D wrapping. Shared by all seven pages |
+| `js/diagnostic.js` | Demo diagnostic — questions and scoring live here |
+| `assets/` | Fonts, icons, images, logos, patterns, social icons — the site is self-contained |
+| `index.html` | The live homepage. Carries the approved Soft Ivory hero as stylesheet **section 16, which must stay last in the file** — §28 |
+| `about.html` | Rebuilt 29–31 Oct; the hero edge animation is driven from its own inline script because Safari will not run it from CSS — §29.1 |
+| `work-with-us.html` | **New page, in progress.** Built section by section from the client's supplied designs; five sections deep. Not `detox.html` — §30 |
+| `playground/` | Review artefacts, frozen records and standalone demos — see the table above and §32 |
+| ~~`home-comments-hero.html`~~ | **DELETED.** Its content was promoted into `index.html` in `0df3393`; recover from git if §23's build is ever needed |
+| ~~`high-fidelity-design/`~~ | **DELETED 1 Nov** (§32) — the approved high-fidelity homepage, superseded by the live site. In git history |
+| ~~`mockup/`~~ | **DELETED 1 Nov** (§32) — the original static mockups and client wireframe reference, superseded. In git history |
 | `content/copy.md` | Client-supplied, locked website copy |
 | `content/oscar-bio.md` | Oscar background, credibility points, proprietary frameworks |
 | `Brand assets/` | Logos, fonts, patterns, icons, brand guideline, campaign artwork. **Gitignored — local only, see §19** |
@@ -238,14 +276,21 @@ particular), and a formal accessibility audit.
 - ~~**The two offers, named.**~~ **ANSWERED, 29 Oct**, by email: *Operational flow — The
   Execution package (Founder Bottleneck)* and *Organisational flow — The Leadership
   package (Team Bottleneck)*. He gave three labels per offer and a page can only lead with
-  one; the site already carries the two tracks inside "How the cleanse works", so this is
-  now a naming edit, not a build. **Not yet applied to the page.** His breakdown also
+  one. **Still not applied anywhere, as of 1 Nov** — and the `work-with-us.html` cards now
+  carry a bottleneck label *and* a heading, so a third stacked line would hit the crowding
+  problem §27 already ran into. The cleanest home is probably replacing the short heading. His breakdown also
   answers, in passing, the open question of where the frameworks live: Execution =
   meetings + decisions + reporting, Leadership = communication + ownership + psychological
   safety, which are six of the seven DETOX modules. Worth confirming he meant it.
-- **Where Tool Stack Detox goes.** It is the seventh module and fits neither bottleneck,
-  which is why he proposed it as an add-on. It carries the hardest number on the site
-  (10–30% tooling spend, €150–300K on a €1M spend) and is not on the homepage at all.
+- ~~**Where Tool Stack Detox goes.**~~ **ANSWERED, 31 Oct.** It is the add-on card at the
+  foot of `work-with-us.html`'s offers section (§30), styled deliberately lighter than the
+  two tracks. **Still open within it**: the hardest number on the site — 10–30% of tooling
+  spend, €150–300K on a €1M spend — appears in none of the supplied copy and was not
+  invented. That card is its natural home. It is still absent from the homepage.
+- **Two photographs for `work-with-us.html`** — the hero frame (Oscar at a whiteboard with
+  a leadership team) and the two-whiteboard "consultant's way vs the OPS Detox way" frame.
+  Both are placeholder panels on the page right now and are the main thing keeping it from
+  being client-ready (§30).
 - **Photography for the About timeline.** All six images in §29's timeline are
   placeholders: they are the only real photographs of Oscar in the project, rotated, and
   none depicts the moment its entry describes. There is no childhood, flight-attendant or
@@ -273,7 +318,11 @@ particular), and a formal accessibility audit.
   every detox" and again in "Six values, no exceptions", two sections apart. Both are
   client copy, so nothing was deleted. Cut one, or merge into a single six with those
   three leading (§29).
-- **The Soft Ivory homepage hero** (§28) — keep the Detox Green hero or switch.
+- ~~**The Soft Ivory homepage hero**~~ **DECIDED, 31 Oct: switched.** It is live in
+  `index.html` as stylesheet section 16, which **must stay last** or the hero reverts to
+  lime. `hero-ivory.html` is a frozen record. The §28 trade still stands and the client
+  should know it: ivory is calmer and more legible, but the brand is no longer stated on the
+  first screen — the only lime above the fold is the logo and one button.
 - **Does the homepage lead with the founder's payoff or with the cleanse?** The client
   wants the site to say the founder is released from the operational noise and claims
   his time back for growth. The current `h1` and the whole page spine sell the method
@@ -303,22 +352,33 @@ particular), and a formal accessibility audit.
 
 ## 7. Next steps
 
-1. Close out the 28 Oct round (§27): the hero marks, the keynote slide copy and the AI
-   images all need the client's word. Collect the two offer names and the real framework
-   copy in the same pass — both still blocking since 15 Oct. Settle the
-   founder-vs-cleanse positioning question separately and deliberately; it is not a
-   review-call item.
-2. Walk the client through the rest of `website-design/`. **The homepage hero is settled**
-   — the type-led direction was approved and promoted into `index.html`, which retires
-   the §20 exploration and the §10 pattern question with it. The five interior pages have
-   had none of this attention and still follow the old structure.
-3. Confirm the booking platform and the diagnostic platform — these two unblock most of
-   the remaining functional work.
-4. Collect the missing content: logos, testimonials, contact details, photography,
-   module copy.
-5. Wire the booking embed, form backend and real diagnostic.
-6. Licence the typeface, add the legal pages, then cross-browser and real-device QA
-   before launch.
+1. **Finish `work-with-us.html`** (§30). It needs the two photographs, a decision on whether
+   "Work With Us" joins the main nav (and whether it replaces `detox.html` there), and the
+   remaining sections if there are more. The page is otherwise built and verified.
+2. **Lift the shared blocks into `css/site.css` before the real content arrives.** The
+   testimonial slider is now in **three** pages and the Deep Green header in three, each
+   copied with its markup. The slider repeats its four placeholder quotes four times per
+   copy, so replacing one quote is twelve edits across three files. **The real testimonials
+   landing is exactly what will break these apart** — do the lift first.
+3. Close the copy questions that have been blocking since mid-October: the two package
+   names (open since 29 Oct), the real framework copy, DRMT™'s expansion, and whether
+   See – Strip – Choose™ replaces The CORE method™. Settle the founder-vs-cleanse
+   positioning question (§22.6) separately and deliberately — it is not a review-call item.
+4. Close out the 28 Oct round (§27): the hero marks, the keynote slide copy, and the AI
+   keynote images, which are a credibility decision rather than a design one.
+5. Walk the client through the five interior pages. **`index.html` and `about.html` have had
+   all the attention; the interior five still follow the old structure**, and `detox.html`
+   in particular wants the same rework.
+6. Confirm the booking platform and the diagnostic platform — these unblock most of the
+   remaining functional work.
+7. **Optimise the remaining oversized assets.** §31 did the worst one. Still outstanding:
+   `hero-concept.png` (1.8 MB, now unused by the homepage), `hero-cards.png` (1.8 MB),
+   `poster.png` (1.9 MB), `time-is-money.png` (1.8 MB), `portrait.png` (1.4 MB).
+8. **Test in Safari as a matter of course, not afterwards.** §29.1 shipped broken three
+   times because every check was Chrome-only, and there is no WebKit automation on the build
+   machine. Anything animated needs a real Safari look before it is called done.
+9. Licence the typeface, add the legal pages, then cross-browser and real-device QA before
+   launch.
 
 ## 8. Brand-system rework (10 October 2026)
 
@@ -1114,6 +1174,11 @@ this work — it is in every copy of the page — but it should be cleaned up ne
 
 ## 23. Type-led hero — `home-comments-hero.html` (23 October 2026)
 
+> **The file no longer exists.** Its content was promoted into `index.html` in `0df3393`
+> and the copy was deleted. Everything below is the record of how that hero was built and
+> why, and it still describes the live homepage hero — with one change since: the ground is
+> Soft Ivory now, not Detox Green (§28). Recover the file from git if it is ever needed.
+
 ### What exists and why it is a third file
 
 `website-design/home-comments-hero.html` — a copy of `home-comments.html` with the
@@ -1773,7 +1838,13 @@ forcing the state in CSS — headless cannot hover.
 
 ## 28. Soft Ivory homepage hero — `hero-ivory.html` (29 October 2026)
 
-A comparison build, not a decision. `hero-ivory.html` is `index.html` with **one** change:
+> **APPROVED 31 OCTOBER and promoted into `index.html`**, where it is stylesheet section 16.
+> **That block must stay last in the file** — it overrides section 6 at equal specificity
+> and wins on source order alone, so moving it up returns the hero to lime silently.
+> `hero-ivory.html` is a frozen record now; change the hero in `index.html`.
+> `index.html`'s title and description were review-build text and are now real page copy.
+
+It was built as a comparison, not a decision. `hero-ivory.html` is `index.html` with **one** change:
 the type-led hero's ground goes from Detox Green `#CCFE06` to Soft Ivory `#FEFDF2`.
 Everything from the switcher strip down is identical, so the two files can be opened side
 by side and only the first screen differs. `index.html` and `css/site.css` are untouched.
@@ -1840,11 +1911,64 @@ Four things cost real time and are all load-bearing:
 2. **The crop is animated, 46% → 34%.** The frame does not just grow, it grows *wider
    relative to its height*, so a single `object-position` that frames him at rest crops
    into his head at full bleed.
-3. **Border and radius are in their own `@keyframes`.** Sharing a block with the custom
-   properties `--ah-w`/`--ah-h`, they did not interpolate: the frame reached full width
-   still carrying its 6px lime edge and 36px corners, then dropped them at the end.
-   Separate keyframes with literal values — no `var()` — same duration, delay and curve.
-   Verified mid-flight: 6px/36px at 1100ms, 1px/9.9px at 1450ms, 0/0 at the end.
+3. **Border and radius are registered custom properties, in the same `@keyframes` as the
+   size.** This has been built three ways and the history matters, because the obvious fix
+   in one engine breaks the other:
+   - **Build 1** — `border-width` and `border-radius` as ordinary properties alongside
+     `--ah-w`/`--ah-h` in one block. **Chrome did not interpolate them**: the frame reached
+     full width still carrying its 6px lime edge and 36px corners, then dropped both at the
+     end.
+   - **Build 2 (29 Oct)** — split into their own `ahEdge` keyframes, second in the
+     shorthand's animation list. Fixed Chrome. **Silently did nothing in Safari** — the
+     picture grew to full bleed and kept the border and the rounded corners for the whole
+     animation. The client saw it on 31 Oct; §29's original "verified mid-flight" note was
+     a Chrome-only measurement and did not catch it.
+   - **Build 3 (31 Oct)** — the edge re-expressed as registered custom properties and
+     merged back into the single `ahOpen` block, on the theory that Safari had dropped the
+     second entry in the animation list. **Still broken in Safari.** That rules out both the
+     list and the property type: Safari ignores the edge animation whenever it shares an
+     element with the size animation, however the two are packaged.
+   - **Build 4 (31 Oct)** — split onto two **elements**. A new `.ah-box` wrapper
+     carries `ahOpen` (the size, still registered custom properties) and nothing else;
+     `.ah-frame` carries `ahEdge` (plain `border-width`/`border-radius`, no `var()`, no
+     `@property`) and nothing else. One animation per element. `.ah-frame` keeps
+     `overflow:hidden`, so the photograph's corners still round *with* the border rather
+     than behind it.
+
+     **Still broken in Safari.** Four CSS builds, four failures.
+   - **Build 5 (31 Oct, current)** — **the edge is animated in JavaScript**, by
+     `animateEdge()` in `about.html`'s own inline script, using `Element.animate()`. It runs
+     the moment `.hero-go` lands, so the WAAPI `delay: 450` and `ahOpen`'s
+     `animation-delay: .45s` are measured from the same instant.
+
+   **Safari will not run this animation from a stylesheet, full stop.** Four CSS packagings
+   were tried and every one left the picture growing to full bleed still carrying its 6px
+   lime border and 36px corners, while the *size* animation on the same page worked
+   throughout. Do not spend another round on a CSS fix.
+
+   What stays, and why it looks redundant but is not:
+
+   - **`.ah-box` stays.** It is a pure animation wrapper with no styling of its own.
+   - **The `ahEdge` / `ahEdgeSm` keyframes stay**, still attached to `.ah-frame`. Script
+     animations sit above CSS animations in the cascade, so WAAPI simply wins when it runs;
+     the keyframes are the no-JS fallback.
+   - **`animateEdge()` carries its own `prefers-reduced-motion` guard.** The stylesheet's
+     reduced-motion block cannot stop a script animation, so without it the edge would
+     animate for exactly the users who asked it not to.
+   - **Timing is duplicated** between the CSS (`ahOpen`) and the JS (1150ms / 450ms /
+     `cubic-bezier(.65,0,.2,1)`). Retune the two together or the border stops shrinking in
+     step with the frame growing.
+
+   Verified in Chrome by seeking the animations directly — `getAnimations()`, `pause()`,
+   then set `currentTime` — at 450ms, 1025ms and 1600ms: 1180px/6px/36px → ~1330px/1px →
+   full bleed/0/0. **Note that `--virtual-time-budget` does not advance animations** (§24
+   records the same trap for the marquee), so a plain timed screenshot shows the resting
+   frame and proves nothing. **Safari is still unverified by measurement** — there is no
+   WebKit automation on the build machine, which is what let builds 2–4 ship broken.
+
+   The same pass fixed a silent dead rule: the ≤700px block declared `--ah-h` and a 4px
+   `border-width`, both of which an animation's value beats, so neither had ever applied.
+   The phone now swaps `animation-name` to `ahOpenSm`/`ahEdgeSm` instead.
 4. **The whole thing is held until the preloader lifts.** A fixed delay measured from load
    played the animation out behind the Deep Green overlay, finished before anyone saw it.
    A longer delay cannot fix it: `js/site.js` lifts the preloader at 1450ms normally,
@@ -1862,6 +1986,15 @@ Four things cost real time and are all load-bearing:
 
 The header goes Deep Green on this page, as on `index.html` §5, and stays sticky.
 
+**The name plate is left-aligned, not centred (31 Oct).** The caption used to be a
+full-width centred flex row while the name — whose box is capped by `site.css`'s
+`h1{max-width:19ch}` — sat against the plate's left padding, measured 24→912 in a 1400
+frame. So the caption drifted out from under the name, and drifted further as the picture
+opened, because it re-centres on the growing frame while the name does not move. Both now
+share one left edge. The plate's side inset is a percentage (`max(24px,3.2%)`) rather than
+a flat 24px, so it opens with the frame — about 38px framed, 61px at 1920 — which keeps the
+optical margin constant **without adding an animation**, and Safari would not have run one.
+
 ### 29.2 The cut-out, and the tooling that made it
 
 **§20's ceiling is lifted: a transparent cut-out of Oscar now exists.** It was made from
@@ -1877,8 +2010,10 @@ Weight mattered, since the client has already complained about a 1.8MB image:
 | **AVIF, what almost everyone gets** | **46 KB** |
 
 Served through `<picture>` — AVIF first, PNG fallback — with `loading="lazy"`,
-`decoding="async"` and explicit `width`/`height`. There is no WebP encoder on the build
-machine; AVIF with alpha covers Chrome, Firefox and Safari 16.4+.
+`decoding="async"` and explicit `width`/`height`. AVIF with alpha covers Chrome, Firefox and
+Safari 16.4+. (**Corrected 31 Oct**: there *is* a WebP encoder on this machine —
+`cwebp` at `/opt/homebrew/bin/cwebp` — and `sips -s format avif` encodes AVIF natively.
+Both were used for the hero optimisation below.)
 
 Four candidates were cut and compared on Deep Green: `oscar-about` (chosen),
 `oscar-portrait` (clean but a stiff, symmetrical hands-on-hips pose),
@@ -1994,3 +2129,289 @@ probed frame by frame at 900/1500/1700/2100/2600/3400ms.
   is a 500px render cropped to 390 and will look like a layout bug that is not there.
 
 **Not verified**: Safari, Firefox, real devices, below 500px, and hover states.
+
+---
+
+## 30. Work With Us — a new page (31 October 2026)
+
+`website-design/work-with-us.html`. **This is not `detox.html`.** That page — titled "The
+DETOX" in the nav and described in §2 as "The DETOX / Work With Us" — is the 14 October
+service build on the old structure, and it was left untouched. The client asked for a new
+page, supplied section by section, so it is being built that way.
+
+Same scope rule as `index.html` and `about.html`: every rule lives in one `<style>` block
+in this document. `css/site.css` and `js/site.js` are not touched.
+
+**Running order, set by the client on 31 Oct:** hero → the problem → the system introduced →
+**testimonials** → the two offers and the add-on. The testimonials sit *above* the offers
+here, which is the reverse of the homepage (offer → testimonials → IP, §24). Deliberate and
+client-stated; **do not "correct" it against the homepage.**
+
+### Section 1 — the hero
+
+Page title "WORK WITH US" centred above a two-column split: eyebrow, headline, body and two
+CTAs left, photograph right. Copy is the client's, with the break after "team" forced.
+
+The two coral labels in the supplied design are **annotations, not copy** — "Leads to
+contact" and "Leads to page with Calendly integration" — so "Let's talk" goes to
+`contact.html` and "Book the FREE DIAGNOSTIC" to `diagnostic.html`. Button order and styling
+copy `index.html`'s hero, so both pages offer the same pair in the same way.
+
+### Section 2 — "Nobody designed it this way. It simply accumulated."
+
+Deep Green: it breaks the ivory above it, it is the only legal ground for the lime accents
+(p.21), and it suits the content. Three deliberate departures from the mockup:
+
+- **The six statements are left-aligned, not centred.** Centred body copy starts every line
+  in a different place; §29.3 made the same call on the About page. The heading stays
+  centred, as drawn.
+- **They are a numbered two-column list separated by hairlines, not cards.** Six boxes would
+  turn a list of symptoms into six equal claims. The lime numeral is `.cleanse-num`'s device
+  without the disc — six discs on one screen reads as a control panel.
+- **The closing sentence is the section's payoff**, set in display type with "a third of
+  every week" in lime. It is the consequence, not a seventh symptom, and the phrase is the
+  hero's own promise inverted ("a third of its week back").
+
+`site.css` caps `h2` at 21ch, which broke the heading into four lines; the measure is
+uncapped here and the two lines are forced in the markup instead.
+
+### Section 3 — "There is a cleaner way to run a growing company."
+
+Back to Soft Ivory, so the page alternates ivory / green / ivory instead of stacking two
+dark bands. Copy left, photograph right, as drawn.
+
+- **The heading is deliberately below the one section scale** (§27's
+  `clamp(42px,4.7vw,70px)`). That scale is for titles owning the full container width; this
+  one sits in a ~600px column beside a photograph, where 70px turns a 48-character sentence
+  into five lines. §27 already keeps two titles off the scale for the same kind of reason.
+  Matching it would mean lifting the heading out of the column to sit full width above both.
+- **The eyebrow is typed in literal capitals, "OPS Detox™"** — the one case where
+  `js/site.js` widens both letters by itself, since it splits on uppercase `/([OD])/`.
+  Retype it in sentence case and the wide letters silently disappear.
+
+### Section 4 — testimonials
+
+Copied verbatim from `index.html`. **This is the third copy of that block** — see the
+Technical note in §6, and do the lift into `css/site.css` before the real quotes arrive.
+
+It is the only ivory section on the page **without** the dot field, because it came across
+untouched. It does not read as broken — the testimonial cards are white panels — but one
+`ws-dots` class would make it consistent if that is wanted.
+
+### Section 5 — the two offers, and the add-on
+
+One Soft Ivory section (`.ws-offers`) holding three cards.
+
+**They were first built as two consecutive full-bleed Deep Green sections and that failed.**
+Stacked, they read as one long dark stretch with a gap in it; the client's note was that
+they "look identical", which they were — same ground, same width, nothing between them but
+air. They are now **Deep Green round-rect cards on an ivory ground**, which gives each a
+visible edge and an ivory gutter, and uses the brand's own 36px card — the device the
+homepage already uses for this same pair.
+
+**The two tracks remain identically treated on purpose.** They are a choice between equals,
+not a sequence, so making one dominant would imply a default. The separation comes from the
+frame and from the **bottleneck label** — "Founder bottleneck" / "Team bottleneck", the same
+copy and the same lime Formula Condensed device as the homepage's offer cards (§27). That
+label is what tells them apart at a glance; the headings alone were not doing it.
+
+| Card | Modules | CTA |
+|---|---|---|
+| Operational flow | Meetings · Decision · Reporting Detox | `detox.html` |
+| Organisational flow | Communication · Ownership · Psychological Safety Detox | `detox.html#modules` |
+| Tool Stack Detox (add-on) | — | none |
+
+- **`.ws-offer` is reusable** — a third track, or a copy change, is markup only.
+- **The three module boxes are outlined at an 18px radius**, not the site's 36px round-rect
+  cards. Full cards would read as three separate offers rather than as what is inside one.
+  They stay three across down to 980px, then stack.
+- **Every lowercase `o` in the two headings is hand-wrapped.** `site.js` widens only the
+  literal capital, so `Operati-o-nal fl-o-w` would otherwise show the same letter at two
+  widths. `index.html`'s H1 wraps them all for the same reason.
+
+> **One word differs from the supplied mockup, deliberately.** The Organisational mockup
+> opens "For **companies** where delegation…". On 28 Oct the client changed that exact
+> sentence on the homepage's card to "For **teams** where…" (§27) — her own edit to her own
+> locked copy. The mockup almost certainly predates it, and building "companies" would
+> silently undo a client edit and leave the two pages disagreeing. "teams" is built and
+> flagged in the markup. **One word to revert if the mockup is the newer source.**
+
+**The add-on closes an open question from §6**: where the seventh module goes. **It is
+deliberately not a third Deep Green card.** Tool Stack Detox fits neither bottleneck, which
+is precisely why the client proposed it as an add-on; three identical cards would read as
+three equal choices and undo that. It is the lighter weight of the same family — ivory
+ground, Deep Green hairline, same 36px radius, centred, narrower, no CTA. No lime on it,
+which p.22 would not allow on ivory. It carries a **solid** `--paper` fill so the dot field
+stops at its edge instead of running through the copy.
+
+Its copy says "Tool Stack **Module**" in the last sentence while the card's title says
+"Detox". That is the client's wording and was left alone.
+
+### Open on this page
+
+- **Both photographs are placeholders.** `.ws-shot--pending` panels in sections 1 and 3,
+  with the real `<figure>` markup commented directly above each, pointing at
+  `assets/img/work-whiteboard.jpg` and `assets/img/work-two-ways.jpg`. Neither image exists
+  in the project. **This is the main thing keeping the page from being client-ready.**
+- **The dot field is not a V1.0 device.** The guideline names exactly two patterns — the
+  logo pattern (merch only, p.37) and the switcher pattern (the website device, p.38) — and
+  a dot grid is neither. It is one deletable rule, `.ws-dots::before`, held at an alpha low
+  enough to read as paper texture. Delete it and every ivory section goes plain at once.
+- **The nav item exists only on this page.** Adding "Work With Us" to the other six headers
+  is a six-file edit, and it makes the nav seven items, which will crowd at laptop widths.
+  Decide whether this replaces `detox.html` in the nav or sits beside it.
+- **The 29 Oct package names are still not applied anywhere.** "The Execution package
+  (Founder Bottleneck)" and "The Leadership package (Team Bottleneck)". The cards now carry
+  a bottleneck label *and* a heading, so stacking a third line would hit the crowding
+  problem §27 already ran into — the cleanest home is probably replacing the short heading,
+  not adding to it. Open since 29 Oct.
+- **The strongest number on the site is still unused.** §6 records Tool Stack Detox as
+  carrying 10–30% of tooling spend, €150–300K on a €1M spend. It is nowhere in the supplied
+  copy and was not invented, but the add-on card is its natural home. Every other section
+  on this page argues qualitatively.
+- **"DIAGNOSTIC" renders with a wide D and O** in the hero CTA, which makes the label look
+  like two typefaces. Not local to this page: `js/site.js`'s `OD_SELECTOR` includes
+  `.button`, so `index.html`'s hero does it too. Left consistent rather than diverged — fix
+  both at once in the shared file.
+- **The Deep Green header block is duplicated across three pages** — here, `index.html` §5
+  and `about.html` — because an ivory hero would otherwise put the lime logo, nav and CTA on
+  Soft Ivory, p.22's first watchout. It belongs in `css/site.css`.
+
+### Status
+
+Rendered headless at 1512, 1024 and 500, plus the full page end to end at 1300. No
+horizontal overflow, no heading over three lines, every section holds its forced breaks.
+**Not verified**: Safari, Firefox, real devices, below 500px, hover states.
+
+## 31. The About hero image, optimised (31 October 2026)
+
+`assets/img/oscar-steps.jpg` was the **camera original: 3448 × 5168, 15.1 MB.** It is the
+About page's full-bleed hero, so it was the first thing that page loaded — and eight times
+the size of the 1.8 MB hero the client had already complained about (§22.1).
+
+| | |
+|---|---|
+| Was | 3448 × 5168 JPEG, **15.1 MB** |
+| Now, AVIF — what almost everyone gets | 2048 × 3069, **262 KB** |
+| WebP | **314 KB** |
+| JPEG fallback | **789 KB** |
+
+**98% smaller, with no layout, crop or quality change visible at any viewport tested.**
+
+### Why 2048 wide, and not smaller
+
+The frame opens to the full viewport. `object-fit:cover` on a 2:3 portrait in a landscape
+frame scales by **width**, so on a 1920 screen the whole image is used at 1920 across — the
+height is what gets cropped. 2048 covers that with a little slack. Anything narrower is
+upscaled on a large display. On a phone the opposite is true: the 5:4 frame scales by
+height and needs barely 550px, which is why one file serves both rather than a srcset.
+
+### Tooling — both are on this machine
+
+- `sips --resampleWidth 2048 --setProperty formatOptions 58 in.jpg --out out.jpg`
+- `cwebp -q 70 out.jpg -o out.webp` (`/opt/homebrew/bin/cwebp`)
+- `sips -s format avif -s formatOptions 55 out.jpg --out out.avif`
+
+**§29.2's note that there is no WebP encoder here is wrong and has been corrected.**
+`-Z` constrains the *longest* side — on a portrait that gives you 1366 wide, not 2048. Use
+`--resampleWidth`.
+
+### The markup change
+
+The `<img>` became a `<picture>` — AVIF, then WebP, then JPEG — with explicit
+`width`/`height`. The `<picture>` is the grid item now, so `.ah-shot{display:block;
+min-height:0;height:100%}` gives it the height the `<img>` used to take directly. **The
+`ahCrop` animation stays on `.ah-pic`, which is still the `<img>`**, so the animated crop is
+untouched.
+
+> **Headless Chrome screenshots AVIF as a blank area**, even though the image reports
+> `complete:true` and the correct `naturalWidth`. This looks exactly like a broken layout
+> and is not one — §29 records the same trap for `decoding="async"`. To check an AVIF
+> visually, strip the `<source>` tags in a throwaway copy so the JPEG is served.
+
+### Not done
+
+`about-hero.html` also references `oscar-steps.jpg` and still uses the plain `<img>`. It is
+a standalone demo, not a site page, so it picks up the smaller JPEG automatically and loses
+nothing. The other large assets are untouched and worth the same pass: `hero-concept.png`
+(1.8 MB, no longer used by the homepage), `hero-cards.png` (1.8 MB), `poster.png` (1.9 MB),
+`time-is-money.png` (1.8 MB) and `portrait.png` (1.4 MB).
+
+---
+
+## 32. The repository flattened and cleaned (1 November 2026)
+
+The project had accumulated four parallel copies of the design at different stages, plus
+review artefacts sitting in the same directory as the live pages. **The root is now the
+site, and everything else is either `playground/` or gone.**
+
+### What moved where
+
+| Before | After |
+|---|---|
+| `website-design/index.html` and the six other pages | **repo root** |
+| `website-design/css/`, `js/`, `assets/` | **repo root** |
+| `website-design/{hero-sections,hero-ivory,home-comments,about-hero,index-old,parked-sections}.html` | **`playground/`** |
+| `website-design/README.md` | folded into the root `README.md` |
+| `mockup/` | **deleted** — the original static mockups, superseded by the live site since 10 Oct |
+| `high-fidelity-design/` | **deleted** — the approved homepage visual reference, superseded by the same |
+| root `assets/` (three `.gitkeep` stubs, no real files) | **deleted** |
+| `.DS_Store` ×2 | **deleted** |
+
+**Nothing was deleted that is not in git history.** `mockup/` and
+`high-fidelity-design/` are recoverable with `git show <commit>:<path>`; both were
+reference-only and neither was linked from any page.
+
+**Kept deliberately**: `content/` (the locked client copy), `reference/` (gitignored,
+client personal data) and `Brand assets/` (gitignored, 75 MB — §19 warns that
+`OPS_DETOX_BRAND_GUIDELINE_V1.0.pdf` may exist nowhere else; do not delete it to save
+space without backing it up first).
+
+### The path rewriting, and the one thing that nearly broke
+
+Every page reference in the project is relative, with no leading `./`. That means
+**promoting the site to the root was free** — `css/`, `js/` and `assets/` kept the same
+relative depth from the pages and from each other, so `css/site.css`'s own `../assets/…`
+references still resolve. No edit was needed in any site page, in `site.css`, or in
+either script.
+
+**`playground/` was the opposite**: moving a file down one level breaks every one of its
+relative references. All six were rewritten — `href`/`src`/`url()` prefixed with `../`,
+including the page-to-page links, so `playground/hero-ivory.html`'s nav reaches the real
+`../about.html` rather than a sibling that does not exist.
+
+> **The trap: `srcset` on `<source>` elements.** The first rewrite pass covered `href`,
+> `src` and `url()` and silently missed the `<source srcset="assets/img/hero-concept.png">`
+> inside the `<picture>` in `home-comments.html` and `index-old.html`. The `<img>`
+> fallback beside it *was* rewritten, so both pages would have kept working in every
+> browser that takes the fallback and broken only where the `<source>` won — the kind of
+> failure that does not show up in a screenshot. **Grep for `srcset` as well as `src`
+> whenever a file changes directory depth.**
+
+### How it was verified
+
+Two passes, because the filesystem and the browser do not agree about what a reference
+means:
+
+1. **Filesystem** — every `href`, `src`, `srcset` and `url()` in all 13 pages plus
+   `site.css`, `site.js` and `diagnostic.js` resolved against disk relative to its own
+   file. **312 references, 0 broken.**
+2. **HTTP** — the root served on `:8777`, all 13 pages fetched, their references
+   extracted and each one actually requested. **45 unique URLs, 0 failed requests.** All
+   13 pages return `200`.
+
+The only unresolved references left are `assets/img/work-whiteboard.jpg` and
+`assets/img/work-two-ways.jpg` in `work-with-us.html`. **Those are pre-existing and
+expected** — they sit inside HTML comments, the real `<figure>` markup held ready for
+the two photographs §30 is waiting on. They are not a consequence of this move.
+
+### What this does not fix
+
+The restructure is purely locational. **The duplication §6 records is untouched**: the
+testimonial slider is still copied into three pages and the Deep Green header into
+three, each with its markup, and the lift into `css/site.css` is still the next
+structural job. Flattening the tree makes that lift easier to see, not already done.
+
+Not re-verified visually: nothing was restyled, so no screenshot sweep was run. If a
+page looks wrong, suspect a missed reference and re-run the two checks above rather than
+the CSS.

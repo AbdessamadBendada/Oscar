@@ -5,44 +5,56 @@ file is the short list of things that are easy to get wrong.
 
 ## Read first
 
-**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§26) and the dated banners
+**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§32) and the dated banners
 at the top are the change log. Read the banners plus any section a task touches before
 editing. Several decisions in it look like bugs and are not — see "Do not 'fix'" below.
 
 ## The deliverable
 
-`website-design/` is the live site: six pages, plain HTML/CSS/JS, no build step, no
-dependencies, no backend. Open the files directly or serve the folder. There is nothing
-to install and nothing to compile — keep it that way.
+**The repo root *is* the site.** `index.html`, `about.html`, `detox.html`,
+`diagnostic.html`, `contact.html`, `freebie.html` and `work-with-us.html` sit at the top
+level alongside `css/`, `js/` and `assets/` — plain HTML/CSS/JS, no build step, no
+dependencies, no backend. Open the files directly or serve the root. There is nothing to
+install and nothing to compile — keep it that way.
 
-Four files in there are **not site pages**. They are standalone artefacts and are not
-linked from the nav:
+*(Everything used to live in a `website-design/` subfolder. It was flattened to the root
+on 1 Nov 2026 — see §32. Older handoff sections still say `website-design/…`; read those
+paths as root-relative.)*
+
+**`playground/` holds everything that is not a site page** — review artefacts, frozen
+records and standalone demos. Nothing in it is linked from the nav, and **nothing in it
+may be a dependency of a site page.** Its files reach the shared stylesheet, script and
+assets with `../`:
 
 | File | What it is |
 |---|---|
 | `hero-sections.html` | Five alternative hero treatments, tabbed (§20) |
-| `home-comments.html` | The homepage review build — 15 Oct comments (§22), the revised section order and testimonial slider (§24), and the CSS pattern work (§26) |
-| `home-comments-hero.html` | That build plus the type-led Detox Green hero (§23, revised §26) |
+| `hero-ivory.html` | The Soft Ivory hero comparison build — approved 31 Oct and promoted into `index.html`, so this is a frozen record (§28) |
+| `home-comments.html` | The homepage review build — 15 Oct comments (§22), the revised section order and testimonial slider (§24), and the CSS pattern work (§26). Superseded; its hero went live |
+| `about-hero.html` | Standalone demo the About hero options were reviewed in (§29) |
+| `index-old.html` | The pre-rework homepage, kept as a reference |
 | `parked-sections.html` | Holding file for the Cost and System sections, cut from the homepage but kept verbatim for reuse on another page (§25) |
+
+**Adding a file to `playground/`**: rewrite its `href`/`src`/`srcset`/`url()` references
+to `../`. The `srcset` on `<source>` elements is easy to miss — it bit this move once.
 
 ## Review artefacts: the rule that matters
 
-A review artefact **never modifies the live site.** `home-comments.html` keeps every one
-of its changes in a single scoped `<style>` block in its own `<head>`; `index.html` and
-`css/site.css` are untouched. `hero-sections.html` carries its own full `<style>` block
-for the same reason.
+A review artefact **never modifies the live site.** Each keeps its changes in a single
+scoped `<style>` block in its own `<head>`; `index.html` and `css/site.css` stay
+untouched. `hero-sections.html` carries its own full `<style>` block for the same reason.
 
 When a change in an artefact is approved, **lift the rule into `css/site.css` and delete
 it from the artefact.** The block is a staging area, not a second stylesheet. Do not let
 them drift and do not import one into the other.
 
-**There are now three near-identical copies of the homepage** — `index.html`,
-`home-comments.html` and `home-comments-hero.html`, the last being a copy of the
-second. A fix to a shared section has to be made in all three. (The two comments pages
-now share everything below the hero, and diverge above it.) That is the cost of
-showing the comment work and the hero direction as separate decisions, and it is
-acceptable for one review cycle only. As soon as the 15 Oct comments are signed off,
-lift `home-comments.html`'s block into `css/site.css` and retire that file.
+**The same scope rule now applies to the live pages themselves.** `index.html`,
+`about.html` and `work-with-us.html` each carry their own `<style>` block because
+`css/site.css` and `js/site.js` are shared across all seven pages. The consequence is
+real duplication: **the testimonial slider is in three pages and the Deep Green header
+in three**, each copied with its markup. Change one and they drift apart silently. They
+belong in `css/site.css`, and the lift should happen before the real testimonials land —
+see §6's Technical notes.
 
 `hero-sections.html` duplicates the design tokens from `css/site.css` section 2 by hand.
 If the palette moves, it has to be updated manually.
@@ -53,7 +65,8 @@ If the palette moves, it has to be updated manually.
   homepage problem paragraph. Do not silently correct them.
 - Anything you draft on the client's behalf — framework descriptions especially — is a
   placeholder until he approves it. Mark it visibly in the page (see `.fw-draft` in
-  `home-comments.html`) and in the handoff, rather than letting draft copy pass as final.
+  `playground/home-comments.html`) and in the handoff, rather than letting draft copy
+  pass as final.
 - **Do not invent expansions of the client's trademarked names.** DRMT™ is described as
   "the decision engine" because that is the only description that exists. If a name's
   meaning is unknown, say so and ask.
@@ -81,12 +94,12 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
 - **The `.removed` wrapper below the final CTA in `index.html`** (§18) — the neon frame
   and badge are review furniture. Delete the wrapper and the sections return to the flow
   unchanged. Both comments pages no longer have it: those two sections moved to
-  `parked-sections.html` (§25), deliberately **without** the frame.
+  `playground/parked-sections.html` (§25), deliberately **without** the frame.
 - **The preloader running on every load** rather than once per session (§21) — it is
   under review. The restore is commented inline.
 - **Placeholder contact details, legal links and testimonials** — pending client input,
   labelled as such on the page.
-- **The `182px` headline ceiling in `home-comments-hero.html`** (§23) — load-bearing,
+- **The `182px` headline ceiling in the type-led hero** (§23) — load-bearing,
   not a round number. It is set by the longest hand-broken line, "systems of
   operational", which needs ~1564px at 200px against a 1480px container; above ~186px
   the three lines become five. It is also the §5 fold constraint. Re-measure both if the
@@ -114,7 +127,7 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
 - **`--ticker-h` being 92px, and the strip having no padding of its own** (§26) — the
   strip's height IS that token and the hero subtracts it to land the fold. Pad the strip
   instead of raising the token and the hero stops reaching the fold everywhere.
-- **The headline's `line-height:1.0` in `home-comments-hero.html`** (§26) — it was `.88`.
+- **The headline's `line-height:1.0` in `index.html`'s hero** (§26) — it was `.88`.
   The looser leading is what gives the ring around "cleanse" a band of clear ground to
   travel through; the ring is drawn behind the letterforms and at `.88` it read as
   disconnected arcs. Tighten it and the ring breaks again.
@@ -139,7 +152,7 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
 There is no test suite. Visual changes are checked headless with Chrome:
 
 ```
-python3 -m http.server 8777          # from website-design/
+python3 -m http.server 8777          # from the repo root
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
   --headless --disable-gpu --hide-scrollbars --window-size=1512,982 \
   --screenshot=out.png --virtual-time-budget=5000 \

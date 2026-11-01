@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143318">
+  <title>Work With Us: OPS DETOX™</title>
+  <meta name="description" content="Work with OPS Detox™: how the engagement runs, what you get and who it is for.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/logo/favicon.png">
+  <link rel="stylesheet" href="css/site.css">
+  <!-- ==========================================================
+       WORK WITH US — a NEW page, created 30 October 2026.
+
+       It is not detox.html. That page ("The DETOX") is the
+       14 October service page built to the old structure and it
+       is left alone; this one is built fresh, section by section,
+       from the client's supplied designs.
+
+       SCOPE RULE, same as index.html and about.html: every rule
+       this page needs lives in the <style> block below, scoped to
+       this document. css/site.css and js/site.js are shared with
+       the other six pages and are NOT touched (AGENTS.md). When a
+       rule is approved, lift it into site.css and delete it here.
+
+       SECTIONS: being added one at a time as the client supplies
+       them. The shell below — preloader, header, footer — is
+       copied verbatim from about.html so the page joins the site
+       rather than looking like a one-off.
+       ========================================================== -->
+  <!-- Decided before first paint. While the preloader is under review it
+       runs on every load; restore the once-per-session behaviour by putting
+       sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
+  <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+
+  <style>
+  /* ---------- 1. Page shell ----------
+     The hairline rules between sections are off site-wide now (§24), so
+     they are off here too rather than being added and removed later. */
+  .section-rule{border-bottom:0}
+
+  /* The mockup's copy column sits in a wider channel than site.css's 1180px
+     cap, the same widening index.html made on 28 Oct (§22.2). Gated to
+     desktop, because the narrow layout is the approved one. */
+  @media(min-width:1001px){ .container{width:min(1320px,calc(100% - 80px))} }
+
+  /* ---------- 2. Deep Green header ----------
+     Copied from index.html §5, and it is not optional here. site.css's
+     header is Soft Ivory, and the logo, the nav links and the header CTA are
+     all Detox Green — which is V1.0 p.22's first watchout, lime on ivory,
+     the moment the hero below is also ivory. Deep Green is the only legal
+     ground for them and it gives the hero a top edge.
+
+     DUPLICATED, not shared: this block also exists in index.html and
+     about.html. It belongs in css/site.css, but that edit touches all seven
+     pages. See the Technical note in the handoff. */
+  .site-header{
+    background:var(--ink);
+    border-bottom-color:rgba(204,254,6,.22);
+  }
+  @supports(backdrop-filter:blur(1px)){
+    .site-header{background:rgba(20,51,24,.94)}
+  }
+  .site-nav a{color:var(--lime)}
+  .nav-toggle{border-color:var(--lime)}
+  .nav-toggle i,
+  .nav-toggle i::before,
+  .nav-toggle i::after{background:var(--lime)}
+  .nav-toggle[aria-expanded="true"] i{background:transparent}
+  /* .button--line is a Deep Green pill, which vanishes on a Deep Green
+     header. Same swap site.css already makes inside .on-dark. */
+  .site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+  .site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
+
+  /* ---------- 3. Section 1 — the hero ----------
+     Soft Ivory ground, page title centred above a two-column split: copy
+     left, photograph right.
+
+     THE DOT FIELD IS NOT A V1.0 DEVICE. The guideline names exactly two
+     patterns — the logo pattern (merch only, p.37) and the switcher pattern
+     (the website device, p.38) — and the mockup's fine dot grid is neither.
+     It is built in CSS rather than as an asset precisely so it is one
+     deletable rule, and it is held at a Deep Green alpha low enough to read
+     as paper texture rather than as a graphic. If the client would rather
+     stay inside the guideline, delete .ws-dots::before and every ivory
+     section on the page goes back to plain Soft Ivory at once. */
+  .ws-hero{
+    background:var(--paper);
+    padding:56px 0 var(--section-y);
+  }
+
+  /* The dot field, shared by every Soft Ivory section on this page. */
+  .ws-dots{position:relative;overflow:hidden}
+  .ws-dots::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(20,51,24,.16) 1.4px,#0000 1.5px);
+    background-size:26px 26px;
+  }
+  .ws-dots>*{position:relative;z-index:1}
+
+  /* The page title. One step above the section scale (§27 set every section
+     title to clamp(42px,4.7vw,70px)); this one is the page's name, so it
+     sits above them rather than among them. The wide O comes from
+     js/site.js §3a on its own — the string is typed in literal uppercase, so
+     the script's /([OD])/ match actually fires here, unlike the sentence-case
+     headings elsewhere on the site. */
+  .ws-title{
+    margin:0 0 clamp(40px,5vw,74px);
+    text-align:center;max-width:none;
+    font-size:clamp(44px,7.4vw,112px);line-height:.9;
+    letter-spacing:.02em;color:var(--ink);
+  }
+
+  .ws-hero-grid{
+    display:grid;grid-template-columns:1fr 1.04fr;
+    gap:clamp(32px,5vw,78px);align-items:center;
+  }
+
+  .ws-copy{max-width:640px}
+  .ws-copy .eyebrow{font-size:19px;letter-spacing:.06em}
+
+  /* Sized against the LEFT COLUMN, not the page. The ceiling is set by the
+     longest line, "GIVE YOUR LEADERSHIP TEAM", which carries the wide O and
+     the wide D — measure the ceiling again if either the copy or the wrapped
+     letters change, because a 2x alternate is worth roughly two characters. */
+  .ws-head{
+    margin:16px 0 26px;max-width:none;
+    font-size:clamp(34px,3.7vw,54px);line-height:1.02;
+    letter-spacing:.02em;color:var(--ink);
+  }
+  /* The mockup breaks after "team". Forced, so the two lines are the
+     designer's and not the browser's. */
+  .ws-br{display:block}
+
+  .ws-copy .body-copy{max-width:46ch;font-size:19px;line-height:1.5}
+  .ws-copy .actions{margin-top:38px;gap:18px}
+
+  /* The photograph. Square corners, as drawn — the brand's 36px round-rect
+     belongs to the cards, and the mockup frames this one hard. */
+  .ws-shot{
+    margin:0;overflow:hidden;background:var(--ink);
+    aspect-ratio:4/3;
+  }
+  .ws-shot img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* Placeholder only, until the supplied photograph lands. Delete this rule
+     with the .ws-shot--pending element. */
+  .ws-shot--pending{
+    display:grid;place-items:center;text-align:center;padding:24px;
+    color:var(--lime);font:17px/1.4 var(--display);
+    letter-spacing:.04em;text-transform:uppercase;
+  }
+
+  /* ---------- 4. Section 2 — "Nobody designed it this way" ----------
+     Deep Green, which does three things at once: it breaks the ivory of
+     section 1 so the page has a rhythm rather than one long field, it is
+     the only ground the lime accents below are legal on (V1.0 p.21), and
+     it suits the content — this is the section that names the mess.
+
+     The mockup centres everything. The heading stays centred; the six
+     statements do NOT. Centred body copy means every line starts in a
+     different place, so the eye re-finds the left edge on each one — the
+     same call §29.3 made on the About page's principles. */
+  .ws-mess{
+    background:var(--ink);color:var(--paper);
+    padding:var(--section-y) 0;
+  }
+  .ws-mess h2{
+    /* No measure cap. site.css caps h2 at 21ch, which broke this into four
+       lines; the two lines are forced below instead, and the longer of them
+       needs about 825px at the 70px ceiling against a 1320px container, so
+       it fits with room to spare. */
+    max-width:none;margin:0 auto;text-align:center;
+    color:var(--paper);
+    /* The one section scale set on 28 Oct (§27). */
+    font-size:clamp(42px,4.7vw,70px);
+  }
+  /* The mockup's two lines, forced, so the break is the designer's. */
+  .ws-mess-br{display:block}
+
+  /* Two columns of three. The statements are uneven in length, so they are
+     separated by hairlines rather than boxed — six cards would turn a list
+     of symptoms into six equal claims. */
+  .ws-mess-list{
+    list-style:none;margin:clamp(40px,5vw,64px) 0 0;padding:0;
+    display:grid;grid-template-columns:1fr 1fr;
+    column-gap:clamp(28px,4vw,64px);
+  }
+  .ws-mess-list li{
+    display:grid;grid-template-columns:auto minmax(0,1fr);
+    gap:16px;align-items:start;
+    padding:22px 0;
+    border-top:1px solid rgba(204,254,6,.22);
+  }
+  /* The numeral, not a bullet. Formula Condensed in lime — the same device
+     as .cleanse-num on the homepage, minus the disc: six discs on one
+     screen reads as a control panel. */
+  .ws-mess-n{
+    color:var(--lime);font:16px/1.4 var(--display);
+    letter-spacing:.06em;
+  }
+  .ws-mess-list p{
+    margin:0;color:rgba(254,253,242,.84);
+    font-size:17px;line-height:1.5;
+  }
+
+  /* The payoff line. Set in display type, not body, because it is the
+     section's conclusion and the number in it is the same promise the hero
+     makes — "a third of its week back" there, "a third of every week" lost
+     here. That phrase carries the lime; the rest stays ivory so the lime
+     lands on one idea. */
+  .ws-mess-out{
+    margin:clamp(40px,5vw,60px) auto 0;max-width:min(100%,40ch);
+    text-align:center;color:var(--paper);
+    font:clamp(21px,2.3vw,32px)/1.25 var(--display);
+    letter-spacing:.02em;text-transform:uppercase;
+  }
+  .ws-mess-out b{font-weight:400;color:var(--lime)}
+
+  @media(max-width:760px){
+    .ws-mess-list{grid-template-columns:1fr}
+    .ws-mess-out{max-width:none}
+  }
+
+  /* ---------- 5. Section 3 — "There is a cleaner way" ----------
+     Back to Soft Ivory, so the page alternates ivory / green / ivory rather
+     than stacking two dark bands. Copy left, photograph right, as drawn. */
+  .ws-clean{background:var(--paper);padding:var(--section-y) 0}
+  .ws-clean-grid{
+    display:grid;grid-template-columns:1fr 1.05fr;
+    gap:clamp(32px,5vw,78px);align-items:center;
+  }
+  .ws-clean-copy{max-width:600px}
+  .ws-clean-copy .eyebrow{font-size:19px;letter-spacing:.06em}
+
+  /* Deliberately BELOW the one section scale (§27's clamp(42px,4.7vw,70px)).
+     That scale is for titles that own the full container width; this one
+     sits in a ~600px column beside a photograph, where 70px turns a
+     48-character sentence into five lines. §27 already keeps two titles off
+     the scale for the same kind of reason. If the client wants it matched to
+     the others, the heading has to come out of the column and sit full width
+     above both. */
+  .ws-clean-copy h2{
+    margin:16px 0 26px;max-width:none;
+    font-size:clamp(30px,3.3vw,48px);line-height:1.05;
+    color:var(--ink);
+  }
+  .ws-clean-copy p{
+    margin:0 0 18px;color:var(--muted);
+    font-size:18px;line-height:1.55;max-width:48ch;
+  }
+  .ws-clean-copy p:last-child{margin-bottom:0}
+
+  /* Same square-cornered frame as the hero shot, so the page has one
+     picture treatment rather than two. 16:10 suits a landscape frame of two
+     whiteboards; the hero's is 4:3. */
+  .ws-clean-shot{
+    margin:0;overflow:hidden;background:var(--ink);aspect-ratio:16/10;
+  }
+  .ws-clean-shot img{width:100%;height:100%;object-fit:cover;display:block}
+
+  @media(max-width:900px){
+    .ws-clean-grid{grid-template-columns:1fr;gap:34px}
+    .ws-clean-copy{order:1;max-width:none}
+    .ws-clean-shot{order:2}
+    .ws-clean-copy p{max-width:none}
+  }
+
+  @media(max-width:900px){
+    .ws-hero-grid{grid-template-columns:1fr;gap:34px}
+    /* Copy first, photograph second — the same stacking order the rest of
+       the site uses (§15). */
+    .ws-copy{order:1;max-width:none}
+    .ws-shot{order:2}
+    .ws-br{display:inline}
+    .ws-copy .body-copy{max-width:none}
+  }
+
+  /* ---------- 5b. The offer blocks ----------
+     Built as a REUSABLE block, not a one-off. The client named two tracks by
+     email on 29 Oct — "Operational flow, The Execution package (Founder
+     Bottleneck)" and "Organisational flow, The Leadership package (Team
+     Bottleneck)" — so the second one is a markup copy of the first with its
+     own heading, paragraph and three module names. Nothing here is specific
+     to Operational flow.
+
+     Deep Green ground: it is the only legal ground for the lime heading and
+     the lime pill (V1.0 p.21), and it sets the offers apart from the ivory
+     sections that explain things. */
+  /* The two offers now sit as two CARDS on one Soft Ivory section, rather
+     than as two consecutive full-bleed Deep Green bands. Stacked that way
+     they read as one long dark stretch with a gap in it — the client's note
+     on 31 Oct was that they "look identical", which they did: same ground,
+     same width, nothing between them but air.
+
+     As cards they get a visible edge, an ivory gutter between them, and the
+     brand's own 36px round-rect (V1.0) — the same device the homepage uses
+     for exactly this pair. They stay IDENTICALLY treated on purpose: these
+     are two equal tracks and a choice between them, not a sequence, so
+     making one dominant would imply a default. The separation comes from
+     the frame and the bottleneck label, not from ranking them. */
+  .ws-offers{background:var(--paper);padding:var(--section-y) 0}
+  .ws-offers-grid{display:grid;gap:clamp(24px,3vw,40px)}
+
+  .ws-offer{
+    background:var(--ink);color:var(--paper);
+    border-radius:var(--r-card);
+    padding:clamp(28px,3.6vw,56px);
+  }
+  .ws-offer h2{
+    max-width:none;color:var(--lime);
+    font-size:clamp(30px,3.4vw,50px);
+  }
+  /* Names the bottleneck each track fixes. Same copy and same device as the
+     homepage's offer cards (§27) — it is what tells the two cards apart at a
+     glance, which the headings alone were not doing. */
+  .ws-offer-tag{
+    display:block;margin:0 0 10px;color:var(--lime);
+    font:clamp(14px,1.15vw,17px)/1.2 var(--display);
+    letter-spacing:.12em;text-transform:uppercase;
+  }
+  .ws-offer-lead{
+    margin:22px 0 0;max-width:60ch;
+    color:rgba(254,253,242,.86);
+    font-size:18px;line-height:1.55;
+  }
+
+  /* The three modules. Outlined boxes, as drawn — not the site's 36px
+     round-rect cards, which would read as three separate offers rather than
+     as what is inside one. The radius is pulled back to 18px so they still
+     belong to the brand's rounded family without competing with the cards on
+     the homepage. */
+  .ws-mods{
+    list-style:none;margin:clamp(32px,4vw,46px) 0 0;padding:0;
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:clamp(14px,1.6vw,22px);
+  }
+  .ws-mods li{
+    border:1px solid rgba(204,254,6,.42);
+    border-radius:18px;padding:20px 22px;
+  }
+  .ws-mods h3{
+    margin:0 0 8px;color:var(--paper);
+    font:22px/1.1 var(--display);letter-spacing:.015em;
+    text-transform:uppercase;
+  }
+  .ws-mods p{
+    margin:0;color:rgba(254,253,242,.72);
+    font-size:15px;line-height:1.45;
+  }
+
+  .ws-offer .actions{margin-top:clamp(30px,3.4vw,42px)}
+
+  /* The add-on. It sits in the same grid as the two tracks, but it is
+     DELIBERATELY NOT a third Deep Green card: Tool Stack Detox is the
+     seventh module and fits neither bottleneck, which is exactly why the
+     client proposed it as an add-on. Three identical cards would read as
+     three equal choices and undo that.
+
+     So it is the lighter weight of the same family — ivory ground, Deep
+     Green hairline, same 36px radius, centred and narrower. Deep Green type
+     on Soft Ivory; no lime anywhere, which p.22 would not allow here. */
+  .ws-addon{
+    /* Solid, so the section's dot field stops at the card edge instead of
+       running through the copy. Same ivory as the ground, so the card still
+       reads as quiet — it is the border and the clean interior that define
+       it, not a contrasting fill. */
+    background:var(--paper);
+    border:1px solid rgba(20,51,24,.28);
+    border-radius:var(--r-card);
+    padding:clamp(28px,3.4vw,46px) clamp(24px,3vw,40px);
+    text-align:center;
+  }
+  .ws-addon .eyebrow{color:var(--ink);font-size:16px;letter-spacing:.14em}
+  .ws-addon h2{
+    margin:10px 0 0;max-width:none;color:var(--ink);
+    font-size:clamp(28px,3vw,44px);
+  }
+  .ws-addon p{
+    margin:16px auto 0;max-width:56ch;
+    color:var(--muted);font-size:17px;line-height:1.55;
+  }
+
+  @media(max-width:980px){
+    .ws-mods{grid-template-columns:1fr}
+  }
+
+  /* ---------- 6. Testimonials — COPIED FROM index.html ----------
+     *** THIS IS THE THIRD COPY OF THIS BLOCK. *** index.html has it, about.html
+     has it (§29.5), and now this page. They were byte-identical when copied.
+     CHANGE ONE AND THE THREE PAGES DRIFT APART SILENTLY. It belongs in
+     css/site.css; that edit touches every page, which is why it keeps not
+     happening. If you are here to tweak the slider, do the lift instead.
+
+     The notes below are the original ones from index.html and still apply.
+
+     Client, 24 Oct: the testimonials should be a single row that slides
+     smoothly.
+
+     The slide is a marquee, not a paged carousel: four placeholder quotes do
+     not need prev/next controls, and continuous motion was what was asked
+     for. The track holds the four cards FOUR TIMES and translates by exactly
+     one set, which lands set 2 where set 1 started, so the loop has no jump.
+
+     Why four copies and not two: the track has to stay wider than the
+     viewport plus one set, or the row runs dry at the right-hand edge before
+     it wraps. One set is four cards at 420 + 28 = 1792px, so two copies left
+     a growing empty gap on anything wider than ~1800px — which is what a
+     1920 or zoomed-out screen is.
+
+     It is CSS-only on purpose. js/site.js is shared with the live site and a
+     review artefact must not touch it (AGENTS.md). */
+  .testimonials{overflow:hidden}
+  .testimonial-slider{
+    /* Full-bleed, so the row runs off both edges and reads as continuing
+       rather than as a cropped grid. The head above it stays in .container. */
+    position:relative;width:100%;overflow:hidden;
+    /* Cancels the track's shadow padding below, so the row occupies exactly
+       the height of the cards in the page flow and the air above and below it
+       stays even. The overflow area just overlaps the section's own padding. */
+    margin:-30px 0 -64px;
+  }
+  /* The end fades are two gradient overlays in the ground colour, NOT a
+     mask-image on the slider. A mask promotes the element to its own
+     composited layer, and macOS Chrome colour-manages that layer slightly
+     differently from the Soft Ivory painted behind it — the whole row showed
+     as a visibly paler band. Overlays keep everything on one layer. */
+  .testimonial-slider::before,
+  .testimonial-slider::after{
+    content:'';position:absolute;top:0;bottom:0;width:clamp(28px,7%,120px);
+    z-index:2;pointer-events:none;
+  }
+  .testimonial-slider::before{left:0;background:linear-gradient(90deg,var(--paper),rgba(254,253,242,0))}
+  .testimonial-slider::after{right:0;background:linear-gradient(270deg,var(--paper),rgba(254,253,242,0))}
+  /* One card's width and the gap are variables because the slide distance is
+     derived from them — see @keyframes below. */
+  .testimonial-track{
+    --tcard:min(420px,78vw);
+    --tgap:28px;
+    display:flex;width:max-content;gap:var(--tgap);
+    /* Room for the hover shadow, which is clipped by the slider's
+       overflow:hidden otherwise — the cut showed as a hard horizontal line
+       under a hovered card. --shadow is 0 18px 44px, so it reaches 18+44=62px
+       below the card and 44-18=26px above it; site.css also lifts the card
+       3px on hover. 30/64 covers both ends with a little slack. The slider
+       cancels this with a matching negative margin.
+       No horizontal padding: the slide distance is an exact multiple of the
+       card pitch and side padding would offset it. */
+    padding:30px 0 64px;
+    animation:t-slide 54s linear infinite;
+  }
+  .testimonial-track article{
+    flex:0 0 var(--tcard);min-height:300px;
+    /* No resting shadow. --shadow is a 44px blur, and eight-plus cards tiled
+       into an unbroken row pool it into a grey slab behind the whole band
+       (measured rgb(240,240,229) against the ivory's rgb(254,253,242)). The
+       row needs no lift at rest — it is already separated by the gaps. */
+    box-shadow:none;
+  }
+  .testimonial-track article:hover{box-shadow:var(--shadow)}
+
+  /* Moves by exactly one set of four — one card pitch × 4 — so set 2 lands
+     where set 1 was. Derived from the variables above rather than written as
+     -25%, because a percentage would have to absorb the flex gaps and would
+     drift the seam. Change the card count and this 4 changes with it. */
+  @keyframes t-slide{to{transform:translateX(calc(-4 * (var(--tcard) + var(--tgap))))}}
+
+  /* Hovering or tabbing into the row holds it still so a quote can actually
+     be read. :active covers the touch case, where there is no hover. */
+  .testimonial-slider:hover .testimonial-track,
+  .testimonial-slider:active .testimonial-track,
+  .testimonial-track:focus-within{animation-play-state:paused}
+
+  /* Reduced motion: no marquee at all. The row becomes a normal swipeable,
+     snapping scroller, and the duplicate half is dropped so the same quote
+     does not appear twice in something the user scrolls by hand. */
+  @media(prefers-reduced-motion:reduce){
+    .testimonial-slider{
+      overflow-x:auto;scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      padding-bottom:6px;
+    }
+    /* The overlays are absolutely positioned inside what is now a scroll
+       container, so they would scroll away with the content. The row is
+       user-driven here and does not need the fades. */
+    .testimonial-slider::before,.testimonial-slider::after{display:none}
+    .testimonial-track{animation:none;padding-inline:max(20px,calc((100% - 1320px) / 2))}
+    .testimonial-track article{scroll-snap-align:center}
+    .testimonial-track article[aria-hidden="true"]{display:none}
+  }
+  </style>
+</head>
+<body>
+  <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
+    <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44ZM244.41,125.25h-2.09c-15.9,0-28.8-12.87-28.8-28.75s12.9-28.78,28.8-28.78h2.09c14.94,1.06,26.77,13.58,26.77,28.78s-11.83,27.7-26.77,28.75ZM293.37,125.25h-25.62c3.24-2.87,5.99-6.28,8.11-10.07.08-.11.15-.23.22-.34h16.45c5.08,0,9.65-2.06,12.98-5.38,3.32-3.33,5.37-7.9,5.37-12.97,0-10.13-8.21-18.35-18.35-18.35h-16.45c-.1-.17-.21-.34-.31-.5-2.11-3.74-4.84-7.09-8.04-9.92h25.64c15.89,0,28.76,12.88,28.76,28.78s-12.87,28.75-28.76,28.75Z"/><path class="pl-knob" d="M243.04,78.16c-.23-.02-.46-.02-.7-.02-10.14,0-18.35,8.22-18.35,18.35s8.21,18.35,18.35,18.35h.7c9.81-.38,17.64-8.44,17.64-18.35s-7.83-17.95-17.64-18.33Z"/></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
+  </div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="OPS DETOX home">
+        <img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+      </a>
+      <nav class="site-nav" id="nav" aria-label="Main navigation">
+        <a href="detox.html">The DETOX</a>
+        <a href="work-with-us.html" aria-current="page">Work With Us</a>
+        <a href="diagnostic.html">Audit</a>
+        <a href="index.html#results">Results</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk <span>→</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===== SECTION 1 — the hero =====
+         Built from the client's supplied design. The two coral labels in
+         that design are ANNOTATIONS, not copy: "Leads to contact" and
+         "Leads to page with Calendly integration" describe where each
+         button goes, and both are wired accordingly. -->
+    <section class="ws-hero ws-dots">
+      <div class="container">
+        <!-- Typed in literal uppercase so js/site.js widens the O itself. -->
+        <h1 class="ws-title">WORK WITH US</h1>
+
+        <div class="ws-hero-grid">
+          <div class="ws-copy">
+            <!-- The D is wrapped BY HAND, exactly as on index.html. site.js
+                 §3a splits on UPPERCASE /([OD])/ and this line is typed in
+                 sentence case and uppercased by CSS, so the script matches
+                 only the literal capital O and the D would stay narrow.
+
+                 Client rule, 28 Oct: "Operational Detox" always carries a
+                 wide O and a wide D. One letter each — never ss01 on the
+                 whole word, which swaps every alternate and destroys the
+                 condensed face (§9). -->
+            <span class="eyebrow">Operational <i class="od">d</i>etox for scale-ups</span>
+
+            <!-- Wide letters wrapped by hand, same reason. If this copy
+                 changes, re-wrap by hand and re-measure the size ceiling. -->
+            <h2 class="ws-head">Give y<i class="od">o</i>ur lea<i class="od">d</i>ership team <span class="ws-br"></span>a thir<i class="od">d</i> <i class="od">o</i>f its week back.</h2>
+
+            <p class="body-copy">We help scale-up founders run a faster, leaner company by cleansing its operations of everything growth left behind, together with their team.</p>
+
+            <!-- Order, labels and styling all follow index.html's hero, so
+                 the two pages offer the same pair in the same way. -->
+            <div class="actions">
+              <a class="button" href="contact.html">Let’s talk</a>
+              <a class="button button--line" href="diagnostic.html">Book the FREE DIAGNOSTIC</a>
+            </div>
+          </div>
+
+          <!-- PLACEHOLDER. Swap this whole <figure> for the supplied
+               photograph when it lands:
+               <figure class="ws-shot">
+                 <img src="assets/img/work-whiteboard.jpg" alt="Oscar de Grauw at a whiteboard, mapping a leadership team's recurring meetings" width="" height="" loading="lazy" decoding="async">
+               </figure>
+               Note that decoding="async" screenshots blank headless (§29). -->
+          <figure class="ws-shot ws-shot--pending">Photograph pending</figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 2 — the problem, named =====
+         Copy is the client's, word for word, including "travelling" with
+         two Ls and the € figure. The heading is the same sentence
+         detox.html already carries, so the two pages agree.
+
+         The six bullets became a numbered two-column list; the closing
+         sentence became the section's payoff line rather than a seventh
+         paragraph, because it is the consequence, not another symptom. -->
+    <section class="ws-mess reveal">
+      <div class="container">
+        <h2>Nobody designed it this way. <span class="ws-mess-br"></span>It simply accumulated.</h2>
+
+        <ol class="ws-mess-list">
+          <li><span class="ws-mess-n">01</span><p>Every decision queues on one desk. An €800 approval waits four days because the founder is travelling.</p></li>
+          <li><span class="ws-mess-n">02</span><p>The calendar is full and the week produces little. Meetings end in another meeting, rarely in a decision.</p></li>
+          <li><span class="ws-mess-n">03</span><p>Your best people spend their evenings formatting reports nobody opens.</p></li>
+          <li><span class="ws-mess-n">04</span><p>Nine tools, and none of them speak to each other.</p></li>
+          <li><span class="ws-mess-n">05</span><p>The truth reaches you late and polished. What people really thought, you hear in the exit interview.</p></li>
+          <li><span class="ws-mess-n">06</span><p>You hired to relieve the pressure. Within a month, the new people sat in the same meetings.</p></li>
+        </ol>
+
+        <p class="ws-mess-out">Left as it is, it costs your leadership <b>a third of every week</b>, and your company the speed that made it successful.</p>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 3 — the system, introduced =====
+         Copy is the client's, word for word. The heading is the same
+         sentence detox.html already carries.
+
+         The eyebrow is typed in LITERAL capitals ("OPS Detox™"), which is
+         the one case where js/site.js §3a widens both letters by itself:
+         it splits on uppercase /([OD])/, so the O of OPS and the D of Detox
+         both match without hand-wrapping. Retype it in sentence case and
+         the wide letters silently disappear. -->
+    <section class="ws-clean ws-dots reveal">
+      <div class="container">
+        <div class="ws-clean-grid">
+          <div class="ws-clean-copy">
+            <span class="eyebrow">OPS Detox™</span>
+            <h2>There is a cleaner way to run a growing company.</h2>
+            <p>OPS Detox™ is a modular system for the real bottlenecks in how work flows. Each module stands alone; together, they reset how the company runs.</p>
+            <p>We measure where your time, decisions and truth actually go. Then we strip out what no longer serves the business and rebuild the structure together with your team, so it holds long after we have left.</p>
+          </div>
+
+          <!-- PLACEHOLDER. Swap this whole <figure> for the supplied
+               photograph when it lands:
+               <figure class="ws-clean-shot">
+                 <img src="assets/img/work-two-ways.jpg" alt="Oscar de Grauw between two whiteboards: the consultant's way, a tangle of boxes and arrows, and the OPS Detox way, a single line from identifying the real issue to results" width="" height="" loading="lazy">
+               </figure> -->
+          <figure class="ws-clean-shot ws-shot--pending">Photograph pending</figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 4 — testimonials =====
+         Copied verbatim from index.html so all three pages end the same way.
+         The quotes are still PLACEHOLDERS — four of them, each tagged as such
+         on the card — and they are repeated FOUR TIMES to fill the marquee.
+         If a quote is added, removed or replaced, it must change in all four
+         copies here AND in index.html AND in about.html. -->
+    <section class="testimonials section-rule reveal" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <div class="testimonials-head">
+          <span class="eyebrow">Testimonials</span>
+          <h2 id="testimonials-heading">What leaders say</h2>
+        </div>
+      </div>
+      <div class="testimonial-slider">
+        <div class="testimonial-grid testimonial-track" role="list">
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+
+          <!-- Copy 2 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+
+          <!-- Copy 3 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+
+          <!-- Copy 4 of 4. See the style block: the track has to be wider
+               than the viewport plus one set, or the row runs dry before it
+               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 5 — the two offers =====
+         Copy is the client's, word for word.
+
+         This is one of TWO tracks. The second, "Organisational flow", is a
+         copy of this <section> with its own heading, paragraph and three
+         module names — the CSS is written for both and nothing in it is
+         specific to this one. It was not built here because its copy has not
+         been supplied; the homepage's version of the pair lists its modules
+         as communication, ownership and psychological safety.
+
+         NOT APPLIED, and still open: the client's 29 Oct email names these
+         "The Execution package (Founder Bottleneck)" and "The Leadership
+         package (Team Bottleneck)". The mockup uses the short names, so the
+         short names are what is built. See the handoff's open items. -->
+    <section class="ws-offers ws-dots reveal" aria-label="The two tracks">
+      <div class="container">
+      <div class="ws-offers-grid">
+
+      <article class="ws-offer" aria-labelledby="offer-operational">
+        <span class="ws-offer-tag">Founder bottleneck</span>
+        <!-- EVERY o is wide, not just the capital. js/site.js §3a splits on
+             uppercase /([OD])/, so it widens the leading O by itself and
+             leaves the two lowercase ones narrow — the same letter three
+             times in one heading at two widths. index.html's H1 wraps all of
+             them for exactly this reason ("…systems of operational"), so the
+             rest are wrapped by hand here too. -->
+        <h2 id="offer-operational">Operati<i class="od">o</i>nal fl<i class="od">o</i>w</h2>
+        <p class="ws-offer-lead">For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
+
+        <ul class="ws-mods">
+          <li><h3>Meetings Detox</h3><p>Win back your execution time.</p></li>
+          <li><h3>Decision Detox</h3><p>Weeks become hours.</p></li>
+          <li><h3>Reporting Detox</h3><p>Reports that create decisions.</p></li>
+        </ul>
+
+        <div class="actions">
+          <a class="button" href="detox.html">Learn more</a>
+        </div>
+      </article>
+
+    <!-- ===== The second card =====
+         A markup copy of section 4. No new CSS: .ws-offer was written for
+         both tracks.
+
+         *** ONE WORD OF COPY DIFFERS FROM THE SUPPLIED MOCKUP. ***
+         The mockup opens "For companies where delegation…". On 28 Oct the
+         client changed that exact sentence on the homepage's Organisational
+         card to "For TEAMS where…" (§27) — her own edit to her own locked
+         copy. The mockup almost certainly predates it. Building "companies"
+         here would silently undo a client edit and leave the two pages
+         disagreeing, so "teams" is used and flagged. One word to revert if
+         the mockup is the newer source. -->
+      <article class="ws-offer" aria-labelledby="offer-organisational">
+        <span class="ws-offer-tag">Team bottleneck</span>
+        <!-- Same hand-wrapping as section 4: every o wide, not just the
+             capital one site.js catches. -->
+        <h2 id="offer-organisational">Organisati<i class="od">o</i>nal fl<i class="od">o</i>w</h2>
+        <p class="ws-offer-lead">For teams where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
+
+        <ul class="ws-mods">
+          <li><h3>Communication Detox</h3><p>Information without rework.</p></li>
+          <li><h3>Ownership Detox</h3><p>Close the ownership vacuum.</p></li>
+          <li><h3>Psychological Safety Detox</h3><p>Say the expensive thing out loud.</p></li>
+        </ul>
+
+        <div class="actions">
+          <!-- #modules, as the homepage's Organisational card does, so the
+               link lands on the seven modules rather than the page top. -->
+          <a class="button" href="detox.html#modules">Learn more</a>
+        </div>
+      </article>
+
+      <!-- ===== The add-on =====
+           Copy is the client's, word for word, including "add on" unhyphenated
+           and "Tool Stack Module" rather than "Detox" in the last sentence.
+
+           This closes a question that had been open since 29 Oct (§6): where
+           Tool Stack Detox goes. It is the seventh module, it fits neither
+           bottleneck, and it now sits after both tracks as what the client
+           called it — an add-on.
+
+           Lowercase o's wrapped by hand, as on the two headings above. -->
+      <article class="ws-addon" aria-labelledby="offer-toolstack">
+        <span class="eyebrow">OPS Detox add on</span>
+        <h2 id="offer-toolstack">T<i class="od">o</i><i class="od">o</i>l Stack Det<i class="od">o</i>x</h2>
+        <p>If you have too many tools doing the same thing, used in different ways, with no clear ownership. The OPS Detox Tool Stack Module removes tool overload and restores clarity.</p>
+      </article>
+
+      </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <img class="footer-logo" src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+          <div class="footer-social">
+            <a href="#" aria-label="LinkedIn"><img src="assets/social/linkedin.svg" alt=""></a>
+            <a href="#" aria-label="Instagram"><img src="assets/social/instagram.svg" alt=""></a>
+            <a href="#" aria-label="YouTube"><img src="assets/social/youtube.svg" alt=""></a>
+          </div>
+        </div>
+
+        <form data-demo-form data-success-message="Subscribed. Demo only, no email is sent yet.">
+          <h2>Newsletter</h2>
+          <div class="field">
+            <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
+            <span class="field-error" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <input type="email" name="email" placeholder="EMAIL" aria-label="Email" data-label="Email" required>
+            <span class="field-error" aria-live="polite"></span>
+          </div>
+          <button type="submit">Subscribe</button>
+          <p class="footer-status" role="status"></p>
+        </form>
+
+        <div>
+          <h2>Contact</h2>
+          <p><b>EMAIL</b><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p>
+          <p><b>PHONE</b><a href="tel:+1234567890">(123) 456 7890</a></p>
+          <p><b>ADDRESS</b>123 Anywhere St.,<br>Any City 1234</p>
+        </div>
+
+        <div>
+          <h2>Legal</h2>
+          <a href="#">Imprint</a>
+          <a href="#">Terms and Conditions</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+      <p class="footer-legal">© 2026 OPS Detox™. Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+    </div>
+  </footer>
+  <script src="js/site.js"></script>
+</body>
+</html>

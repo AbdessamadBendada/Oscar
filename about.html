@@ -95,33 +95,47 @@
      first and .ah-frame and .ah-pic silently un-pause themselves, which is
      exactly what happened: only .ah held, and the picture grew behind the
      overlay anyway. Keep it last. */
+  /* ---------- ONE ANIMATION PER ELEMENT ----------
+     The size and the edge are on TWO elements now, .ah-box and .ah-frame,
+     and .ah-box exists for no other reason. The full history is on ahOpen
+     below; the short version is that Safari ignored the edge animation
+     whenever it shared an element with the size animation, however the two
+     were packaged, and Chrome refused to interpolate them whenever they
+     shared a keyframes block. Splitting the ELEMENT satisfies both: each
+     one now carries exactly one animation, so there is no list for Safari
+     to drop from, and no block mixing custom properties with ordinary ones
+     for Chrome to choke on.
+
+     .ah-box owns the size. Registered custom properties, which is the one
+     mechanism proven to animate on this hero in both engines. */
+  .ah-box{
+    width:var(--ah-w);height:var(--ah-h);
+    --ah-w:min(1180px,100%);
+    --ah-h:min(664px,calc((100vw - var(--ah-pad) * 2) * .5625));
+    animation:ahOpen 1.15s .45s cubic-bezier(.65,0,.2,1) both;
+  }
+
+  /* .ah-frame owns the edge, and nothing else animates on it. Plain
+     border-width and border-radius — no var(), no registered properties,
+     no second animation. It still does the clipping, so the photograph's
+     corners round with the border rather than behind it. */
   .ah-frame{
     position:relative;
+    width:100%;height:100%;
     /* The row MUST be definite. Left as the implicit auto row it sizes to
        the photograph's intrinsic height — a tall portrait — so the row
        grows far past the frame and the bottom-aligned plate goes with it,
        clipped by the overflow:hidden below. */
     display:grid;grid-template-areas:"stack";grid-template-rows:minmax(0,1fr);
-    width:var(--ah-w);height:var(--ah-h);
-    --ah-w:min(1180px,100%);
-    --ah-h:min(664px,calc((100vw - var(--ah-pad) * 2) * .5625));
     border:6px solid var(--lime);
-    border-radius:var(--r-card);
+    border-radius:36px;    /* --r-card's value, written out */
     overflow:hidden;
-    /* TWO animations, not one. The border and the radius started out in
-       the same keyframes as --ah-w / --ah-h and did not interpolate: the
-       frame reached full width still carrying its 6px lime edge and its
-       36px corners. Custom properties and ordinary properties do not have
-       to share a block, and keeping them apart means a problem in one
-       cannot take the other down. Same duration, delay and curve, so they
-       still resolve together. Literal values in ahEdge — no var() — for
-       the same reason. Verified mid-flight: 6px/36px at 1100ms, 1px/9.9px
-       at 1450ms, 0/0 at the end. */
-    animation:
-      ahOpen 1.15s .45s cubic-bezier(.65,0,.2,1) both,
-      ahEdge 1.15s .45s cubic-bezier(.65,0,.2,1) both;
+    animation:ahEdge 1.15s .45s cubic-bezier(.65,0,.2,1) both;
   }
   .ah-frame>*{grid-area:stack}
+  /* The <picture> wrapper. It is an inline box by default, which would not
+     fill the frame and would leave a baseline gap under the photograph. */
+  .ah-shot{display:block;min-height:0;height:100%}
   .ah-pic{
     width:100%;height:100%;object-fit:cover;display:block;
     /* The crop is animated, not fixed. The frame does not just grow, it
@@ -136,8 +150,9 @@
 
   /* Must stay BELOW every rule that sets the `animation` shorthand — see
      the note above. */
-  .ah,.ah-frame,.ah-pic{animation-play-state:paused}
+  .ah,.ah-box,.ah-frame,.ah-pic{animation-play-state:paused}
   .hero-go .ah,
+  .hero-go .ah-box,
   .hero-go .ah-frame,
   .hero-go .ah-pic{animation-play-state:running}
 
@@ -145,10 +160,26 @@
      rather than as two things that happen to be over a photograph. */
   .ah-plate{
     align-self:end;justify-self:stretch;
-    padding:14vh 24px 26px;
+    /* The side inset is a PERCENTAGE, so it grows with the frame instead of
+       staying at a flat 24px. Left-aligning the name moved it hard against
+       that 24px, which reads fine in the small frame and tight against the
+       viewport edge at full bleed. A percentage resolves against the plate,
+       which is the frame's inner width, so the inset opens as the picture
+       opens — about 38px framed, 45px at 1400, 61px at 1920 — and the type
+       keeps the same optical margin throughout. max() holds a sane floor on
+       a phone. No extra animation involved, which matters: Safari would not
+       have run one (see animateEdge). */
+    padding:14vh max(24px,3.2%) 26px;
     background:linear-gradient(to top,
       rgba(20,51,24,.94) 0%,rgba(20,51,24,.86) 42%,rgba(20,51,24,0) 100%);
-    text-align:center;
+    /* LEFT, not centred. The name is a block whose box is capped by
+       site.css's h1{max-width:19ch}, so it sits against the plate's left
+       padding and ends well short of the right edge — measured 24 to 912
+       in a 1400 frame. A centred caption therefore drifted out from under
+       it and kept drifting as the picture opened, because the caption
+       re-centres on the growing frame while the name does not move. Both
+       now share the one left edge at every size. */
+    text-align:left;
   }
   .ah-name{
     margin:0;color:var(--lime);
@@ -158,7 +189,10 @@
   }
   .ah-cap{
     display:flex;flex-wrap:wrap;gap:8px 22px;
-    align-items:baseline;justify-content:center;
+    /* flex-start, not center — see the note on .ah-plate. The flex box is
+       full width, so centring put the caption in the middle of the frame
+       while the name stayed on the left. */
+    align-items:baseline;justify-content:flex-start;
     margin:16px 0 0;color:rgba(204,254,6,.78);
     font:13px/1.3 var(--display);letter-spacing:.1em;text-transform:uppercase;
   }
@@ -170,6 +204,35 @@
 
      svh, not vh, so mobile browser chrome collapsing mid-animation does
      not retarget the end state halfway through. */
+  /* THE SIZE ONLY. The edge is ahEdge, on .ah-frame, on its own element.
+
+     Four builds, because the obvious fix in one engine kept breaking the
+     other. Do not collapse these back together:
+
+     1. Border and radius sat in THIS block as ordinary properties
+        alongside --ah-w / --ah-h. Chrome did not interpolate them — the
+        frame reached full width still carrying its 6px lime edge and its
+        36px corners, then dropped both at the end.
+     2. (29 Oct) Split into their own `ahEdge` keyframes, second in
+        .ah-frame's animation shorthand list. Fixed Chrome. **Silently did
+        nothing in Safari**: the picture grew to full bleed and kept the
+        border and the rounded corners throughout. Shipped broken, because
+        §29's "verified mid-flight" measurement was Chrome-only.
+     3. (31 Oct) Edge re-expressed as registered custom properties and
+        merged back into this block, on the theory that Safari had dropped
+        the second entry in the animation list. **Still broken in Safari.**
+        So the cause is not the list and not the property type: Safari
+        ignores the edge animation whenever it shares an element with the
+        size animation.
+     4. (31 Oct, current) The two were split onto two ELEMENTS. .ah-box
+        carries this animation and nothing else; .ah-frame carries ahEdge
+        and nothing else. One animation each, and ahEdge is back to plain
+        border-width / border-radius, which removes @property from the edge
+        path entirely.
+
+     Registered custom properties stay here for the size because they are
+     proven to animate in Safari on this hero — --ah-w interpolated
+     correctly even in build 2, which is why the picture grew at all. */
   @keyframes ahOpen{
     from{
       --ah-w:min(1180px,100%);
@@ -180,9 +243,28 @@
       --ah-h:calc(100svh - var(--header-h));
     }
   }
-  /* 36px is --r-card's value, written out. */
+  /* 36px is --r-card's value, written out. Literal values, no var() — this
+     keyframes block must stay free of custom properties. */
   @keyframes ahEdge{
     from{border-width:6px;border-radius:36px}
+    to{border-width:0px;border-radius:0px}
+  }
+  /* Phone variants. Same curve and timing, different start values: a taller
+     5:4 frame, and a 4px edge, because 6px on a 390pt screen is a heavier
+     band relative to the picture. Swapped in by animation-name at 700px —
+     see the note there for why these cannot simply be declared. */
+  @keyframes ahOpenSm{
+    from{
+      --ah-w:min(1180px,100%);
+      --ah-h:min(520px,calc((100vw - var(--ah-pad) * 2) * 1.25));
+    }
+    to{
+      --ah-w:100vw;
+      --ah-h:calc(100svh - var(--header-h));
+    }
+  }
+  @keyframes ahEdgeSm{
+    from{border-width:4px;border-radius:28px}
     to{border-width:0px;border-radius:0px}
   }
   @keyframes ahCrop{from{--ah-crop:46%}to{--ah-crop:34%}}
@@ -200,9 +282,10 @@
      fallback — holding the small framed version would show a different
      design, not a calmer one. */
   @media(prefers-reduced-motion:reduce){
-    .ah,.ah-frame,.ah-pic{animation:none}
+    .ah,.ah-box,.ah-frame,.ah-pic{animation:none}
     .ah{--ah-pad:0px}
-    .ah-frame{--ah-w:100vw;--ah-h:calc(100svh - var(--header-h));border-width:0;border-radius:0}
+    .ah-box{--ah-w:100vw;--ah-h:calc(100svh - var(--header-h))}
+    .ah-frame{border-width:0;border-radius:0}
     .ah-pic{--ah-crop:34%}
   }
 
@@ -622,10 +705,15 @@
   }
 
   @media(max-width:700px){
-    .ah-frame{
-      --ah-h:min(520px,calc((100vw - var(--ah-pad) * 2) * 1.25));
-      border-width:4px;
-    }
+    /* --ah-h moved with the size animation onto .ah-box.
+
+       Both of these have to be swapped at the KEYFRAMES, not declared: the
+       animation is paused on its from-state from first paint, and an
+       animation's value beats a declaration. Declaring --ah-h or a 4px
+       border-width here does nothing at all — which is what the 4px line
+       was doing before 31 Oct, silently. */
+    .ah-box{animation-name:ahOpenSm}
+    .ah-frame{animation-name:ahEdgeSm}
     .ah-plate{padding:18vh 16px 20px}
     .ah-name{font-size:clamp(28px,11.5vw,54px)}
     .ah-cap{font-size:11px;gap:6px 14px}
@@ -831,8 +919,29 @@
 
   <main id="main">
     <section class="ah">
+      <!-- .ah-box is a pure animation wrapper and carries no styling of its
+           own. It exists because Safari ignores the edge animation whenever
+           it shares an element with the size animation — see the ahOpen
+           note. One animation per element: .ah-box grows, .ah-frame sheds
+           its border. Do not merge them back. -->
+      <div class="ah-box">
       <div class="ah-frame">
-        <img class="ah-pic" src="assets/img/oscar-steps.jpg" alt="Oscar de Grauw sitting on steps">
+        <!-- 31 Oct: this was a 15.1 MB, 3448x5168 camera original — the
+             first thing the page loaded, and eight times the 1.8 MB hero the
+             client had already complained about. Resized to 2048 wide (what
+             a full-bleed hero needs at 1920: object-fit:cover scales a 2:3
+             portrait by WIDTH here, so the whole frame is used) and served
+             AVIF first, WebP second, JPEG as the fallback. 15.1 MB -> 262 KB
+             for almost everyone, a 98% cut, with no layout or crop change.
+
+             The <picture> is the grid item now, not the <img>; .ah-shot
+             below gives it the height the img used to take directly. The
+             ahCrop animation stays on .ah-pic, which is still the <img>. -->
+        <picture class="ah-shot">
+          <source srcset="assets/img/oscar-steps.avif" type="image/avif">
+          <source srcset="assets/img/oscar-steps.webp" type="image/webp">
+          <img class="ah-pic" src="assets/img/oscar-steps.jpg" alt="Oscar de Grauw sitting on steps" width="2048" height="3069">
+        </picture>
         <div class="ah-plate">
           <!-- Wide O and D wrapped by hand: js/site.js splits on uppercase
                /([OD])/ and this is sentence case uppercased by CSS, so the
@@ -840,6 +949,7 @@
           <h1 class="ah-name"><i class="od">O</i>scar <i class="od">d</i>e Grauw</h1>
           <p class="ah-cap"><span>Founder, OPS Detox™</span><span>TEDx speaker</span><span>17 years inside complex international organizations</span></p>
         </div>
+      </div>
       </div>
     </section>
 
@@ -1232,9 +1342,57 @@
   <script>
   (function () {
     var root = document.documentElement;
+
+    /* ---------- The lime edge is animated HERE, not in CSS ----------
+       Safari will not run the edge animation from a stylesheet. Four CSS
+       builds were tried — border/radius mixed into the size keyframes, split
+       into their own keyframes, re-expressed as registered custom
+       properties, and finally split onto their own element — and every one
+       of them left the picture growing to full bleed still carrying its 6px
+       lime border and 36px corners. The size animation (ahOpen on .ah-box)
+       works in Safari throughout, so this is specific to the edge.
+
+       The Web Animations API runs it correctly in both engines. Script
+       animations also sit ABOVE CSS animations in the cascade, so the
+       ahEdge keyframes are deliberately left in place below: they are the
+       no-JS fallback, and when this runs it simply wins.
+
+       The timing MUST match ahOpen's — 1150ms, 450ms delay, same curve —
+       or the border stops shrinking in step with the frame growing. Retune
+       the two together. */
+    function animateEdge() {
+      var frame = document.querySelector('.ah-frame');
+      if (!frame || !frame.animate) return;
+      /* Reduced motion gets the end state and no movement, matching the
+         @media(prefers-reduced-motion:reduce) block in the stylesheet. That
+         block cannot stop a script animation, so the guard has to be here
+         too — without it the edge would animate for exactly the users who
+         asked it not to. */
+      if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+      /* Phone start values, matching ahEdgeSm. */
+      var small = window.matchMedia('(max-width:700px)').matches;
+      try {
+        frame.animate(
+          [
+            { borderWidth: small ? '4px' : '6px', borderRadius: small ? '28px' : '36px' },
+            { borderWidth: '0px', borderRadius: '0px' }
+          ],
+          {
+            duration: 1150,
+            delay: 450,
+            easing: 'cubic-bezier(.65,0,.2,1)',
+            fill: 'both'
+          }
+        );
+      } catch (e) {}
+    }
+
     function go() {
       if (root.classList.contains('hero-go')) return;
       root.classList.add('hero-go');
+      /* Started at the same moment the class lands, so the WAAPI delay and
+         the CSS animation-delay are measured from the same instant. */
+      animateEdge();
     }
     if (!root.classList.contains('pl-lock')) {
       go();

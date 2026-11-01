@@ -4,25 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#143318">
-  <title>OPS DETOX™: Homepage, type-led hero on Soft Ivory</title>
-  <meta name="description" content="Comparison build: the type-led homepage hero with its ground changed from Detox Green to Soft Ivory. Everything below the hero is unchanged from index.html.">
+  <title>OPS DETOX™ — Homepage, client comments applied</title>
+  <meta name="description" content="Review build of the OPS Detox homepage with the 15 October client comments applied.">
   <meta name="robots" content="noindex">
-  <link rel="icon" href="assets/logo/favicon.png">
-  <link rel="stylesheet" href="css/site.css">
+  <link rel="icon" href="../assets/logo/favicon.png">
+  <link rel="stylesheet" href="../css/site.css">
   <!-- ==========================================================
-       REVIEW BUILD. A copy of home-comments.html — so it carries
-       all the 15 Oct client-comment work — with the homepage hero
-       replaced by the type-led, full-bleed Detox Green treatment.
-       index.html, home-comments.html and css/site.css are all
-       deliberately untouched: every rule below is an override
-       scoped to this document, so nothing here can leak into the
-       live site. When a change is approved, lift it out of this
-       block into css/site.css and delete it here.
-
-       THE COPY IS UNCHANGED. The headline, the subline and both
-       CTA labels are exactly the ones on index.html. The mockup's
-       own wording ("Book the systems audit", etc.) was not
-       carried across.
+       REVIEW BUILD. This page is a copy of index.html with the
+       actionable 15 Oct client comments applied. index.html and
+       css/site.css are deliberately untouched: every rule below
+       is an override scoped to this document, so nothing here can
+       leak into the live site. When a change is approved, lift it
+       out of this block into css/site.css and delete it here.
        ========================================================== -->
   <!-- Decided before first paint. While the preloader is under review it
        runs on every load; restore the once-per-session behaviour by putting
@@ -105,14 +98,37 @@
   .cleanse-branch{
     display:grid;justify-items:center;gap:0;margin:0;text-align:center;
   }
-  /* A plain rule, no motion. Three graphic versions were tried and dropped:
-     a lime gradient pill, a segment running down a hairline, then the
-     switcher pattern at small scale. The first two read as a progress bar
-     (a thin upright bar with something moving down it is what a loading
-     indicator is), the third as a stray object. The sequencing this was
-     meant to carry belongs in the step tags, not in a graphic. */
+  /* The connector is the switcher pattern turned on its side: one bar
+     instead of a hairline, at the pattern's own scale rather than the
+     band's — a single 7px pill, not a motif. The gradient is the same one
+     the strip and the divider use (dark tail, lime head), rotated to point
+     down, and it travels down the bar so the eye is handed from step 1 to
+     the two tracks. Dark-on-ivory here, so the lime is backed by a Deep
+     Green pill: lime on ivory is not a sanctioned pairing.
+     Short on purpose — 52px, under the old 46px line plus its weight. */
   .cleanse-branch::before{
-    content:'';width:2px;height:46px;background:var(--ink);opacity:.28;
+    content:'';
+    width:7px;height:52px;
+    border-radius:var(--r-pill);
+    background:
+      linear-gradient(180deg,
+        rgba(204,254,6,0) 0%,
+        rgba(204,254,6,.35) 42%,
+        rgba(204,254,6,.85) 68%,
+        var(--lime) 86%,
+        rgba(204,254,6,0) 100%) 0 -100% / 100% 200% no-repeat,
+      var(--ink);
+    animation:cleanse-flow 2.8s linear infinite;
+  }
+  /* The lime head enters at the top and leaves at the bottom, then the
+     cycle restarts off-screen above — a drip, not a loop you can see
+     wrapping. */
+  @keyframes cleanse-flow{
+    from{background-position:0 -100%,0 0}
+    to{background-position:0 100%,0 0}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .cleanse-branch::before{animation:none;background-position:0 30%,0 0}
   }
   .cleanse-branch span{
     display:block;padding:18px 0 22px;
@@ -133,7 +149,7 @@
     .cleanse-step .cleanse-meta{justify-self:start;margin:22px 0 0}
     .cleanse-step .cleanse-cta{justify-self:start;margin-top:26px}
     .cleanse-grid--two{grid-template-columns:1fr}
-    .cleanse-branch::before{height:34px}
+    .cleanse-branch::before{height:38px;width:6px}
   }
 
   /* ---------- 3. Frameworks ----------
@@ -196,211 +212,6 @@
   @media(max-width:700px){
     .frameworks-grid{grid-template-columns:1fr}
     .frameworks-grid article:first-child{grid-column:span 1}
-  }
-
-  /* ---------- 5. Deep Green header ----------
-     The hero below is now a full-bleed Detox Green ground. The site header
-     is Soft Ivory, which would have put a near-white band straight on top of
-     the lime and left the lime logo with nowhere legal to sit. Deep Green
-     gives the hero a hard top edge and keeps the guideline's one contrast
-     rule intact: Detox Green only ever on Deep Green (V1.0 p.21). */
-  .site-header{
-    background:var(--ink);
-    border-bottom-color:rgba(204,254,6,.22);
-  }
-  @supports(backdrop-filter:blur(1px)){
-    .site-header{background:rgba(20,51,24,.94)}
-  }
-  .site-nav a{color:var(--lime)}
-  .nav-toggle{border-color:var(--lime)}
-  .nav-toggle i,
-  .nav-toggle i::before,
-  .nav-toggle i::after{background:var(--lime)}
-  .nav-toggle[aria-expanded="true"] i{background:transparent}
-  /* .button--line is a Deep Green pill, which vanishes on a Deep Green
-     header. Same swap site.css already makes inside .on-dark. */
-  .site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
-  .site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
-
-  /* ---------- 6. Type-led hero ----------
-     No photograph. That is the point of this direction, not an omission:
-     §20 records that no alpha-channel cut-out of Oscar exists anywhere in
-     the project, which caps every portrait-led hero option. A hero built
-     out of the headline needs no asset that does not exist, and it drops
-     hero-concept.png — the 1.8MB placeholder the client's "picture quality"
-     comment was actually about.
-
-     Colour is all V1.0: the ground is Detox Green #CCFE06, the type is Deep
-     Green #143318. The mockup's black is NOT in the palette — Deep Green on
-     Detox Green is the sanctioned pairing (p.21) and at this size it reads
-     as black anyway. */
-  .hero--type{
-    --ht-gutter:max(24px,calc((100% - 1480px) / 2));
-    /* ONE row, not 1fr + auto. The first build gave the headline its own
-       1fr row and centred it there, so on a tall screen the leftover height
-       opened as a band of empty lime across the middle of the hero. The
-       whole block is now a single centred item: the leftover becomes even
-       margin above and below, which reads as framing rather than as a gap. */
-    grid-template-columns:1fr;grid-template-rows:1fr;
-    align-items:stretch;gap:0;
-    width:100%;max-width:none;padding:0;
-    background:var(--lime);color:var(--ink);
-    position:relative;overflow:hidden;
-  }
-  /* The eyebrow and headline stack normally; .ht-foot is deliberately placed
-     in the SAME grid cell as the headline, pinned bottom-right, so it fills
-     the empty space beside the short last line ("clutter") instead of being
-     parked in its own strip at the foot of the screen. The last line is one
-     word, so there is always room — but the overlap is only safe while the
-     headline is set in three lines, which is why it unwinds below 1100px. */
-  .hero--type .ht-inner{
-    display:grid;grid-template-columns:minmax(0,1fr);
-    align-content:center;
-    padding:40px var(--ht-gutter);
-  }
-  .hero--type .eyebrow{
-    grid-area:1/1;align-self:start;
-    color:var(--ink);font-size:15px;letter-spacing:.14em;margin:0 0 26px;
-  }
-  /* Three lines, broken by hand. Left to itself the sentence breaks after
-     "Cleanse your", leaving line 1 at roughly 60% and a hole in the top
-     right corner. .ht-br forces two full-width lines and drops the single
-     short word onto line 3, which is what makes room for .ht-foot.
-
-     182px, not the 200px of the first build. The ceiling is set by the
-     LONGEST hand-broken line, "systems of operational" — measured off a
-     render at 200px it needs ~1564px and the container caps at 1480, so
-     anything above ~186px re-wraps and the three lines become five. It is
-     also still the fold constraint from §5: the hero and the ticker have to
-     land on the first screen. Re-measure both if the break ever changes. */
-  .hero--type .ht-head{
-    grid-area:2/1;
-    margin:0;color:var(--ink);max-width:none;
-    /* 1.0, not .88. The original reason was the ring around "cleanse",
-       which needed a band of clear lime to travel through. The ring is
-       gone (28 Oct), but the leading stays: the 150px / 10.3vw size and
-       the three hand-forced lines were both calibrated against 1.0, and
-       tightening it now changes the block's height and so the fold that
-       §5 holds the hero to. Only retune it together with the size, and
-       re-check the fold if you do. */
-    font-size:clamp(38px,10.3vw,150px);line-height:1.0;
-    letter-spacing:.01em;text-transform:uppercase;
-  }
-  .hero--type .ht-br{display:block;height:0}
-  /* "clutter" is the word the sentence is about removing, and it is set
-     back from the rest of the line so the sentence still points at it.
-
-     The ring that used to loop around "cleanse" and the Deep Green strike
-     that used to cross this word are both GONE — the client's note was
-     that too much was going on in the hero, and those two marks were the
-     two decorative devices in it. Neither was a V1.0 device; the ring came
-     from the client's own mockup and the strike was this build's own
-     invention. The word now carries the idea with weight alone.
-
-     Everything in the deleted rules is recoverable from git if either mark
-     is ever wanted back — see the 28 Oct commit. */
-  .hero--type .ht-fade{
-    color:rgba(20,51,24,.55);
-  }
-  /* Same cell as the headline, pinned to its bottom right. */
-  .hero--type .ht-foot{
-    grid-area:2/1;align-self:end;justify-self:end;
-    /* Must stay SHORTER than the last headline line it sits beside, or it
-        rides up and collides with line 2. Wider column => the subline sets
-        in two lines instead of three, which is what buys the room. */
-    width:min(58%,700px);
-    display:flex;flex-direction:column;align-items:flex-start;gap:14px;
-    padding-bottom:.06em;
-  }
-  .hero--type .ht-sub{
-    margin:0;max-width:58ch;color:var(--ink);font-size:16px;line-height:1.45;
-  }
-  /* Emphasis only — the sentence is the locked site copy, word for word.
-     The underline the first build used reads as a hyperlink and nothing
-     else on the web; people try to click it. Weight carries it instead. */
-  .hero--type .ht-mark{font-weight:700}
-  /* Side by side, not stacked. Stacked buttons made the block taller than
-     the line it sits beside, which is what forced it down into its own
-     strip in the first build. */
-  .hero--type .ht-actions{
-    display:flex;flex-wrap:wrap;gap:12px;margin:0;
-  }
-  .hero--type .ht-proof{
-    margin:0;color:rgba(20,51,24,.68);
-    font:13px/1.4 var(--display);letter-spacing:.06em;text-transform:uppercase;
-  }
-  /* On a Detox Green ground the pair inverts: the primary becomes the Deep
-     Green pill, because a lime pill on lime is invisible. */
-  .hero--type .button{background:var(--ink);color:var(--lime);border-color:var(--ink)}
-  .hero--type .button:hover{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .hero--type .button--line{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .hero--type .button--line:hover{background:var(--ink);color:var(--lime);border-color:var(--ink)}
-
-  @keyframes htRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .hero--type .eyebrow,
-  .hero--type .ht-head,
-  .hero--type .ht-foot{animation:htRise .6s .05s both cubic-bezier(.2,.7,.3,1)}
-  .hero--type .ht-head{animation-delay:.1s}
-  .hero--type .ht-foot{animation-delay:.2s}
-  @media(prefers-reduced-motion:reduce){
-    .hero--type .eyebrow,
-    .hero--type .ht-head,
-    .hero--type .ht-foot{animation:none}
-  }
-
-  /* The overlap only holds while .ht-foot is SHORTER than the last headline
-     line it sits beside — that line is .88 x the font size, and the font is
-     12vw, so it shrinks faster than the foot does. Left alone the subline
-     picks up a third line on the way down and collides with line 2 at about
-     1450px, which includes the 1440 laptop the client is most likely to open
-     this on. So the foot gets compact between 1300 and 1600 — a wider column
-     keeps the subline at two lines and the gaps tighten — and only unwinds
-     into a stack below 1300. Re-measure both if the subline, the buttons or
-     the proof line change. */
-  @media(max-width:1600px){
-    .hero--type .ht-foot{width:min(62%,760px);gap:10px}
-    .hero--type .ht-sub{font-size:15px;line-height:1.4}
-    .hero--type .ht-proof{font-size:12px}
-  }
-  @media(max-width:1300px){
-    .hero--type .ht-foot{
-      grid-area:3/1;justify-self:stretch;align-self:auto;
-      width:auto;margin-top:34px;padding-bottom:0;
-    }
-    .hero--type .ht-sub{max-width:62ch}
-  }
-
-  @media(max-width:850px){
-    .hero--type{--ht-gutter:20px}
-    /* The hand-forced breaks are sized for three full-width desktop lines.
-       On a phone the sentence has to wrap wherever it fits. */
-    .hero--type .ht-br{display:none}
-    .hero--type .ht-inner{padding:24px var(--ht-gutter) 26px}
-    .hero--type .eyebrow{font-size:12px;margin-bottom:14px}
-    /* 14.5vw, not 10.2. At 10.2 the headline came out ~40px on a 390pt
-       phone — barely larger than the subline under it, which loses the whole
-       point of a type-led hero. 14.5 puts it at ~57px there and fills the
-       width the way it does on desktop. Check at 390, not at 500: headless
-       Chrome clamps to a 500px minimum window, so 390 only scales on paper. */
-    .hero--type .ht-head{font-size:clamp(36px,12.6vw,70px)}
-    .hero--type .ht-foot{margin-top:26px;gap:16px}
-    /* Dropped a point, so the headline keeps a clear lead over it. */
-    .hero--type .ht-sub{font-size:15px;line-height:1.45}
-    /* Sized to their labels and sitting side by side where they fit. Two
-       full-width stacked pills took a quarter of the screen and out-shouted
-       the headline. */
-    .hero--type .ht-actions{gap:10px}
-    .hero--type .ht-actions .button{flex:0 1 auto;padding-left:26px;padding-right:26px}
-    /* Inter, not Formula Condensed. A long uppercase condensed string at
-       12px was the hardest thing on the screen to read and the least
-       important thing on it. */
-    .hero--type .ht-proof{
-      font:11px/1.45 var(--sans);letter-spacing:.04em;max-width:40ch;text-transform:none;
-    }
-    /* The mobile nav panel drops out of a now-Deep-Green header, so it
-       cannot stay Soft Ivory with lime links on it. */
-    .site-nav{background:var(--ink);border-bottom-color:rgba(204,254,6,.22)}
-    .site-nav a{border-bottom-color:rgba(204,254,6,.16)}
   }
 
   /* ---------- 4. Testimonials: moved up, and turned into one sliding row ----------
@@ -702,379 +513,49 @@
   @media(prefers-reduced-motion:reduce){
     .pb-track{animation:none}
   }
-
-  /* ---------- 11. The Noise / Clarity switch, read the other way ----------
-     Clarity now sits on the left and Noise on the right, and the switch
-     rests OFF: knob to the left, track empty.
-
-     Only the visuals are flipped, not the state. js/site.js (§3b) treats
-     aria-pressed="true" as the resting state — it snaps the choice-toggle
-     back to it 350ms after a click — and that file is shared with the live
-     site, so it must not be touched (AGENTS.md). "true" therefore still
-     means clarity, exactly as before; what changes is which side it
-     lights and which way the knob sits. Flipping the attribute instead
-     would have made the switch snap back to Noise, the opposite of the
-     section's point.
-
-     The colours are untouched: clarity is still the lime card with the
-     ink type, noise still the dark one. */
-  /* Left label (now Clarity) is lit at rest, right label (Noise) dimmed:
-     the reverse of the shared rule, so both states are overridden. */
-  .choice-toggle[aria-pressed="true"] .t-before{opacity:1}
-  .choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
-  .choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
-  .choice-toggle[aria-pressed="false"] .t-after{opacity:1}
-
-  /* The switch IS the logo mark: a lime pill carrying the O of the OD
-     monogram, so the knob is an ink RING with the track showing through
-     it, not a solid dot. That is the one detail that makes it read as the
-     brand's own switch rather than a generic iOS toggle.
-
-     Hence no inset highlight and no drop shadow on the knob — the mark is
-     flat, and both were what made the old knob look like a UI control
-     borrowed from somewhere else. */
-  .choice-toggle .t-switch{
-    background:var(--lime);
-    border:3px solid var(--ink);
-    box-shadow:none;
-  }
-  /* box-sizing MUST be border-box here. The shared rule sizes the knob
-     34x34 as a solid dot, where no border is in play; turning it into a
-     ring added 7px of stroke on every side, so it came out 48px wide in a
-     42px track and hung over both edges. With border-box the 34 is the
-     whole ring, stroke included.
-
-     Geometry: track 92 wide, 3px border, so the inner box is 86. Ring 34
-     at 4px from the left leaves 48 to the right edge, hence the 44px
-     travel below — 4px of lime left showing at either end. */
-  .choice-toggle .t-switch::before{
-    box-sizing:border-box;
-    top:4px;left:4px;width:34px;height:34px;
-    background:transparent;
-    border:6px solid var(--ink);
-    box-shadow:none;
-  }
-  /* At rest the ring sits left, as the O does in the mark. Pressed (noise)
-     slides it to the D's end. */
-  .choice-toggle[aria-pressed="true"] .t-switch::before{transform:none}
-  .choice-toggle[aria-pressed="false"] .t-switch::before{transform:translateX(44px)}
-
-  /* ---------- 12. One size for the section titles ----------
-     The homepage carried six different title sizes — 43px on The Problem
-     and About, 58px on the Frameworks, 55px on Keynotes, 70px on the
-     cleanse, the testimonials and the outcomes. The client's reference is
-     "How the cleanse works:", so its scale becomes the homepage's section
-     title: clamp(42px,4.7vw,70px), which is 70px at 1512.
-
-     The Problem and About were not small by choice. site.css:123 caps any
-     heading inside a two-column .section-grid at 44px, a rule written for
-     the old 1180px container and shared with the five interior pages.
-     Overriding it HERE rather than editing site.css keeps those pages where
-     they are until they get their own rework (§8).
-
-     Two sections are deliberately NOT on this scale, and both are
-     deliberate rather than overlooked:
-       - .values-inner h2 ("How I work") is a label inside a compact lime
-         strip, not a section title. At 70px it stops being a strip.
-       - .choice h2 ("What will you choose?") is 102px because it is the
-         page's closing statement. Levelling it down would flatten the end
-         of the page. */
-  /* The two .section-grid selectors are written long ON PURPOSE. The rule
-     being overridden is `.section-grid>div:first-child h2` (0,2,1), so a
-     plain `.problem-heading` (0,1,0) loses to it and nothing moves — which
-     is exactly what happened on the first attempt. These match its shape and
-     add the section class to win. */
-  .problem.section-grid>div:first-child h2,
-  .about.section-grid>div:first-child h2,
-  .frameworks-head h2,
-  .speak-copy h2{
-    font-size:clamp(42px,4.7vw,70px);
-    max-width:none;
-  }
-
-  /* The logo line is a title, but one step DOWN from the 70px section scale,
-     at the client's instruction: big, not as big as the others. It is a
-     lead-in to the logo row rather than a section of its own, and it is a
-     46-character sentence — at 70px it would wrap and outweigh the logos it
-     introduces. 48px holds it on one line to about 1150px wide.
-
-     max-width:none because site.css caps h2 at 21ch, which would break this
-     sentence into three lines in the middle of a centred section.
-
-     Taken down from 48px to 38px (28 Oct): at 48 it was pulling too much
-     weight for a lead-in. Note the weight itself CANNOT be reduced — the
-     site self-hosts exactly one cut, Formula Condensed Bold (§9), so a
-     lighter font-weight would only make the browser synthesise one, which
-     distorts the letterforms. Size and tracking are the only two knobs, so
-     the size comes down and the tracking opens slightly to let it breathe. */
-  .trust h2{
-    max-width:none;margin:0 0 6px;
-    font-size:clamp(20px,2.5vw,38px);line-height:1.15;letter-spacing:.05em;
-    color:var(--ink);
-  }
-
-  /* ---------- 13. The bottleneck each track fixes ----------
-     Sits directly under the card's h3 as part of the title block, not as a
-     lead-in to the paragraph — hence the negative top margin pulling it up
-     into the h3's 16px bottom gap, and the full gap kept below it.
-
-     Set in the display face, uppercase and tracked, one clear step smaller
-     than the h3 so it reads as a qualifier rather than a second heading.
-     Lime on Deep Green is the sanctioned pairing (V1.0 p.21).
-
-     The :not() is load-bearing: site.css:465 paints every <p> in these cards
-     at rgba(255,255,255,.84), so without matching that rule's specificity
-     this line would come out body-white. */
-  .cleanse-card>p.cleanse-bottleneck:not(.cleanse-meta){
-    margin:-10px 0 16px;color:var(--lime);
-    font:clamp(14px,1.15vw,17px)/1.2 var(--display);
-    letter-spacing:.12em;text-transform:uppercase;
-  }
-
-  /* ---------- 14. The values, as a caption under the portrait ----------
-     Sized to the photo above it, so the two read as one object. The lime is
-     kept — it is what made the values register at all — but as a panel the
-     width of the portrait rather than as a band across the whole page.
-
-     Two columns, not the old single dot-separated row: six values in a ~460px
-     column would run to three ragged lines. Two columns of three give it a
-     shape, and the dots that separated the old row are dropped because the
-     grid does that job now. */
-  /* The arch moves from the figure to the image. site.css:660 makes the
-     figure itself the arch — aspect-ratio:3/4, overflow:hidden, the 260px
-     top radius — so a caption placed inside it is simply clipped away, which
-     is exactly what happened on the first attempt: the panel rendered and was
-     invisible. The figure becomes a plain column; the img keeps the ratio,
-     the radius and the panel ground, so the portrait is unchanged. */
-  .about figure{
-    display:flex;flex-direction:column;
-    aspect-ratio:auto;overflow:visible;border-radius:0;background:none;
-  }
-  .about figure img{
-    height:auto;aspect-ratio:3/4;background:var(--panel);
-    border-radius:260px 260px var(--r-card) var(--r-card);
-  }
-  .about-values{
-    background:var(--lime);color:var(--ink);
-    margin-top:14px;padding:20px 24px 22px;border-radius:18px;
-  }
-  .about-values h3{
-    margin:0 0 12px;color:var(--ink);
-    font:clamp(19px,1.6vw,23px)/1 var(--display);
-    letter-spacing:.03em;text-transform:uppercase;
-  }
-  /* Chips, not a two-column grid. The six values range from "Clarity" to
-     "Uncomfortable honesty", so in columns nothing lines up and the right
-     half empties out. Chips size to their own words and wrap to fill the
-     panel evenly, and they are already the site's device for a list like
-     this — the offer cards use the same outlined pill for their topic rows
-     (site.css:452). Ink outline on lime matches .cleanse-card--lime. */
-  .about-values ul{
-    list-style:none;margin:0;padding:0;
-    display:flex;flex-wrap:wrap;gap:8px;
-  }
-  .about-values li{
-    border:1.5px solid rgba(20,51,24,.45);border-radius:999px;
-    padding:6px 13px 5px;
-    font-size:13px;font-weight:650;line-height:1.15;white-space:nowrap;
-  }
-  @media(max-width:520px){
-    .about-values{padding:18px 20px 20px}
-    .about-values li{font-size:12px;padding:5px 11px 4px}
-  }
-
-  /* ---------- 15. Keynotes: the new stage photograph ----------
-     The AI-generated keynote frame, with the slide's type replaced by OPS
-     Detox copy set in Formula Condensed (the original read "Surviving ≠
-     Living / Break free from autopilot", which sold a different business).
-     Source and method are in HANDOFF; the backdrop behind the old type was
-     rebuilt from the screen's own navy rather than painted over.
-
-     THE COPY ON THE SLIDE IS A PLACEHOLDER awaiting Oscar's own line.
-
-     The layout had to change with the picture. The old photo put Oscar
-     centre-right, so the copy sat in a left column with a left-to-right
-     scrim. In this frame Oscar stands at roughly 21-46% from the left and
-     the slide fills the rest, so there is no empty column anywhere across
-     the width — a left column lands on Oscar, a right one covers the slide
-     we just branded.
-
-     The layout stays exactly as it was — full-bleed photograph, copy in a
-     narrow column over it, scrim behind the column — but it MIRRORS. Oscar
-     stands at roughly 21-46% from the left in this frame where the old photo
-     had him centre-right, so the copy has to move to the right or it lands
-     on him. Same device, other side.
-
-     The section is also taller, as asked. */
-  .speak{min-height:860px}
-  .speak-media{
-    background-image:image-set(
-      url('assets/img/speaking-keynote.webp') type('image/webp'),
-      url('assets/img/speaking-keynote.jpg')  type('image/jpeg'));
-    /* 28% keeps Oscar's head clear of the top edge and holds the audience
-       along the bottom. */
-    background-position:center 28%;
-  }
-  /* The green colour pass comes off. It was there to pull a cool blue-grey
-     photo toward the palette; this frame is already dark navy and the pass
-     only muddies the lime on the slide. */
-  .speak-media::after{opacity:0}
-  /* The same column wash, running right-to-left instead of left-to-right,
-     and fading out before it reaches Oscar so the photograph keeps its
-     contrast exactly as the original rule intended. */
-  /* The original ramp, simply reversed. An earlier pass had to run this
-     near-solid because the slide still carried type and it read through the
-     copy; with the screen blank the wash can go back to being a wash, so the
-     photograph keeps its contrast. */
-  .speak::before{
-    background:linear-gradient(to left,
-      rgba(20,51,24,.97) 0%,
-      rgba(20,51,24,.95) 30%,
-      rgba(20,51,24,.86) 39%,
-      rgba(20,51,24,.34) 49%,
-      rgba(20,51,24,.10) 61%,
-      rgba(20,51,24,.06) 80%,
-      rgba(20,51,24,.12) 100%);
-  }
-  /* The global hover inverts a primary button to a Deep Green pill with lime
-     type (site.css:181). On a Deep Green ground that pill is invisible — the
-     button appears to dissolve into bare lime text on hover, which is what
-     the client saw. V1.0 p.29 already answers this: on Deep Green the
-     inverted state is an OUTLINED lime pill, which is what the cleanse cards
-     do and what this now does too. The 2px border is already on .button,
-     transparent at rest, so nothing shifts by a pixel when it lights up. */
-  .speak-copy .button:hover{
-    background:transparent;color:var(--lime);border-color:var(--lime);
-  }
-  .speak-inner{min-height:840px;justify-content:flex-end}
-  .speak-copy{max-width:min(520px,45%)}
-  @media(max-width:850px){
-    .speak{min-height:0}
-    .speak-inner{min-height:0;justify-content:flex-start}
-    .speak-copy{max-width:none}
-  }
-
-  /* ---------- 27. Soft Ivory hero (comparison only) ----------
-     This file is index.html with ONE change: the type-led hero's ground
-     goes from Detox Green #CCFE06 to Soft Ivory #FEFDF2. Everything from
-     the switcher strip down is byte-identical to index.html, so the two
-     files can be opened side by side and only the first screen differs.
-
-     Changing the ground forces four other changes, because V1.0 p.21 bans
-     Detox Green on Soft Ivory. Nothing in the hero may be lime any more:
-
-     1. The buttons invert back. On lime the primary had to be a Deep Green
-        pill (a lime pill on lime is invisible) with lime type. On ivory the
-        sanctioned primary returns: Deep Green pill, and its type can be
-        lime, because lime ON Deep Green is the one legal lime pairing.
-     2. The hero needs a bottom edge. Against lime the Deep Green switcher
-        strip below it was a hard colour change; ivory to Deep Green is
-        still a change, but the hero no longer reads as a block, so a hairline
-        keeps the first screen from bleeding into the strip.
-     3. The faded word "clutter" is re-weighted. .55 Deep Green on lime and
-        .55 Deep Green on ivory are not the same contrast — ivory is lighter,
-        so the same alpha reads weaker. It goes to .62.
-     4. The header stays Deep Green. It was made Deep Green in §5 to give the
-        lime hero a legal top edge, and that reason is gone — but an ivory
-        header on an ivory hero erases the band entirely and the lime logo
-        has nowhere legal to sit. Deep Green is still the only ground the
-        lime logo, lime nav and lime pill CTA can all share. */
-  .hero--type{background:var(--paper)}
-  .hero--type::after{
-    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
-    background:rgba(20,51,24,.14);
-  }
-  .hero--type .ht-fade{color:rgba(20,51,24,.62)}
-  .hero--type .ht-proof{color:rgba(20,51,24,.6)}
-  /* The V1.0 default pair, restored: primary = Deep Green pill with lime
-     type; secondary = Deep Green outline. On hover the primary empties out
-     to the outline rather than flipping to a lime fill, which is illegal
-     here. */
-  .hero--type .button{background:var(--ink);color:var(--lime);border-color:var(--ink)}
-  .hero--type .button:hover{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .hero--type .button--line{background:transparent;color:var(--ink);border-color:rgba(20,51,24,.5)}
-  .hero--type .button--line:hover{background:var(--ink);color:var(--lime);border-color:var(--ink)}
   </style>
 </head>
 <body>
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
     <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44ZM244.41,125.25h-2.09c-15.9,0-28.8-12.87-28.8-28.75s12.9-28.78,28.8-28.78h2.09c14.94,1.06,26.77,13.58,26.77,28.78s-11.83,27.7-26.77,28.75ZM293.37,125.25h-25.62c3.24-2.87,5.99-6.28,8.11-10.07.08-.11.15-.23.22-.34h16.45c5.08,0,9.65-2.06,12.98-5.38,3.32-3.33,5.37-7.9,5.37-12.97,0-10.13-8.21-18.35-18.35-18.35h-16.45c-.1-.17-.21-.34-.31-.5-2.11-3.74-4.84-7.09-8.04-9.92h25.64c15.89,0,28.76,12.88,28.76,28.78s-12.87,28.75-28.76,28.75Z"/><path class="pl-knob" d="M243.04,78.16c-.23-.02-.46-.02-.7-.02-10.14,0-18.35,8.22-18.35,18.35s8.21,18.35,18.35,18.35h.7c9.81-.38,17.64-8.44,17.64-18.35s-7.83-17.95-17.64-18.33Z"/></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
+  </div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="OPS DETOX home">
-        <img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+      <a class="brand" href="../index.html" aria-label="OPS DETOX home">
+        <img src="../assets/logo/primary-deepgreen.svg" alt="OPS DETOX">
       </a>
       <nav class="site-nav" id="nav" aria-label="Main navigation">
-        <a href="detox.html">The DETOX</a>
-        <a href="diagnostic.html">Audit</a>
-        <a href="index.html#results">Results</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+        <a href="../detox.html">The DETOX</a>
+        <a href="../diagnostic.html">Audit</a>
+        <a href="../index.html#results">Results</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
       </nav>
-      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk</a>
+      <a class="button button--small button--line header-cta" href="../contact.html">Let’s talk</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
     </div>
   </header>
 
   <main id="main">
-    <!-- Type-led hero. No portrait: see the note in the style block above.
-         Every word here is the locked copy from index.html. -->
-    <!-- Revised 24 Oct. The first build broke as CLEANSE YOUR / BUSINESS
-         SYSTEMS OF / OPERATIONAL CLUTTER, which left line 1 at ~60% width
-         and a dead band of lime across the middle of the hero. The break is
-         now two full-width lines plus the single short word, and the subline
-         and CTAs sit in the space beside it. Copy is still word for word
-         index.html's. -->
-    <section class="hero hero--type">
-      <div class="ht-inner">
-        <!-- The D is wrapped BY HAND, like the headline's letters (§26).
-             js/site.js §3a wraps the wide O/D alternates itself, but it
-             splits on UPPERCASE /([OD])/ and this line is typed in sentence
-             case and uppercased by CSS — so the script only ever matched the
-             one literal capital O, and the D stayed narrow. site.js is shared
-             with the five live interior pages and must not be touched.
-
-             Client rule, 28 Oct: "Operational Detox" always carries a wide O
-             and a wide D. One letter each — never ss01 on the whole word,
-             which swaps every alternate and destroys the condensed face (§9). -->
-        <span class="eyebrow">Operational <i class="od">d</i>etox for scale-ups</span>
-
-        <!-- The wide letters are wrapped BY HAND; site.js is shared with the
-             live interior pages and setting ss01 on the whole heading swaps
-             every letter and destroys the condensed face (§9). If this copy
-             changes, re-wrap by hand.
-
-             C and U are widened as well as O (28 Oct). ss01 is a full wide
-             alphabet — every uppercase letter has a 2x alternate — so the
-             choice is editorial, not technical. C and U are the other round
-             letters, so they share the O's geometry and the line reads as one
-             system rather than as random letters inflating.
-
-             They are also FREE: the headline's size ceiling is set by its
-             longest line, "systems of operational", which caps it at 161px in
-             the 1480px container. Neither C nor U occurs in that line, so
-             widening them costs no size — measured, not assumed. Widening S
-             would: seven of them in this headline, and the ceiling drops to
-             136px. Check that ceiling again before widening any letter that
-             appears in line 2. -->
-        <h1 class="ht-head"><i class="od">C</i>leanse y<i class="od">o</i><i class="od">u</i>r b<i class="od">u</i>siness <span class="ht-br"></span>systems <i class="od">o</i>f <i class="od">o</i>perati<i class="od">o</i>nal <span class="ht-br"></span><span class="ht-fade"><i class="od">C</i>l<i class="od">u</i>tter</span></h1>
-
-        <div class="ht-foot">
-          <p class="ht-sub">We help scale-ups cleanse the systems clogged by <b class="ht-mark">meetings nobody needs</b>, <b class="ht-mark">reports nobody reads</b> and <b class="ht-mark">decisions nobody takes</b>, so time flows back into growing the company.</p>
-
-          <div class="ht-actions actions">
-            <a class="button" href="contact.html">Let’s talk</a>
-            <a class="button button--line" href="diagnostic.html">Book the FREE DIAGNOSTIC</a>
-          </div>
-
-          <!-- Recombined from copy already on the site (the Keynotes section
-               and the Frameworks intro), not new claims. Delete the element
-               if the client would rather the hero stayed claim-free. -->
-          <p class="ht-proof">TEDx speaker · 17 years inside complex international organizations</p>
+    <section class="hero hero--brand on-dark">
+      <div class="hero-copy">
+        <span class="eyebrow">Operational detox for scale-ups</span>
+        <h1>Cleanse y<i class="od">o</i>ur business systems <i class="od">o</i>f <i class="od">o</i>perati<i class="od">o</i>nal clutter</h1>
+        <p>We help scale-ups cleanse the systems clogged by meetings nobody needs, reports nobody reads and decisions nobody takes, so time flows back into growing the company.</p>
+        <div class="actions">
+          <a class="button" href="../contact.html">Let’s talk</a>
+          <a class="button button--line" href="../diagnostic.html">Book the FREE DIAGNOSTIC</a>
         </div>
       </div>
+      <figure class="hero-image">
+        <picture>
+          <source srcset="../assets/img/hero-concept.png" type="image/png">
+          <img src="../assets/img/hero-concept.png" width="1044" height="1507"
+               alt="Oscar de Grauw, founder of OPS Detox">
+        </picture>
+      </figure>
     </section>
 
 
@@ -1123,11 +604,8 @@
       </div>
     </div>
 
-    <!-- This line is a title, so it is an h2 now and not a bold <p>. It was
-         the only section lead on the page set in Inter at body size, which is
-         why it read as a stray caption above the logo row. -->
-    <section class="trust container section-rule" aria-labelledby="trust-heading">
-      <h2 id="trust-heading">Trusted by ambitious leaders and founders at</h2>
+    <section class="trust container section-rule">
+      <p>Trusted by ambitious leaders and founders at</p>
       <div class="trust-logos">
         <span>LOGO</span><span>LOGO</span><span>LOGO</span><span>LOGO</span>
       </div>
@@ -1146,7 +624,7 @@
         </div>
       </div>
       <figure class="artwork problem-portrait">
-        <img src="assets/img/oscar-problem.jpg" width="1201" height="1800"
+        <img src="../assets/img/oscar-problem.jpg" width="1201" height="1800"
              alt="Oscar de Grauw" loading="lazy" decoding="async">
       </figure>
     </section>
@@ -1161,11 +639,11 @@
              everybody starts there. The two offers below are a choice taken
              after it, not steps two and three of a sequence. -->
         <article class="cleanse-card cleanse-card--lime cleanse-step">
-          <span class="cleanse-step-tag">Step 1, free for everyone</span>
+          <span class="cleanse-step-tag">Step 1 — free, for everyone</span>
           <p class="cleanse-meta"><span>Free</span><span>8 minute</span></p>
           <h3>OPS Detox Diagnostic™</h3>
           <p>Before anything is stripped, we measure where the time and the decisions actually go. You, your key people and your team answer the same questions, where the answers differ, the clutter sits.</p>
-          <a class="button button--line cleanse-cta" href="diagnostic.html">Book the free diagnostic</a>
+          <a class="button button--line cleanse-cta" href="../diagnostic.html">Book the free diagnostic</a>
         </article>
 
         <p class="cleanse-branch"><span>Then we strip, on one of two tracks</span></p>
@@ -1174,26 +652,14 @@
           <article class="cleanse-card">
             <p class="cleanse-meta"><span>Meetings</span><span>Reporting</span><span>Decisions</span></p>
             <h3>Operational flow</h3>
-            <!-- Client, 28 Oct: name the bottleneck each track fixes. Placed
-                 under the heading rather than as an eyebrow above it, because
-                 the card already opens with the .cleanse-meta chips and a
-                 third stacked label would mean three lines of small type
-                 before the card says anything. Under the heading it reads as
-                 what the heading means, and the pair — founder vs team — is
-                 the actual choice between the two tracks. -->
-            <p class="cleanse-bottleneck">Founder Bottleneck</p>
             <p>For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
-            <a class="button cleanse-cta" href="detox.html">Learn more</a>
+            <a class="button cleanse-cta" href="../detox.html">Learn more</a>
           </article>
           <article class="cleanse-card">
             <p class="cleanse-meta"><span>Communication</span><span>Ownership</span><span>Psychological Safety</span></p>
             <h3>Organisational flow</h3>
-            <p class="cleanse-bottleneck">Team Bottleneck</p>
-            <!-- "companies" -> "teams" at the client's instruction, 28 Oct.
-                 This is the locked copy being changed by its owner, not an
-                 edit; the rest of the sentence is untouched. -->
-            <p>For teams where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
-            <a class="button cleanse-cta" href="detox.html#modules">Learn more</a>
+            <p>For companies where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
+            <a class="button cleanse-cta" href="../detox.html#modules">Learn more</a>
           </article>
         </div>
       </div>
@@ -1214,7 +680,7 @@
         <div class="testimonial-grid testimonial-track" role="list">
           <article role="listitem">
             <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
             <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
           </article>
           <article role="listitem">
@@ -1239,7 +705,7 @@
                wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
           <article aria-hidden="true">
             <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
             <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
           </article>
           <article aria-hidden="true">
@@ -1264,7 +730,7 @@
                wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
           <article aria-hidden="true">
             <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
             <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
           </article>
           <article aria-hidden="true">
@@ -1289,7 +755,7 @@
                wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
           <article aria-hidden="true">
             <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down—and what to remove first.”</blockquote>
             <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
           </article>
           <article aria-hidden="true">
@@ -1335,9 +801,7 @@
             <span class="fw-mark" aria-hidden="true">02</span>
             <h3>Truth Latency™</h3>
             <p class="fw-line">The delay between knowing and saying.</p>
-            <!-- "the truth" added to the description at the client's mark,
-                 28 Oct. The one-liner above it is unchanged. -->
-            <p>In most companies someone knew the truth weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
+            <p>In most companies someone knew weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
           </article>
           <article>
             <span class="fw-mark" aria-hidden="true">03</span>
@@ -1348,7 +812,7 @@
         </div>
 
         <!-- Placeholder copy. Remove this notice with the real descriptions. -->
-        <p class="fw-draft"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording, please correct them. DRMT™ is shown as “the decision engine” because that is how about.html describes it; send the full name if you want it spelled out. Confirm also whether <b>See – Strip – Choose™</b> replaces <b>The CORE method™</b>, which is still named in the current copy but absent from your updated list.</p>
+        <p class="fw-draft"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording — please correct them. DRMT™ is shown as “the decision engine” because that is how about.html describes it; send the full name if you want it spelled out. Confirm also whether <b>See – Strip – Choose™</b> replaces <b>The CORE method™</b>, which is still named in the current copy but absent from your updated list.</p>
 
         <p class="frameworks-note">Also part of the toolkit, and used mainly inside workshops rather than on this page: <b>Async Mastery™</b>, <b>Speak Up Gym™</b> and the <b>Seven Contextual Gaps™</b>.</p>
       </div>
@@ -1376,45 +840,34 @@
         <!-- Was a six-item list of every framework. The three that matter now
              have their own section above, so this paragraph stops competing
              with it and simply points at it. -->
-        <p>My work is built on frameworks I developed myself: See – Strip – Choose™, Truth Latency™ and DRMT™, not someone else's playbook. You get a repeatable, structured approach that scales.</p>
-        <a class="button about-cta" href="about.html">More about Oscar</a>
+        <p>My work is built on frameworks I developed myself — See – Strip – Choose™, Truth Latency™ and DRMT™ — not on someone else's playbook. You get a repeatable, structured approach that scales.</p>
+        <a class="button about-cta" href="../about.html">More about Oscar</a>
       </div>
       <figure>
-        <img src="assets/img/oscar-about.jpg" width="1201" height="1800"
+        <img src="../assets/img/oscar-about.jpg" width="1201" height="1800"
              alt="Oscar de Grauw holding a laptop" loading="lazy" decoding="async">
-        <!-- The values moved in here from the full-bleed lime band that used
-             to sit between About and Keynotes (client, 28 Oct: it broke the
-             flow of the page). They belong to About — "How I work" is About's
-             tail, which is why §24 kept the band attached to this section when
-             the running order changed — so putting them under the photo keeps
-             the content and removes the interruption.
-
-             As a figcaption they are semantically part of the figure, and the
-             panel reads as a caption to the portrait rather than as a section
-             of its own. -->
-        <figcaption class="about-values">
-          <h3 id="values-heading">How I work</h3>
-          <ul aria-label="How Oscar works">
-            <li>Uncomfortable honesty</li>
-            <li>Clarity</li>
-            <li>Ownership</li>
-            <li>Substance</li>
-            <li>Courage</li>
-            <li>Depth</li>
-          </ul>
-        </figcaption>
       </figure>
     </section>
 
-    <!-- The .values-strip band that used to sit here has moved into the About
-         figure above (client, 28 Oct). Its CSS is still in site.css, unused by
-         this page but still reachable if the band is ever wanted back. -->
+    <section class="values-strip reveal" aria-labelledby="values-heading">
+      <div class="container values-inner">
+        <h2 id="values-heading">How I work</h2>
+        <ul aria-label="How Oscar works">
+          <li>Uncomfortable honesty</li>
+          <li>Clarity</li>
+          <li>Ownership</li>
+          <li>Substance</li>
+          <li>Courage</li>
+          <li>Depth</li>
+        </ul>
+      </div>
+    </section>
 
     <!-- Keynotes moved down to sit just before the final CTA (client, 24 Oct).
          It used to follow Outcomes, and §13 records that it deliberately has
          no coloured separator above it because the photograph itself made the
-         transition. With the values band gone it now follows the ivory About
-         section, so the photograph meets Soft Ivory. -->
+         transition. It now follows the Detox Green values strip, so the
+         photograph meets lime rather than Deep Green. -->
     <section class="speak reveal" aria-labelledby="speak-heading">
       <!-- Background slot. Drop Oscar's keynote / workshop photo in as the
            .speak-media background-image; the scrim, sizing and focal point
@@ -1425,7 +878,7 @@
           <span class="eyebrow">Keynotes &amp; workshops</span>
           <h2 id="speak-heading">Bring the DETOX into the room.</h2>
           <p>Oscar de Grauw is a TEDx keynote speaker and workshop facilitator. Book him for a few intensive hours with your leadership team: in the Speak Up Gym and over the Out Loud card game, people practise saying the uncomfortable thing out loud, and the clutter starts to show.</p>
-          <a class="button" href="contact.html">Book Oscar to speak</a>
+          <a class="button" href="../contact.html">Book Oscar to speak</a>
         </div>
       </div>
     </section>
@@ -1438,16 +891,16 @@
 
         <div class="toggle-rows">
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
-                  aria-label="Switch between Operational Clarity and Operational Noise">
-            <span class="t-before">Operational Clarity</span>
+                  aria-label="Switch between Operational Noise and Operational Clarity">
+            <span class="t-before">Operational Noise</span>
             <span class="t-switch" aria-hidden="true"></span>
-            <span class="t-after">Operational Noise</span>
+            <span class="t-after">Operational Clarity</span>
           </button>
         </div>
 
         <div class="actions">
-          <a class="button" href="diagnostic.html">Free OPS Diagnostic</a>
-          <a class="button button--line" href="contact.html">Let us talk</a>
+          <a class="button" href="../diagnostic.html">Free OPS Diagnostic</a>
+          <a class="button button--line" href="../contact.html">Let us talk</a>
         </div>
       </div>
     </section>
@@ -1528,7 +981,7 @@
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-card">
       <button class="modal-close" type="button" aria-label="Close">✕</button>
-      <img class="modal-icon" src="assets/icons/meetings.svg" alt="">
+      <img class="modal-icon" src="../assets/icons/meetings.svg" alt="">
       <h2 class="modal-title" id="modal-title">Module</h2>
       <p class="modal-sub">Tagline</p>
       <p class="modal-note">Module detail copy still to come from the client’s current website. This popup is wired and ready for it.</p>
@@ -1539,15 +992,15 @@
     <div class="container">
       <div class="footer-grid">
         <div>
-          <img class="footer-logo" src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+          <img class="footer-logo" src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
           <div class="footer-social">
-            <a href="#" aria-label="LinkedIn"><img src="assets/social/linkedin.svg" alt=""></a>
-            <a href="#" aria-label="Instagram"><img src="assets/social/instagram.svg" alt=""></a>
-            <a href="#" aria-label="YouTube"><img src="assets/social/youtube.svg" alt=""></a>
+            <a href="#" aria-label="LinkedIn"><img src="../assets/social/linkedin.svg" alt=""></a>
+            <a href="#" aria-label="Instagram"><img src="../assets/social/instagram.svg" alt=""></a>
+            <a href="#" aria-label="YouTube"><img src="../assets/social/youtube.svg" alt=""></a>
           </div>
         </div>
 
-        <form data-demo-form data-success-message="Subscribed, demo only, no email is sent yet.">
+        <form data-demo-form data-success-message="Subscribed — demo only, no email is sent yet.">
           <h2>Newsletter</h2>
           <div class="field">
             <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
@@ -1576,10 +1029,10 @@
           <a href="#">Cookies</a>
         </div>
       </div>
-      <p class="footer-legal">© 2026 OPS Detox™, Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+      <p class="footer-legal">© 2026 OPS Detox™ — Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
     </div>
   </footer>
 
-  <script src="js/site.js"></script>
+  <script src="../js/site.js"></script>
 </body>
 </html>
