@@ -2,6 +2,10 @@
 
 _Last updated: 2 November 2026_
 
+> **2 Nov — Work With Us gained the site's closing CTA and the pattern divider.** The
+> page ended on the offers section with no ask and a hard ivory-to-green cut into the
+> footer. See §42.
+
 > **2 Nov — the last two pages came onto the design system.** `detox.html` and
 > `diagnostic.html`. **All eleven pages are now on one system.** The working diagnostic
 > and the seven module popups were not touched and both were driven end to end to prove
@@ -195,9 +199,15 @@ the client exactly how the thing behaves, without a backend behind it.
 
 ## 2. Current state
 
-- **The repo root is the live deliverable** — seven pages, real navigation, working
+> **§43 is the current page-by-page state.** The tables below are the standing
+> description; §43 is dated and supersedes them where they disagree.
+
+- **The repo root is the live deliverable** — **eleven pages**, real navigation, working
   interactions, responsive from 320px up. No backend, no build step, no dependencies.
   Flattened out of `website-design/` on 1 Nov; see §32.
+- **Live for review at <https://oscar.bendada.co>.** All eleven pages return 200.
+- **Every page is on one design system** as of 2 Nov (§40, §41), and the nav is one list
+  on all of them (§39).
 - `playground/` holds the review artefacts and frozen records, none of them site pages.
 - The design system follows `OPS_DETOX_BRAND_GUIDELINE_V1.0.pdf` (see §8): Soft Ivory
   and Deep Green grounds, Detox Green only ever on Deep Green,
@@ -213,13 +223,15 @@ the client exactly how the thing behaves, without a backend behind it.
 
 | File | Page |
 |---|---|
-| `index.html` | Homepage |
-| `about.html` | About Oscar de Grauw |
-| `work-with-us.html` | **New page, in progress** — see §30. A fresh Work With Us page; `detox.html` is untouched |
-| `detox.html` | The DETOX — the older full service page, client wireframe order |
-| `diagnostic.html` | OPS Detox Diagnostic™, with a working demo of the audit |
-| `contact.html` | Contact — message form plus a slot for the booking embed |
-| `freebie.html` | Freebie opt-in (Startup Financial Model Template) |
+| `index.html` | Homepage. Reached by the logo |
+| `work-with-us.html` | **In the nav.** Photographs landed 2 Nov (§37); closing CTA added (§42) |
+| `keynote.html` | **In the nav.** Hero to footer (§34, §35); §7 topics are a placeholder |
+| `about.html` | **In the nav.** About Oscar de Grauw |
+| `contact.html` | **In the nav.** Message form plus a slot for the booking embed (§33) |
+| `freebie.html` | Freebie opt-in, Startup Financial Model Template (§40) |
+| `detox.html` | The DETOX. On system (§41), **out of the nav** until the client is happy. Its hero copy duplicates `work-with-us.html`'s |
+| `diagnostic.html` | OPS Detox Diagnostic™, with a working demo (§41). **Out of the nav**; frozen until the Noise Tax calculator lands |
+| `privacy.html` · `cookies.html` · `terms.html` | Legal (§38). Footer only. **64 blanks**, all `noindex` |
 
 ### Not site pages — `playground/` (§32)
 
@@ -254,8 +266,10 @@ All of it reaches `css/`, `js/` and `assets/` with `../`.
 
 | File | Purpose |
 |---|---|
-| `css/site.css` | Full design system, expanded and sectioned for editing. Shared by all seven pages |
-| `js/site.js` | Nav, module popups, forms, switch, reveal, wide O/D wrapping. Shared by all seven pages |
+| `css/site.css` | Full design system, expanded and sectioned for editing. Shared by **all eleven pages** |
+| `js/site.js` | Nav, module popups, forms, switch, reveal, wide O/D wrapping. Shared by **all eleven pages** |
+| `css/legal.css` | **New 2 Nov.** The legal pages' shared layout — loaded only by those three (§38) |
+| `BACKLOG.md` | **New 2 Nov.** The ask list: what we are waiting on and who owns it |
 | `js/diagnostic.js` | Demo diagnostic — questions and scoring live here |
 | `assets/` | Fonts, icons, images, logos, patterns, social icons — the site is self-contained |
 | `index.html` | The live homepage. Carries the approved Soft Ivory hero as stylesheet **section 16, which must stay last in the file** — §28 |
@@ -303,6 +317,10 @@ Not yet done: real-device testing, cross-browser testing (Safari and Firefox in
 particular), and a formal accessibility audit.
 
 ## 6. Open items
+
+> **`BACKLOG.md` (new, 2 Nov) is now the live ask list**, grouped by who can actually
+> answer. This section is kept for its detail and its history; where the two disagree,
+> the backlog is current.
 
 ### Needed from the client
 - Real client logos for the trust row.
@@ -401,37 +419,42 @@ particular), and a formal accessibility audit.
 
 ## 7. Next steps
 
-1. **Finish `work-with-us.html`** (§30). It needs the two photographs, a decision on whether
-   "Work With Us" joins the main nav (and whether it replaces `detox.html` there), and the
-   remaining sections if there are more. The page is otherwise built and verified.
-2. **Lift the shared blocks into `css/site.css` before the real content arrives.** The
-   testimonial slider is now in **three** pages and the Deep Green header in three, each
-   copied with its markup. The slider repeats its four placeholder quotes four times per
-   copy, so replacing one quote is twelve edits across three files. **The real testimonials
-   landing is exactly what will break these apart** — do the lift first.
-3. Close the copy questions that have been blocking since mid-October: the two package
-   names (open since 29 Oct), the real framework copy, DRMT™'s expansion, and whether
-   See – Strip – Choose™ replaces The CORE method™. Settle the founder-vs-cleanse
-   positioning question (§22.6) separately and deliberately — it is not a review-call item.
-4. Close out the 28 Oct round (§27): the hero marks, the keynote slide copy, and the AI
-   keynote images, which are a credibility decision rather than a design one.
-5. **Rework the remaining interior pages.** `contact.html` was done on 1 Nov (§33) and is
-   the template for the rest: Deep Green header, a hero on the page-title scale, the
-   switcher-pattern strip, the divider into the footer, and the corrected closing switch.
-   **Still on the 14 Oct structure: `detox.html`, `diagnostic.html` and `freebie.html`** —
-   `detox.html` most of all, and note §30 may make it redundant. Check each for the two
-   faults `contact.html` turned out to have: a Deep Green logo left in an ivory header,
-   and the closing switch still in the pre-§29.5 state.
-6. Confirm the booking platform and the diagnostic platform — these unblock most of the
-   remaining functional work.
-7. **Optimise the remaining oversized assets.** §31 did the worst one. Still outstanding:
-   `hero-concept.png` (1.8 MB, now unused by the homepage), `hero-cards.png` (1.8 MB),
-   `poster.png` (1.9 MB), `time-is-money.png` (1.8 MB), `portrait.png` (1.4 MB).
-8. **Test in Safari as a matter of course, not afterwards.** §29.1 shipped broken three
-   times because every check was Chrome-only, and there is no WebKit automation on the build
-   machine. Anything animated needs a real Safari look before it is called done.
-9. Licence the typeface, add the legal pages, then cross-browser and real-device QA before
-   launch.
+> **Rewritten 2 Nov.** Steps 1, 5 and most of 4 are done — see §43.
+
+1. **Lift the shared blocks into `css/site.css`.** The largest piece of debt in the repo
+   and the next structural job: the Deep Green header is in **9** places, the switch
+   override in **8**, the divider in **7** and the testimonial slider in **4** — each
+   slider repeating its four quotes four times, so **replacing one quote is sixteen
+   edits across four files.** `css/legal.css` is the model: a new shared file that the
+   other pages cannot be affected by. **The real testimonials arriving is what breaks
+   this apart — do the lift first.**
+2. **Get the four company facts** — legal entity name, KvK number, btw-id, and one date
+   for all three legal pages. They appear about ten times across the set and are the
+   cheapest item on the whole backlog (`BACKLOG.md` §A1). Nothing else unblocks as much.
+3. **Test in Safari.** It has still never been done, there is no WebKit automation on
+   this machine, and §29.1 shipped broken four times on Chrome-only checks. The animated
+   heroes on `about.html` and `keynote.html` want a real look before the client sees
+   them.
+4. **Close the copy questions blocking since mid-October**: the two package names (29
+   Oct), DRMT™'s expansion, whether See – Strip – Choose™ replaces The CORE method™,
+   real framework wording, the six About values. Settle the founder-vs-cleanse
+   positioning question (§22.6) separately and deliberately.
+5. **Confirm the platforms** — booking, diagnostic, consent, analytics, form backend.
+   These unblock most of the remaining functional work, and the Cookie Policy cannot be
+   finished without the first three plus a live cookie scan.
+6. **Settle whether `detox.html` still has a job.** Its hero copy is word for word
+   `work-with-us.html`'s (§30, §41). Bundled with it: whether The DETOX and Audit rejoin
+   the nav (§39), and the 16 buttons still pointing at them.
+7. **Get the photography** — the About timeline, the keynote topics, a stool portrait,
+   press logos, client logos. Most of it is probably in the `Pictures & videos` Drive
+   folder, which has been unreadable since 30 Oct: **either drop the files locally or
+   make the folder link-public.**
+8. **Licence the typeface.** The committed file is the trial and it is a hard blocker on
+   any public launch (§9).
+9. **Delete the superseded assets** once nobody wants them back: `hero-concept.png`,
+   `hero-cards.png`, `poster.png`, `portrait.png` and `time-is-money.png` are all
+   unreferenced now.
+10. Real-device and cross-browser QA, then the legal pages come off `noindex`.
 
 ## 8. Brand-system rework (10 October 2026)
 
@@ -3587,3 +3610,113 @@ balance check, which is the one §38 added after the legal-page incident. **It e
 place the first time it ran.**
 
 **Not verified**: Safari, Firefox, real devices, hover states.
+
+---
+
+## 42. Work With Us — the closing CTA (2 November 2026)
+
+The page stopped after the two offer tracks and the add-on: **no ask at the end, and a
+hard ivory-to-Deep-Green edge into the footer** — the fault §33 named on `contact.html`.
+
+Added, both copied from `index.html` by way of `contact.html` §33:
+
+| | |
+|---|---|
+| Section 6 | `.choice` — "What will you choose?", the Noise/Clarity switch, two CTAs |
+| Then | `.pb`, the pattern divider closing into the footer |
+
+**The CTAs are the same pair, in the same order, as this page's own hero** (§30): *Book
+the FREE DIAGNOSTIC*, then *Let's talk*. The page opens and closes with one ask.
+
+**The switch rests on Clarity.** `aria-pressed="true"` is the resting state `js/site.js`
+snaps back to 350ms after a click, so the attribute must not be flipped to change which
+side lights — only the visuals are overridden. This is the §29.5 bug three pages shipped
+with.
+
+### Counts, now that this is the fifth copy
+
+| Block | Copies | Where |
+|---|---|---|
+| Deep Green header | **9** | 8 pages + `css/legal.css`, which covers the other 3 |
+| Noise/Clarity switch override | **8** | index, about, contact, keynote, freebie, work-with-us, detox, diagnostic |
+| Pattern divider | **7** | the same, minus `about` |
+| Testimonial slider | **4** | index, about, work-with-us, keynote |
+
+*(Counted from the files on 2 Nov, not estimated. An earlier draft of this table said
+6 and 6 — it was wrong.)*
+
+**Every one of these belongs in `css/site.css`.** The lift has been the next structural
+job since 31 Oct and every page finished adds to it.
+
+### A bug in the CHECK, not in the page
+
+> The verification script asked "is the divider above the footer?" and returned
+> **false**, which looked like a real layout fault. It was not.
+>
+> `document.querySelector('footer')` returns the **first** `<footer>` in the document —
+> and on this page that is **inside a testimonial card**, where it holds the client's
+> name and role. The site footer is much further down.
+>
+> **This is the exact trap that welded 15 testimonial cards onto the legal pages a few
+> hours earlier (§38).** It has now caused one real bug and one false alarm in a single
+> day. `<footer>` is not a landmark on this site — scope to `body > footer` or
+> `main ~ footer`, and never split a shell on it.
+
+### Status
+
+Measured at 1512, 1024 and 500: no horizontal scroll, both CTAs resolve correctly, the
+divider is the last element in `<main>` with its 48 bars and sits above the site footer,
+and the switch rests on Clarity by computed opacity. Tag balance clean.
+
+---
+
+## 43. Where the project stands, end of 2 November 2026
+
+### Every page is on one design system
+
+| Page | State |
+|---|---|
+| `index.html` | On system |
+| `about.html` | On system |
+| `work-with-us.html` | On system. Photographs landed (§37), CTA added (§42) |
+| `keynote.html` | On system. §7 topics are a placeholder, §10 portrait a stand-in |
+| `contact.html` | On system (§33) |
+| `freebie.html` | On system (§40) |
+| `detox.html` | On system (§41) |
+| `diagnostic.html` | On system (§41). Frozen on the demo until the Noise Tax calculator lands |
+| `privacy.html` · `cookies.html` · `terms.html` | Built (§38). **64 blanks**, all `noindex` |
+
+**The nav is one list on all eleven pages** (§39): Work With Us · Keynote · About ·
+Contact. The DETOX and Audit are out until the client is happy with them; they are still
+reachable from **16 buttons**.
+
+### Closed today
+
+- Every page off the 14 October build.
+- **The §29.5 switch bug** — was live on contact, freebie, detox and diagnostic.
+- **§8's V1.0 violation** — `.reason-grid span`, lime on white (§41).
+- **The §29.4 em-dash sweep**, finally site-wide (§41).
+- **The §22 stray `</div>`** — 12 files (§38).
+- **Four of §31's five oversized assets** are now unreferenced: `hero-concept.png`,
+  `hero-cards.png`, `poster.png`, `portrait.png`. `time-is-money.png` was replaced by a
+  60 KB AVIF (§40).
+- **The nav**, open since 31 Oct (§39).
+- **The Work With Us photographs**, open since 31 Oct (§37).
+
+### Still open, and nothing here is design
+
+1. **64 blanks on the legal pages** — `BACKLOG.md` §A. Four company facts unblock ten of
+   them.
+2. **The `css/site.css` lift.** Counts in §42. The real testimonials arriving is what
+   breaks it apart.
+3. **Safari has still never been tested.** §29.1 shipped broken four times on
+   Chrome-only checks, and there is no WebKit automation on this machine.
+4. **The Formula Condensed licence.** The committed file is the trial. Hard blocker.
+5. **Copy**: the two package names (29 Oct), DRMT™'s expansion, whether See – Strip –
+   Choose™ replaces The CORE method™, real framework wording, the About values.
+6. **Photography**: the About timeline, the keynote topics, a stool portrait, press
+   logos, client logos. All likely in the unreadable Drive folder.
+7. **Platforms**: booking, diagnostic, consent, analytics, form backend.
+8. **Does `detox.html` still have a job?** Its hero is word for word
+   `work-with-us.html`'s. Open since 31 Oct (§30, §41).
+9. **The founder-vs-cleanse positioning question** (§22.6). Highest-value open item.

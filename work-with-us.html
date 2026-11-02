@@ -516,6 +516,101 @@
     .testimonial-track article{scroll-snap-align:center}
     .testimonial-track article[aria-hidden="true"]{display:none}
   }
+
+  /* ---------- 7. The Noise / Clarity switch, read the other way ----------
+     Copied verbatim from index.html §11, and this page SHIPPED WITHOUT IT.
+
+     The old markup here was site.css's shared `.switch-line` / `.switch`
+     with aria-pressed="false" and "Operational noise" carrying .is-on — so
+     the closing section of the contact page was arguing the opposite of the
+     closing section of the homepage. The markup below is index.html's.
+
+     Only the visuals are flipped, not the state. js/site.js §3b treats
+     aria-pressed="true" as the RESTING state and snaps the toggle back to
+     it 350ms after a click, and that file is shared, so it must not be
+     touched (AGENTS.md). "true" still means clarity; what changes is which
+     side lights and which way the knob sits. Flipping the attribute instead
+     would make the switch snap back to Noise — the opposite of the point. */
+  .choice-toggle[aria-pressed="true"] .t-before{opacity:1}
+  .choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-after{opacity:1}
+
+  /* The switch IS the logo mark: a lime pill carrying the O of the OD
+     monogram, so the knob is an ink RING with the track showing through it,
+     not a solid dot. Hence no inset highlight and no drop shadow — the mark
+     is flat. */
+  .choice-toggle .t-switch{
+    background:var(--lime);
+    border:3px solid var(--ink);
+    box-shadow:none;
+  }
+  /* box-sizing MUST be border-box. The shared rule sizes the knob 34x34 as a
+     solid dot, where no border is in play; as a ring the stroke would add
+     7px on every side and it would come out 48px wide in a 42px track.
+     Geometry: track 92, 3px border, inner box 86. Ring 34 at 4px from the
+     left leaves 48 to the right edge, hence the 44px travel. */
+  .choice-toggle .t-switch::before{
+    box-sizing:border-box;
+    top:4px;left:4px;width:34px;height:34px;
+    background:transparent;
+    border:6px solid var(--ink);
+    box-shadow:none;
+  }
+  .choice-toggle[aria-pressed="true"] .t-switch::before{transform:none}
+  .choice-toggle[aria-pressed="false"] .t-switch::before{transform:translateX(44px)}
+
+  /* ---------- 8. Pattern divider, rebuilt in CSS ----------
+     Copied from index.html §10. Same bar language as the strip under the
+     hero, but bars only and two rows running opposite ways. It closes the
+     page into the Deep Green footer, which is what it does on the homepage
+     (§24) — this page ended on a hard ivory-to-green cut.
+
+     Each row travels the way its bars point: the gradient tail reads as the
+     trail behind the bar, so a bar lit at its right end has to move right.
+     Built the other way round first and both rows looked like they were
+     sliding backwards. */
+  .pb{
+    background:var(--ink);
+    padding:18px 0 20px;
+    display:grid;gap:14px;
+    overflow:hidden;
+  }
+  .pb-row{overflow:hidden}
+  .pb-track{display:flex;width:max-content;animation:pb-right 46s linear infinite}
+  .pb-row--b .pb-track{animation:pb-left 62s linear infinite}
+  @keyframes pb-left{from{transform:none}to{transform:translateX(-25%)}}
+  @keyframes pb-right{from{transform:translateX(-25%)}to{transform:none}}
+
+  .pb-bar{
+    flex:none;height:34px;margin-left:34px;
+    border-radius:var(--r-pill);
+    background:linear-gradient(90deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+  }
+  /* Widths cycle on 6n so every one of the four copies matches. */
+  .pb-bar:nth-child(6n+1){width:300px}
+  .pb-bar:nth-child(6n+2){width:470px;margin-left:46px}
+  .pb-bar:nth-child(6n+3){width:190px;margin-left:28px}
+  .pb-bar:nth-child(6n+4){width:380px;margin-left:40px}
+  .pb-bar:nth-child(6n+5){width:560px;margin-left:30px}
+  .pb-bar:nth-child(6n+6){width:240px;margin-left:52px}
+  .pb-row--b .pb-bar{
+    background:linear-gradient(270deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+  }
+
+  @media(max-width:850px){
+    .pb{padding:14px 0 16px;gap:10px}
+    .pb-bar{height:26px;margin-left:22px}
+    .pb-bar:nth-child(6n+1){width:170px}
+    .pb-bar:nth-child(6n+2){width:250px;margin-left:28px}
+    .pb-bar:nth-child(6n+3){width:120px;margin-left:18px}
+    .pb-bar:nth-child(6n+4){width:210px;margin-left:24px}
+    .pb-bar:nth-child(6n+5){width:300px;margin-left:20px}
+    .pb-bar:nth-child(6n+6){width:150px;margin-left:32px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pb-track{animation:none}
+  }
   </style>
 </head>
 <body>
@@ -878,6 +973,76 @@
       </div>
     </section>
 
+
+    <!-- ===== SECTION 6 — the site's closing CTA =====
+         The page ended on the offers section with no ask and no close into
+         the footer: a hard ivory-to-Deep-Green cut, which is the fault §33
+         named on contact.html.
+
+         index.html's .choice, by way of contact.html §33. The switch rests
+         on Clarity, which is the §29.5 state — aria-pressed="true" is the
+         resting state js/site.js snaps back to, so the attribute must not
+         be flipped to change which side lights. -->
+    <section class="choice">
+      <div class="container">
+        <span class="eyebrow">The choice</span>
+        <h2>What will you choose?</h2>
+        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+
+        <div class="toggle-rows">
+          <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
+                  aria-label="Switch between Operational Clarity and Operational Noise">
+            <span class="t-before">Operational Clarity</span>
+            <span class="t-switch" aria-hidden="true"></span>
+            <span class="t-after">Operational Noise</span>
+          </button>
+        </div>
+
+        <div class="actions">
+          <!-- The same pair, in the same order, as this page's own hero
+               (§30) — so the page opens and closes with one ask. -->
+          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+          <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- The switcher-pattern divider, closing the page into the Deep Green
+         footer the way it does on the homepage (§24). Bars only, no words,
+         two rows running opposite ways. Decorative, so hidden from
+         assistive tech. -->
+    <div class="pb" aria-hidden="true">
+      <div class="pb-row">
+        <div class="pb-track">
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        </div>
+      </div>
+      <div class="pb-row pb-row--b">
+        <div class="pb-track">
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        </div>
+      </div>
+    </div>
 
   </main>
 

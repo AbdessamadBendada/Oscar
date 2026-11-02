@@ -5,15 +5,27 @@ file is the short list of things that are easy to get wrong.
 
 ## Read first
 
-**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§32) and the dated banners
-at the top are the change log. Read the banners plus any section a task touches before
-editing. Several decisions in it look like bugs and are not — see "Do not 'fix'" below.
+**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§43) and the dated banners
+at the top are the change log. **§43 is the current state of every page** — start there.
+Read the banners plus any section a task touches before editing. Several decisions in it
+look like bugs and are not — see "Do not 'fix'" below.
+
+**`BACKLOG.md` is the ask list** — what we are waiting on and who owns it, grouped by
+who can actually answer rather than by page. The handoff records what was built; the
+backlog records what is missing. Keep them apart.
 
 ## The deliverable
 
-**The repo root *is* the site.** `index.html`, `about.html`, `detox.html`,
-`diagnostic.html`, `contact.html`, `freebie.html` and `work-with-us.html` sit at the top
-level alongside `css/`, `js/` and `assets/` — plain HTML/CSS/JS, no build step, no
+**The repo root *is* the site.** Eleven pages sit at the top level alongside `css/`,
+`js/` and `assets/`:
+
+| | |
+|---|---|
+| In the nav | `work-with-us.html` · `keynote.html` · `about.html` · `contact.html` |
+| Reached otherwise | `index.html` (the logo) · `freebie.html` · `detox.html` · `diagnostic.html` |
+| Footer only | `privacy.html` · `cookies.html` · `terms.html` |
+
+Plain HTML/CSS/JS, no build step, no
 dependencies, no backend. Open the files directly or serve the root. There is nothing to
 install and nothing to compile — keep it that way.
 
@@ -48,13 +60,26 @@ When a change in an artefact is approved, **lift the rule into `css/site.css` an
 it from the artefact.** The block is a staging area, not a second stylesheet. Do not let
 them drift and do not import one into the other.
 
-**The same scope rule now applies to the live pages themselves.** `index.html`,
-`about.html` and `work-with-us.html` each carry their own `<style>` block because
-`css/site.css` and `js/site.js` are shared across all seven pages. The consequence is
-real duplication: **the testimonial slider is in three pages and the Deep Green header
-in three**, each copied with its markup. Change one and they drift apart silently. They
-belong in `css/site.css`, and the lift should happen before the real testimonials land —
-see §6's Technical notes.
+**The same scope rule applies to the live pages themselves.** Each carries its own
+`<style>` block because `css/site.css` and `js/site.js` are shared across all eleven
+pages. The consequence is real duplication, and it is now the largest piece of debt in
+the repo:
+
+| Block | Copies | Where |
+|---|---|---|
+| Deep Green header | **9** | 8 pages + `css/legal.css` |
+| Noise/Clarity switch override | **8** | every page with a closing CTA |
+| Pattern divider | **7** | every page with a closing CTA except `about` |
+| Testimonial slider | **4** | index, about, work-with-us, keynote — each repeating its four quotes four times |
+
+**Replacing one testimonial quote is sixteen edits across four files.** Change one copy
+of anything above and they drift apart silently. They belong in `css/site.css`, and the
+lift should happen *before* the real testimonials land — §42, §7 step 2.
+
+**`css/legal.css` is the one exception and the model for the fix.** The three legal
+pages are the same layout three times, so they share a real stylesheet instead of three
+scoped blocks. It is a NEW file loaded only by them, so the other eight pages cannot be
+affected by it.
 
 `hero-sections.html` duplicates the design tokens from `css/site.css` section 2 by hand.
 If the palette moves, it has to be updated manually.
@@ -81,6 +106,60 @@ If the palette moves, it has to be updated manually.
 deck. Detox Green only ever appears on Deep Green. `css/site.css` is written expanded
 and sectioned, with the reasoning in comments — read the comment above a rule before
 changing it.
+
+## The nav
+
+**One nav, every page, and it carries FINISHED PAGES ONLY** (§39):
+
+```
+Work With Us · Keynote · About · Contact
+```
+
+`detox.html` and `diagnostic.html` are deliberately out until they are client-ready.
+"Results" was an anchor, not a page. **A new page does not add itself to the header** —
+that is how the site grew four different navs across eleven pages. There is a comment in
+every header saying so.
+
+**Removing a page from the nav does not hide it.** Sixteen buttons still point at the
+two omitted pages, twelve of them the "Book the FREE DIAGNOSTIC" CTA.
+
+## Every reworked page follows the same spine
+
+`contact.html` (§33) is the template, and `freebie.html`, `detox.html` and
+`diagnostic.html` were done to it:
+
+1. **Deep Green header** — and swap the logo to `primary-detoxgreen.svg` with it. Four
+   pages shipped with `primary-deepgreen.svg`, which is invisible the moment the band
+   darkens. **These two always change together.**
+2. `<meta name="theme-color" content="#143318">`, not the old `#fbfbf9`.
+3. A hero on the page-title scale with the dot field.
+4. The **switcher-pattern strip** under the hero — not the old text ticker.
+5. The closing `.choice`, then the `.pb` divider into the footer. Without the divider the
+   page ends on a hard ivory-to-green cut.
+6. **No inline styles.**
+
+### The closing switch — get this one right
+
+**`aria-pressed="true"` is the RESTING state.** `js/site.js` snaps the toggle back to it
+350ms after a click. Clarity must rest lit.
+
+**Override the visuals, never flip the attribute.** Flipping it makes the switch rest on
+*Noise*, which is the page arguing the opposite of the homepage. That bug shipped on
+four pages and survived six weeks on `contact.html` because nobody opened the file.
+Copy the override from `index.html`; `.choice-toggle .t-switch::before` **must** keep
+`box-sizing:border-box` or the knob comes out 46px wide in a 42px track.
+
+## Copy rules that bite
+
+- **No em dashes in visible copy or in attributes** — the client's own instruction,
+  30 Oct (§29.4). That includes `<title>`, `<meta description>`,
+  `data-success-message`, `aria-label` and `placeholder`. The sweep is complete as of
+  2 Nov; the only `—` left anywhere is `<p class="diag-score">—</p>`, which the script
+  overwrites.
+- **A coloured box in a supplied mockup is a sticky note until proved otherwise.** Six
+  of them across three pages turned out to be editing furniture, not design: yellow
+  "Maybe visual…" and "Blurb" labels, coral "Leads to contact", and violet selection
+  rectangles that crossed body copy mid-sentence. Read the picture before building it.
 
 ## Do not "fix"
 
@@ -142,6 +221,25 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
   path, because the svg is stretched with `preserveAspectRatio="none"` and an irregular
   path skews into a mess. Still not a V1.0 device, still one deletable element, still
   hidden below 850px.
+- **The lime `[placeholder]` highlights on the legal pages** (§38) — every one is a
+  blank the client has to fill. A legal page that looks finished but still says
+  `[KvK number]` is worse than one that obviously does not. All three are `noindex`
+  until their list is clear. The list is `BACKLOG.md` §A.
+- **The legal pages ending without a pattern divider** (§38) — every other page closes
+  into the footer with one. It was left off deliberately: a moving lime marquee above a
+  privacy policy is loud. Put to the user, not yet answered.
+- **The dot-grid background on every ivory section** — **not a V1.0 device.** The
+  guideline names exactly two patterns: the logo pattern (merch only, p.37) and the
+  switcher pattern (the website device, p.38). The dot field was invented during this
+  build on 31 Oct and has since spread to five pages. The client's own mockups now draw
+  it, which may mean his designer picked it up from us or arrived at it independently —
+  **unresolved, see `BACKLOG.md` §F.** It is one deletable rule per page.
+- **`detox.html`'s hero copy being word for word `work-with-us.html`'s** (§30, §41) —
+  the overlap is real and it is the client's decision whether The DETOX still has a job.
+  Do not resolve it by rewriting one of them.
+- **`detox.html`'s four bare `<article>Testimonial</article>` placeholders** (§41) —
+  deliberately NOT a fourth copy of the homepage marquee. They pick up the real slider
+  when it is lifted into `css/site.css`.
 - **The `.ht-foot` overlapping the headline's grid cell, and the 1300/1600 breakpoints**
   (§23) — the subline and CTAs sit in the empty space beside the short last line. That
   only works while the foot is shorter than that line; the two breakpoints are where it
@@ -174,6 +272,55 @@ the hero (`.hero{min-height:620px}`, `.hero--brand .hero-image{height:560px}`) a
 render at a tall window size — the hero uses `svh`, so a tall viewport inflates it and
 the rest of the page never comes into frame. **Delete any temporary harness files when
 done**; they do not belong in the deliverable.
+
+### Check what should NOT be on the page, not only what should
+
+Overflow, console errors, dead anchors and text fidelity **all passed** on three legal
+pages that had 15 testimonial cards and four keynote sections welded onto the bottom.
+None of those checks asks *what is here that should not be.* Assert the shape:
+
+```js
+main.children.length                                  // expected count
+document.querySelectorAll('.testimonial-label').length // 0 on a legal page
+document.querySelectorAll('.footer-grid').length       // exactly 1
+```
+
+Then walk the tags with comments, `<script>`, `<style>` and `<svg>` stripped and confirm
+nothing is unclosed and nothing is stray. **That check found two of my own bugs the
+first day it existed**, and it is how the six-week-old stray `</div>` in 12 files was
+finally caught.
+
+### Traps that have each cost a build
+
+- **`<footer>` is not a landmark on this site.** Every testimonial card contains a
+  `<footer>` holding the client's name. `querySelector('footer')` returns *that one*.
+  It welded 15 cards onto three legal pages, and the next day it produced a false
+  "divider is not above the footer" alarm. **Never split a page shell on `<footer>` —
+  split on `</main>`.** Scope queries to `body > footer`. The same applies to `<header>`,
+  `<section>` and `<nav>`.
+- **A bare `1fr` grid track will not shrink below its content.** `1fr` means
+  `minmax(auto,1fr)`, and `auto` is the item's min-content width. A contents rail
+  refused to go under 522px inside a 445px container and pushed the whole page sideways
+  on a phone. **Use `minmax(0,1fr)` on both the desktop and the mobile rule.**
+- **Headless Chrome screenshots AVIF as a blank area**, even though the image reports
+  `complete:true` and the right `naturalWidth`. It looks exactly like a broken layout.
+  Strip the AVIF `<source>` in a throwaway copy so the JPEG is served.
+- **`sips --cropOffset` silently ignores the offset** and returns the image uncropped,
+  reporting success. Use `ffmpeg -vf "crop=W:H:X:Y"`.
+- **`decoding="async"` also screenshots blank.** Do not add it to new markup.
+- **Scripted `window.scrollTo(0,y)` does not trigger reveal-on-scroll** — the page sets
+  `scroll-behavior:smooth` and a stepped loop outruns it. Use
+  `scrollTo({top:y,behavior:'instant'})`, or force `.reveal{opacity:1}`.
+
+### Drive the interactive parts; do not assume them
+
+`js/diagnostic.js` binds to **fourteen classes and one id**, and `js/site.js` opens the
+seven module popups from the `.module` buttons' `data-*`. A visual rework of
+`diagnostic.html` or `detox.html` can break either silently.
+
+Click through them headless: answer all seven questions, assert the score, the seven
+module bars, the two friction points and that restart returns to question 1; and open a
+module popup and read its title back.
 
 State what you actually verified. "Checked headless at 1512×982" is useful; implying a
 full breakpoint and browser sweep that did not happen is not.

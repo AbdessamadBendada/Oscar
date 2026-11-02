@@ -2,6 +2,10 @@
 
 _What we are waiting on, and who owns it. Last updated: 2 November 2026._
 
+> **The site is live for review at <https://oscar.bendada.co>.** All eleven pages are on
+> one design system. Everything below is content, decisions or licensing — **none of it
+> is design work.**
+
 This is the **ask list**. `HANDOFF.md` is the engineering record — what was built and
 why. If something here is answered, apply it, then delete the line.
 
@@ -131,7 +135,7 @@ in four tables; the names, providers and durations all come from the actual stac
 
 | Item | Where |
 |---|---|
-| ~~Two Work With Us photographs~~ | **DONE, 2 Nov** |
+| ~~Two Work With Us photographs~~ | **DONE 2 Nov** (§37) |
 | **Six About timeline photographs** | All placeholders, rotated from the same few frames; none shows the moment its entry describes |
 | **Three keynote-topic photographs** | `keynote.html` §7, currently reused from elsewhere on the page |
 | **Oscar on a stool, grey sweater** | `keynote.html` §10 uses the About portrait as a stand-in |
@@ -146,12 +150,12 @@ in four tables; the names, providers and durations all come from the actual stac
 | Item | Note |
 |---|---|
 | **Licence Formula Condensed** | The committed font file is the **trial**. Serving it publicly is a licence breach. Single style, webfont tier, bought in Oscar's name. **Hard blocker on launch** |
-| **Lift the shared blocks into `css/site.css`** | Testimonial slider in 4 pages, Deep Green header in 6, switch override in 4, pattern divider in 3. The real testimonials landing is what will break these apart |
-| **Rework `detox.html`, `diagnostic.html`, `freebie.html`** | Still on the 14 Oct build. All three close by arguing the opposite of the homepage |
-| **Settle the nav** | Three different navs across 11 pages; `keynote.html` has eight items. Bundled with: does Work With Us replace The DETOX? |
+| **Lift the shared blocks into `css/site.css`** | Counted 2 Nov: Deep Green header **9**, switch override **8**, pattern divider **7**, testimonial slider **4** (each repeating its quotes 4×, so one quote change = 16 edits). `css/legal.css` is the model. The real testimonials landing is what will break these apart |
+| ~~Rework `detox.html`, `diagnostic.html`, `freebie.html`~~ | **DONE 2 Nov.** All eleven pages are on one system |
+| ~~Settle the nav~~ | **DONE 2 Nov.** One nav, finished pages only. **Still open**: do The DETOX and Audit rejoin it, and does Work With Us replace The DETOX? 16 buttons still point at the two omitted pages |
 | **Safari testing** | Never done. Four builds have shipped broken on Chrome-only checks |
-| **Optimise the remaining heavy assets** | `hero-concept.png` 1.8MB, `hero-cards.png` 1.8MB, `poster.png` 1.9MB, `time-is-money.png` 1.8MB, `portrait.png` 1.4MB |
-| One em dash left in `index.html`'s `<meta description>` | §29.4 stripped them from visible copy; this one was missed |
+| ~~Optimise the remaining heavy assets~~ | **DONE 2 Nov.** All five are now unreferenced by any page; `time-is-money.png` was replaced by a 60 KB AVIF. **Delete them** once nobody wants them back |
+| ~~Em dashes~~ | **DONE 2 Nov.** The §29.4 sweep is complete site-wide, in body copy and in attributes (title, meta, success messages). The only `—` left is the diagnostic's score placeholder, which the script overwrites |
 
 ---
 
