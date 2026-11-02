@@ -3,15 +3,385 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fbfbf9">
-  <title>The DETOX — OPS DETOX™</title>
-  <meta name="description" content="OPS Detox™ is a modular system for the real bottlenecks in how work flows. Diagnose, strip, rebuild — together with your team.">
+  <meta name="theme-color" content="#143318">
+  <title>The DETOX | OPS DETOX™</title>
+  <meta name="description" content="OPS Detox™ is a modular system for the real bottlenecks in how work flows. Diagnose, strip, rebuild. together with your team.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
   <!-- Decided before first paint. While the preloader is under review it
        runs on every load; restore the once-per-session behaviour by putting
        sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
   <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <!-- ==========================================================
+       THE DETOX — brought onto the current design system,
+       2 November 2026. It was the last page on the 14 October
+       build.
+
+       SCOPE RULE: every rule lives in the <style> block below.
+       css/site.css and js/site.js are NOT touched.
+
+       THE SEVEN MODULE POPUPS ARE LOAD-BEARING. js/site.js opens
+       them from the .module buttons' data-title / data-sub and
+       returns focus to the card. Nothing was renamed or
+       reordered; this rework is paint. Click one after any edit.
+
+       THE COPY IS UNCHANGED, apart from two em dashes removed
+       per §29.4 (the signature line and the solution eyebrow).
+
+       NOTE THE OVERLAP: this page's hero copy is word for word
+       work-with-us.html's, and §30 flags that the newer page may
+       make this one redundant. That is a client decision and
+       nothing here assumes it either way.
+       ========================================================== -->
+  <style>
+  /* ---------- 1. Page shell ---------- */
+  .section-rule{border-bottom:0}
+  @media(min-width:1001px){ .container{width:min(1320px,calc(100% - 80px))} }
+
+  /* ---------- 2. Deep Green header ----------
+     NINTH copy, and the last page that needed it. Same pair of faults §33
+     found on contact.html: ivory header, logo pointing at
+     primary-deepgreen.svg. Swapped together. */
+  .site-header{background:var(--ink);border-bottom-color:rgba(204,254,6,.22)}
+  @supports(backdrop-filter:blur(1px)){.site-header{background:rgba(20,51,24,.94)}}
+  .site-nav a{color:var(--lime)}
+  .nav-toggle{border-color:var(--lime)}
+  .nav-toggle i,.nav-toggle i::before,.nav-toggle i::after{background:var(--lime)}
+  .nav-toggle[aria-expanded="true"] i{background:transparent}
+  .site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+  .site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
+
+  /* ---------- 3. The dot field, on every ivory section ---------- */
+  .dx-hero,.dx-dots{position:relative;overflow:hidden;background:var(--paper)}
+  .dx-hero::before,.dx-dots::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(20,51,24,.16) 1.4px,#0000 1.5px);
+    background-size:26px 26px;
+  }
+  .dx-hero>*,.dx-dots>*{position:relative;z-index:1}
+
+  /* ---------- 4. Section 1 — the hero ---------- */
+  .dx-hero{padding:clamp(52px,6vw,92px) 0 clamp(42px,4.8vw,70px)}
+  .dx-hero-copy{text-align:center;max-width:900px;margin:0 auto}
+  .dx-hero-copy .eyebrow{font-size:17px;letter-spacing:.06em}
+  .dx-hero-copy h1{
+    margin:14px 0 20px;max-width:none;
+    font-size:clamp(34px,5.2vw,80px);line-height:.94;
+    letter-spacing:.02em;color:var(--ink);
+  }
+  .dx-hero-copy p{
+    margin:0 auto;max-width:56ch;
+    font-size:clamp(16px,1.35vw,19px);line-height:1.6;color:var(--muted);
+  }
+  .dx-hero-copy .actions{justify-content:center;margin-top:32px}
+
+  /* ---------- 5. The switcher pattern strip ----------
+     --ticker-h is NOT load-bearing on this page. On the homepage the hero is
+     calc(100svh - header - ticker-h) and the token is what lands the fold
+     exactly under the strip (§5); this hero is content-height, so the strip
+     is free to sit at its natural size. The token is kept at the homepage's
+     value anyway so the two strips are identical where they meet the eye.
+
+     Loop rule, same as every marquee in this project: four copies, a -25%
+     step, spacing as margin-LEFT, and the nth-child cycle MUST equal one
+     copy — 6 words, so 6n. Break any of those and it jumps once a cycle
+     (§24, §26). */
+  :root{--ticker-h:92px}
+  .pt-strip{
+    background:var(--ink);
+    height:var(--ticker-h);
+    display:grid;align-content:center;
+    padding:0;
+    overflow:hidden;
+  }
+  .pt-row{overflow:hidden}
+  .pt-track{
+    display:flex;width:max-content;
+    animation:pt-slide 42s linear infinite;
+    will-change:transform;
+  }
+  @keyframes pt-slide{from{transform:translateX(-25%)}to{transform:none}}
+  .pt{
+    flex:none;
+    padding:12px 34px 10px 120px;
+    margin-left:34px;
+    border-radius:var(--r-pill);
+    background:linear-gradient(90deg,
+      rgba(204,254,6,0) 0%,
+      rgba(204,254,6,.18) 26%,
+      rgba(204,254,6,.55) 48%,
+      rgba(204,254,6,.92) 64%,
+      var(--lime) 72%);
+    color:var(--ink);
+    font:18px/1 var(--display);
+    letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
+  }
+  .pt:nth-child(6n+1){padding-left:190px;margin-left:22px}
+  .pt:nth-child(6n+2){padding-left:96px;margin-left:48px}
+  .pt:nth-child(6n+3){padding-left:150px;margin-left:34px}
+  .pt:nth-child(6n+4){padding-left:118px;margin-left:28px}
+  .pt:nth-child(6n+5){padding-left:212px;margin-left:26px}
+  .pt:nth-child(6n+6){padding-left:104px;margin-left:42px}
+  @media(max-width:850px){
+    :root{--ticker-h:74px}
+    .pt{font-size:14px;padding:9px 22px 7px 64px;margin-left:18px}
+    .pt:nth-child(6n+1){padding-left:88px;margin-left:14px}
+    .pt:nth-child(6n+2){padding-left:52px;margin-left:24px}
+    .pt:nth-child(6n+3){padding-left:74px;margin-left:18px}
+    .pt:nth-child(6n+4){padding-left:60px;margin-left:16px}
+    .pt:nth-child(6n+5){padding-left:96px;margin-left:14px}
+    .pt:nth-child(6n+6){padding-left:56px;margin-left:22px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pt-track{animation:none}
+  }
+
+  /* ---------- 6. Section titles ----------
+     §27 put every section title on one scale. site.css's generic h2 is
+     below it and was never updated on this page. */
+  .dx-dots .section-heading,.dx-dark .section-heading{margin-bottom:clamp(28px,3.2vw,46px)}
+  .dx-dots h2,.dx-dots .section-heading h2{
+    max-width:22ch;font-size:clamp(30px,3.6vw,54px);line-height:1.04;color:var(--ink);
+  }
+  .dx-dots{padding:var(--section-y) 0}
+
+  /* ---------- 7. The marked lists ----------
+     site.css draws these with a generic marker. The lime numeral device
+     work-with-us.html §2 uses is the brand's, and this page carries the
+     SAME six statements that page does — so they are set the same way.
+     Lime is legal here only on the Deep Green band; on ivory the marker
+     falls back to a Deep Green rule (p.22 watchout 1). */
+  .dx-flat{padding:0}
+  .marked-list{list-style:none;margin:0;padding:0}
+  .marked-list li{
+    position:relative;padding:13px 0 13px 32px;
+    border-bottom:1px solid var(--rule);
+    font-size:16px;line-height:1.6;color:var(--muted);
+  }
+  .marked-list li:first-child{border-top:1px solid var(--rule)}
+  .marked-list li::before{
+    content:"";position:absolute;left:2px;top:calc(13px + .72em);
+    width:12px;height:2px;background:var(--ink);
+  }
+  .dx-dark .marked-list li{color:rgba(254,253,242,.86);border-color:rgba(254,253,242,.16)}
+  .dx-dark .marked-list li::before{background:var(--lime)}
+  .dx-dark .marked-list li:first-child{border-top-color:rgba(254,253,242,.16)}
+
+  /* The closing sentence of the problem section is the PAYOFF, not a
+     seventh symptom — the same move §30 made on work-with-us.html. */
+  .dx-payoff{
+    margin:clamp(30px,3.4vw,46px) 0 0;max-width:46ch;
+    font:clamp(19px,1.9vw,27px)/1.25 var(--display);
+    letter-spacing:.015em;color:var(--paper);
+  }
+
+  /* ---------- 8. Deep Green bands ---------- */
+  .dx-dark{background:var(--ink);padding:var(--section-y) 0}
+  .dx-dark .eyebrow{color:var(--lime);font-size:17px;letter-spacing:.06em}
+  .dx-dark h2{max-width:22ch;font-size:clamp(30px,3.6vw,54px);line-height:1.04;color:var(--paper)}
+  .dx-dark .body-copy p{color:rgba(254,253,242,.86);font-size:clamp(16px,1.35vw,19px);line-height:1.65}
+  .dx-lede{max-width:62ch}
+
+  /* ---------- 9. Cards: process, reason, modules ----------
+     All three were flat lists on white. They become the brand's 36px
+     round-rect, which is the device the rest of the site uses for exactly
+     this. The numerals take the Deep Green disc with a lime glyph, which is
+     site.css's own icon treatment (V1.0 p.36). */
+  .process-grid,.reason-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.4vw,34px);
+  }
+  .process-grid article,.reason-grid article{
+    background:#fff;border:1px solid var(--rule);
+    border-radius:var(--r-card);padding:clamp(24px,2.6vw,36px);
+    transition:transform .18s,box-shadow .18s;
+  }
+  .process-grid article:hover,.reason-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .process-grid span,.reason-grid span{
+    display:inline-grid;place-items:center;min-width:46px;height:46px;padding:0 14px;
+    border-radius:var(--r-pill);background:var(--ink);color:var(--lime);
+    font:15px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  /* §8 "Still open" recorded .reason-grid span as a LIVE V1.0 VIOLATION —
+     Detox Green type on White, p.22's third watchout. The lime now sits on
+     a Deep Green pill, which is the sanctioned pairing (p.21).
+     THAT ITEM IS CLOSED. */
+  .process-grid h3,.reason-grid h3{
+    margin:0 0 10px;max-width:none;text-transform:none;
+    font-family:var(--body);font-weight:700;font-size:18px;line-height:1.3;color:var(--ink);
+  }
+  .process-grid p,.reason-grid p{margin:0;font-size:15.5px;line-height:1.6;color:var(--muted)}
+  .process-grid a{
+    display:inline-block;margin-top:14px;font-size:15px;font-weight:700;
+    color:var(--ink);text-decoration:underline;text-underline-offset:3px;
+  }
+
+  /* The seven modules. THE BUTTONS AND THEIR data-title / data-sub ARE
+     LOAD-BEARING — js/site.js opens the popup from them and returns focus
+     to the card. Paint only; nothing renamed. */
+  .system{background:var(--paper);padding:var(--section-y) 0;position:relative;overflow:hidden}
+  .system::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(20,51,24,.16) 1.4px,#0000 1.5px);
+    background-size:26px 26px;
+  }
+  .system>*{position:relative;z-index:1}
+  .system-intro{margin-bottom:clamp(30px,3.4vw,48px)}
+  .system-intro h2{max-width:20ch;font-size:clamp(30px,3.6vw,54px);line-height:1.04;color:var(--ink)}
+  .system-intro p{margin-top:14px;max-width:52ch;font-size:17px;line-height:1.6;color:var(--muted)}
+  .module-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,1.8vw,26px)}
+  .module{
+    text-align:left;background:#fff;border:1px solid var(--rule);
+    border-radius:var(--r-card);padding:clamp(20px,2.2vw,30px);cursor:pointer;
+    transition:transform .18s,box-shadow .18s,border-color .18s;
+  }
+  .module:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--ink)}
+  .module img{width:34px;height:34px;margin-bottom:16px}
+  .module h3{
+    margin:0 0 6px;max-width:none;text-transform:none;
+    font-family:var(--display);font-size:19px;line-height:1.15;
+    letter-spacing:.02em;color:var(--ink);
+  }
+  .module p{margin:0;font-size:14.5px;line-height:1.5;color:var(--muted)}
+
+  /* ---------- 10. About Oscar — the arch frame ----------
+     The brand's own picture device (V1.0 p.35), the same values site.css
+     §15 uses on the homepage and keynote.html §5 writes out. It was a bare
+     square image. */
+  .about figure{
+    width:100%;max-width:420px;aspect-ratio:3/4;justify-self:center;
+    margin:0;background:var(--panel);overflow:hidden;
+    border-radius:260px 260px var(--r-card) var(--r-card);
+  }
+  .about figure img{width:100%;height:100%;object-fit:cover;object-position:50% 28%}
+  .about-copy h2{max-width:20ch;font-size:clamp(28px,3.2vw,46px);line-height:1.05;color:var(--ink)}
+  .signature{margin-top:24px;font-size:14px;font-weight:700;color:var(--ink)}
+
+  /* ---------- 11. Two-column lists ---------- */
+  .split-lists{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px)}
+  .split-lists h2{max-width:18ch;font-size:clamp(26px,2.8vw,40px);line-height:1.06;margin-bottom:20px}
+
+  /* ---------- 12. Testimonials ----------
+     FOUR BARE <article>Testimonial</article> PLACEHOLDERS. They are left as
+     placeholders deliberately — this page is NOT getting a fourth copy of
+     the homepage marquee, which the handoff already records as being in
+     four files and sixteen edits per quote change. When the real quotes
+     arrive and the slider is lifted into css/site.css, this page picks it
+     up with the rest. */
+  .testimonials .testimonial-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,1.8vw,26px);margin-top:26px;
+  }
+  .testimonials .testimonial-grid article{
+    background:#fff;border:1px dashed var(--rule);border-radius:var(--r-card);
+    min-height:150px;display:grid;place-items:center;
+    font:13px/1.4 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+
+  @media(max-width:980px){
+    .process-grid,.reason-grid{grid-template-columns:1fr 1fr}
+    .module-grid{grid-template-columns:1fr 1fr}
+    .testimonials .testimonial-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:700px){
+    .process-grid,.reason-grid,.module-grid,.split-lists{grid-template-columns:1fr}
+    .dx-flat{grid-template-columns:1fr}
+  }
+
+  /* ---------- 7. The Noise / Clarity switch, read the other way ----------
+     Copied verbatim from index.html §11, and this page SHIPPED WITHOUT IT.
+
+     The old markup here was site.css's shared `.switch-line` / `.switch`
+     with aria-pressed="false" and "Operational noise" carrying .is-on — so
+     the closing section of the contact page was arguing the opposite of the
+     closing section of the homepage. The markup below is index.html's.
+
+     Only the visuals are flipped, not the state. js/site.js §3b treats
+     aria-pressed="true" as the RESTING state and snaps the toggle back to
+     it 350ms after a click, and that file is shared, so it must not be
+     touched (AGENTS.md). "true" still means clarity; what changes is which
+     side lights and which way the knob sits. Flipping the attribute instead
+     would make the switch snap back to Noise — the opposite of the point. */
+  .choice-toggle[aria-pressed="true"] .t-before{opacity:1}
+  .choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-after{opacity:1}
+
+  /* The switch IS the logo mark: a lime pill carrying the O of the OD
+     monogram, so the knob is an ink RING with the track showing through it,
+     not a solid dot. Hence no inset highlight and no drop shadow — the mark
+     is flat. */
+  .choice-toggle .t-switch{
+    background:var(--lime);
+    border:3px solid var(--ink);
+    box-shadow:none;
+  }
+  /* box-sizing MUST be border-box. The shared rule sizes the knob 34x34 as a
+     solid dot, where no border is in play; as a ring the stroke would add
+     7px on every side and it would come out 48px wide in a 42px track.
+     Geometry: track 92, 3px border, inner box 86. Ring 34 at 4px from the
+     left leaves 48 to the right edge, hence the 44px travel. */
+  .choice-toggle .t-switch::before{
+    box-sizing:border-box;
+    top:4px;left:4px;width:34px;height:34px;
+    background:transparent;
+    border:6px solid var(--ink);
+    box-shadow:none;
+  }
+  .choice-toggle[aria-pressed="true"] .t-switch::before{transform:none}
+  .choice-toggle[aria-pressed="false"] .t-switch::before{transform:translateX(44px)}
+
+  /* ---------- 8. Pattern divider, rebuilt in CSS ----------
+     Copied from index.html §10. Same bar language as the strip under the
+     hero, but bars only and two rows running opposite ways. It closes the
+     page into the Deep Green footer, which is what it does on the homepage
+     (§24) — this page ended on a hard ivory-to-green cut.
+
+     Each row travels the way its bars point: the gradient tail reads as the
+     trail behind the bar, so a bar lit at its right end has to move right.
+     Built the other way round first and both rows looked like they were
+     sliding backwards. */
+  .pb{
+    background:var(--ink);
+    padding:18px 0 20px;
+    display:grid;gap:14px;
+    overflow:hidden;
+  }
+  .pb-row{overflow:hidden}
+  .pb-track{display:flex;width:max-content;animation:pb-right 46s linear infinite}
+  .pb-row--b .pb-track{animation:pb-left 62s linear infinite}
+  @keyframes pb-left{from{transform:none}to{transform:translateX(-25%)}}
+  @keyframes pb-right{from{transform:translateX(-25%)}to{transform:none}}
+
+  .pb-bar{
+    flex:none;height:34px;margin-left:34px;
+    border-radius:var(--r-pill);
+    background:linear-gradient(90deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+  }
+  /* Widths cycle on 6n so every one of the four copies matches. */
+  .pb-bar:nth-child(6n+1){width:300px}
+  .pb-bar:nth-child(6n+2){width:470px;margin-left:46px}
+  .pb-bar:nth-child(6n+3){width:190px;margin-left:28px}
+  .pb-bar:nth-child(6n+4){width:380px;margin-left:40px}
+  .pb-bar:nth-child(6n+5){width:560px;margin-left:30px}
+  .pb-bar:nth-child(6n+6){width:240px;margin-left:52px}
+  .pb-row--b .pb-bar{
+    background:linear-gradient(270deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+  }
+
+  @media(max-width:850px){
+    .pb{padding:14px 0 16px;gap:10px}
+    .pb-bar{height:26px;margin-left:22px}
+    .pb-bar:nth-child(6n+1){width:170px}
+    .pb-bar:nth-child(6n+2){width:250px;margin-left:28px}
+    .pb-bar:nth-child(6n+3){width:120px;margin-left:18px}
+    .pb-bar:nth-child(6n+4){width:210px;margin-left:24px}
+    .pb-bar:nth-child(6n+5){width:300px;margin-left:20px}
+    .pb-bar:nth-child(6n+6){width:150px;margin-left:32px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pb-track{animation:none}
+  }
+  </style>
 </head>
 <body>
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
@@ -21,7 +391,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="OPS DETOX home">
-        <img src="assets/logo/primary-deepgreen.svg" alt="OPS DETOX">
+        <img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
       </a>
       <!-- ONE NAV, EVERY PAGE. Settled 2 November, after the site had grown
            four different navs across eleven pages (five, six, seven and
@@ -53,30 +423,77 @@
   </header>
 
   <main id="main">
-    <section class="hero hero--page container">
-      <div class="hero-copy">
-        <span class="eyebrow">Operational detox for scale-ups</span>
-        <h1>Give your leadership team a third of its week back.</h1>
-        <p>We help scale-up founders run a faster, leaner company by cleansing its operations of everything growth left behind, together with their team.</p>
-        <div class="actions">
-          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
-          <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+    <!-- ===== SECTION 1 — the hero =====
+         Centred, like contact.html's, freebie.html's and diagnostic.html's.
+
+         THE ARTWORK WAS DROPPED, for two reasons rather than taste.
+         assets/img/time-is-money.png is the tote-bag mockup, and §40 just
+         put it on freebie.html — the same merch photograph on two pages
+         reads as a mistake. And this hero's copy is WORD FOR WORD
+         work-with-us.html's, which has the real whiteboard photograph, so
+         repeating a picture here would make the overlap louder rather than
+         quieter. See the note on that overlap in the handoff. -->
+    <section class="dx-hero">
+      <div class="container">
+        <div class="dx-hero-copy">
+          <span class="eyebrow">Operational detox for scale-ups</span>
+          <h1>GIVE YOUR LEADERSHIP TEAM A THIRD OF ITS WEEK BACK.</h1>
+          <p>We help scale-up founders run a faster, leaner company by cleansing its operations of everything growth left behind, together with their team.</p>
+          <div class="actions">
+            <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+            <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+          </div>
         </div>
       </div>
-      <figure class="hero-image">
-        <img src="assets/img/time-is-money.png" alt="OPS Detox campaign artwork">
-      </figure>
     </section>
 
-    <div class="ticker" aria-label="OPS Detox principles">
-      <div>Flush the pipelines <span>•</span> UNCOMPLICATE the decision <span>•</span> CLEAN THE SYSTEMS <span>•</span> Unclog the approval queue <span>•</span> Strip the NOISE <span>•</span> Drain the decision backlog <span>•</span></div>
+
+    <!-- The switcher-pattern strip, as it runs under the homepage hero.
+         Words are the homepage's, wide letters wrapped by hand for the same
+         reason as above. FOUR copies and a 6n cycle — see §4 of the style
+         block before changing a word. -->
+    <div class="pt-strip" aria-label="OPS Detox principles">
+      <div class="pt-row">
+        <div class="pt-track">
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+        </div>
+      </div>
     </div>
 
-    <section class="container section-pad section-rule reveal">
+<!-- ===== SECTION 3 — the problem ===== Deep Green, so the page
+         alternates. Copy and markup unchanged. -->
+    <section class="dx-dark reveal">
+      <div class="container">
       <div class="section-heading">
         <div><span class="eyebrow">The problem</span><h2>Nobody designed it this way. It simply accumulated.</h2></div>
       </div>
-      <div class="split-lists" style="padding:0">
+      <div class="split-lists dx-flat">
         <ul class="marked-list">
           <li>Every decision queues on one desk. An €800 approval waits four days because the founder is travelling.</li>
           <li>The calendar is full and the week produces little. Meetings end in another meeting, rarely in a decision.</li>
@@ -88,19 +505,24 @@
           <li>You hired to relieve the pressure. Within a month, the new people sat in the same meetings.</li>
         </ul>
       </div>
-      <p class="body-copy" style="margin-top:40px;max-width:70ch">Left as it is, it costs your leadership a third of every week, and your company the speed that made it successful.</p>
+      <p class="body-copy dx-payoff">Left as it is, it costs your leadership a third of every week, and your company the speed that made it successful.</p>
+      </div>
     </section>
 
-    <section class="container section-grid section-rule reveal">
+    <!-- ===== SECTION 4 — the solution ===== Back to ivory. The 1.9 MB
+         poster.png that sat here is dropped: campaign artwork from a
+         different campaign, competing with two paragraphs. -->
+    <section class="dx-dots reveal">
+      <div class="container">
       <div>
-        <span class="eyebrow">The solution — OPS Detox™</span>
+        <span class="eyebrow">The solution · OPS Detox™</span>
         <h2>There is a cleaner way to run a growing company.</h2>
       </div>
-      <div class="body-copy" style="padding-top:56px">
+      <div class="body-copy dx-lede">
         <p>OPS Detox™ is a modular system for the real bottlenecks in how work flows. Each module stands alone; together, they reset how the company runs.</p>
         <p>We measure where your time, decisions and truth actually go. Then we strip out what no longer serves the business and rebuild the structure together with your team, so it holds long after we have left.</p>
       </div>
-      <figure class="artwork"><img src="assets/img/poster.png" alt="OPS Detox campaign artwork"></figure>
+    </div>
     </section>
 
     <section class="outcomes">
@@ -150,7 +572,7 @@
       </div>
     </section>
 
-    <section class="section-pad section-rule reveal">
+    <section class="dx-dots reveal">
       <div class="container">
         <div class="section-heading">
           <div><span class="eyebrow">The method</span><h2>From clutter to flow in 3 steps</h2></div>
@@ -176,19 +598,32 @@
       </div>
     </section>
 
-    <section class="about container section-grid section-rule reveal">
-      <figure><img src="assets/img/portrait.png" alt="Oscar de Grauw"></figure>
+    <section class="dx-dots about reveal"><div class="container section-grid">
+      <!-- The real portrait, in the brand's arch frame.
+
+           IT WAS assets/img/portrait.png, AND THAT WAS WRONG IN TWO WAYS.
+           §20 records what that file actually is: the LinkedIn-banner
+           lockup, 1983x793 — a WIDE banner, not a portrait — with a
+           headline, a fake "BOOK A CALL" button and an OLD logo baked into
+           it. In the 3:4 arch frame this section now uses it would have
+           been destroyed, and it was putting a superseded logo on the page.
+           It was also 1.4 MB, one of the five oversized assets §31 lists.
+
+           oscar-about.jpg is the frame index.html's own About section uses,
+           so the two now agree. -->
+        <figure><img src="assets/img/oscar-about.jpg" width="1201" height="1800" alt="Oscar de Grauw holding a laptop" loading="lazy"></figure>
       <div class="about-copy">
         <span class="eyebrow">About Oscar de Grauw</span>
         <h2>Why work with me</h2>
         <p>For seventeen years I worked inside Sony Europe, across sales, marketing, procurement, business planning, operational excellence, reporting and transformation. What I saw there, I now see in every growing company: good people, working hard, inside systems that piled up as the company grew. The truth was always in the building. It simply could not reach the people who could act on it.</p>
         <p>Every hour a good person spends in a meeting without a decision, on a report nobody reads, or waiting for permission they should already have, is an hour of a life. OPS Detox exists to clear that clutter and give those hours back.</p>
-        <p class="signature">— Oscar de Grauw, Founder of OPS Detox™</p>
+        <p class="signature">Oscar de Grauw, Founder of OPS Detox™</p>
         <a class="text-link" href="about.html">More about Oscar →</a>
       </div>
+    </div>
     </section>
 
-    <section class="container split-lists section-rule reveal">
+    <section class="dx-dots reveal"><div class="container split-lists">
       <div>
         <span class="eyebrow">Who it’s for</span>
         <h2>Who OPS Detox is for</h2>
@@ -209,13 +644,15 @@
           <li>Price is the deciding factor.</li>
         </ul>
       </div>
+    </div>
     </section>
 
-    <section class="container section-pad section-rule reveal">
+    <section class="dx-dots reveal">
+      <div class="container">
       <div class="section-heading">
         <div><span class="eyebrow">The feeling</span><h2>What a clean operation feels like, within weeks</h2></div>
       </div>
-      <div class="split-lists" style="padding:0">
+      <div class="split-lists dx-flat">
         <ul class="marked-list">
           <li>Meetings that end in a decision, with a clear owner and a date.</li>
           <li>Decisions in days, made at the level where the work happens.</li>
@@ -227,9 +664,10 @@
           <li>Two weeks away with the laptop closed, and a company that kept moving in your absence.</li>
         </ul>
       </div>
+    </div>
     </section>
 
-    <section class="testimonials container section-rule reveal">
+    <section class="dx-dots testimonials reveal"><div class="container">
       <span class="eyebrow">Testimonials</span>
       <div class="testimonial-grid">
         <article>Testimonial</article>
@@ -237,9 +675,11 @@
         <article>Testimonial</article>
         <article>Testimonial</article>
       </div>
+    </div>
     </section>
 
-    <section class="container section-pad reveal">
+    <section class="dx-dots reveal">
+      <div class="container">
       <div class="section-heading">
         <div><span class="eyebrow">Why leaders choose</span><h2>Why leaders choose OPS Detox</h2></div>
       </div>
@@ -275,23 +715,66 @@
           <p>Time saved. Costs avoided. Speed gained. CFO-proof.</p>
         </article>
       </div>
+    </div>
     </section>
 
     <section class="choice">
       <div class="container">
         <span class="eyebrow">The choice</span>
         <h2>What will you choose?</h2>
-        <div class="switch-line">
-          <span class="is-on">Operational noise</span>
-          <button class="switch" type="button" aria-pressed="false" aria-label="Operational noise or operational clarity"><i></i></button>
-          <span>Operational clarity</span>
+        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+
+        <div class="toggle-rows">
+          <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
+                  aria-label="Switch between Operational Clarity and Operational Noise">
+            <span class="t-before">Operational Clarity</span>
+            <span class="t-switch" aria-hidden="true"></span>
+            <span class="t-after">Operational Noise</span>
+          </button>
         </div>
+
         <div class="actions">
           <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
-          <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
         </div>
       </div>
     </section>
+
+    <!-- The switcher-pattern divider, closing the page into the Deep Green
+         footer the way it does on the homepage (§24). Bars only, no words,
+         two rows running opposite ways. Decorative, so hidden from
+         assistive tech. -->
+    <div class="pb" aria-hidden="true">
+      <div class="pb-row">
+        <div class="pb-track">
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        </div>
+      </div>
+      <div class="pb-row pb-row--b">
+        <div class="pb-track">
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        </div>
+      </div>
+    </div>
   </main>
 
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -316,7 +799,7 @@
           </div>
         </div>
 
-        <form data-demo-form data-success-message="Subscribed — demo only, no email is sent yet.">
+        <form data-demo-form data-success-message="Subscribed. Demo only, no email is sent yet.">
           <h2>Newsletter</h2>
           <div class="field">
             <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
@@ -345,7 +828,7 @@
           <a href="cookies.html">Cookies</a>
         </div>
       </div>
-      <p class="footer-legal">© 2026 OPS Detox™ — Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+      <p class="footer-legal">© 2026 OPS Detox™. Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
     </div>
   </footer>
 

@@ -2,6 +2,12 @@
 
 _Last updated: 2 November 2026_
 
+> **2 Nov — the last two pages came onto the design system.** `detox.html` and
+> `diagnostic.html`. **All eleven pages are now on one system.** The working diagnostic
+> and the seven module popups were not touched and both were driven end to end to prove
+> it. §8's live V1.0 violation is closed, the em-dash sweep is finally complete
+> site-wide, and two more oversized assets left the pages. See §41.
+
 > **2 Nov — the freebie page was brought onto the design system.** It had all six of the
 > faults §33 found on `contact.html`, including the §29.5 switch bug, plus an em dash in
 > visible copy. The tote artwork went from **1.75 MB to 60 KB**. Only `detox.html` and
@@ -3466,3 +3472,118 @@ Measured at **1920, 1512, 1024, 900, 500 and 390**.
 invisible logo and inline styles. `diagnostic.html` is the destination of **twelve**
 "Book the FREE DIAGNOSTIC" buttons — the site's primary CTA — which makes it the worst
 remaining page to leave looking out of date (§39).
+
+---
+
+## 41. The last two pages (2 November 2026)
+
+`detox.html` and `diagnostic.html` were the last on the 14 October build. **All eleven
+pages are now on one design system.**
+
+Same scope rule: one `<style>` block per document. **`css/site.css`, `js/site.js` and
+`js/diagnostic.js` were not touched.** No inline styles remain on either page.
+
+### Both had the §33 fault list
+
+Ivory header with `primary-deepgreen.svg` (invisible the moment the band darkens),
+`theme-color` still `#fbfbf9`, hero on site.css's generic grid, no switcher strip, no
+divider into the footer, inline styles, and **the pre-§29.5 closing switch resting on
+*Operational noise*** — both pages closing by arguing the opposite of the homepage.
+
+### The interactive parts are load-bearing and were proven, not assumed
+
+> **`js/diagnostic.js` binds to fourteen classes and one id**: `.diag-shell`,
+> `.diag-progress i`, `-form`, `-step`, `-question`, `-scale`, `-back`, `-result`,
+> `-score`, `-verdict`, `-bars`, `-friction`, `-restart`, `#diagnostic`, plus
+> `scaleEl.querySelectorAll('button')`. **Nothing was renamed, removed or reordered.**
+>
+> **It was driven end to end headless** at 1512, 1024 and 500: seven questions answered
+> by clicking, result panel revealed, score rendered, **seven module bars**, two friction
+> points named, progress at 100%, then restart returning to "Question 1 of 7". Zero
+> errors at every width.
+>
+> **`detox.html`'s seven module popups** are opened by `js/site.js` from the buttons'
+> `data-title`/`data-sub`. A popup was clicked open at all six widths — title correct,
+> seven modules present, no errors.
+
+**Run both after any edit in those sections.** This is the kind of rework that silently
+breaks them.
+
+### What changed on diagnostic.html
+
+Hero centred (it was a split whose right half was `hero-cards.png`, **1.8 MB, captioned
+"Oscar de Grauw" when it shows the card treatment**); strip under the hero; "Why complete
+it" into round-rect cards with Deep Green numeral discs; **"Share it with your colleagues"
+onto a Deep Green band** so the page alternates; the diagnostic itself into a white
+round-rect card with a lime progress bar and the score at display scale.
+
+**`poster.png` (1.9 MB) was dropped** from the "share" section — campaign artwork from a
+different campaign, competing with the single paragraph that makes the page's sharpest
+point.
+
+### What changed on detox.html
+
+Hero centred; ticker replaced by the strip; the problem onto Deep Green with the lime
+numeral list `work-with-us.html` §2 uses for **the same six statements**; the method,
+feeling and reasons into round-rect cards; the seven modules into a 4-up card grid;
+About into the brand's arch frame.
+
+> **`portrait.png` was wrong in two ways, not just heavy.** §20 already recorded what it
+> is: the **LinkedIn-banner lockup, 1983×793** — a wide banner, not a portrait — with a
+> headline, a fake "BOOK A CALL" button and an **old logo** baked in. In the 3:4 arch it
+> would have been destroyed, and it was putting a superseded logo on the page. Replaced
+> with `oscar-about.jpg`, the frame `index.html`'s own About uses, so the two agree.
+> `poster.png` went from this page too.
+
+**Two assets left the pages; four of §31's five are now unreferenced site-wide.**
+`hero-concept.png`, `hero-cards.png`, `poster.png` and `portrait.png` are all still in
+`assets/img/` and can be deleted once nobody wants them back.
+
+### §8's live V1.0 violation is closed
+
+§8 "Still open" recorded `.reason-grid span` as **Detox Green type on White**, p.22's
+third watchout, on the interior pages. The numerals now sit on a **Deep Green pill**,
+which is the sanctioned pairing (p.21). **That item is done.**
+
+### The em-dash sweep is finally complete
+
+§29.4 stripped em dashes from visible copy on 30 Oct and it had never reached these
+pages. Cleaned here, plus the ones §34 left outstanding: `index.html`'s
+`<meta description>`, both `<title>` tags, the newsletter success message in three files
+and the footer line. **Every page is clean**, in body copy and in attributes. The only
+`—` left anywhere is `<p class="diag-score">—</p>`, the placeholder the script
+overwrites.
+
+### Testimonials on detox.html were left as placeholders deliberately
+
+The page has four bare `<article>Testimonial</article>` blocks. They are now dashed
+outlines rather than being filled — **this page is not getting a fourth copy of the
+homepage marquee**, which is already in four files at sixteen edits per quote change.
+When the slider is lifted into `css/site.css`, this page picks it up with the rest.
+
+### The overlap nobody has decided
+
+**`detox.html`'s hero copy is word for word `work-with-us.html`'s** — same eyebrow, same
+headline, same body, same two CTAs. §30 flags that the newer page may make this one
+redundant and it is still a client decision. Nothing here assumes it either way; the
+artwork was dropped from this hero partly so the duplication is not amplified by
+repeating a photograph too.
+
+### Status
+
+Measured at **1920, 1512, 1024, 700, 500 and 390** on both.
+
+- No horizontal scroll, nothing overflowing, **no JS errors**, no broken images.
+- Both switches rest on Clarity, verified by computed opacity.
+- Headers compute to `rgba(20,51,24,.94)` with the lime logo.
+- **Both strip marquees exact**: 0.03px drift on desktop, 0.08px on mobile.
+- The arch frame computes to a 260px top radius at every width.
+- **All eleven pages balance with no unclosed and no stray tags.**
+
+**Two bugs found and fixed during the rework**, both mine: the ticker-removal regex
+stopped at the inner `</div>` and orphaned the outer one; and six sections gained a
+`<div class="container">` wrapper without a matching closer. Both were caught by the tag
+balance check, which is the one §38 added after the legal-page incident. **It earned its
+place the first time it ran.**
+
+**Not verified**: Safari, Firefox, real devices, hover states.
