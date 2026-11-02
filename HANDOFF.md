@@ -2,6 +2,11 @@
 
 _Last updated: 2 November 2026_
 
+> **2 Nov — the freebie page was brought onto the design system.** It had all six of the
+> faults §33 found on `contact.html`, including the §29.5 switch bug, plus an em dash in
+> visible copy. The tote artwork went from **1.75 MB to 60 KB**. Only `detox.html` and
+> `diagnostic.html` are still on the 14 Oct build. See §40.
+
 > **2 Nov — the nav was settled.** One nav on all eleven pages:
 > **Work With Us · Keynote · About · Contact**. The site had grown four different navs
 > (five, six, seven and eight items) because each new page added itself. `detox.html`
@@ -10,7 +15,7 @@ _Last updated: 2 November 2026_
 
 > **2 Nov — the three legal pages were built**, from the client's supplied drafts, into
 > the brand. `privacy.html`, `cookies.html` and `terms.html`. **The text is his, word for
-> word**; 59 blanks he still has to fill are marked on the page and listed in the new
+> word**; 64 blanks he still has to fill are marked on the page and listed in the new
 > **`BACKLOG.md`**. They share `css/legal.css`, a NEW file loaded only by them. The
 > footer's legal links now work on all 11 pages. See §38.
 
@@ -3078,7 +3083,7 @@ Checked against the files rather than read off this document.
 |---|---|---|
 | `detox.html` | 338 | Ivory header, **pre-§29.5 switch**, 4 inline styles, 6 visible em dashes |
 | `diagnostic.html` | 177 | Same three, 5 inline styles, 6 visible em dashes |
-| `freebie.html` | 137 | Same three, 3 inline styles, 4 visible em dashes |
+
 
 All three still close by **arguing the opposite of the homepage** — the §29.5 bug
 `contact.html` carried for six weeks because nobody had opened it. `contact.html` (§33) is
@@ -3204,7 +3209,7 @@ eight existing pages are untouched and cannot be affected by it. `site.css` and
 
 ### The blanks, and the draft bar that was removed
 
-The drafts contain **59 `<mark class="ph">` fields** the client has to fill — 17 / 19 /
+The drafts contain **64 `<mark class="ph">` fields** the client has to fill — 17 / 19 /
 28. They are set in lime (Deep Green on Detox Green, p.21) so they cannot be missed.
 
 All three carry `<meta name="robots" content="noindex">`. **Drop it per page once that
@@ -3290,7 +3295,7 @@ rule already used `minmax(0,1fr)` on the text column; the mobile rule did not. *
 
 ### Open
 
-- **59 blanks** — `BACKLOG.md` section A.
+- **64 blanks** — `BACKLOG.md` section A.
 - **Imprint** has no document.
 - The pages end ivory straight into the Deep Green footer, **with no pattern divider**.
   §33 named that hard cut as a fault on `contact.html`. It was left off deliberately — a
@@ -3358,3 +3363,106 @@ The four `playground/` copies were updated too, with `../` prefixes, so they kee
 reaching the real pages.
 
 **Not verified**: Safari, Firefox, real devices, the mobile burger panel open.
+
+---
+
+## 40. The freebie page brought onto the system (2 November 2026)
+
+`freebie.html` was the third of the five interior pages to get the §33 treatment. It is
+now ivory / green strip / ivory / choice / divider, the same rhythm as `contact.html`.
+
+Same scope rule: **every rule lives in one `<style>` block in the document.
+`css/site.css` and `js/site.js` were not touched.**
+
+### What was wrong with it — the §33 list, almost item for item
+
+1. **Soft Ivory header with a Deep Green logo.** Its `<img>` pointed at
+   `primary-deepgreen.svg`, which is invisible the moment the band goes dark, so the
+   logo had to be swapped with the header. **The identical pair of faults §33 found.**
+2. **`.hero hero--page` with three inline styles** doing the layout — a 430px form and
+   a 520px image jammed into site.css's generic hero grid, h1 at the default scale.
+3. **The old text ticker**, not the switcher-pattern strip (V1.0 p.38).
+4. **No pattern divider**, so it ended on a hard ivory-to-green cut into the footer.
+5. **The closing switch was in the pre-§29.5 state** — site.css's shared
+   `.switch-line`/`.switch`, `aria-pressed="false"`, `.is-on` on *Operational noise*.
+   **The page was closing by arguing the opposite of the homepage.** Six weeks after the
+   same bug was found and fixed on `contact.html`, because nobody had opened this file.
+6. **An em dash in visible copy** (the newsletter success message), which §29.4 records
+   being stripped site-wide on the client's own instruction, 30 Oct.
+
+`<meta name="theme-color">` was also still `#fbfbf9`, the pre-rework ivory.
+
+### What it is now
+
+| | Section |
+|---|---|
+| 1 | Hero — centred, eyebrow, page title on `work-with-us.html`'s scale, lead, dot field |
+| 2 | The switcher-pattern strip, copied from `index.html` §9 by way of `contact.html` |
+| 3 | The form in a round-rect card, the artwork beside it |
+| 4 | The closing choice, with `index.html`'s switch markup and override |
+| 5 | The pattern divider, closing into the footer |
+
+**No inline styles remain on the page.**
+
+- **The hero is centred, not split.** Same call §33 made: this page has no photograph
+  that wants half the screen, and the old layout was a half-empty grid.
+- **The form leads and takes the wider column** — it is the page's entire job.
+- **`site.css`'s `.form-card` is stripped back to a plain block** inside `.fb-card`
+  (`background:none;padding:0;box-shadow:none;border:0`). It is itself a white panel with
+  its own radius and shadow; left alone it would be a card inside a card. The fields and
+  every validation hook `js/site.js` binds to are untouched.
+- On a phone the **form comes first** and the artwork drops below it.
+
+### The copy is unchanged, with two additions that are furniture
+
+Every string was already on the page. Two were added and both are card labels rather
+than claims: the eyebrow **"Get it"** and the subhead **"Send me the template"**, which
+repeats the button, plus one line — *"Two fields. No newsletter signup hidden in the
+small print."* **If any of that is unwanted it is three deletions.**
+
+### The artwork is merch, and that is worth knowing
+
+`time-is-money.png` is a **tote-bag mockup**. There is no mockup of the template itself
+anywhere in the project, so this is a picture of merchandise standing in for a picture of
+a spreadsheet. It was kept because the line it carries, *time is money*, is the argument
+for a financial model, and because it is the client's own campaign art.
+
+**A screenshot of the actual template would be strictly better and is a straight swap.**
+Added to the backlog.
+
+### The image was optimised at the same time
+
+| | |
+|---|---|
+| Was | `time-is-money.png`, 1254×1254, **1.75 MB** |
+| AVIF — what almost everyone gets | **60 KB** |
+| WebP | 84 KB |
+| JPEG fallback | 242 KB |
+
+**97% smaller.** Served as `assets/img/tote.{avif,webp,jpg}`; the PNG is left in place and
+is now unreferenced. That is one of the five oversized assets §31 listed; **four remain**
+— `hero-concept.png`, `hero-cards.png`, `poster.png` and `portrait.png`.
+
+### Status
+
+Measured at **1920, 1512, 1024, 900, 500 and 390**.
+
+- No horizontal scroll, nothing overflowing, **no JS errors**.
+- The h1 never exceeds two lines; both wide letters wrapped by `js/site.js`.
+- **The strip marquee is exact**: one copy measures 2212.72px against a quarter-track of
+  2212.75px, delta **0.03px** — and 2212.72 is the same figure `index.html` and
+  `contact.html` record, so all three strips are the same object rather than near-copies.
+- **The closing switch rests as the homepage's does**, verified by computed style:
+  `aria-pressed="true"`, Clarity at opacity 1, Noise at 0.35.
+- Header computes to `rgba(20,51,24,.94)`; the logo is the lime one.
+- Tag balance clean.
+
+**Not verified**: Safari, Firefox, real devices, hover states.
+
+### What this leaves
+
+**Only `detox.html` (338 lines) and `diagnostic.html` (177 lines) are still on the
+14 October build.** Both still carry the §29.5 switch bug, an ivory header with an
+invisible logo and inline styles. `diagnostic.html` is the destination of **twelve**
+"Book the FREE DIAGNOSTIC" buttons — the site's primary CTA — which makes it the worst
+remaining page to leave looking out of date (§39).

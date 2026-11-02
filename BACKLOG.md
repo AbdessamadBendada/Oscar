@@ -9,7 +9,7 @@ Nothing in this file is a design question. Design decisions live in the handoff.
 
 ---
 
-## A. The legal pages — 59 blanks
+## A. The legal pages — 64 blanks
 
 All three pages are built and set in the brand (`privacy.html`, `cookies.html`,
 `terms.html`). **The text is Oscar's draft, reproduced word for word.** Every item below
