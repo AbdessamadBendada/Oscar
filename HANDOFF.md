@@ -2,6 +2,16 @@
 
 _Last updated: 2 November 2026_
 
+> **2 Nov — the three legal pages were built**, from the client's supplied drafts, into
+> the brand. `privacy.html`, `cookies.html` and `terms.html`. **The text is his, word for
+> word**; 59 blanks he still has to fill are marked on the page and listed in the new
+> **`BACKLOG.md`**. They share `css/legal.css`, a NEW file loaded only by them. The
+> footer's legal links now work on all 11 pages. See §38.
+
+> **2 Nov — a stray `</div>` was removed from 12 files**, and every page now validates
+> with no unclosed and no stray tags. §22 flagged it on 15 Oct and it had been inherited
+> into every page built since. See §38.
+
 > **2 Nov — the two missing photographs landed on Work With Us**, and both are in at the
 > brand's 36px radius. `.ws-shot--pending` is gone. The second frame was **cropped out of
 > a social post** whose top third carried a logo and a headline; the uncropped file still
@@ -3143,3 +3153,141 @@ overflowing, both images load, radius computes to 36px at every width, and
 though the image reports `complete:true` (§31).
 
 **Not verified**: Safari, Firefox, real devices, hover states.
+
+---
+
+## 38. The legal pages (2 November 2026)
+
+`privacy.html`, `cookies.html`, `terms.html`, built from three drafts the client
+supplied as standalone HTML.
+
+> **THE TEXT IS HIS AND IT IS REPRODUCED WORD FOR WORD.** Nothing was edited,
+> shortened, reordered or "improved". **Verified, not assumed**: tags stripped from
+> source and output, whitespace collapsed, strings compared — identical at 12,863 /
+> 4,861 / 34,396 characters. Re-run that check after any edit to these three. They are
+> legal documents; setting them is our job, drafting them is not.
+
+### One stylesheet, not three style blocks
+
+Every other page scopes its rules into its own `<head>`, because each is a one-off.
+**These three are the same layout three times**, so a scoped block would mean three
+copies drifting apart — the exact problem this document records for the testimonial
+slider (four copies) and the Deep Green header (six).
+
+`css/legal.css` is **a new file**, loaded only by these three after `site.css`. The
+eight existing pages are untouched and cannot be affected by it. `site.css` and
+`js/site.js` were not changed.
+
+### What the design does that a legal page needs
+
+- **A contents rail that sticks** while you scroll. 12, 8 and 31 sections respectively.
+  `scroll-margin-top` on every `<section>` is what makes the links usable — without it a
+  jumped-to heading lands *under* the sticky header and reads as a broken anchor.
+- **One `<details open>` at every width.** Desktop CSS unstyles it back into a plain
+  rail; below 980px it collapses into something the reader opens. Built the other way
+  round it would have needed JS. `open` in the markup means the list is there even if the
+  stylesheet never loads.
+- **The controller block is a bordered card**, not a loose paragraph. It is the one piece
+  of hard information on a privacy page.
+- **The privacy policy's Data / Why / Legal basis / Kept for `<dl>`s are a two-column
+  grid.** Stating them that way is the point; prose would waste it.
+- **Tables scroll inside their own `.scroll` box.** Measured at 500px: wrapper 407–445px
+  inside a 485px viewport, inner width 520px, page itself never moves sideways.
+- **A print stylesheet.** Legal pages get printed and filed; header, footer, nav, rail
+  and the dot field all drop out.
+
+### The blanks, and the draft bar that was removed
+
+The drafts contain **59 `<mark class="ph">` fields** the client has to fill — 17 / 19 /
+28. They are set in lime (Deep Green on Detox Green, p.21) so they cannot be missed.
+
+All three carry `<meta name="robots" content="noindex">`. **Drop it per page once that
+page's list is clear. Do not publish a legal page with a blank in it.**
+
+> **The pages originally carried a black draft bar** at the top counting the unfilled
+> fields. **Removed the same day at the user's request** — the pages should read as the
+> documents they are, not as a to-do list. The work moved to **`BACKLOG.md`**, a new file
+> at the repo root, where every field is listed with its section, its surrounding
+> sentence and what it blocks. The inline highlights stay: removing them would leave the
+> text silently reading "KvK ." or would mean inventing a VAT number.
+
+`BACKLOG.md` is the **ask list** — what we are waiting on and who owns it. This document
+stays the engineering record. The legal fields are grouped by who can answer rather than
+by page, which collapses them usefully: **four company facts (entity, KvK, btw-id, date)
+appear about ten times across the three pages.** Most of the Cookie Policy cannot be
+filled at all until the consent tool, analytics and embeds are chosen and the live site
+is scanned.
+
+### Two items worth not burying
+
+- **Terms §16 and §19 both carry a `[25,000]`** and §16 is the liability cap. With the
+  cancellation bands in §10 these are money and risk, and they are the client's to set
+  with a lawyer. **None was invented.**
+- **Terms §26 needs a phone number** — the draft's own note says "required before
+  selling to consumers" — and §27 needs a working withdrawal-form link. Both are
+  statutory, not stylistic.
+
+### The footer links now work
+
+They were `href="#"` on every page. **Terms, Privacy and Cookies are wired across all 11
+pages**, including the three playground copies.
+
+**Imprint still goes nowhere.** There is no fourth document. The trader details already
+sit in Privacy §1, so the cheapest fix is to point Imprint there or drop the link.
+
+### A bug this introduced, and the check that would have caught it
+
+> **The first build welded 15 testimonial cards and four keynote sections onto the bottom
+> of all three legal pages**, unstyled, because their CSS lives inside `keynote.html`.
+>
+> **Cause: the shell was lifted from `keynote.html` by taking everything from the first
+> `<footer>` tag onward — and the first `<footer>` in that file is inside a testimonial
+> card**, where it holds the client's name and role. The site footer is much further
+> down.
+>
+> **Lesson: `<footer>` is not a unique landmark.** When lifting a shell out of a page,
+> split on `</main>`, not on a tag that also appears in content. The same trap applies to
+> `<header>`, `<section>` and `<nav>`.
+>
+> It was caught by the user on screen, not by the sweep. The checks run were overflow,
+> JS errors, dead anchors and text fidelity — **all of which passed.** None of them asked
+> *what is on this page that should not be.* A structural assertion (`main` has one
+> child; zero `.testimonial-label`; exactly one `.footer-grid`) finds it in the first
+> minute and is now part of the sweep.
+
+### The stray `</div>`, finally gone
+
+Validating the above turned up the bug **§22 recorded on 15 October**: a stray `</div>`
+after the preloader markup. It had been inherited by every page built since, and into the
+new legal pages with the copied header.
+
+Removed from **12 files**. **All 11 site pages now balance with no unclosed and no stray
+tags** — checked by walking the tags with comments, `<script>`, `<style>` and `<svg>`
+stripped. Browsers recover from it silently, which is why it survived six weeks.
+
+### Status
+
+Measured at **1920, 1512, 1024, 980, 500 and 390** on all three.
+
+- No horizontal scroll, nothing overflowing the viewport, **no JS errors**.
+- All **54 contents links resolve to a real section id**; zero dead anchors.
+- `main` has exactly one child on each page; zero stray testimonials or keynote sections.
+- Tables confirmed scrolling inside their own box rather than moving the page.
+
+**One bug found and fixed during the sweep**: the contents rail would not shrink below
+~522px inside a 445px container on a phone, pushing the page sideways. Cause was a bare
+`1fr` grid track, whose automatic minimum is the item's min-content width. The desktop
+rule already used `minmax(0,1fr)` on the text column; the mobile rule did not. **Keep the
+0 minimum on both.**
+
+**Not verified**: Safari, Firefox, real devices, print output on paper.
+
+### Open
+
+- **59 blanks** — `BACKLOG.md` section A.
+- **Imprint** has no document.
+- The pages end ivory straight into the Deep Green footer, **with no pattern divider**.
+  §33 named that hard cut as a fault on `contact.html`. It was left off deliberately — a
+  moving lime marquee above a privacy policy is loud — but it is one block to add if the
+  client wants the pages closed the way the others are. **Put to the user, not yet
+  answered.**
