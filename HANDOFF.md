@@ -2,6 +2,12 @@
 
 _Last updated: 2 November 2026_
 
+> **2 Nov — the nav was settled.** One nav on all eleven pages:
+> **Work With Us · Keynote · About · Contact**. The site had grown four different navs
+> (five, six, seven and eight items) because each new page added itself. `detox.html`
+> and `diagnostic.html` are out until they are reworked; "Results" was an anchor, not a
+> page. **Sixteen buttons still point at the two dropped pages.** See §39.
+
 > **2 Nov — the three legal pages were built**, from the client's supplied drafts, into
 > the brand. `privacy.html`, `cookies.html` and `terms.html`. **The text is his, word for
 > word**; 59 blanks he still has to fill are marked on the page and listed in the new
@@ -3291,3 +3297,64 @@ rule already used `minmax(0,1fr)` on the text column; the mobile rule did not. *
   moving lime marquee above a privacy policy is loud — but it is one block to add if the
   client wants the pages closed the way the others are. **Put to the user, not yet
   answered.**
+
+---
+
+## 39. One nav, finished pages only (2 November 2026)
+
+**Open since 31 October (§30) and reopened by every page built since (§33, §34).** The
+site had grown **four different navs across eleven pages** — five, six, seven and eight
+items — because each new page added itself to its own header and nothing else.
+
+### The nav
+
+**Work With Us · Keynote · About · Contact**, plus the logo (home) and the "Let's talk"
+button. Identical on all eleven pages, generated from one list, with `aria-current="page"`
+set correctly on each.
+
+### The rule, which is the point of the change
+
+> **The nav carries FINISHED PAGES ONLY.**
+
+| Out | Why |
+|---|---|
+| `detox.html` — "The DETOX" | Still the 14 Oct build. Not client-ready (§36) |
+| `diagnostic.html` — "Audit" | Same, and frozen until the client's Noise Tax calculator lands |
+| `index.html#results` — "Results" | **An anchor, not a page.** The logo already goes home, and it was the only reference to it anywhere |
+| `freebie.html` | Opt-in page, reached from its own CTAs |
+| The three legal pages | Footer, where they are |
+
+**Put The DETOX and Audit back when they are reworked.** The comment in every header
+says so, so the next person does not have to guess whether the omission was deliberate.
+
+### The thing removal does NOT do
+
+> **SIXTEEN BUTTONS STILL POINT AT THE TWO DROPPED PAGES**, measured outside the nav:
+>
+> | Target | Links | From |
+> |---|---|---|
+> | `diagnostic.html` | **12** | `index`(3), `detox`(3), `about`(2), `contact`(1), `keynote`(1), `work-with-us`(1), `freebie`(1) |
+> | `detox.html` | **4** | `index`(2), `work-with-us`(2) |
+>
+> Twelve of those are "Book the FREE DIAGNOSTIC", the site's most-used CTA. **A visitor
+> can still land on a 14 October page from a lime button on a finished one** — and the
+> Audit page is the destination of the primary call to action, which makes it the worst
+> page on the site to leave looking out of date.
+>
+> Three ways out, and the recommendation is the second: leave it; **rework those two next**
+> (338 and 177 lines, with `contact.html` as the template, §33); or repoint the buttons
+> at `contact.html` in the meantime.
+
+### Status
+
+Measured at **1920, 1280, 1024 and 900** on `index`, `keynote`, `privacy` and
+`work-with-us`: the nav is **358px wide inside headers of 821–1320px**, does not wrap at
+any width, and no page scrolls horizontally. No JS errors. The eight-item version was the
+one §34 predicted would crowd at laptop widths; four does not come close.
+
+All eleven pages re-validated after the edit: **no unclosed and no stray tags.**
+
+The four `playground/` copies were updated too, with `../` prefixes, so they keep
+reaching the real pages.
+
+**Not verified**: Safari, Firefox, real devices, the mobile burger panel open.
