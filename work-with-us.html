@@ -413,6 +413,325 @@
     .ws-mods{grid-template-columns:1fr}
   }
 
+  /* ---------- 5c. Section 6 — "Why work with me" ----------
+     The client's own About block, drawn with the copy left and a portrait
+     right. It is NOT site.css's `.about` (.section-grid), and it should not
+     be forced into it: that block sets its copy in roman body type, caps the
+     figure at the grid's second column and ends on a button. This one is set
+     ITALIC throughout, signs off with a name line instead of a CTA, and the
+     portrait is a narrow standing frame rather than a half-width photograph.
+
+     No CTA on purpose. The page's ask is 400px below this, in .choice, and
+     the two offer cards above already carry one each. A fourth button here
+     would compete with all three.
+
+     Ivory with the dot field, like .ws-clean, so the page keeps alternating
+     ivory / green rather than stacking this under the stats band. */
+  .ws-about{background:var(--paper);padding:var(--section-y) 0}
+  .ws-about-grid{
+    display:grid;grid-template-columns:minmax(0,1fr) clamp(260px,30vw,380px);
+    gap:clamp(32px,4vw,64px);align-items:start;
+  }
+
+  /* The copy column is capped in CHARACTERS, not percent. Italic at 17px
+     runs long, and the drawing breaks both paragraphs at about 54
+     characters; without the cap the first line would stretch to ~90 on a
+     wide screen and the block would stop reading as the aside it is. */
+  .ws-about-copy{max-width:62ch}
+  .ws-about-copy .eyebrow{font-size:16px;letter-spacing:.06em}
+
+  /* Below the section scale, for the §5 reason: this title sits in a column
+     beside a picture, not across the container. */
+  .ws-about-copy h2{
+    margin:14px 0 30px;max-width:none;color:var(--ink);
+    font-size:clamp(28px,3vw,44px);line-height:1.05;
+  }
+
+  /* Italic is the whole point of the block — it reads as Oscar speaking
+     rather than as the site describing him, which is what lets it sit
+     without a heading rule or a frame. Set on the paragraphs, not the
+     section, so the eyebrow, the h2 and the sign-off stay upright. */
+  .ws-about-copy p{
+    margin:0 0 22px;font-style:italic;
+    color:var(--ink);font-size:17px;line-height:1.6;
+  }
+  .ws-about-copy p:last-of-type{margin-bottom:0}
+
+  /* The sign-off. Deliberately tiny and muted: it is an attribution, like
+     the name under a testimonial, not a third paragraph. The gap above it
+     does the separating, so there is no rule and no italic. */
+  .ws-about-sign{
+    display:block;margin-top:clamp(34px,4vw,52px);
+    color:var(--muted);font-size:12px;line-height:1.4;
+    letter-spacing:.02em;
+  }
+
+  /* Same 36px round-rect as every other picture on this page. 5:7 standing
+     frame, which is the proportion drawn and close to the source's own
+     1178x1700 (0.693), so the crop takes almost nothing. */
+  .ws-about-shot{
+    margin:0;overflow:hidden;background:var(--ink);
+    aspect-ratio:5/7;border-radius:var(--r-card);
+  }
+  .ws-about-shot picture{display:block;width:100%;height:100%}
+  .ws-about-shot img{width:100%;height:100%;object-fit:cover;display:block}
+
+  @media(max-width:900px){
+    /* Copy first, picture second, as everywhere else on the site (§15). The
+       frame stops being a narrow standing rectangle here and is capped
+       instead, so it does not become a full-width tower on a phone. */
+    .ws-about-grid{grid-template-columns:1fr;gap:34px}
+    .ws-about-copy{order:1;max-width:none}
+    .ws-about-shot{order:2;max-width:320px;align-self:center}
+  }
+
+  /* ---------- 5e. Section 8 — who it is for, and who it is not ----------
+     The drawing is two plain lists side by side on white. Built as two
+     CARDS instead, and deliberately UNEQUAL ones, because the two columns
+     are not doing the same job: the left is the one a qualified reader
+     should recognise themselves in, the right only has to let the wrong
+     reader leave early. Giving them matching weight makes the page argue
+     with itself at the exact point it should be closing.
+
+     So: the "for" card takes the Deep Green ground, lime heading and ticked
+     items, and the "not for" card stays a quiet outlined panel on the ivory.
+     Lime on Deep Green is the one legal pairing for it (V1.0 p.21), which is
+     also why the ticks can be lime here and could not be on ivory. */
+  .ws-fit{padding:var(--section-y) 0;background:var(--paper)}
+  .ws-fit-grid{
+    display:grid;grid-template-columns:1.12fr 1fr;
+    gap:clamp(18px,2vw,26px);align-items:start;
+  }
+  .ws-fit-card{
+    border-radius:var(--r-card);
+    padding:clamp(30px,3.2vw,46px);
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  /* No measure cap: at 18ch both titles broke after "is" and left "for" /
+     "not for" stranded on a line of their own. */
+  .ws-fit-card h2{
+    margin:0 0 clamp(22px,2.4vw,30px);max-width:none;
+    font-size:clamp(24px,2.1vw,34px);line-height:1.06;
+  }
+
+  /* The YES card. */
+  .ws-fit--yes{background:var(--ink);color:var(--paper)}
+  .ws-fit--yes:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
+  .ws-fit--yes h2{color:var(--lime)}
+
+  /* --- The ticked list, shared by §5e and §5f ---
+     A lime disc with an ink tick, which is .fw-mark inverted. Drawn in CSS
+     rather than set as a ✓ character so it keeps its size and weight when
+     the type scales, and so it cannot pick up an emoji font.
+
+     The disc is positioned against the FIRST LINE of the item, not centred
+     on the item, so it stays put whether the line wraps once or three
+     times. --ws-tick-top is how the two users nudge that one value instead
+     of redeclaring the pseudo-elements. */
+  .ws-ticks{margin:0;padding:0;list-style:none;--ws-tick-top:2px}
+  .ws-ticks li{
+    position:relative;padding:0 0 0 38px;
+    font-size:16px;line-height:1.5;
+  }
+  .ws-ticks li::before{
+    content:'';position:absolute;left:0;top:var(--ws-tick-top);
+    width:22px;height:22px;border-radius:50%;
+    background:var(--lime);
+  }
+  .ws-ticks li::after{
+    content:'';position:absolute;left:8px;
+    top:calc(var(--ws-tick-top) + 6px);
+    width:5px;height:9px;
+    border:solid var(--ink);border-width:0 2px 2px 0;
+    transform:rotate(43deg);
+  }
+
+  /* Inside the YES card: ivory text and lime hairlines, on the dark ground.
+     Every item after the first carries its own top padding, so its tick
+     moves down by that much. */
+  .ws-fit--yes .ws-ticks li{color:rgba(254,253,242,.88)}
+  .ws-fit--yes .ws-ticks li+li{
+    margin-top:18px;padding-top:18px;
+    border-top:1px solid rgba(204,254,6,.22);
+    --ws-tick-top:20px;
+  }
+
+  /* The NO card. Outlined, not filled: it has to be legible and findable,
+     not sold. One paragraph rather than a second ticked list, as drawn —
+     four bullets here would read as four reasons to leave. */
+  /* --panel, not transparent: left transparent the dot field showed
+     THROUGH the card, which made the quiet one look like a hole in the
+     section rather than a panel on it. */
+  .ws-fit--no{background:var(--panel);border:1px solid var(--rule)}
+  .ws-fit--no h2{color:var(--ink)}
+  .ws-fit--no p{
+    margin:0;color:var(--muted);
+    font-size:16px;line-height:1.6;max-width:42ch;
+  }
+
+  @media(max-width:860px){
+    .ws-fit-grid{grid-template-columns:1fr;gap:16px}
+    .ws-fit-card h2{max-width:none}
+    .ws-fit--no p{max-width:none}
+  }
+
+  /* ---------- 5f. Section 9 — what a clean operation feels like ----------
+     The drawing is one long six-item bullet list. Six items in a single
+     column directly before the ask is a wall, so they run as a RULED TWO
+     COLUMN list instead: same six lines, same order, read left to right.
+
+     No cards. The two sections above this one are both card grids, and a
+     third set of boxes would turn the end of the page into a stack of
+     containers. This is the lightest section on the page on purpose — it is
+     the payoff, and it sits one scroll from the CTA.
+
+     The ticks are §5e's, not a second pair of pseudo-elements. */
+  .ws-feel{padding:var(--section-y) 0;background:var(--paper)}
+  .ws-feel .eyebrow{font-size:16px;letter-spacing:.06em}
+  /* Two lines, as drawn. The cap is what breaks it after "feels like,"
+     rather than leaving "within weeks" alone on line three. */
+  .ws-feel h2{
+    margin:14px 0 clamp(34px,4vw,52px);max-width:22ch;
+    font-size:clamp(30px,3.4vw,50px);line-height:1.06;color:var(--ink);
+  }
+  /* COLUMN-major, not row-major. Row-major would have forced the markup
+     into 1,4,2,5,3,6 to get three items per column, which hands a screen
+     reader a scrambled list. Flowing down the columns instead keeps the
+     markup in the drawing's own 1-6 order — and that order already splits
+     3/3 exactly as detox.html's two lists do. */
+  .ws-feel .ws-ticks{
+    display:grid;grid-auto-flow:column;
+    grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,auto);
+    column-gap:clamp(28px,4vw,64px);
+  }
+  /* A rule above EVERY item, including the first two, so the two columns
+     read as one ruled field rather than as two separate lists that happen
+     to sit next to each other. */
+  .ws-feel .ws-ticks li{
+    padding:20px 0 20px 38px;
+    border-top:1px solid var(--rule);
+    color:var(--ink);--ws-tick-top:22px;
+  }
+
+  @media(max-width:860px){
+    .ws-feel h2{max-width:none}
+    .ws-feel .ws-ticks{grid-auto-flow:row;grid-template-columns:1fr;grid-template-rows:none}
+  }
+
+  /* ---------- 5g. Section 11 — why leaders choose ----------
+     Six cards, 3x2, as drawn. The card is detox.html's `.reason-grid`
+     treatment rather than site.css's: site.css's version sets the card
+     number in Detox Green ON WHITE, which §8 recorded as a live V1.0
+     violation (p.22's third watchout) and §41 closed on detox.html by
+     putting the lime on a Deep Green pill. Reusing the shared class here
+     would have inherited the violation and needed overriding, so the block
+     is scoped — and since the drawing has no numerals on these cards, the
+     pill does not appear at all.
+
+     NO NUMBERS is also what keeps these six from reading as the same object
+     as the three framework cards two sections up, which DO carry numbered
+     discs. Same page, two card grids: they have to be told apart.
+
+     The heading is centred, which no other section on this page is. It is
+     the handoff into the closing CTA, which is also centred. */
+  .ws-why{padding:var(--section-y) 0;background:var(--paper)}
+  .ws-why-head{text-align:center;margin-bottom:clamp(38px,4.4vw,60px)}
+  .ws-why-head .eyebrow{font-size:15px;letter-spacing:.14em;color:var(--muted)}
+  .ws-why-head h2{
+    margin:12px auto 0;max-width:none;
+    font-size:clamp(38px,4.6vw,70px);line-height:1;color:var(--ink);
+  }
+  .ws-why-grid{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:clamp(16px,1.8vw,24px);
+  }
+  .ws-why-grid article{
+    background:#fff;border:1px solid var(--rule);
+    border-radius:var(--r-card);padding:clamp(24px,2.4vw,34px);
+    transition:transform .18s ease,box-shadow .18s ease;
+  }
+  .ws-why-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  /* Body type, not display: these are six short claims read as sentences,
+     and in condensed caps at this size they would each break to three lines
+     and start competing with the section title above them. */
+  .ws-why-grid h3{
+    margin:0 0 10px;max-width:none;text-transform:none;
+    font-family:var(--sans);font-weight:700;
+    font-size:17px;line-height:1.3;color:var(--ink);
+  }
+  .ws-why-grid p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
+
+  @media(max-width:1000px){
+    .ws-why-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:620px){
+    .ws-why-grid{grid-template-columns:1fr}
+  }
+
+  /* ---------- 5d. Section 7 — the frameworks, COPIED FROM index.html ----------
+     *** THIS IS THE SECOND COPY OF THIS BLOCK. *** index.html §3 has the
+     other one. They were byte-identical when copied, 2 Nov.
+     CHANGE ONE AND THE TWO PAGES DRIFT APART SILENTLY — including the three
+     framework descriptions, which are still PLACEHOLDER COPY awaiting
+     Oscar's own wording, so they are the likeliest thing here to be edited.
+     This belongs in css/site.css with the testimonials; see §42's count. */
+  .frameworks{padding:var(--section-y) 0;background:var(--paper)}
+  .frameworks-head{max-width:66ch}
+  .frameworks-head h2{margin:14px 0 18px;font-size:clamp(36px,3.9vw,58px);max-width:none}
+  .frameworks-head p{color:var(--muted);font-size:clamp(15px,1.25vw,17px);line-height:1.6}
+  .frameworks-grid{
+    margin-top:clamp(40px,4.5vw,60px);
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;
+  }
+  .frameworks-grid article{
+    display:flex;flex-direction:column;
+    background:var(--panel);border:1px solid var(--rule);
+    border-radius:var(--r-card);padding:34px 32px 32px;
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .frameworks-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  /* The lead framework is the one he named first and the one the method is
+     built on, so it takes the Detox Green ground the diagnostic card uses. */
+  .frameworks-grid article:first-child{background:var(--lime);border-color:var(--lime)}
+  .fw-mark{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--ink);color:var(--lime);
+    display:grid;place-items:center;
+    font:17px/1 var(--display);letter-spacing:.03em;
+  }
+  .frameworks-grid article:first-child .fw-mark{background:var(--ink);color:var(--lime)}
+  .frameworks-grid h3{
+    margin:24px 0 14px;color:var(--ink);
+    font:clamp(23px,2vw,31px)/1.05 var(--display);
+    letter-spacing:.03em;text-transform:uppercase;
+  }
+  .fw-line{margin:0 0 14px;color:var(--ink);font-size:17px;font-weight:700;line-height:1.35}
+  .frameworks-grid article>p:last-of-type{
+    margin:0;color:var(--muted);font-size:15px;line-height:1.55;
+  }
+  .frameworks-grid article:first-child .fw-line,
+  .frameworks-grid article:first-child>p:last-of-type{color:var(--ink)}
+  .frameworks-note{
+    margin:clamp(28px,3vw,38px) 0 0;color:var(--muted);
+    font-size:14px;line-height:1.6;max-width:72ch;
+  }
+  .frameworks-note b{color:var(--ink)}
+  /* Copy placeholder marker. Delete the element and this rule together once
+     Oscar has supplied the real framework descriptions. */
+  .fw-draft{
+    margin:22px 0 0;padding:14px 18px;
+    border:1.5px dashed rgba(20,51,24,.4);border-radius:var(--r-card);
+    color:var(--muted);font-size:13px;line-height:1.5;max-width:72ch;
+  }
+  @media(max-width:1000px){
+    .frameworks-grid{grid-template-columns:1fr 1fr}
+    .frameworks-grid article:first-child{grid-column:span 2}
+  }
+  @media(max-width:700px){
+    .frameworks-grid{grid-template-columns:1fr}
+    .frameworks-grid article:first-child{grid-column:span 1}
+  }
+
   /* ---------- 6. Testimonials — COPIED FROM index.html ----------
      *** THIS IS THE THIRD COPY OF THIS BLOCK. *** index.html has it, about.html
      has it (§29.5), and now this page. They were byte-identical when copied.
@@ -502,7 +821,18 @@
   /* Reduced motion: no marquee at all. The row becomes a normal swipeable,
      snapping scroller, and the duplicate half is dropped so the same quote
      does not appear twice in something the user scrolls by hand. */
-  @media(prefers-reduced-motion:reduce){
+  /* MOBILE GETS THE SAME BRANCH AS REDUCED MOTION, one card at a time
+     instead of the continuous marquee (client, 2 Nov).
+
+     Extended as a media QUERY LIST rather than copied into a second block:
+     the two cases want byte-identical rules — no marquee, no end fades, a
+     snapping scroller, duplicates dropped — so writing them twice would
+     just be two things to keep in step. The stepping itself is in
+     js/site.js §8, which runs on narrow screens only; reduced-motion users
+     still get a row they move themselves, which is the point of it.
+
+     700px is where site.css already drops the card grids to one column. */
+  @media(prefers-reduced-motion:reduce),(max-width:700px){
     .testimonial-slider{
       overflow-x:auto;scroll-snap-type:x mandatory;
       -webkit-overflow-scrolling:touch;
@@ -767,7 +1097,273 @@
       </div>
     </section>
 
-    <!-- ===== SECTION 4 — testimonials =====
+    <!-- ===== SECTION 4 — the two offers =====
+         Copy is the client's, word for word.
+
+         This is one of TWO tracks. The second, "Organisational flow", is a
+         copy of this <section> with its own heading, paragraph and three
+         module names — the CSS is written for both and nothing in it is
+         specific to this one. It was not built here because its copy has not
+         been supplied; the homepage's version of the pair lists its modules
+         as communication, ownership and psychological safety.
+
+         NOT APPLIED, and still open: the client's 29 Oct email names these
+         "The Execution package (Founder Bottleneck)" and "The Leadership
+         package (Team Bottleneck)". The mockup uses the short names, so the
+         short names are what is built. See the handoff's open items. -->
+    <section class="ws-offers ws-dots reveal" aria-label="The two tracks">
+      <div class="container">
+      <div class="ws-offers-grid">
+
+      <article class="ws-offer" aria-labelledby="offer-operational">
+        <span class="ws-offer-tag">Founder bottleneck</span>
+        <!-- EVERY o is wide, not just the capital. js/site.js §3a splits on
+             uppercase /([OD])/, so it widens the leading O by itself and
+             leaves the two lowercase ones narrow — the same letter three
+             times in one heading at two widths. index.html's H1 wraps all of
+             them for exactly this reason ("…systems of operational"), so the
+             rest are wrapped by hand here too. -->
+        <h2 id="offer-operational">Operati<i class="od">o</i>nal fl<i class="od">o</i>w</h2>
+        <p class="ws-offer-lead">For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
+
+        <ul class="ws-mods">
+          <li><h3>Meetings Detox</h3><p>Win back your execution time.</p></li>
+          <li><h3>Decision Detox</h3><p>Weeks become hours.</p></li>
+          <li><h3>Reporting Detox</h3><p>Reports that create decisions.</p></li>
+        </ul>
+
+        <div class="actions">
+          <a class="button" href="detox.html">Learn more</a>
+        </div>
+      </article>
+
+    <!-- ===== The second card =====
+         A markup copy of section 4. No new CSS: .ws-offer was written for
+         both tracks.
+
+         *** ONE WORD OF COPY DIFFERS FROM THE SUPPLIED MOCKUP. ***
+         The mockup opens "For companies where delegation…". On 28 Oct the
+         client changed that exact sentence on the homepage's Organisational
+         card to "For TEAMS where…" (§27) — her own edit to her own locked
+         copy. The mockup almost certainly predates it. Building "companies"
+         here would silently undo a client edit and leave the two pages
+         disagreeing, so "teams" is used and flagged. One word to revert if
+         the mockup is the newer source. -->
+      <article class="ws-offer" aria-labelledby="offer-organisational">
+        <span class="ws-offer-tag">Team bottleneck</span>
+        <!-- Same hand-wrapping as section 4: every o wide, not just the
+             capital one site.js catches. -->
+        <h2 id="offer-organisational">Organisati<i class="od">o</i>nal fl<i class="od">o</i>w</h2>
+        <p class="ws-offer-lead">For teams where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
+
+        <ul class="ws-mods">
+          <li><h3>Communication Detox</h3><p>Information without rework.</p></li>
+          <li><h3>Ownership Detox</h3><p>Close the ownership vacuum.</p></li>
+          <li><h3>Psychological Safety Detox</h3><p>Say the expensive thing out loud.</p></li>
+        </ul>
+
+        <div class="actions">
+          <!-- #modules, as the homepage's Organisational card does, so the
+               link lands on the seven modules rather than the page top. -->
+          <a class="button" href="detox.html#modules">Learn more</a>
+        </div>
+      </article>
+
+      <!-- ===== The add-on =====
+           Copy is the client's, word for word, including "add on" unhyphenated
+           and "Tool Stack Module" rather than "Detox" in the last sentence.
+
+           This closes a question that had been open since 29 Oct (§6): where
+           Tool Stack Detox goes. It is the seventh module, it fits neither
+           bottleneck, and it now sits after both tracks as what the client
+           called it — an add-on.
+
+           Lowercase o's wrapped by hand, as on the two headings above. -->
+      <article class="ws-addon" aria-labelledby="offer-toolstack">
+        <span class="eyebrow">OPS Detox add on</span>
+        <h2 id="offer-toolstack">T<i class="od">o</i><i class="od">o</i>l Stack Det<i class="od">o</i>x</h2>
+        <p>If you have too many tools doing the same thing, used in different ways, with no clear ownership. The OPS Detox Tool Stack Module removes tool overload and restores clarity.</p>
+      </article>
+
+      </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 5 — the outcomes stats strip =====
+         index.html's #results band, markup and numbers word for word. It is
+         shared, not scoped: .outcomes and .stat-grid live in css/site.css
+         (§12), including the Deep Green ground and the switcher-pattern
+         texture it shares with the homepage hero. Nothing was added here.
+
+         It sits between the two offers and the closing CTA so the page
+         answers "what do I get" with numbers before it asks. Both
+         neighbours are ivory, so the dark band also breaks up a long
+         stretch of paper, as it does on the homepage. -->
+    <section id="results" class="outcomes">
+      <div class="container reveal">
+        <h2>OPS DETOX OUTCOMES:</h2>
+        <p class="outcome-intro">Fewer meetings, fewer reports, faster decisions</p>
+        <div class="stat-grid">
+          <article><strong>20-35%</strong><p>less non-essential meeting time. Up to €8K reclaimed per employee</p></article>
+          <article><strong>25-40%</strong><p>faster decision cycles<br>Less escalation, faster execution</p></article>
+          <article><strong>30-60%</strong><p>less reporting overhead<br>€50K+ reclaimed capacity per team/year</p></article>
+          <article><strong>10-30%</strong><p>tooling &amp; SaaS cost optimization. €150K-300K on a €1M spend</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 6 — "Why work with me" =====
+         Built to the supplied drawing. The copy is the client's, word for
+         word, including "could not" unhyphenated-and-unclipped and the ™ on
+         the sign-off but not on the "OPS Detox exists" sentence.
+
+         The eyebrow and the heading are the same two lines index.html's
+         About section uses, but THE BODY IS DIFFERENT COPY — the homepage
+         runs three roman paragraphs and a button, this is two italic ones
+         and a signature. They are not the same block and neither should be
+         edited to match the other.
+
+         Portrait: oscar-portrait.jpg, which until now was only on
+         about.html. Not oscar-about.jpg, which is the homepage's About
+         picture and is already on four pages. -->
+    <section class="ws-about ws-dots reveal" aria-labelledby="ws-about-heading">
+      <div class="container">
+        <div class="ws-about-grid">
+          <div class="ws-about-copy">
+            <span class="eyebrow">About Oscar de Grauw</span>
+            <h2 id="ws-about-heading">Why work with me</h2>
+            <p>For seventeen years I worked inside Sony Europe, across sales, marketing, procurement, business planning, operational excellence, reporting and transformation. What I saw, I now see in every growing company: good people, working hard, inside systems that piled up as the company grew. The truth was always in the building. It simply could not reach the people who could act on it.</p>
+            <p>Every hour a good person spends in a meeting without a decision, on a report nobody reads, or waiting for permission they should already have, is an hour of a life. OPS Detox exists to clear that clutter and give those hours back.</p>
+            <span class="ws-about-sign">Oscar de Grauw, Founder of OPS Detox™</span>
+          </div>
+
+          <figure class="ws-about-shot">
+            <picture>
+              <source srcset="assets/img/oscar-portrait.webp" type="image/webp">
+              <img src="assets/img/oscar-portrait.jpg" alt="Oscar de Grauw, in a blue suit and open white shirt, leaning against a stool against a grey studio backdrop" width="1178" height="1700" loading="lazy" decoding="async">
+            </picture>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 7 — the frameworks =====
+         index.html's IP section, markup word for word, including the
+         for-Oscar placeholder notice. It closes the page's argument: the
+         offers, the numbers and Oscar himself come first, and the IP is the
+         last thing said before the ask. The homepage runs it earlier, above
+         the outcomes; the order here is this page's, not a copy of that.
+
+         *** SECOND COPY. *** The CSS is duplicated too, see §5d above; the
+         three descriptions are PLACEHOLDER and have to be corrected in both
+         files at once. -->
+    <!-- .ws-dots is the one addition to the copied markup: every other ivory
+         section on this page carries the dot field, and without it this one
+         reads as a gap between two textured neighbours. The homepage has no
+         dot field at all, which is why its copy does not carry the class. -->
+    <section class="frameworks ws-dots reveal" aria-labelledby="frameworks-heading">
+      <div class="container">
+        <div class="frameworks-head">
+          <span class="eyebrow">Proprietary frameworks</span>
+          <h2 id="frameworks-heading">The IP the detox runs on</h2>
+          <p>The cleanse is not improvisation. Three frameworks, developed over 17 years inside complex international organizations, decide what gets seen, what gets stripped and who decides what.</p>
+        </div>
+
+        <div class="frameworks-grid">
+          <article>
+            <span class="fw-mark" aria-hidden="true">01</span>
+            <h3>See – Strip – Choose™</h3>
+            <p class="fw-line">The core method. Three moves, in order.</p>
+            <p>Make the clutter visible before touching it, remove what no longer earns its place, then decide deliberately what the company keeps. Every engagement runs through these three moves.</p>
+          </article>
+          <article>
+            <span class="fw-mark" aria-hidden="true">02</span>
+            <h3>Truth Latency™</h3>
+            <p class="fw-line">The delay between knowing and saying.</p>
+            <p>In most companies someone knew the truth weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
+          </article>
+          <article>
+            <span class="fw-mark" aria-hidden="true">03</span>
+            <h3>DRMT™</h3>
+            <p class="fw-line">The decision engine.</p>
+            <p>Who decides, who is consulted, and what happens when nobody does. DRMT closes the ownership vacuum that leaves decisions queued on the founder's desk.</p>
+          </article>
+        </div>
+
+        <!-- Placeholder copy. Remove this notice with the real descriptions,
+             HERE AND ON index.html. -->
+        <p class="fw-draft"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording, please correct them. DRMT™ is shown as “the decision engine” because that is how about.html describes it; send the full name if you want it spelled out. Confirm also whether <b>See – Strip – Choose™</b> replaces <b>The CORE method™</b>, which is still named in the current copy but absent from your updated list.</p>
+
+        <p class="frameworks-note">Also part of the toolkit, and used mainly inside workshops rather than on this page: <b>Async Mastery™</b>, <b>Speak Up Gym™</b> and the <b>Seven Contextual Gaps™</b>.</p>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 8 — who it is for, and who it is not =====
+         THE COPY IS NOT NEW. Both columns are detox.html's "Who OPS Detox is
+         for" / "is not for" lists, which are the client's own words. The
+         four "not for" items are run together into one sentence here, as
+         drawn, rather than kept as four bullets.
+
+         Last qualifier before the ask, which is where it belongs: by this
+         point the page has made its case, and the only question left is
+         whether the reader is the right reader. See §5e for why the two
+         cards are weighted differently.
+
+         No eyebrow on either card. The drawing has none, and two eyebrows
+         over two headings this size reads as four stacked labels. -->
+    <section class="ws-fit ws-dots reveal" aria-labelledby="ws-fit-heading">
+      <div class="container">
+        <div class="ws-fit-grid">
+          <div class="ws-fit-card ws-fit--yes">
+            <h2 id="ws-fit-heading">Who OPS Detox is for</h2>
+            <ul class="ws-ticks">
+              <li>You founded a scale-up of 20 to 2,000 people, and it still runs on your judgment, your approvals and your presence in the room.</li>
+              <li>You lead hands-on and suspect the company runs differently from how you believe it does.</li>
+              <li>You carry a P&amp;L or an efficiency target, and the time lost in operations is holding it back.</li>
+              <li>You want your team to build the change with you, so it holds without outside help.</li>
+            </ul>
+          </div>
+
+          <div class="ws-fit-card ws-fit--no">
+            <h2>Who OPS Detox is not for</h2>
+            <p>It is not for you if you are an early-stage startup with no inherited processes to cleanse yet, you are looking for a report rather than implementation, the decision-maker will not be involved hands-on, or price is the deciding factor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 9 — what a clean operation feels like =====
+         THE COPY IS NOT NEW. Heading and all six lines are detox.html's
+         "What a clean operation feels like, within weeks" section, which is
+         the client's own wording. All six, in the drawing's order.
+
+         Last section before the ask. The page has named the problem, the
+         offer, the numbers, the man and the IP, and qualified the reader;
+         this is what they are actually buying, in their own week. See §5f
+         for why it is the lightest-weight section on the page. -->
+    <section class="ws-feel ws-dots reveal" aria-labelledby="ws-feel-heading">
+      <div class="container">
+        <span class="eyebrow">The feeling</span>
+        <h2 id="ws-feel-heading">What a clean operation feels like, within weeks</h2>
+        <ul class="ws-ticks">
+          <li>Meetings that end in a decision, with a clear owner and a date.</li>
+          <li>Decisions in days, made at the level where the work happens.</li>
+          <li>Half the reporting, so your best people can think instead of format.</li>
+          <li>Honest information, early, while problems are still inexpensive to solve.</li>
+          <li>Growth without new headcount, because the time you win back absorbs the work you would otherwise hire for.</li>
+          <li>Two weeks away with the laptop closed, and a company that kept moving in your absence.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 10 — testimonials =====
+         MOVED DOWN from section 4, where it sat between "there is a cleaner
+         way" and the offers. The proof now lands after the whole case has
+         been made and immediately before "why leaders choose", which is the
+         order content/copy.md records from the client's own wireframe:
+         … What a clean operation feels like → Testimonials → Why leaders
+         choose → What will you choose?
+
          Copied verbatim from index.html so all three pages end the same way.
          The quotes are still PLACEHOLDERS — four of them, each tagged as such
          on the card — and they are repeated FOUR TIMES to fill the marquee.
@@ -881,100 +1477,54 @@
       </div>
     </section>
 
-    <!-- ===== SECTION 5 — the two offers =====
-         Copy is the client's, word for word.
+    <!-- ===== SECTION 11 — why leaders choose =====
+         THE COPY IS NOT NEW. All six cards are content/copy.md's "WHY
+         LEADERS CHOOSE — OPS Detox" block, which copy.md itself notes came
+         from the Work With Us wireframe, and which detox.html already
+         carries. Word for word, in the same order.
 
-         This is one of TWO tracks. The second, "Organisational flow", is a
-         copy of this <section> with its own heading, paragraph and three
-         module names — the CSS is written for both and nothing in it is
-         specific to this one. It was not built here because its copy has not
-         been supplied; the homepage's version of the pair lists its modules
-         as communication, ownership and psychological safety.
-
-         NOT APPLIED, and still open: the client's 29 Oct email names these
-         "The Execution package (Founder Bottleneck)" and "The Leadership
-         package (Team Bottleneck)". The mockup uses the short names, so the
-         short names are what is built. See the handoff's open items. -->
-    <section class="ws-offers ws-dots reveal" aria-label="The two tracks">
+         *** CARD 03 SAYS "CORE method™". *** The frameworks section two
+         sections above this one carries a notice asking whether
+         See – Strip – Choose™ REPLACES The CORE method™. Until Oscar
+         answers, this page names both. Left as his words rather than
+         quietly reconciled; the answer changes one of the two. -->
+    <section class="ws-why ws-dots reveal" aria-label="Why leaders choose OPS Detox">
       <div class="container">
-      <div class="ws-offers-grid">
-
-      <article class="ws-offer" aria-labelledby="offer-operational">
-        <span class="ws-offer-tag">Founder bottleneck</span>
-        <!-- EVERY o is wide, not just the capital. js/site.js §3a splits on
-             uppercase /([OD])/, so it widens the leading O by itself and
-             leaves the two lowercase ones narrow — the same letter three
-             times in one heading at two widths. index.html's H1 wraps all of
-             them for exactly this reason ("…systems of operational"), so the
-             rest are wrapped by hand here too. -->
-        <h2 id="offer-operational">Operati<i class="od">o</i>nal fl<i class="od">o</i>w</h2>
-        <p class="ws-offer-lead">For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
-
-        <ul class="ws-mods">
-          <li><h3>Meetings Detox</h3><p>Win back your execution time.</p></li>
-          <li><h3>Decision Detox</h3><p>Weeks become hours.</p></li>
-          <li><h3>Reporting Detox</h3><p>Reports that create decisions.</p></li>
-        </ul>
-
-        <div class="actions">
-          <a class="button" href="detox.html">Learn more</a>
+        <div class="ws-why-head">
+          <span class="eyebrow">Why leaders choose</span>
+          <h2>OPS Detox</h2>
         </div>
-      </article>
 
-    <!-- ===== The second card =====
-         A markup copy of section 4. No new CSS: .ws-offer was written for
-         both tracks.
-
-         *** ONE WORD OF COPY DIFFERS FROM THE SUPPLIED MOCKUP. ***
-         The mockup opens "For companies where delegation…". On 28 Oct the
-         client changed that exact sentence on the homepage's Organisational
-         card to "For TEAMS where…" (§27) — her own edit to her own locked
-         copy. The mockup almost certainly predates it. Building "companies"
-         here would silently undo a client edit and leave the two pages
-         disagreeing, so "teams" is used and flagged. One word to revert if
-         the mockup is the newer source. -->
-      <article class="ws-offer" aria-labelledby="offer-organisational">
-        <span class="ws-offer-tag">Team bottleneck</span>
-        <!-- Same hand-wrapping as section 4: every o wide, not just the
-             capital one site.js catches. -->
-        <h2 id="offer-organisational">Organisati<i class="od">o</i>nal fl<i class="od">o</i>w</h2>
-        <p class="ws-offer-lead">For teams where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
-
-        <ul class="ws-mods">
-          <li><h3>Communication Detox</h3><p>Information without rework.</p></li>
-          <li><h3>Ownership Detox</h3><p>Close the ownership vacuum.</p></li>
-          <li><h3>Psychological Safety Detox</h3><p>Say the expensive thing out loud.</p></li>
-        </ul>
-
-        <div class="actions">
-          <!-- #modules, as the homepage's Organisational card does, so the
-               link lands on the seven modules rather than the page top. -->
-          <a class="button" href="detox.html#modules">Learn more</a>
+        <div class="ws-why-grid">
+          <article>
+            <h3>Built from inside real organizations</h3>
+            <p>17 years inside complex, global enterprises. Not theory. Lived experience.</p>
+          </article>
+          <article>
+            <h3>Focused on how work actually flows</h3>
+            <p>Meetings. Decisions. Tools. Reporting. The real bottlenecks.</p>
+          </article>
+          <article>
+            <h3>A system, not opinions</h3>
+            <p>CORE method™. OPS Detox. Repeatable. Scalable. Proven.</p>
+          </article>
+          <article>
+            <h3>Remove operational noise before adding complexity</h3>
+            <p>We remove what’s unnecessary first. Only then do we redesign.</p>
+          </article>
+          <article>
+            <h3>Designed for hybrid &amp; AI reality</h3>
+            <p>Async work. Tool overload. AI usage. Handled deliberately.</p>
+          </article>
+          <article>
+            <h3>Results leaders can defend</h3>
+            <p>Time saved. Costs avoided. Speed gained. CFO-proof.</p>
+          </article>
         </div>
-      </article>
-
-      <!-- ===== The add-on =====
-           Copy is the client's, word for word, including "add on" unhyphenated
-           and "Tool Stack Module" rather than "Detox" in the last sentence.
-
-           This closes a question that had been open since 29 Oct (§6): where
-           Tool Stack Detox goes. It is the seventh module, it fits neither
-           bottleneck, and it now sits after both tracks as what the client
-           called it — an add-on.
-
-           Lowercase o's wrapped by hand, as on the two headings above. -->
-      <article class="ws-addon" aria-labelledby="offer-toolstack">
-        <span class="eyebrow">OPS Detox add on</span>
-        <h2 id="offer-toolstack">T<i class="od">o</i><i class="od">o</i>l Stack Det<i class="od">o</i>x</h2>
-        <p>If you have too many tools doing the same thing, used in different ways, with no clear ownership. The OPS Detox Tool Stack Module removes tool overload and restores clarity.</p>
-      </article>
-
-      </div>
       </div>
     </section>
 
-
-    <!-- ===== SECTION 6 — the site's closing CTA =====
+    <!-- ===== SECTION 12 — the site's closing CTA =====
          The page ended on the offers section with no ask and no close into
          the footer: a hard ivory-to-Deep-Green cut, which is the fault §33
          named on contact.html.

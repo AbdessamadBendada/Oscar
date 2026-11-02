@@ -8,6 +8,7 @@
    5. Reveal on scroll
    6. Ticker duplication (seamless loop)
    7. Preloader
+   8. Testimonials, one card at a time on mobile
    ============================================================ */
 (function () {
   'use strict';
@@ -286,5 +287,108 @@
     // Safety net: if an animation never fires (a background tab, a stalled
     // paint), the page must not stay behind a green sheet.
     window.setTimeout(function () { endPreloader(true); }, 3000);
+  }
+
+  /* ---------- 8. Testimonials, one card at a time on mobile ----------
+     On desktop the row is a CSS marquee: a continuous crawl, paused on
+     hover. On a phone that reads as drifting text you cannot catch, so the
+     stylesheets switch the row to a snapping scroller below 700px (the same
+     branch reduced motion gets) and this advances it ONE CARD per step.
+
+     Everything here is additive. If this function never runs — old browser,
+     JS off, a thrown error above it — the row is still a scroller the
+     visitor can swipe by hand. Nothing below is load-bearing.
+
+     Deliberately NOT running for reduced motion. Those users get the same
+     CSS, but moving the row for them is exactly what they asked not to
+     happen; theirs stays hand-driven. */
+  var stepRow = window.matchMedia('(max-width: 700px)');
+
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    document.querySelectorAll('.testimonial-slider').forEach(function (slider) {
+      var STEP_MS = 4200;   // long enough to read a quote of this length
+      var RESUME_MS = 9000; // after a swipe, before it takes over again
+      var timer = null;
+      var resume = null;
+      var onScreen = false;
+
+      // The duplicate sets exist only to fill the marquee and are display:none
+      // in this branch, so the real cards are the ones without aria-hidden.
+      function cards() {
+        return Array.prototype.filter.call(
+          slider.querySelectorAll('.testimonial-track > article'),
+          function (card) { return card.offsetParent !== null; }
+        );
+      }
+
+      function step() {
+        var list = cards();
+        if (list.length < 2) return;
+
+        // Which card is closest to the middle right now. Read from the DOM
+        // every step rather than kept in a counter, so a hand-swipe between
+        // steps does not leave the two out of sync.
+        var middle = slider.scrollLeft + slider.clientWidth / 2;
+        var current = 0;
+        var best = Infinity;
+
+        list.forEach(function (card, i) {
+          var distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - middle);
+          if (distance < best) { best = distance; current = i; }
+        });
+
+        var next = list[(current + 1) % list.length];
+        slider.scrollTo({
+          left: next.offsetLeft + next.offsetWidth / 2 - slider.clientWidth / 2,
+          behavior: 'smooth'
+        });
+      }
+
+      function start() {
+        if (timer || !onScreen || !stepRow.matches || document.hidden) return;
+        timer = window.setInterval(step, STEP_MS);
+      }
+
+      function stop() {
+        window.clearInterval(timer);
+        timer = null;
+      }
+
+      // A touch hands control back to the visitor. It returns on its own so
+      // the row does not sit dead for the rest of the session.
+      function handOver() {
+        stop();
+        window.clearTimeout(resume);
+        resume = window.setTimeout(start, RESUME_MS);
+      }
+
+      ['pointerdown', 'touchstart', 'wheel'].forEach(function (evt) {
+        slider.addEventListener(evt, handOver, { passive: true });
+      });
+      slider.addEventListener('focusin', handOver);
+
+      // Off screen or in a background tab, stepping is just a timer burning
+      // battery against a row nobody is looking at.
+      new IntersectionObserver(function (entries) {
+        onScreen = entries[0].isIntersecting;
+        if (onScreen) { start(); } else { stop(); }
+      }, { threshold: 0.2 }).observe(slider);
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) { stop(); } else { start(); }
+      });
+
+      // Crossing the breakpoint, in either direction. Above it the CSS
+      // marquee takes the row back and the timer must not keep nudging
+      // scrollLeft underneath it.
+      var onChange = function () {
+        if (stepRow.matches) { start(); } else { stop(); slider.scrollLeft = 0; }
+      };
+      if (stepRow.addEventListener) {
+        stepRow.addEventListener('change', onChange);
+      } else if (stepRow.addListener) {
+        stepRow.addListener(onChange); // Safari < 14
+      }
+    });
   }
 })();

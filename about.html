@@ -812,7 +812,18 @@
   /* Reduced motion: no marquee at all. The row becomes a normal swipeable,
      snapping scroller, and the duplicate half is dropped so the same quote
      does not appear twice in something the user scrolls by hand. */
-  @media(prefers-reduced-motion:reduce){
+  /* MOBILE GETS THE SAME BRANCH AS REDUCED MOTION, one card at a time
+     instead of the continuous marquee (client, 2 Nov).
+
+     Extended as a media QUERY LIST rather than copied into a second block:
+     the two cases want byte-identical rules — no marquee, no end fades, a
+     snapping scroller, duplicates dropped — so writing them twice would
+     just be two things to keep in step. The stepping itself is in
+     js/site.js §8, which runs on narrow screens only; reduced-motion users
+     still get a row they move themselves, which is the point of it.
+
+     700px is where site.css already drops the card grids to one column. */
+  @media(prefers-reduced-motion:reduce),(max-width:700px){
     .testimonial-slider{
       overflow-x:auto;scroll-snap-type:x mandatory;
       -webkit-overflow-scrolling:touch;
