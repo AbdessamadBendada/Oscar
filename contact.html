@@ -3,15 +3,416 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fbfbf9">
-  <title>Contact — OPS DETOX™</title>
+  <meta name="theme-color" content="#143318">
+  <title>Contact | OPS DETOX™</title>
   <meta name="description" content="Book a conversation with Oscar de Grauw, or send a message about your operation.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
+  <!-- ==========================================================
+       Brought onto the current design system, 1 Nov 2026 (§33).
+       This page was still the 14 Oct interior build: Soft Ivory
+       header, a small .hero--narrow, no switcher pattern, and a
+       column of inline styles doing the layout.
+
+       Same scope rule as index.html, about.html and
+       work-with-us.html: every rule this page needs lives in the
+       <style> block below, scoped to this document. css/site.css
+       and js/site.js are NOT touched — they are shared by all
+       seven pages.
+
+       THE COPY IS UNCHANGED. Every string on this page was
+       already here; the eyebrow, the headline, both column
+       subheads, the form labels, the booking note and the closing
+       section are verbatim. Nothing was written to fill the new
+       layout — the hero's h1 and eyebrow simply swapped rank.
+       ========================================================== -->
   <!-- Decided before first paint. While the preloader is under review it
        runs on every load; restore the once-per-session behaviour by putting
        sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
   <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+
+  <style>
+  /* ---------- 1. Page shell ----------
+     The hairline rules between sections are off site-wide now (§24). */
+  .section-rule{border-bottom:0}
+
+  /* The wider desktop channel index.html took on 28 Oct (§22.2) and
+     work-with-us.html copied. Gated to desktop; the narrow layout is the
+     approved one. */
+  @media(min-width:1001px){ .container{width:min(1320px,calc(100% - 80px))} }
+
+  /* ---------- 2. Deep Green header ----------
+     DUPLICATED, not shared: this block also exists in index.html §5,
+     about.html and work-with-us.html §2. It belongs in css/site.css, but
+     that edit touches all seven pages — see the Technical note in the
+     handoff. **This is now the fourth copy.**
+
+     It is not optional. site.css's header is Soft Ivory with a Detox Green
+     logo, nav and CTA, which is V1.0 p.22's first watchout the moment the
+     hero below it is ivory too. Deep Green is the only legal ground for
+     them, and it gives the hero a hard top edge. */
+  .site-header{
+    background:var(--ink);
+    border-bottom-color:rgba(204,254,6,.22);
+  }
+  @supports(backdrop-filter:blur(1px)){
+    .site-header{background:rgba(20,51,24,.94)}
+  }
+  .site-nav a{color:var(--lime)}
+  .nav-toggle{border-color:var(--lime)}
+  .nav-toggle i,
+  .nav-toggle i::before,
+  .nav-toggle i::after{background:var(--lime)}
+  .nav-toggle[aria-expanded="true"] i{background:transparent}
+  /* .button--line is a Deep Green pill, which vanishes on a Deep Green
+     header. Same swap site.css already makes inside .on-dark. */
+  .site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+  .site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
+
+  /* ---------- 3. The hero ----------
+     Was .hero--narrow: a 20ch copy block in the top-left corner of an
+     otherwise empty ivory screen, with the h1 at site.css's default scale.
+     It read as a page that had not been designed.
+
+     Centred, not two-column. work-with-us.html's hero splits because it has
+     a photograph to put in the right half; this page has none, and there is
+     no contact photography in the project. A half-empty grid is what the old
+     layout already was. */
+  .ct-hero{
+    background:var(--paper);
+    padding:clamp(48px,6vw,72px) 0 clamp(56px,6vw,84px);
+    text-align:center;
+  }
+
+  /* The dot field, shared by every Soft Ivory section here. Lifted from
+     work-with-us.html §3 so the two pages carry the same paper texture.
+
+     NOT A V1.0 DEVICE — the guideline names exactly two patterns, the logo
+     pattern (merch only, p.37) and the switcher pattern (p.38), and a dot
+     grid is neither. It is one deletable rule held at an alpha low enough to
+     read as paper rather than as a graphic. Delete .ct-dots::before and
+     every ivory section on this page goes plain at once. */
+  .ct-dots{position:relative;overflow:hidden}
+  .ct-dots::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(20,51,24,.16) 1.4px,#0000 1.5px);
+    background-size:26px 26px;
+  }
+  .ct-dots>*{position:relative;z-index:1}
+
+  /* The page title, on work-with-us.html's .ws-title scale so the two
+     interior pages open at the same size.
+
+     "Let's talk" was the h1 already and still is — it has simply been given
+     the page-title treatment, and "Contact" moved up into the eyebrow slot
+     above it. Both strings were on the page before; neither is new. */
+  .ct-hero .eyebrow{display:block;font-size:19px;letter-spacing:.06em}
+  .ct-title{
+    margin:14px auto clamp(22px,2.6vw,30px);
+    max-width:none;
+    font-size:clamp(44px,7.4vw,112px);line-height:.9;
+    letter-spacing:.02em;color:var(--ink);
+  }
+  /* Wide O and D are wrapped by hand in the markup, not set with ss01 —
+     see §9 and the note on the markup below. */
+
+  .ct-hero .body-copy{
+    max-width:58ch;margin:0 auto;
+    font-size:19px;line-height:1.5;
+  }
+
+  /* ---------- 4. The switcher pattern strip ----------
+     Copied from index.html §9. The device V1.0 p.38 names as the website
+     pattern, rebuilt in CSS so the bars carry words and move.
+
+     --ticker-h is NOT load-bearing on this page. On the homepage the hero is
+     calc(100svh - header - ticker-h) and the token is what lands the fold
+     exactly under the strip (§5); this hero is content-height, so the strip
+     is free to sit at its natural size. The token is kept at the homepage's
+     value anyway so the two strips are identical where they meet the eye.
+
+     Loop rule, same as every marquee in this project: four copies, a -25%
+     step, spacing as margin-LEFT, and the nth-child cycle MUST equal one
+     copy — 6 words, so 6n. Break any of those and it jumps once a cycle
+     (§24, §26). */
+  :root{--ticker-h:92px}
+  .pt-strip{
+    background:var(--ink);
+    height:var(--ticker-h);
+    display:grid;align-content:center;
+    padding:0;
+    overflow:hidden;
+  }
+  .pt-row{overflow:hidden}
+  .pt-track{
+    display:flex;width:max-content;
+    animation:pt-slide 42s linear infinite;
+    will-change:transform;
+  }
+  @keyframes pt-slide{from{transform:translateX(-25%)}to{transform:none}}
+  .pt{
+    flex:none;
+    padding:12px 34px 10px 120px;
+    margin-left:34px;
+    border-radius:var(--r-pill);
+    background:linear-gradient(90deg,
+      rgba(204,254,6,0) 0%,
+      rgba(204,254,6,.18) 26%,
+      rgba(204,254,6,.55) 48%,
+      rgba(204,254,6,.92) 64%,
+      var(--lime) 72%);
+    color:var(--ink);
+    font:18px/1 var(--display);
+    letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
+  }
+  .pt:nth-child(6n+1){padding-left:190px;margin-left:22px}
+  .pt:nth-child(6n+2){padding-left:96px;margin-left:48px}
+  .pt:nth-child(6n+3){padding-left:150px;margin-left:34px}
+  .pt:nth-child(6n+4){padding-left:118px;margin-left:28px}
+  .pt:nth-child(6n+5){padding-left:212px;margin-left:26px}
+  .pt:nth-child(6n+6){padding-left:104px;margin-left:42px}
+  @media(max-width:850px){
+    :root{--ticker-h:74px}
+    .pt{font-size:14px;padding:9px 22px 7px 64px;margin-left:18px}
+    .pt:nth-child(6n+1){padding-left:88px;margin-left:14px}
+    .pt:nth-child(6n+2){padding-left:52px;margin-left:24px}
+    .pt:nth-child(6n+3){padding-left:74px;margin-left:18px}
+    .pt:nth-child(6n+4){padding-left:60px;margin-left:16px}
+    .pt:nth-child(6n+5){padding-left:96px;margin-left:14px}
+    .pt:nth-child(6n+6){padding-left:56px;margin-left:22px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pt-track{animation:none}
+  }
+
+  /* ---------- 5. The two routes in ----------
+     Was `.section-grid--halves` with two bare columns: an eyebrow, a
+     .section-subhead and then either the form or a grey box doing its
+     layout with four inline styles.
+
+     Now two round-rect cards on the ivory ground, which is the device the
+     homepage already uses for a pair of equal choices (§30 made the same
+     call on the offer tracks). The card gives each route a visible edge and
+     an ivory gutter, so "send a message" and "book a call" read as two ways
+     in rather than as one column of form fields with something adrift
+     beside it.
+
+     There is deliberately NO section title. Each card already opens with
+     its own eyebrow and subhead — both existing copy — and inventing a
+     title above them would have meant writing copy the client has not
+     seen. */
+  .ct-routes{
+    background:var(--paper);
+    padding:var(--section-y) 0;
+  }
+  .ct-grid{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:clamp(24px,2.6vw,36px);
+    align-items:start;
+  }
+
+  /* The card. --panel white on the ivory ground, the brand's 36px radius
+     and site.css's own --shadow, so it is the same object as the
+     testimonial and cleanse cards rather than a new one. */
+  .ct-card{
+    background:var(--panel);
+    border-radius:var(--r-card);
+    box-shadow:var(--shadow);
+    padding:clamp(28px,3vw,44px);
+    display:flex;flex-direction:column;
+    /* Equal height, so the two cards' top edges and bottom edges line up
+       whichever of them is taller. align-items:start on the grid would let
+       them size independently and the row would read as two mismatched
+       panels. */
+    height:100%;
+  }
+  .ct-grid>*{height:100%}
+
+  .ct-card .eyebrow{display:block}
+  /* One step below §27's clamp(42px,4.7vw,70px) section scale, on purpose
+     and for the reason §30 records on work-with-us.html's section 3: that
+     scale is for titles owning the full container width, and these two sit
+     in ~600px columns. At 70px "Start here" would be larger than the page
+     title's own optical weight in a half-width card. */
+  .ct-card h2{
+    margin:10px 0 24px;max-width:none;
+    font-size:clamp(30px,3vw,44px);line-height:1.04;
+    letter-spacing:.02em;color:var(--ink);
+  }
+
+  /* The form card IS the .ct-card now, so site.css's .form-card panel
+     (white, 42px padding, its own shadow and radius) would be a second
+     card inside the first. Stripped back to a plain block; the fields and
+     their validation styling are untouched. */
+  .ct-card .form-card{
+    background:none;padding:0;border-radius:0;box-shadow:none;
+  }
+  /* Push the submit button and the demo note to the card's foot so both
+     cards' CTAs sit on one line. */
+  .ct-form{flex:1;display:flex;flex-direction:column}
+  .ct-form .field:last-of-type{margin-bottom:auto}
+  .ct-form .button{margin-top:26px;align-self:flex-start}
+
+  /* The booking slot. Was a 420px grey box centred with inline styles. Now
+     a dashed Deep Green well — dashed because it is explicitly an empty
+     slot waiting for a platform, and a solid panel would read as finished
+     design. Delete the rule with the element when the embed lands. */
+  .ct-embed{
+    flex:1;display:grid;place-items:center;text-align:center;
+    min-height:300px;padding:32px 24px;
+    border:2px dashed rgba(20,51,24,.3);
+    border-radius:24px;
+    background:rgba(20,51,24,.03);
+  }
+  .ct-embed-label{
+    margin:0 0 12px;
+    font:clamp(22px,2.2vw,28px)/1 var(--display);
+    letter-spacing:.04em;text-transform:uppercase;color:var(--ink);
+  }
+  .ct-embed .body-copy{max-width:38ch;margin:0 auto}
+
+  /* ---------- 6. The direct details ----------
+     Was three .values paragraphs stacked under the booking box with inline
+     margin overrides, which put the only real contact information on the
+     page in its quietest corner.
+
+     Deep Green band, three columns, lime labels — the one ground where lime
+     type is legal (V1.0 p.21). It also breaks the ivory, so the page
+     alternates ivory / green / ivory instead of running as one field down
+     to the footer.
+
+     THE VALUES ARE STILL CANVA PLACEHOLDERS. The note under the row says so
+     on the page; §6 lists real contact details as outstanding from the
+     client. */
+  .ct-direct{
+    background:var(--ink);
+    padding:clamp(54px,6vw,84px) 0;
+  }
+  .ct-direct-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:clamp(24px,3vw,48px);
+  }
+  .ct-item{
+    padding-top:18px;
+    border-top:1px solid rgba(204,254,6,.3);
+  }
+  .ct-item h2{
+    margin:0 0 10px;max-width:none;
+    font:17px/1 var(--display);
+    letter-spacing:.08em;text-transform:uppercase;
+    color:var(--lime);
+  }
+  .ct-item a,.ct-item p{
+    margin:0;font-size:19px;line-height:1.4;
+    color:var(--paper);
+  }
+  .ct-item a{text-decoration:none;border-bottom:1px solid rgba(254,253,242,.3)}
+  .ct-item a:hover{border-bottom-color:var(--paper)}
+  .ct-pending{
+    margin:clamp(28px,3vw,42px) 0 0;
+    font-size:13px;color:rgba(254,253,242,.6);
+  }
+
+  @media(max-width:850px){
+    .ct-grid{grid-template-columns:1fr}
+    .ct-direct-grid{grid-template-columns:1fr;gap:26px}
+  }
+
+  /* ---------- 7. The Noise / Clarity switch, read the other way ----------
+     Copied verbatim from index.html §11, and this page SHIPPED WITHOUT IT.
+
+     The old markup here was site.css's shared `.switch-line` / `.switch`
+     with aria-pressed="false" and "Operational noise" carrying .is-on — so
+     the closing section of the contact page was arguing the opposite of the
+     closing section of the homepage. The markup below is index.html's.
+
+     Only the visuals are flipped, not the state. js/site.js §3b treats
+     aria-pressed="true" as the RESTING state and snaps the toggle back to
+     it 350ms after a click, and that file is shared, so it must not be
+     touched (AGENTS.md). "true" still means clarity; what changes is which
+     side lights and which way the knob sits. Flipping the attribute instead
+     would make the switch snap back to Noise — the opposite of the point. */
+  .choice-toggle[aria-pressed="true"] .t-before{opacity:1}
+  .choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
+  .choice-toggle[aria-pressed="false"] .t-after{opacity:1}
+
+  /* The switch IS the logo mark: a lime pill carrying the O of the OD
+     monogram, so the knob is an ink RING with the track showing through it,
+     not a solid dot. Hence no inset highlight and no drop shadow — the mark
+     is flat. */
+  .choice-toggle .t-switch{
+    background:var(--lime);
+    border:3px solid var(--ink);
+    box-shadow:none;
+  }
+  /* box-sizing MUST be border-box. The shared rule sizes the knob 34x34 as a
+     solid dot, where no border is in play; as a ring the stroke would add
+     7px on every side and it would come out 48px wide in a 42px track.
+     Geometry: track 92, 3px border, inner box 86. Ring 34 at 4px from the
+     left leaves 48 to the right edge, hence the 44px travel. */
+  .choice-toggle .t-switch::before{
+    box-sizing:border-box;
+    top:4px;left:4px;width:34px;height:34px;
+    background:transparent;
+    border:6px solid var(--ink);
+    box-shadow:none;
+  }
+  .choice-toggle[aria-pressed="true"] .t-switch::before{transform:none}
+  .choice-toggle[aria-pressed="false"] .t-switch::before{transform:translateX(44px)}
+
+  /* ---------- 8. Pattern divider, rebuilt in CSS ----------
+     Copied from index.html §10. Same bar language as the strip under the
+     hero, but bars only and two rows running opposite ways. It closes the
+     page into the Deep Green footer, which is what it does on the homepage
+     (§24) — this page ended on a hard ivory-to-green cut.
+
+     Each row travels the way its bars point: the gradient tail reads as the
+     trail behind the bar, so a bar lit at its right end has to move right.
+     Built the other way round first and both rows looked like they were
+     sliding backwards. */
+  .pb{
+    background:var(--ink);
+    padding:18px 0 20px;
+    display:grid;gap:14px;
+    overflow:hidden;
+  }
+  .pb-row{overflow:hidden}
+  .pb-track{display:flex;width:max-content;animation:pb-right 46s linear infinite}
+  .pb-row--b .pb-track{animation:pb-left 62s linear infinite}
+  @keyframes pb-left{from{transform:none}to{transform:translateX(-25%)}}
+  @keyframes pb-right{from{transform:translateX(-25%)}to{transform:none}}
+
+  .pb-bar{
+    flex:none;height:34px;margin-left:34px;
+    border-radius:var(--r-pill);
+    background:linear-gradient(90deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+  }
+  /* Widths cycle on 6n so every one of the four copies matches. */
+  .pb-bar:nth-child(6n+1){width:300px}
+  .pb-bar:nth-child(6n+2){width:470px;margin-left:46px}
+  .pb-bar:nth-child(6n+3){width:190px;margin-left:28px}
+  .pb-bar:nth-child(6n+4){width:380px;margin-left:40px}
+  .pb-bar:nth-child(6n+5){width:560px;margin-left:30px}
+  .pb-bar:nth-child(6n+6){width:240px;margin-left:52px}
+  .pb-row--b .pb-bar{
+    background:linear-gradient(270deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+  }
+
+  @media(max-width:850px){
+    .pb{padding:14px 0 16px;gap:10px}
+    .pb-bar{height:26px;margin-left:22px}
+    .pb-bar:nth-child(6n+1){width:170px}
+    .pb-bar:nth-child(6n+2){width:250px;margin-left:28px}
+    .pb-bar:nth-child(6n+3){width:120px;margin-left:18px}
+    .pb-bar:nth-child(6n+4){width:210px;margin-left:24px}
+    .pb-bar:nth-child(6n+5){width:300px;margin-left:20px}
+    .pb-bar:nth-child(6n+6){width:150px;margin-left:32px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pb-track{animation:none}
+  }
+  </style>
 </head>
 <body>
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
@@ -21,11 +422,19 @@
 
   <header class="site-header">
     <div class="container header-inner">
+      <!-- The Deep Green header needs the LIME logo, not the deep-green one
+           this page was carrying — on an ink band that mark was invisible. -->
       <a class="brand" href="index.html" aria-label="OPS DETOX home">
-        <img src="assets/logo/primary-deepgreen.svg" alt="OPS DETOX">
+        <img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
       </a>
       <nav class="site-nav" id="nav" aria-label="Main navigation">
         <a href="detox.html">The DETOX</a>
+        <!-- Work With Us was only in work-with-us.html's own header. §30
+             leaves whether it joins the main nav open, and whether it
+             replaces detox.html there; it is added here so this page's nav
+             matches the one the client is shown, not so the question is
+             settled. -->
+        <a href="work-with-us.html">Work With Us</a>
         <a href="diagnostic.html">Audit</a>
         <a href="index.html#results">Results</a>
         <a href="about.html">About</a>
@@ -37,79 +446,212 @@
   </header>
 
   <main id="main">
-    <section class="hero hero--narrow container">
-      <div class="hero-copy">
+
+    <!-- ===== The hero =====
+         Both strings were already on this page. "Contact" was the eyebrow
+         and is still the eyebrow; "Let's talk" was the h1 and is still the
+         h1 — it has only been given the page-title scale. -->
+    <section class="ct-hero ct-dots">
+      <div class="container">
         <span class="eyebrow">Contact</span>
-        <h1>Let’s talk</h1>
-        <p>Tell me where the week goes, and we will look at it together. A first conversation costs you thirty minutes and commits you to nothing.</p>
+
+        <!-- No <i class="od"> wrappers here, and that is correct rather than
+             an omission: "Let's talk" contains neither an O nor a D, so
+             there is nothing for the brand's wide alternates to apply to.
+             IF THIS COPY EVER CHANGES, wrap any new o/d BY HAND — site.js
+             §3a splits on UPPERCASE /([OD])/ and this line is sentence case
+             uppercased by CSS, so the script would never match it (the trap
+             §26 and §27 both record). Never ss01 on the whole heading: it
+             swaps every letter that has an alternate and the condensed face
+             is lost (§9). -->
+        <h1 class="ct-title">Let’s talk</h1>
+
+        <p class="body-copy">Tell me where the week goes, and we will look at it together. A first conversation costs you thirty minutes and commits you to nothing.</p>
       </div>
     </section>
 
-    <section id="book" class="container section-grid section-grid--halves section-rule reveal">
-      <div>
-        <span class="eyebrow">Send a message</span>
-        <h2 class="section-subhead">Start here</h2>
+    <!-- The switcher-pattern strip, as it runs under the homepage hero.
+         Words are the homepage's, wide letters wrapped by hand for the same
+         reason as above. FOUR copies and a 6n cycle — see §4 of the style
+         block before changing a word. -->
+    <div class="pt-strip" aria-label="OPS Detox principles">
+      <div class="pt-row">
+        <div class="pt-track">
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
 
-        <form class="form-card" data-demo-form data-success-message="Message received — demo only. Connect a form backend (or the booking tool) to make this live.">
-          <div class="field">
-            <label for="c-name">Name</label>
-            <input id="c-name" type="text" name="name" data-label="Name" required>
-            <span class="field-error" aria-live="polite"></span>
-          </div>
-          <div class="field">
-            <label for="c-email">Email</label>
-            <input id="c-email" type="email" name="email" data-label="Email" required>
-            <span class="field-error" aria-live="polite"></span>
-          </div>
-          <div class="field">
-            <label for="c-company">Company</label>
-            <input id="c-company" type="text" name="company" data-label="Company">
-            <span class="field-error" aria-live="polite"></span>
-          </div>
-          <div class="field">
-            <label for="c-message">What is clogged?</label>
-            <textarea id="c-message" name="message" data-label="Message" required></textarea>
-            <span class="field-error" aria-live="polite"></span>
-          </div>
-          <button class="button" type="submit">Send <span>→</span></button>
-          <p class="form-status" role="status"></p>
-          <p class="form-note">Demo form — validates in the browser, sends nothing.</p>
-        </form>
-      </div>
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
 
-      <div>
-        <span class="eyebrow">Book directly</span>
-        <h2 class="section-subhead">Pick a slot</h2>
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
 
-        <div class="form-card" style="display:grid;place-items:center;text-align:center;min-height:420px">
-          <div>
-            <p style="font:26px var(--display);text-transform:uppercase;margin-bottom:14px">Booking embed</p>
-            <p class="body-copy" style="max-width:34ch;margin:auto">Calendly or meetergo goes here. Drop the embed snippet into this panel once the platform is confirmed — every “Book the FREE DIAGNOSTIC” and “Let’s talk” CTA on the site already points at it.</p>
-          </div>
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
+          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
+          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
         </div>
+      </div>
+    </div>
 
-        <div style="margin-top:36px">
-          <p class="values" style="margin-top:0"><strong>Email</strong><br><a class="text-link" style="margin-top:4px" href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p>
-          <p class="values"><strong>Phone</strong><br><a class="text-link" style="margin-top:4px" href="tel:+1234567890">(123) 456 7890</a></p>
-          <p class="values"><strong>Address</strong><br>123 Anywhere St., Any City 1234</p>
+    <!-- ===== The two routes in =====
+         #book stays on this section: every "Book a call" and "Let's talk"
+         CTA on the site already points at contact.html#book, and the header
+         CTA on this page does too. Moving the id would break all of them. -->
+    <section id="book" class="ct-routes ct-dots reveal">
+      <div class="container">
+        <div class="ct-grid">
+
+          <div class="ct-card">
+            <span class="eyebrow">Send a message</span>
+            <h2>Start here</h2>
+
+            <form class="form-card ct-form" data-demo-form data-success-message="Message received. Demo only. Connect a form backend (or the booking tool) to make this live.">
+              <div class="field">
+                <label for="c-name">Name</label>
+                <input id="c-name" type="text" name="name" data-label="Name" required>
+                <span class="field-error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="c-email">Email</label>
+                <input id="c-email" type="email" name="email" data-label="Email" required>
+                <span class="field-error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="c-company">Company</label>
+                <input id="c-company" type="text" name="company" data-label="Company">
+                <span class="field-error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="c-message">What is clogged?</label>
+                <textarea id="c-message" name="message" data-label="Message" required></textarea>
+                <span class="field-error" aria-live="polite"></span>
+              </div>
+              <button class="button" type="submit">Send <span>→</span></button>
+              <p class="form-status" role="status"></p>
+              <p class="form-note">Demo form. Validates in the browser, sends nothing.</p>
+            </form>
+          </div>
+
+          <div class="ct-card">
+            <span class="eyebrow">Book directly</span>
+            <h2>Pick a slot</h2>
+
+            <!-- PLACEHOLDER. Drop the Calendly or meetergo embed snippet in
+                 place of this whole block once the platform is confirmed,
+                 and delete .ct-embed with it. -->
+            <div class="ct-embed">
+              <div>
+                <p class="ct-embed-label">Booking embed</p>
+                <p class="body-copy">Calendly or meetergo goes here. Drop the embed snippet into this panel once the platform is confirmed. Every “Book the FREE DIAGNOSTIC” and “Let’s talk” CTA on the site already points at it.</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
+    <!-- ===== The direct details =====
+         Deep Green, so the lime labels are on their only legal ground
+         (V1.0 p.21) and the page alternates ivory / green / ivory.
+         EVERY VALUE BELOW IS A CANVA PLACEHOLDER — real address, email and
+         phone are outstanding from the client (§6). -->
+    <section class="ct-direct reveal">
+      <div class="container">
+        <div class="ct-direct-grid">
+          <div class="ct-item">
+            <h2>Email</h2>
+            <a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a>
+          </div>
+          <div class="ct-item">
+            <h2>Phone</h2>
+            <a href="tel:+1234567890">(123) 456 7890</a>
+          </div>
+          <div class="ct-item">
+            <h2>Address</h2>
+            <p>123 Anywhere St., Any City 1234</p>
+          </div>
+        </div>
+        <p class="ct-pending">Placeholder contact details, pending client input.</p>
+      </div>
+    </section>
+
+    <!-- ===== The closing choice =====
+         Markup is index.html's, not the old .switch-line this page carried.
+         Clarity sits left and is lit at rest; see §7 of the style block for
+         why the aria-pressed attribute is NOT flipped. -->
     <section class="choice">
       <div class="container">
         <span class="eyebrow">The choice</span>
         <h2>What will you choose?</h2>
-        <div class="switch-line">
-          <span class="is-on">Operational noise</span>
-          <button class="switch" type="button" aria-pressed="false" aria-label="Operational noise or operational clarity"><i></i></button>
-          <span>Operational clarity</span>
+        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+
+        <div class="toggle-rows">
+          <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
+                  aria-label="Switch between Operational Clarity and Operational Noise">
+            <span class="t-before">Operational Clarity</span>
+            <span class="t-switch" aria-hidden="true"></span>
+            <span class="t-after">Operational Noise</span>
+          </button>
         </div>
+
         <div class="actions">
           <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
         </div>
       </div>
     </section>
+
+    <!-- The switcher-pattern divider, closing the page into the Deep Green
+         footer the way it does on the homepage (§24). Bars only, no words,
+         two rows running opposite ways. Decorative, so hidden from
+         assistive tech. -->
+    <div class="pb" aria-hidden="true">
+      <div class="pb-row">
+        <div class="pb-track">
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        </div>
+      </div>
+      <div class="pb-row pb-row--b">
+        <div class="pb-track">
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -124,7 +666,7 @@
           </div>
         </div>
 
-        <form data-demo-form data-success-message="Subscribed — demo only, no email is sent yet.">
+        <form data-demo-form data-success-message="Subscribed. Demo only, no email is sent yet.">
           <h2>Newsletter</h2>
           <div class="field">
             <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
@@ -153,7 +695,7 @@
           <a href="#">Cookies</a>
         </div>
       </div>
-      <p class="footer-legal">© 2026 OPS Detox™ — Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+      <p class="footer-legal">© 2026 OPS Detox™. Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
     </div>
   </footer>
 

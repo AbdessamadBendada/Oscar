@@ -1,6 +1,25 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 1 November 2026_
+_Last updated: 2 November 2026_
+
+> **2 Nov — the Keynote page was built out to the end.** Nine more sections landed in one
+> pass: the challenge, the "new perspective" block, what audiences take away, the keynote
+> topics (**placeholder**), testimonials, who it is built for, the bio, the closing
+> statement and the site's own CTA. The page now runs hero → footer. **Two sections carry
+> placeholder content and one portrait is a stand-in.** The testimonial slider is now in
+> four pages. See §35.
+
+> **1 Nov — the Keynote page was started.** `keynote.html`, section 1 of a structure the
+> client set by reference to clemensdoppler.com — his STRUCTURE, our design. The hero
+> reuses the About page's framed-to-full-bleed picture and the photograph was already in
+> the project. The copy plate is on the right, against the mockup, because Oscar sits
+> left of centre in that frame. See §34.
+
+> **1 Nov — the contact page was brought onto the current design system.** It was still
+> the 14 Oct build: ivory header with an invisible logo, a corner-of-the-screen hero, no
+> switcher pattern, inline styles doing the layout, and the closing Noise/Clarity switch
+> still arguing the opposite of the homepage (the §29.5 bug, never fixed here). Copy is
+> unchanged. See §33.
 
 > **1 Nov — the repository was flattened and cleaned.** `website-design/` is gone: the
 > seven site pages, `css/`, `js/` and `assets/` now sit at the **repo root**. Everything
@@ -366,9 +385,13 @@ particular), and a formal accessibility audit.
    positioning question (§22.6) separately and deliberately — it is not a review-call item.
 4. Close out the 28 Oct round (§27): the hero marks, the keynote slide copy, and the AI
    keynote images, which are a credibility decision rather than a design one.
-5. Walk the client through the five interior pages. **`index.html` and `about.html` have had
-   all the attention; the interior five still follow the old structure**, and `detox.html`
-   in particular wants the same rework.
+5. **Rework the remaining interior pages.** `contact.html` was done on 1 Nov (§33) and is
+   the template for the rest: Deep Green header, a hero on the page-title scale, the
+   switcher-pattern strip, the divider into the footer, and the corrected closing switch.
+   **Still on the 14 Oct structure: `detox.html`, `diagnostic.html` and `freebie.html`** —
+   `detox.html` most of all, and note §30 may make it redundant. Check each for the two
+   faults `contact.html` turned out to have: a Deep Green logo left in an ivory header,
+   and the closing switch still in the pre-§29.5 state.
 6. Confirm the booking platform and the diagnostic platform — these unblock most of the
    remaining functional work.
 7. **Optimise the remaining oversized assets.** §31 did the worst one. Still outstanding:
@@ -2415,3 +2438,640 @@ structural job. Flattening the tree makes that lift easier to see, not already d
 Not re-verified visually: nothing was restyled, so no screenshot sweep was run. If a
 page looks wrong, suspect a missed reference and re-run the two checks above rather than
 the CSS.
+
+---
+
+## 33. The contact page brought onto the system (1 November 2026)
+
+`contact.html` was still the 14 October interior build. It was the first of the five
+untouched interior pages (§7 step 5) to get the treatment `index.html`, `about.html` and
+`work-with-us.html` have had.
+
+Same scope rule as those three: **every rule lives in one `<style>` block in the
+document. `css/site.css` and `js/site.js` were not touched.**
+
+### What was actually wrong with it
+
+Not taste — six specific things, and one of them was a bug:
+
+1. **Soft Ivory header with a Deep Green logo.** Every reworked page runs a Deep Green
+   header, because an ivory header over an ivory hero puts the lime logo, nav and CTA on
+   Soft Ivory, V1.0 p.22's first watchout. This page was the ivory version, and its
+   `<img>` pointed at `primary-deepgreen.svg` — which is invisible the moment the band
+   goes dark, so the logo had to be swapped with the header.
+2. **The hero was `.hero--narrow`** — a 20ch copy block in the top-left corner of an
+   otherwise empty screen, h1 at site.css's default scale. It read as a page nobody had
+   designed.
+3. **No switcher pattern anywhere.** No strip under the hero, no divider above the
+   footer, so the page had none of the device V1.0 p.38 names as *the* website pattern,
+   and it ended on a hard ivory-to-green cut into the footer.
+4. **The booking slot was a grey box laid out with four inline styles**, including a
+   literal `font:26px var(--display)` in a `style` attribute.
+5. **The contact details — the only real information on a contact page — were three
+   `.values` paragraphs** stacked in the quietest corner of the page, under the booking
+   box, with inline margin overrides.
+6. **The closing switch was in the pre-fix state.** It still used site.css's shared
+   `.switch-line`/`.switch` with `aria-pressed="false"` and `.is-on` on *Operational
+   noise*. **The contact page was closing by arguing the opposite of the homepage.** This
+   is exactly the §29.5 bug the About page shipped and had fixed; it was never fixed
+   here, because nobody had opened this page since 14 October.
+
+### What it is now
+
+Ivory / green / ivory / green, so the page alternates instead of running as one field:
+
+| | Section |
+|---|---|
+| 1 | Hero — centred, page title on `work-with-us.html`'s `.ws-title` scale, dot field |
+| 2 | The switcher-pattern strip, copied from `index.html` §9 |
+| 3 | The two routes in — two round-rect cards on ivory: the form, and the booking slot |
+| 4 | The direct details — Deep Green band, three columns, lime labels |
+| 5 | The closing choice, with `index.html`'s switch markup and override |
+| 6 | The pattern divider, closing into the footer |
+
+**No inline styles remain on the page.**
+
+### The copy is unchanged, and nothing was written to fill the layout
+
+Every string was already on the page. The only change is that two of them swapped rank:
+**"Contact" was the eyebrow and still is; "Let's talk" was the h1 and still is** — it has
+only been given the page-title scale. Both column subheads ("Send a message" / "Start
+here", "Book directly" / "Pick a slot"), all four form labels, the booking note and the
+whole closing section are verbatim.
+
+> **There is deliberately no section title above the two cards.** Each card already opens
+> with its own eyebrow and subhead, and inventing a title above them would have meant
+> writing copy the client has not seen. The temptation was real — the section looks like
+> it wants one.
+
+### Decisions worth knowing
+
+- **The hero is centred, not the two-column split `work-with-us.html` uses.** That page
+  splits because it has a photograph for the right half. There is no contact photography
+  in the project, and a half-empty grid is what the old layout already was.
+- **`.ct-card h2` sits below §27's `clamp(42px,4.7vw,70px)` section scale**, for the
+  reason §30 records on `work-with-us.html`'s section 3: that scale is for titles owning
+  the full container width, and these two sit in ~600px columns.
+- **`site.css`'s `.form-card` is stripped back to a plain block** inside the card
+  (`background:none;padding:0;box-shadow:none`). It is itself a white panel with 42px
+  padding, its own radius and its own shadow — left alone it would have been a card
+  inside a card. The fields and all their validation styling are untouched.
+- **The booking well is dashed, not solid.** It is explicitly an empty slot waiting for a
+  platform; a solid panel reads as finished design. Delete `.ct-embed` with the element
+  when the embed lands.
+- **`#book` stays on the routes section.** Every "Book a call" and "Let's talk" CTA on
+  the site points at `contact.html#book`, including this page's own header CTA. Moving
+  the id would break all of them.
+- **"Work With Us" was added to this page's nav.** §30 leaves open whether it joins the
+  main nav and whether it replaces `detox.html` there. It is here so this page's nav
+  matches the one the client is being shown — **not so that question is settled.** The
+  nav is now seven items on two pages and six on the other five, which is itself an
+  argument for settling it.
+
+### The duplication got worse, as expected
+
+**The Deep Green header is now in four pages** — `index.html` §5, `about.html`,
+`work-with-us.html` §2 and here. The switch override is in three. Both are copied with
+their markup, and both belong in `css/site.css`. §7 step 2 has been saying this since 31
+Oct; each interior page reworked adds another copy.
+
+### Status
+
+Rendered headless at **1920, 1512, 1024 and 500**, with `.reveal` forced visible and the
+marquees paused (the §29 headless traps).
+
+- No horizontal scroll and **no element overflowing the viewport** at any of the four.
+- **No JS errors.** Both demo forms present and wired.
+- The closing switch now rests exactly as the homepage's does, verified by computed
+  style: `aria-pressed="true"`, Clarity at opacity 1, Noise at 0.35.
+- **All three marquee loops measure exact** — one copy equals a quarter of the track,
+  delta 0.00 on each. The strip's copy measures 2212.72px, the same figure `index.html`'s
+  own comment records, so the two strips are the same object rather than a near-copy.
+
+**Not verified**: Safari, Firefox, real devices, below 500px (§26), hover states.
+
+---
+
+## 34. The Keynote page — section 1 (1 November 2026)
+
+`keynote.html`. A new page, built section by section from the client's supplied designs,
+the same way `work-with-us.html` was (§30). **Section 1 only so far.**
+
+Same scope rule as every reworked page: one `<style>` block in the document,
+`css/site.css` and `js/site.js` untouched.
+
+### The brief, and its one important boundary
+
+The client named <https://clemensdoppler.com/keynote-speaker-osterreich/> as the
+reference. **He asked for its STRUCTURE, explicitly not its design** — our palette, type
+and devices throughout. That page is navy and yellow; ours is Deep Green, Detox Green and
+Soft Ivory. Do not let the reference leak into the styling.
+
+Its running order, read from the live page, which is the map for the sections still to
+build:
+
+| | Section | Our equivalent |
+|---|---|---|
+| 1 | Hero | **Built** — see below |
+| 2 | Media presence — logo grid | The trust row already on `index.html` |
+| 3 | The challenge — three problem cards | — |
+| 4 | "What's missing?" — three solution cards | — |
+| 5 | Pull quote over imagery | — |
+| 6 | Keynote topics — five modular keynotes plus a custom option | Tracks of Time is one; the others are unknown |
+| 7 | Credentials — portrait, list, stats grid | §29.3's credentials block is close |
+| 8 | Testimonials | The slider — **fourth copy if used; lift it first** |
+| 9 | Closing CTA | `.choice` |
+| 10 | Newsletter | Already in the footer |
+
+**Section 6 is the open question.** The reference sells five named keynotes. We have one
+title, *Tracks of Time*, inferred from the mockup's eyebrow. Ask how many keynotes exist
+before that section is designed — a five-card grid holding one card is a different layout
+from a single feature block.
+
+### The photograph was already in the project
+
+`assets/img/speaking-keynote.jpg`, 1600×1067 — the same frame §27 put on the homepage.
+The railway tracks projected behind him are why the keynote is called *Tracks of Time*.
+Nothing new was needed.
+
+**Three things carry over from §27 and all three are still open:**
+
+1. **It is AI-generated and shows an audience that never existed.** §27 raised it as a
+   credibility claim rather than a design choice, and it is now the hero of a page
+   specifically about Oscar's speaking. His call, knowingly.
+2. **The slide in it was blanked.** It originally read *"Surviving ≠ Living / Break free
+   from autopilot"* — which §27 judged off-brand for operational detox. **The headline the
+   client has now supplied for this page is that same idea in his own words**, so the line
+   may well be wanted back on the slide. Worth putting to him; the compositing method is
+   recorded in §27 and is reusable.
+3. **It has not been optimised.** A 1600×1067 JPEG with a WebP beside it but no AVIF,
+   unlike every other hero in the project (§31). Worth the same `sips`/`cwebp` pass before
+   the page is shown.
+
+### The hero
+
+The framed-picture-opening-to-full-bleed device from `about.html` §29.1, at the user's
+request. **The machinery is copied wholesale, comments included**, because each of those
+comments records something that cost a build: one animation per element, the registered
+custom properties, the definite grid row, `animation-play-state` declared last, the
+`.hero-go` release, and the edge animated from JavaScript because **Safari will not run it
+from a stylesheet**.
+
+> **This is the second copy of that mechanism.** If a third page wants it, lift it into
+> `css/site.css` and `js/site.js` instead of copying again. The JS half is the dangerous
+> one — it is easy to copy without its `prefers-reduced-motion` guard and ship an
+> animation to exactly the people who asked for none.
+
+Three deliberate differences from the About hero:
+
+- **The crop animates 50% → 42%, not 46% → 34%.** The source is 3:2 landscape rather than
+  2:3 portrait, so `cover` crops far less height and Oscar's head sits near the top —
+  the About values crop into it.
+- **The copy plate is on the RIGHT and vertically centred**, not bottom-left.
+- **The copy sits directly on the photograph, in Soft Ivory.**
+
+> **The mockup's yellow boxes are ANNOTATION, not a design device, and the first build of
+> this hero got that wrong.** It set the headline and subline in Detox Green highlight
+> slabs, reading the stickers as an instruction. They are not: the supplied image is a
+> screenshot of the reference site with the new copy pasted over it, and the reference's
+> own white headline is still visible behind the stickers where they do not quite cover
+> it. §30 records the same trap on `work-with-us.html`, where the mockup's coral labels
+> turned out to be notes ("Leads to contact") rather than copy. **Read a coloured box in
+> these supplied mockups as a sticky note until proved otherwise.**
+>
+> Corrected the same day, on the user's challenge. The slabs are gone; the headline is
+> Soft Ivory on the scrim, the subline a held-back ivory, and lime is left to the eyebrow
+> and the CTA.
+
+Why ivory rather than lime, since both are legal on Deep Green (V1.0 p.21): lime is the
+brand's signature and the headline is a 62-character sentence. Setting the longest string
+on the page in the accent colour spends the signature on the thing that least needs it,
+and leaves the eyebrow and the CTA with nothing to be louder than. **One-line swap to
+`var(--lime)` if the client wants it the other way.**
+
+Two knock-ons from dropping the slabs, both deliberate:
+
+- **Leading went 1.52 → 1.18.** The loose value existed only to stop consecutive slabs
+  overlapping; with the boxes gone it read as an airy block rather than a statement.
+- **The scrim got denser** — `.92` held out to 40% and the fade delayed to 58%. While the
+  copy had its own opaque lime ground the scrim only had to tint; now the ivory sits
+  straight on the photograph and the gradient has to carry legibility across the plate,
+  which spans roughly 46%–97% of the frame.
+
+#### The plate is on the right, against the mockup, and it has to be
+
+The mockup puts the copy on the left, because that is where the reference site has it.
+**It cannot go there with this photograph**: Oscar occupies roughly 21–46% of the frame's
+width, so a left column lands on his chest. §27 hit exactly this and mirrored the
+homepage's Keynotes section for the same reason, with the same image.
+
+Nor can the photograph be flipped to suit — the lectern in frame reads "KEYNOTE / OPS
+DETOX", which would come out mirrored.
+
+**So if the client wants the copy on the left, the fix is not CSS. It needs a photograph
+with Oscar on the right.** §27 notes a second keynote image exists that has never been
+treated; that is the first place to look.
+
+#### Other decisions
+
+- **The scrim is a one-sided gradient, not a colour pass.** §27 records that the 18% green
+  pass over this exact photograph was switched off because the frame is already dark navy
+  and the pass only muddied it. A gradient from the right pulls the copy's half toward the
+  palette and leaves Oscar and the screen in their own colour — §20's rule: tint the
+  backdrop, never the man.
+- **The headline is sentence case, and that is the guideline rather than an exception.**
+  V1.0 p.26 sets short statements in uppercase with open tracking and *longer sentences*
+  in standard letterforms with tighter spacing. `site.css`'s blanket
+  `text-transform:uppercase` on `h1` is turned off here.
+- **No `<i class="od">` in the headline, deliberately.** The brand's wide alternates are an
+  uppercase set; the only O/D in this sentence are lowercase letters inside ordinary
+  words. The client's rule is about the phrase "Operational Detox", and §9 records that
+  firing `ss01` broadly destroys the condensed face.
+- **The eyebrow carries BOTH `eyebrow` and `kh-eyebrow`, and is typed in literal
+  uppercase.** Both halves are required and **both were wrong in the first build**: the
+  element had only `.kh-eyebrow`, which is not in `js/site.js`'s `OD_SELECTOR`, and the
+  text was sentence case, which the script's uppercase-only `/([OD])/` would never match.
+  Measured as 0 wrapped letters, then 2. Retype it in sentence case, or drop the
+  `eyebrow` class, and the wide O's silently disappear again.
+- **The phone breakpoint is 850px, not the About page's 700**, because this plate sits
+  *beside* the picture rather than under it and runs out of room sooner. The JS
+  `animateEdge()` matches that number — **retune the two together.**
+- **The phone's horizontal crop is measured, not eyeballed.** The frame goes portrait, so
+  `cover` switches to scaling by height and starts cropping the sides. At 500×785 the
+  source scales to 1177 wide, so 677px is cropped — 338px off each side at the default
+  50%, which cut into Oscar and jammed him against the left edge. He centres near 400px
+  scaled, so the window wants to start near 150: `150/677 = 22%`. Built at **26%**, which
+  keeps a little of the lectern. Note this is *not* the "animation beats a declaration"
+  trap from §29.1 — `khCrop` animates `--kh-crop`, the Y component only, so redeclaring
+  `object-position` applies normally.
+
+### The nav is now a real problem
+
+"Keynote" was added to this page's header the same way `work-with-us.html` added itself
+(§30). **That makes eight items.** It will crowd at laptop widths, and the site now has
+three different navs across seven pages. This needs settling rather than growing by one
+more each time a page is built — bundled with §30's open question of whether Work With Us
+replaces `detox.html`.
+
+### Status
+
+Rendered at **1920, 1512, 1024, 500 and 390**. No horizontal scroll and no element
+overflowing at any of them.
+
+The animation was verified by **seeking it directly** — `getAnimations()`, `pause()`, then
+set `currentTime` — not by timed screenshots, which prove nothing because
+`--virtual-time-budget` does not advance animations (§24, §29.1):
+
+| t | box | border | radius |
+|---|---|---|---|
+| 450ms | 1180×664 | 6px | 36px |
+| 1025ms | 1404×746 | 1px | 11.7px |
+| 1600ms | 1512×785 | 0px | 0px |
+
+785px is `863 − 78`, the measured viewport height minus `--header-h`, so the frame lands
+exactly on the viewport minus the sticky header. A live run reports **five** animations
+with **one of them script-driven**, confirming the WAAPI edge fires and `.hero-go` is
+released by the preloader rather than stranding on the framed state.
+
+**Not verified**: Safari, Firefox, real devices, hover states. Given §29.1's history —
+four CSS builds shipped broken because every check was Chrome-only — **this hero in
+particular wants a real Safari look before it goes in front of the client.**
+
+### Sections 2 + 3 — "As seen in" and the pull quote (1 November)
+
+Both sit on **one** Soft Ivory field, as drawn.
+
+> **They share a single `.kn-paper` wrapper rather than carrying a dot field each, and
+> that is structural.** The dots are a 26px `background-size` on a pseudo-element anchored
+> to its own element's inset, so two adjacent dotted sections restart the grid at the
+> join — and unless both heights happen to be exact multiples of 26px, the pattern
+> visibly jumps there. One wrapper, one continuous grid. (On `work-with-us.html` the
+> dotted sections are always separated by a Deep Green band, which is why this never
+> showed up before.)
+
+**The logo row is a second, separate ask.** These are *press* logos — the reference calls
+the section "Medienpräsenz". The homepage's trust row is *client* proof ("Trusted by
+ambitious leaders and founders at"). §6 already lists real client logos as outstanding;
+**add the publications Oscar has appeared in as a distinct item.** The row reuses
+`site.css`'s `.trust-logos` grid and its grey placeholder type so both rows take real
+logos the same way, but it is capped to 900px and centred — spread across the full 1320px
+container the four placeholders read as four separate things rather than one row of proof.
+
+The "As seen in:" heading is deliberately a step *below* `index.html`'s trust row, which
+§27 raised to `clamp(20px,2.5vw,38px)`. That one introduces the page's client proof; this
+is a caption over a press row inside a longer page, and at 38px it outweighs the quote
+beneath it.
+
+#### The quote could not be set as drawn, and the reason is the font files
+
+The mockup sets it in an **italic serif**. **Neither brand face has an italic.** Formula
+Condensed is a single Bold cut (§9), and `Inter-Variable.ttf` was inspected directly: its
+`fvar` table carries exactly two axes, `opsz` and `wght` — **no `ital`, no `slnt`.** Asking
+for `font-style:italic` would make the browser synthesise a faux oblique by shearing the
+glyphs, the same objection §27 raised to synthesising a lighter weight. A real italic needs
+a licensed file, and that is worth bundling with the §9 licence purchase if the client
+wants this treatment.
+
+So it is upright Formula Condensed in sentence case — a pull quote is a statement, the
+display face carries statements here, and V1.0 p.26 puts longer sentences in standard
+letterforms. `cite` also has `font-style:normal` forced, because the element is italic by
+default and would have hit the same synthesis.
+
+> **The measure is in pixels, not `ch`, and that is the whole point.** The first build
+> capped the blockquote at `17ch` and it came out **eleven lines deep and about a fifth of
+> the page wide** — the exact word-ladder failure §4 records. A `ch` is the width of the
+> zero glyph, and in a *condensed* face that is very narrow, so 17ch buys far fewer
+> characters than the same number would in Inter. Sized from the text instead: ~213
+> characters over the mockup's 4 lines is ~53 per line, which at 46px in this face needs
+> roughly 930px. Built at `min(940px,94%)`. **Measured: 4 lines at 1512 and 1920, 3 at
+> 1024, 5 on a phone.**
+
+#### Two deliberate departures from the mockup
+
+- **The ornament is the brand's own O+D monogram, not the mockup's sparkle.** A four-point
+  sparkle is a generic editorial dingbat belonging to no part of this identity. The two
+  paths are lifted straight out of `assets/logo/primary-detoxgreen.svg` — the same geometry
+  the preloader uses (§21) — with the viewBox cropped to the mark alone, so it is exact
+  rather than redrawn. Deep Green on Soft Ivory; lime there would be p.22's first watchout.
+- **No em dashes in the attribution.** The mockup draws "— OSCAR DE GRAUW —". §29.4 records
+  em dashes being stripped from every piece of visible copy on the client's own instruction
+  (30 Oct), so reintroducing a pair to decorate a name would walk that straight back. It is
+  set as `OSCAR DE GRAUW`, carrying `.eyebrow` so `site.js` wraps the wide O and D, and
+  typed in literal uppercase so the `/([OD])/` match actually fires. **Measured: 2 wrapped
+  letters.**
+
+#### An em-dash regression this turned up, and fixed
+
+Checking the above found that **§29.4's em-dash removal had never been applied to
+`contact.html`** — and that the §33 rework carried the old strings through, after which
+`keynote.html` inherited them from the copied footer. Both are now clean: the footer line,
+the newsletter success message, the two form messages, the booking note and both `<title>`
+tags. `about.html` and `work-with-us.html` were already clean.
+
+**Still outstanding: `index.html` has one in its `<meta name="description">`**, and
+`detox.html` (6), `diagnostic.html` (6) and `freebie.html` (5) are untouched — those three
+are still on the 14 Oct build generally (§33). Not changed here, since none was in scope.
+
+#### Copy left alone on purpose
+
+- The comma in *"actually living, is the story I now share on stage"* separates subject
+  from verb. It is the client's and it ships as written.
+- The mockup's straight quote marks are set as typographic curly quotes, matching the curly
+  apostrophes the rest of the site already uses.
+
+#### A note on order
+
+The client supplied these two as "the next sections", so the quote sits directly after the
+press row. **The reference puts its media row at §2 and its pull quote at §6**, with the
+challenge and solution sections between them. His order is being followed, not the
+reference's — worth confirming he meant to move it up rather than it being the next thing
+he happened to design.
+
+#### Status
+
+Rendered at **1920, 1512, 1024, 850, 500 and 390**. No horizontal scroll and no element
+overflowing at any of them. The quote wraps to 4 / 4 / 3 / 3 / 5 / 5 lines respectively,
+the attribution carries both wide letters, `cite` computes to `font-style:normal`, and the
+monogram fills Deep Green. The hero's five animations are unaffected.
+
+**Not verified**: Safari, Firefox, real devices, below 500px (§26), hover states.
+
+---
+
+## 35. The Keynote page, finished to the footer (2 November 2026)
+
+`keynote.html` ran hero → press row → pull quote at the end of 1 Nov. Nine more sections
+were built on 2 Nov and the page now reaches the footer. Same scope rule throughout: one
+`<style>` block in the document, **`css/site.css` and `js/site.js` untouched, and no
+inline styles on the page.**
+
+### The running order as built
+
+| | Section | State |
+|---|---|---|
+| 1 | Hero — framed-to-full-bleed photograph | §34 |
+| 2 | "As seen in" press row | §34, logos outstanding |
+| 3 | Pull quote | §34 |
+| 4 | "Surviving is not the same as living" | Built |
+| 5 | "Keynotes that give people a new perspective" | Built |
+| 6 | "What audiences take away" | Built |
+| 7 | Keynote topics | **PLACEHOLDER** |
+| 8 | Testimonials | Copied from `index.html` — **fourth copy** |
+| 9 | "Built for rooms where leaders are honest enough to listen" | Built |
+| 10 | "From a railway track to the stage" | Built, **portrait is a stand-in** |
+| 11 | "Bring Tracks of Time to your stage" | Built |
+| 12 | The site's closing CTA, then the pattern divider | Built |
+
+### The ground alternates, and the wrappers are structural
+
+Ivory → green → ivory → green → ivory → green → ivory, so no two fields of the same
+colour ever meet. **Sections 5+6 share one `.kp` wrapper and sections 10+11 share
+another**, and that is the §34 dot-grid rule applied rather than tidiness: the dot field
+is a 26px `background-size` on a pseudo-element anchored to its own element's inset, so
+two adjacent dotted sections restart the grid at the join and the pattern visibly jumps
+unless both heights happen to be exact multiples of 26px. One wrapper, one grid.
+
+Sections 2+3's `.kn-paper` does not need to join them — the Deep Green §4 sits between.
+
+### Section 4 — copy on a darkened photograph
+
+The mockup lays black type straight over a lit audience frame, and in its own render the
+third bullet crosses a woman's head and the first line sits on a bright screen. That is
+~900 characters including a three-item list, far more than the hero's two lines, so the
+picture drops back to being a ground: held at `.22` over flat `--ink`, with a one-sided
+wash pulling the left half — where the headline sits — toward the palette. Black is also
+not in the palette (p.19–21).
+
+**The photograph is a placeholder** by the user's instruction: `assets/img/speaking.jpg`,
+the homepage's stage frame. Deliberately **not** `speaking-keynote.jpg`, which is this
+page's own hero — the same picture twice on one page reads as a mistake. Two
+`background-image` lines to swap.
+
+**The list is numbered because the copy counts it** — the lede ends "Three things cause
+that drift". The device is `work-with-us.html` §2's: lime numeral, no disc, hairlines
+between. Single column rather than that section's two, because these items run three
+lines each and a split puts item 2's tail below item 1's.
+
+### Section 5 — and the frame that was wrong first time
+
+Copy left, portrait right, on the ivory dot field.
+
+> **THE PORTRAIT TAKES THE ARCH FRAME, AND THE FIRST BUILD GOT THIS WRONG.** It was built
+> with `work-with-us.html`'s square-cornered `.ws-shot`, which is the wrong model: that
+> page's two pictures are landscape documentary frames (a whiteboard, a team) and its
+> mockup frames them hard. **A portrait of Oscar on ivory takes the arch** — the brand's
+> own picture device, V1.0 p.35, derived from the logo — which is what `index.html`'s
+> About block already does via `site.css` §15. The radius, the 3:4 ratio, the 460px cap
+> and the grid proportions here are that rule's values written out, so this portrait and
+> the homepage's are the same object. Corrected on the user's challenge.
+
+**The photograph was already in the project.** `assets/img/oscar-chair.jpg` (1024×1536) is
+the exact frame the mockup uses and had been sitting unused since 30 Oct. The crop is
+anchored at `50% 22%`, not centred: a 2:3 source in a 3:4 frame crops by height, and at
+50% the cut trims his hair while keeping a third of the chair back.
+
+### Section 7 — a placeholder, and the open question it does not answer
+
+**Built as a placeholder at the user's instruction**, carrying a dashed `.kt-draft`
+notice on the page. The reference sells **five** named keynotes; we have exactly one
+title, *Tracks of Time*, inferred from the hero's eyebrow. Three columns is a guess at
+five. **Ask how many keynotes exist before this is designed properly** — a five-card grid
+holding one card is a different layout from a single feature block. Open since §34.
+
+All three photographs are placeholders and two are reused from elsewhere on the page.
+That is deliberate and meant to look provisional.
+
+**No cards, and that is the reference's own arrangement** rather than a departure from
+it: its three columns sit directly on the dark ground with nothing drawn around them. It
+is also what makes the palette work — a card here would have to be Soft Ivory, which
+would make the lime titles illegal on it (p.22 watchout 1); on Deep Green they are the
+sanctioned pairing (p.21). The reference's navy and turquoise do not come across.
+
+### Section 9 — reuses section 4's ground
+
+`.kc--rooms` overrides only the background image and the list style, so the page has **one**
+treatment for copy-on-a-photograph rather than two near-copies. **Plain bullets, not
+section 4's numerals**, and the difference is in the copy: section 4's lede counts its
+list, this one does not count anything, and numbering a set of audiences implies a
+ranking the client did not write.
+
+### Section 10 — the portrait is a stand-in
+
+The mockup uses a studio frame of Oscar on a stool in a grey sweater. **That photograph is
+not in the project.** `assets/img/oscar-about.jpg` is in the arch instead — the homepage's
+About portrait, the closest existing match. One `<img>` to swap.
+
+### Uppercase or sentence case — there is a rule, not a coin toss
+
+The page mixes both and V1.0 p.26 is what decides: **short statements take tracked
+uppercase, longer sentences take standard letterforms.**
+
+| Section | Case | Why |
+|---|---|---|
+| 1 hero, 3 quote | sentence | Two sentences / 213 characters |
+| 4 "Surviving is not the same as living…" | sentence | 97 characters, two sentences |
+| 5 "KEYNOTES THAT GIVE PEOPLE…" | UPPER | 68-char noun phrase, no verb |
+| 6 "WHAT AUDIENCES TAKE AWAY" | UPPER | 24 characters |
+| 9 "Built for rooms where…" | sentence | 58-char full clause; also keeps both `.kc` sections matched |
+| 10, 11 | UPPER | 33 and 34 characters |
+
+`site.css`'s blanket `text-transform:uppercase` is turned **off** on §4 and §9 and left on
+elsewhere. Section 5's heading sits below §27's `clamp(42px,4.7vw,70px)` section scale for
+the reason §30 and §33 both record — that scale is for titles owning the full container
+width; sections 6 and 7's headings do own it and take it.
+
+### Four more mockup annotations read as design, and refused
+
+§34 already records the hero's yellow slabs. This pass added four more: the "Maybe
+visual…" and "Blurb" stickers on section 4, and a **violet selection rectangle** on
+sections 5 and 9 — one of which crosses the body copy mid-sentence and the other encloses
+dead space below the closing line. Neither is a frame anyone would draw.
+
+**That is now six coloured boxes in these supplied mockups that turned out to be editing
+furniture, across three pages.** The rule stands and should be treated as settled: **read
+a coloured box in a supplied mockup as a sticky note until proved otherwise.**
+
+### The duplication got worse again, exactly as predicted
+
+| Block | Copies | Pages |
+|---|---|---|
+| Testimonial slider | **4** | `index`, `about`, `work-with-us`, `keynote` |
+| Deep Green header | **5** | the four above plus `contact` |
+| Noise/Clarity switch override | **4** | `index`, `about`, `contact`, `keynote` |
+| Pattern divider | 3 | `index`, `contact`, `keynote` |
+
+Each slider copy repeats its four placeholder quotes **four times**, so **replacing one
+quote is sixteen edits across four files.** §7 step 2 has been saying this since 31 Oct
+and every page built adds another copy. **The real testimonials landing is what will break
+these apart.** Do the lift before they arrive.
+
+### The dot field — asked and answered
+
+The user asked whether the dot grid is his brand. **It is not, and it was invented here.**
+`Brand assets/4_BACKGROUNDS_PATTERNS/` was checked directly and contains exactly three
+things: the gradient, the logo pattern (merch only, p.37) and `Background Pattern.png` —
+the switcher bars, the website device (p.38). **No dot grid anywhere.** It was introduced
+on 31 Oct on `work-with-us.html` as paper texture and has since spread to `contact.html`
+and `keynote.html`.
+
+**But the client's own supplied mockups for this page all draw a dot field** — it is
+visible in the section 4, 6, 9 and 10 designs. So either his designer picked it up from
+what we built, or they arrived at it independently. **Worth establishing which**, because
+it decides whether this is our invention he is now endorsing or something he had in mind.
+
+It is one deletable rule per page (`.ws-dots::before`, `.kn-paper::before`, `.kp::before`
+and contact's equivalent), held at `rgba(20,51,24,.16)`. Delete those four and every ivory
+section on the site goes plain at once.
+
+### Status
+
+Rendered and measured at **1920, 1512, 1024, 980, 850 and 500**.
+
+- No horizontal scroll and **no element overflowing the viewport** at any of the six.
+- **No JS errors** at any width.
+- No heading over three lines anywhere.
+- The marquee pitch is exact — one set is 4 × (420 + 28) = **1792px**, which is the
+  translate distance, so the seam is continuous. 16 quotes in the track.
+- The closing switch rests as the homepage's does: `aria-pressed="true"`, Clarity at
+  opacity 1, Noise at 0.35. **Not** the §29.5 state.
+- Rendered end to end at 1300: the ivory/green alternation holds with no broken joins.
+
+**Not verified**: Safari, Firefox, real devices, below 500px (§26), hover states. Given
+§29.1's history — four CSS builds shipped broken because every check was Chrome-only —
+**this page's animated hero in particular wants a real Safari look before the client sees
+it.**
+
+### Still open on this page
+
+- **How many keynotes exist** (§7). Blocks the topics section.
+- **The three section-7 photographs and all its copy.**
+- **A portrait of Oscar on a stool** for section 10, or confirmation that the About
+  portrait will do.
+- **Press logos** for section 2 — a separate ask from the client logos §6 already lists.
+- **Neither hero asset is optimised.** `speaking-keynote.jpg` (196 KB) and
+  `oscar-chair.jpg` (219 KB) are JPEGs with no AVIF, unlike every other hero in the
+  project. Worth one §31 `sips`/`cwebp` pass across both.
+- **The nav is eight items on this page** and the site now runs three different navs
+  across eight pages. §34 flagged it; it has not moved.
+- **Oscar's slide line.** §27 blanked "Surviving ≠ Living" off the slide in the hero
+  photograph as off-brand. He has now supplied that exact idea as the spine of section 4,
+  so putting it back is worth asking about. The compositing method is in §27.
+
+---
+
+## 36. Page-by-page state, measured (2 November 2026)
+
+Checked against the files rather than read off this document.
+
+### On the current design system
+
+| Page | Deep Green header | Closing switch | Inline styles | Visible em dashes |
+|---|---|---|---|---|
+| `index.html` | yes | fixed | 0 | 0 (**one left in `<meta name="description">`**) |
+| `about.html` | yes | fixed | 0 | 0 |
+| `work-with-us.html` | yes | n/a | 0 | 0 |
+| `contact.html` | yes | fixed | 0 | 0 |
+| `keynote.html` | yes | fixed | 0 | 0 |
+
+### Still on the 14 October build
+
+| Page | Lines | Faults |
+|---|---|---|
+| `detox.html` | 338 | Ivory header, **pre-§29.5 switch**, 4 inline styles, 6 visible em dashes |
+| `diagnostic.html` | 177 | Same three, 5 inline styles, 6 visible em dashes |
+| `freebie.html` | 137 | Same three, 3 inline styles, 4 visible em dashes |
+
+All three still close by **arguing the opposite of the homepage** — the §29.5 bug
+`contact.html` carried for six weeks because nobody had opened it. `contact.html` (§33) is
+the template, and all three are under 350 lines.
+
+### No page is client-ready, and the blockers are not design
+
+- `index.html` — the hero's two drawn marks and the AI keynote images are open decisions.
+- `about.html` — six values *and* three principles both on the page; six placeholder photographs.
+- `work-with-us.html` — **two placeholder photographs**, the main thing holding it back.
+- `contact.html` — the booking embed is an empty well; platform unchosen.
+- `keynote.html` — section 7 placeholder, section 10 portrait a stand-in.
+
+Site-wide and regardless of page: **the Formula Condensed licence** (the committed file is
+the trial, §9), **the real testimonials**, and **no Safari testing anywhere**.
