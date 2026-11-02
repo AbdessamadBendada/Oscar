@@ -2,6 +2,11 @@
 
 _Last updated: 2 November 2026_
 
+> **2 Nov — the two missing photographs landed on Work With Us**, and both are in at the
+> brand's 36px radius. `.ws-shot--pending` is gone. The second frame was **cropped out of
+> a social post** whose top third carried a logo and a headline; the uncropped file still
+> exists. See §37.
+
 > **2 Nov — the Keynote page was built out to the end.** Nine more sections landed in one
 > pass: the challenge, the "new perspective" block, what audiences take away, the keynote
 > topics (**placeholder**), testimonials, who it is built for, the bio, the closing
@@ -306,10 +311,8 @@ particular), and a formal accessibility audit.
   two tracks. **Still open within it**: the hardest number on the site — 10–30% of tooling
   spend, €150–300K on a €1M spend — appears in none of the supplied copy and was not
   invented. That card is its natural home. It is still absent from the homepage.
-- **Two photographs for `work-with-us.html`** — the hero frame (Oscar at a whiteboard with
-  a leadership team) and the two-whiteboard "consultant's way vs the OPS Detox way" frame.
-  Both are placeholder panels on the page right now and are the main thing keeping it from
-  being client-ready (§30).
+- ~~**Two photographs for `work-with-us.html`**~~ **DONE, 2 Nov.** Both supplied and in
+  (§37). The page's remaining blockers are copy, not pictures.
 - **Photography for the About timeline.** All six images in §29's timeline are
   placeholders: they are the only real photographs of Oscar in the project, rotated, and
   none depicts the moment its entry describes. There is no childhood, flight-attendant or
@@ -2272,10 +2275,10 @@ Its copy says "Tool Stack **Module**" in the last sentence while the card's titl
 
 ### Open on this page
 
-- **Both photographs are placeholders.** `.ws-shot--pending` panels in sections 1 and 3,
-  with the real `<figure>` markup commented directly above each, pointing at
-  `assets/img/work-whiteboard.jpg` and `assets/img/work-two-ways.jpg`. Neither image exists
-  in the project. **This is the main thing keeping the page from being client-ready.**
+- ~~**Both photographs are placeholders.**~~ **DONE, 2 Nov — see §37.** Both landed,
+  both are in at the brand's 36px radius, and `.ws-shot--pending` is deleted along with
+  its rule. The section-3 frame was **cropped** out of a social post first; read §37
+  before re-supplying it.
 - **The dot field is not a V1.0 device.** The guideline names exactly two patterns — the
   logo pattern (merch only, p.37) and the switcher pattern (the website device, p.38) — and
   a dot grid is neither. It is one deletable rule, `.ws-dots::before`, held at an alpha low
@@ -3069,9 +3072,74 @@ the template, and all three are under 350 lines.
 
 - `index.html` — the hero's two drawn marks and the AI keynote images are open decisions.
 - `about.html` — six values *and* three principles both on the page; six placeholder photographs.
-- `work-with-us.html` — **two placeholder photographs**, the main thing holding it back.
+- `work-with-us.html` — photographs landed 2 Nov (§37); the package names are still
+  unapplied and the nav question is still open.
 - `contact.html` — the booking embed is an empty well; platform unchosen.
 - `keynote.html` — section 7 placeholder, section 10 portrait a stand-in.
 
 Site-wide and regardless of page: **the Formula Condensed licence** (the committed file is
 the trial, §9), **the real testimonials**, and **no Safari testing anywhere**.
+
+---
+
+## 37. The Work With Us photographs (2 November 2026)
+
+The two frames §30 had been waiting on since 31 Oct were supplied and are in.
+`.ws-shot--pending` and its CSS rule are **deleted**. Nothing else on the page changed.
+
+| Section | File | Source | In the project |
+|---|---|---|---|
+| 1, hero | `work-whiteboard.*` | 1370×1148 | AVIF 80KB · WebP 93KB · JPEG 194KB |
+| 3, "a cleaner way" | `work-two-ways.*` | 1254×890 **(cropped)** | AVIF 77KB · WebP 82KB · JPEG 195KB |
+
+Both as `<picture>` with AVIF → WebP → JPEG, the §31 order. **No `decoding="async"`** — it
+screenshots blank headless and looks exactly like a broken layout (§29).
+
+### The corners changed, at the user's request
+
+Both frames were square-cornered, because §30 read the mockup as framing them hard. They
+now carry **`var(--r-card)`, the brand's 36px round-rect**, so the photographs match the
+cards and the rest of the site's picture treatments. The user asked for it directly.
+
+### The second photograph was cropped, and that was not a sizing decision
+
+> **THE SUPPLIED FILE IS A SOCIAL POST, 1254×1254**, with graphics baked across the top
+> third: the OPS DETOX logo, "TURN OFF THE NOISE. WIN YOUR TIME BACK.", and a headline
+> reading **"COMPLEXITY OR CLARITY? / SAME PROBLEM. DIFFERENT APPROACH."**
+>
+> Used whole it would have put a second headline *inside* the picture, directly beside
+> this section's own h2 ("There is a cleaner way to run a growing company"), and a second
+> logo on a page whose header already carries one.
+>
+> The top **364px** were cut with `ffmpeg -vf "crop=1254:890:0:364"`, leaving Oscar, both
+> whiteboards and the mug. **`sips --cropOffset` silently ignores the offset** and returns
+> the image uncropped — it was tried first and reported success. Use ffmpeg.
+>
+> The uncropped original is `~/Downloads/Oscar.jpeg`. If the banner is ever wanted, it is
+> a one-file swap.
+
+### The ratios are measured, not chosen
+
+| Frame | Source ratio | Was | Now | Why |
+|---|---|---|---|---|
+| `.ws-shot` | 1.193 | 4:3 (1.333) | **6:5 (1.2)** | 4:3 cropped ~10% off the height |
+| `.ws-clean-shot` | 1.409 | 16:10 (1.6) | **7:5 (1.4)** | 16:10 cropped ~12% |
+
+**On both of these the thing being cropped is the writing on the whiteboards**, which is
+the entire content of the pictures. Re-measure both if either photograph is re-supplied.
+
+### A first, lower-resolution pair was replaced the same day
+
+The first files supplied were **802×672 and 524×388** — enough at 1x, upscaled on any
+retina display. The user replaced them within the hour. Measured density with the current
+pair: **1.53x–3.08x** across 1920 / 1512 / 1024 / 900 / 500, so they are sharp everywhere.
+
+### Status
+
+Measured at **1920, 1512, 1024, 900 and 500**: no horizontal scroll, no element
+overflowing, both images load, radius computes to 36px at every width, and
+`.ws-shot--pending` returns zero. Rendered at 1400 for the visual check with the AVIF
+`<source>` stripped, since **headless Chrome screenshots AVIF as a blank area** even
+though the image reports `complete:true` (§31).
+
+**Not verified**: Safari, Firefox, real devices, hover states.

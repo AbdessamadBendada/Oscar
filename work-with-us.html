@@ -135,21 +135,29 @@
   .ws-copy .body-copy{max-width:46ch;font-size:19px;line-height:1.5}
   .ws-copy .actions{margin-top:38px;gap:18px}
 
-  /* The photograph. Square corners, as drawn — the brand's 36px round-rect
-     belongs to the cards, and the mockup frames this one hard. */
+  /* The photograph, landed 2 Nov.
+
+     ROUNDED TO THE BRAND'S 36px ROUND-RECT (--r-card), at the user's
+     request, so the pictures match the cards and the rest of the site's
+     picture treatments. The earlier build had square corners because the
+     mockup framed it hard; the brand's own radius wins.
+
+     THE RATIO IS 6:5, NOT 4:3, AND THAT IS MEASURED. The source is
+     1370x1148 = 1.193, and 4:3 is 1.333 — forcing it would crop ~10% off
+     the height of a photograph whose whole point is the writing on the
+     whiteboard. 6:5 is 1.2, so object-fit:cover takes almost nothing.
+     If the photograph is ever re-supplied, re-measure this.
+
+     1370px wide covers this column (~640px on a 1512 screen) at 2x, so it
+     is sharp on a retina display. A first, lower-resolution pair at 802px
+     and 524px was replaced the same day. */
   .ws-shot{
     margin:0;overflow:hidden;background:var(--ink);
-    aspect-ratio:4/3;
+    aspect-ratio:6/5;
+    border-radius:var(--r-card);
   }
+  .ws-shot picture{display:block;width:100%;height:100%}
   .ws-shot img{width:100%;height:100%;object-fit:cover;display:block}
-
-  /* Placeholder only, until the supplied photograph lands. Delete this rule
-     with the .ws-shot--pending element. */
-  .ws-shot--pending{
-    display:grid;place-items:center;text-align:center;padding:24px;
-    color:var(--lime);font:17px/1.4 var(--display);
-    letter-spacing:.04em;text-transform:uppercase;
-  }
 
   /* ---------- 4. Section 2 — "Nobody designed it this way" ----------
      Deep Green, which does three things at once: it breaks the ivory of
@@ -251,12 +259,32 @@
   }
   .ws-clean-copy p:last-child{margin-bottom:0}
 
-  /* Same square-cornered frame as the hero shot, so the page has one
-     picture treatment rather than two. 16:10 suits a landscape frame of two
-     whiteboards; the hero's is 4:3. */
+  /* Same 36px round-rect as the hero shot, so the page has one picture
+     treatment rather than two.
+
+     7:5 RATHER THAN THE EARLIER 16:10, for the same reason .ws-shot moved
+     to 6:5: the source is 1254x890 = 1.409, and 16:10 is 1.6 — forcing it
+     would crop ~12% off a frame where the left whiteboard's tangle and the
+     right one's single line are the entire argument. 7:5 is 1.4, so almost
+     nothing is lost.
+
+     THE SOURCE WAS CROPPED BEFORE IT WENT IN, and that was not a sizing
+     decision. The supplied file is a SOCIAL POST, 1254x1254, with graphics
+     baked across the top third: the OPS DETOX logo, "TURN OFF THE NOISE.
+     WIN YOUR TIME BACK." and a headline reading "COMPLEXITY OR CLARITY? /
+     SAME PROBLEM. DIFFERENT APPROACH."
+
+     Dropped in whole it would have put a second headline inside the
+     picture, directly beside this section's own h2, and a second logo on a
+     page whose header already carries one. The top 364px were cut with
+     ffmpeg, leaving Oscar, both whiteboards and the mug. THE UNCROPPED FILE
+     IS IN ~/Downloads AS Oscar.jpeg if the banner is ever wanted. */
   .ws-clean-shot{
-    margin:0;overflow:hidden;background:var(--ink);aspect-ratio:16/10;
+    margin:0;overflow:hidden;background:var(--ink);
+    aspect-ratio:7/5;
+    border-radius:var(--r-card);
   }
+  .ws-clean-shot picture{display:block;width:100%;height:100%}
   .ws-clean-shot img{width:100%;height:100%;object-fit:cover;display:block}
 
   @media(max-width:900px){
@@ -553,13 +581,18 @@
             </div>
           </div>
 
-          <!-- PLACEHOLDER. Swap this whole <figure> for the supplied
-               photograph when it lands:
-               <figure class="ws-shot">
-                 <img src="assets/img/work-whiteboard.jpg" alt="Oscar de Grauw at a whiteboard, mapping a leadership team's recurring meetings" width="" height="" loading="lazy" decoding="async">
-               </figure>
-               Note that decoding="async" screenshots blank headless (§29). -->
-          <figure class="ws-shot ws-shot--pending">Photograph pending</figure>
+          <!-- The supplied photograph, landed 2 Nov. AVIF, then WebP, then
+               JPEG — the §31 order. No decoding="async": it screenshots
+               blank headless and looks exactly like a broken layout (§29).
+
+               1370x1148. Covers this column at 2x — sharp on retina. -->
+          <figure class="ws-shot">
+            <picture>
+              <source srcset="assets/img/work-whiteboard.avif" type="image/avif">
+              <source srcset="assets/img/work-whiteboard.webp" type="image/webp">
+              <img src="assets/img/work-whiteboard.jpg" alt="Oscar de Grauw at a whiteboard with a colleague, mapping a leadership team's recurring meetings from overload to clarity" width="1370" height="1148" loading="lazy">
+            </picture>
+          </figure>
         </div>
       </div>
     </section>
@@ -608,12 +641,18 @@
             <p>We measure where your time, decisions and truth actually go. Then we strip out what no longer serves the business and rebuild the structure together with your team, so it holds long after we have left.</p>
           </div>
 
-          <!-- PLACEHOLDER. Swap this whole <figure> for the supplied
-               photograph when it lands:
-               <figure class="ws-clean-shot">
-                 <img src="assets/img/work-two-ways.jpg" alt="Oscar de Grauw between two whiteboards: the consultant's way, a tangle of boxes and arrows, and the OPS Detox way, a single line from identifying the real issue to results" width="" height="" loading="lazy">
-               </figure> -->
-          <figure class="ws-clean-shot ws-shot--pending">Photograph pending</figure>
+          <!-- The supplied photograph, landed 2 Nov.
+
+               CROPPED from the supplied 1254x1254 social post, whose top third
+               carries a logo and a headline that would fight this section's
+               own. See the note on .ws-clean-shot. -->
+          <figure class="ws-clean-shot">
+            <picture>
+              <source srcset="assets/img/work-two-ways.avif" type="image/avif">
+              <source srcset="assets/img/work-two-ways.webp" type="image/webp">
+              <img src="assets/img/work-two-ways.jpg" alt="Oscar de Grauw between two whiteboards: the consultant's way, a tangle of boxes and arrows, and the OPS Detox way, a single line from identifying the real issue to results" width="1254" height="890" loading="lazy">
+            </picture>
+          </figure>
         </div>
       </div>
     </section>
