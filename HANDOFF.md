@@ -1,6 +1,18 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 2 November 2026_
+_Last updated: 3 November 2026_
+
+> **2–3 Nov — Work With Us was built out to the client's own wireframe order.** Five
+> sections and a move, and **not one word of new copy**: every section's text already
+> existed in `index.html`, in `detox.html` or in `content/copy.md`. The page runs twelve
+> sections now. **Two sections the wireframe lists are still not built** — the seven
+> modules and "from clutter to flow in 3 steps" — and the page now names both
+> **CORE method™** and **See – Strip – Choose™**, one scroll apart. See §44.
+
+> **2–3 Nov — the testimonial row steps one card at a time on mobile**, on all four
+> pages that carry it. The CSS was one line per page: the reduced-motion branch already
+> did what a phone needs, so it became a media query list rather than a second copy of
+> the same rules. The stepping is `js/site.js` §8, once, shared. See §44.
 
 > **2 Nov — Work With Us gained the site's closing CTA and the pattern divider.** The
 > page ended on the offers section with no ask and a hard ivory-to-green cut into the
@@ -3672,13 +3684,17 @@ and the switch rests on Clarity by computed opacity. Tag balance clean.
 
 ## 43. Where the project stands, end of 2 November 2026
 
+> **Superseded in part by §44.** The page table below is still accurate except for
+> `work-with-us.html`, and the "Still open" list is restated, corrected, at the end
+> of §44.
+
 ### Every page is on one design system
 
 | Page | State |
 |---|---|
 | `index.html` | On system |
 | `about.html` | On system |
-| `work-with-us.html` | On system. Photographs landed (§37), CTA added (§42) |
+| `work-with-us.html` | On system. Photographs landed (§37), CTA added (§42). **Built out to twelve sections (§44)** |
 | `keynote.html` | On system. §7 topics are a placeholder, §10 portrait a stand-in |
 | `contact.html` | On system (§33) |
 | `freebie.html` | On system (§40) |
@@ -3720,3 +3736,162 @@ reachable from **16 buttons**.
 8. **Does `detox.html` still have a job?** Its hero is word for word
    `work-with-us.html`'s. Open since 31 Oct (§30, §41).
 9. **The founder-vs-cleanse positioning question** (§22.6). Highest-value open item.
+
+---
+
+## 44. Work With Us built out to the wireframe, and the mobile testimonials (2–3 November 2026)
+
+### What this was
+
+`content/copy.md` has carried the client's own running order for this page since the
+start, under **"Page order (per client wireframe WORK WITH US)"**. Nobody had built to
+it. The page stopped at the two offers, then gained a CTA (§42).
+
+Five sections went on in one pass, and the testimonials moved. **Not one word of new
+copy was written.** Every section's text already existed in the repo — in
+`index.html`, in `detox.html`, or in `content/copy.md` — and was moved across verbatim.
+Where that copy was already marked as placeholder, it is still marked as placeholder.
+
+### The page now
+
+```
+hero → the mess → the cleaner way → two offers → stats → why work with me
+     → frameworks → for / not for → what it feels like → testimonials
+     → why leaders choose → closing CTA → pattern divider → footer
+```
+
+Twelve sections. That is the wireframe order, with the pieces the wireframe lists but
+the page does not yet have (below) left out.
+
+| § | Section | Copy came from | Notes |
+|---|---|---|---|
+| 5 | Outcomes stats strip | `index.html` `#results`, verbatim | Shared `.outcomes` / `.stat-grid` from `css/site.css`. **No new CSS.** |
+| 6 | Why work with me | The client's supplied drawing | Italic, name sign-off, no CTA. `oscar-portrait.jpg`. |
+| 7 | The frameworks | `index.html` §3, verbatim | **SECOND COPY**, CSS and markup. Descriptions still placeholder. |
+| 8 | Who it is for / is not for | `detox.html`, the client's words | Two cards, deliberately unequal. |
+| 9 | What a clean operation feels like | `detox.html`, the client's words | Ruled two-column list. |
+| 11 | Why leaders choose | `content/copy.md`, from his wireframe | Six cards, 3×2. |
+
+### The decisions inside them, and why
+
+**§6 is not `site.css`'s `.about` block.** It shares an eyebrow and a heading with the
+homepage's About section and nothing else: the homepage runs three roman paragraphs and
+a button, this is two italic ones and a signature. Italic is doing real work — it reads
+as Oscar speaking rather than as the site describing him, which is what lets the block
+sit with no frame and no rule. **Two blocks now share a heading and must not be edited
+to match each other.**
+
+The portrait is `oscar-portrait.jpg`, until now only a decorative timeline thumbnail on
+`about.html`. Not `oscar-about.jpg`, which is the homepage's About picture and is
+already on four pages. Incidentally **this is the "stool portrait" `BACKLOG.md` §D lists
+as still wanted** — it has been in the project since 11 October.
+
+**§8's two cards are not equal, on purpose.** The drawing is two identical plain lists.
+Built that way the page argues with itself at the exact point it should be closing. The
+two columns are not doing the same job: the left is where a qualified reader should
+recognise themselves, the right only has to let the wrong reader leave early. So the
+"for" card takes the Deep Green ground, a lime heading and ticked items, and the "not
+for" card stays a quiet outlined panel. Lime on Deep Green is the one legal pairing
+(V1.0 p.21), which is also why the ticks can be lime there and could not be on ivory.
+
+Two faults were caught in the first render and fixed: the cards were stretched to equal
+height, leaving the short one two-thirds empty (the grid aligns to `start` now); and the
+quiet card was `transparent`, which let the dot field show **through** it so it read as
+a hole in the section rather than a panel on it (`--panel` now).
+
+**§9 flows down its columns, not across.** Row-major would have forced the markup into
+1,4,2,5,3,6 to get three items per column, which hands a screen reader a scrambled
+list. `grid-auto-flow:column` keeps the markup in the drawing's own 1–6 order — and that
+order already splits 3/3 exactly as `detox.html`'s two lists do.
+
+**§11 does not use `site.css`'s `.reason-grid`.** That shared class sets the card number
+in Detox Green **on white**, which §8 of this document recorded as a live V1.0 violation
+and §41 closed on `detox.html` by moving the lime onto a Deep Green pill. Reusing the
+class here would have inherited the violation and then needed overriding, so the block
+is scoped. The drawing has no numerals on these cards, so the pill does not appear at
+all — which also keeps the six from reading as the same object as the three **numbered**
+framework cards two sections above. Two card grids on one page have to be tellable apart.
+
+**The ticks are one implementation, not two.** §8 and §9 both use `.ws-ticks`: a lime
+disc with an ink tick, drawn in CSS rather than set as a ✓ character so it keeps its
+size when the type scales and cannot pick up an emoji font. The disc is anchored to the
+**first line** of an item, not centred on it, so it stays put whether the line wraps once
+or three times. `--ws-tick-top` is the one knob the two users nudge.
+
+### The testimonials moved down
+
+They were section 4, between "there is a cleaner way" and the offers — proof offered
+before the case had been made. They now sit between §9 and §11, which is where
+`content/copy.md`'s wireframe order puts them:
+
+> … What a clean operation feels like → **Testimonials** → Why leaders choose → What
+> will you choose?
+
+### The order was changed once, wrongly, first
+
+The frameworks section was dropped in **above** the stats on the reasoning that the
+homepage pairs them that way and numbers read better after something is named. The
+client had said "next up", meaning next **in the page**, and had just given explicit
+placement for the section before it. It was moved below "Why work with me" the same day.
+**Reasoning from the homepage is not a reason to reorder a page somebody is dictating
+section by section.**
+
+### Mobile testimonials: one card at a time (all four slider pages)
+
+The row was a CSS marquee everywhere — a continuous crawl, paused on hover. On a phone
+that reads as drifting text you cannot catch. Below 700px it now advances **one card per
+step**, holds ~4.2s so a quote can be read, and wraps at the end. It is swipeable: a
+touch hands control over and it resumes after ~9s.
+
+**The CSS was one line per page, not a new block.** The slider already had a
+reduced-motion branch doing exactly what a phone needs — no marquee, no end fades, a
+snapping scroller, the duplicate cards dropped. That `@media` became a **query list**:
+
+```css
+@media(prefers-reduced-motion:reduce),(max-width:700px){ … }
+```
+
+Two copies of identical rules would just be two things to keep in step.
+
+**The stepping is `js/site.js` §8, once, shared by all four pages.** It is additive: if
+it never runs — old browser, JS off, an error above it — the row is still a scroller the
+visitor can swipe. It does **not** run for reduced motion; those users get the same CSS,
+but moving the row by itself is the thing they asked to avoid.
+
+Driven in a real browser: at 390px `scrollLeft` goes 0 → 309 → 641 → 951 → 0, one card
+per step; at 1440px the marquee is untouched.
+
+**It appeared broken for three test runs and was not.** Chrome was serving a cached
+`js/site.js`. The code was right the whole time. See AGENTS.md — CDP sessions now
+disable the cache first.
+
+### Still open after this
+
+Unchanged from §43, except where noted:
+
+1. **The 64 blanks on the legal pages.** Four company facts unblock ten of them.
+2. **The `css/site.css` lift**, and it got worse today. The testimonial block is in
+   **four** files (16 copies of each quote); the frameworks block is now in **two**,
+   CSS and markup; the card CSS pattern is in three.
+3. **Safari has still never been tested.** No WebKit automation on this machine.
+4. **The Formula Condensed licence** — the committed file is the trial. Hard blocker.
+5. **Copy**: the two package names, DRMT™'s expansion, the real framework wording, the
+   About values — **and now a visible contradiction.** §11's third card says
+   **CORE method™** one scroll below §7's notice asking whether **See – Strip – Choose™
+   replaces it**. His words were left alone rather than quietly reconciled, because the
+   answer changes one of the two, but the page currently names both.
+6. **Photography**: the About timeline, the keynote topics, press logos, client logos.
+   The stool portrait is no longer on this list — it was already in the repo.
+7. **Platforms**: booking, diagnostic, consent, analytics, form backend.
+8. **Does `detox.html` still have a job?** Weaker than it was: Work With Us has now
+   absorbed its for/not-for, its "what it feels like" and its "why leaders choose", on
+   top of sharing its hero copy word for word.
+9. **The founder-vs-cleanse positioning question** (§22.6). Still the highest-value
+   open item.
+
+### Two wireframe sections are still not built
+
+`content/copy.md`'s order for this page lists both, and neither is on it:
+
+- **The seven modules.**
+- **"From clutter to flow in 3 steps."**

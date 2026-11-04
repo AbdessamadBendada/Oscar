@@ -5,8 +5,9 @@ file is the short list of things that are easy to get wrong.
 
 ## Read first
 
-**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§43) and the dated banners
-at the top are the change log. **§43 is the current state of every page** — start there.
+**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§44) and the dated banners
+at the top are the change log. **§43 is the current state of every page and §44 restates
+what is still open** — start there.
 Read the banners plus any section a task touches before editing. Several decisions in it
 look like bugs and are not — see "Do not 'fix'" below.
 
@@ -71,10 +72,16 @@ the repo:
 | Noise/Clarity switch override | **8** | every page with a closing CTA |
 | Pattern divider | **7** | every page with a closing CTA except `about` |
 | Testimonial slider | **4** | index, about, work-with-us, keynote — each repeating its four quotes four times |
+| Frameworks / IP section | **2** | index, work-with-us (§44) — CSS *and* markup, and its three descriptions are placeholder |
 
 **Replacing one testimonial quote is sixteen edits across four files.** Change one copy
 of anything above and they drift apart silently. They belong in `css/site.css`, and the
 lift should happen *before* the real testimonials land — §42, §7 step 2.
+
+The frameworks block is the newer and more dangerous one: its three descriptions are
+**drafted placeholders awaiting Oscar's wording**, so it is the single most likely thing
+in the table to be edited, and editing it in one file silently splits the two pages.
+Both copies carry a warning comment.
 
 **`css/legal.css` is the one exception and the model for the fix.** The three legal
 pages are the same layout three times, so they share a real stylesheet instead of three
@@ -86,6 +93,12 @@ If the palette moves, it has to be updated manually.
 
 ## Copy and content
 
+- **Look for the copy before writing any.** Five of the six sections built in §44 were
+  already in the repo — in `index.html`, in `detox.html`, or in `content/copy.md` —
+  and were moved across verbatim. `content/copy.md` also carries the client's own
+  running order for Work With Us and the homepage, which is worth reading before
+  deciding where a new section goes. Drafting copy that already exists is how two
+  pages end up saying the same thing in two different ways.
 - **The client's copy is locked and unedited**, including the known typos in the
   homepage problem paragraph. Do not silently correct them.
 - Anything you draft on the client's behalf — framework descriptions especially — is a
@@ -121,7 +134,9 @@ that is how the site grew four different navs across eleven pages. There is a co
 every header saying so.
 
 **Removing a page from the nav does not hide it.** Sixteen buttons still point at the
-two omitted pages, twelve of them the "Book the FREE DIAGNOSTIC" CTA.
+two omitted pages, twelve of them the "Book the FREE DIAGNOSTIC" CTA. Measured
+3 Nov: twelve of the sixteen are on pages that ARE in the nav
+(`index` 4, `work-with-us` 3, `about` 2, `contact` 1, `keynote` 1, `freebie` 1).
 
 ## Every reworked page follows the same spine
 
@@ -137,6 +152,18 @@ two omitted pages, twelve of them the "Book the FREE DIAGNOSTIC" CTA.
 5. The closing `.choice`, then the `.pb` divider into the footer. Without the divider the
    page ends on a hard ivory-to-green cut.
 6. **No inline styles.**
+
+### The testimonial row behaves differently on a phone (§44)
+
+Desktop is a continuous CSS marquee. **Below 700px it steps one card at a time**, which
+is the client's instruction, not a fallback. Two things about how that is wired:
+
+- The CSS is **one media query list**, `@media(prefers-reduced-motion:reduce),
+  (max-width:700px)`, because the phone wants byte-identical rules to the
+  reduced-motion branch that already existed. Do not split it into two blocks.
+- The stepping is `js/site.js` §8 — **once, shared by all four pages**, unlike the CSS.
+  It is additive: without it the row is still a swipeable snapping scroller. It
+  deliberately does **not** run for reduced motion.
 
 ### The closing switch — get this one right
 
@@ -247,7 +274,10 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
 
 ## Verifying visual work
 
-There is no test suite. Visual changes are checked headless with Chrome:
+There is no test suite. Visual changes are checked headless with Chrome, and there are
+two ways to do it. **Use the second one.**
+
+### The flag way, for a quick look at the top of a page
 
 ```
 python3 -m http.server 8777          # from the repo root
@@ -257,21 +287,63 @@ python3 -m http.server 8777          # from the repo root
   "http://localhost:8777/index.html"
 ```
 
-Headless cannot hover, and `--virtual-time-budget` does **not** advance a CSS animation
-— screenshots at 4s and 30s are the same frame. To check either, force the state with a
-temporary rule: a negative `animation-delay` plus `animation-play-state:paused` to land
-on a chosen frame, or the hover rule applied to one `:nth-child()`.
+It captures the viewport only, cannot hover, cannot scroll, and **clamps the layout
+viewport to 500px** however small `--window-size` is — so a "390" screenshot taken this
+way is a 500px layout cropped, not a 390px render.
 
-**Headless cannot render below 500px.** Chrome clamps the layout viewport to 500 even
-when `--window-size` is smaller, so a "390" screenshot is a 500px layout cropped — not a
-390px render. To check 390, constrain the body to 390px and substitute any `vw`-derived
-value with what it computes to at that width. Say which of the two you did.
+`--virtual-time-budget` does **not** advance a CSS animation; screenshots at 4s and 30s
+are the same frame. To check one, force the state with a temporary rule: a negative
+`animation-delay` plus `animation-play-state:paused` to land on a chosen frame, or the
+hover rule applied to one `:nth-child()`.
 
-`--screenshot` captures the viewport only. For sections below the fold, temporarily cap
-the hero (`.hero{min-height:620px}`, `.hero--brand .hero-image{height:560px}`) and
-render at a tall window size — the hero uses `svh`, so a tall viewport inflates it and
-the rest of the page never comes into frame. **Delete any temporary harness files when
-done**; they do not belong in the deliverable.
+### The CDP way, for anything real (3 Nov)
+
+Drive Chrome over the DevTools Protocol instead. Node 24 has a built-in `WebSocket`, so
+this needs no dependencies: launch with `--remote-debugging-port=9222`, fetch
+`http://127.0.0.1:9222/json/list`, open the page target's socket and send commands.
+
+It removes every limit above. **`Emulation.setDeviceMetricsOverride` gives a true 390px
+render** — the 500px clamp is a `--window-size` limitation, not a headless one. Order
+that works, and each step is there because leaving it out broke a run:
+
+```js
+await send('Page.enable');
+await send('Network.enable');
+await send('Network.setCacheDisabled', { cacheDisabled: true });   // see below
+await send('Emulation.setDeviceMetricsOverride',
+           { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+await send('Page.navigate', { url });
+// … wait, then in one Runtime.evaluate:
+document.getElementById('preloader')?.remove();
+document.documentElement.classList.remove('pl-lock');
+document.querySelectorAll('.reveal').forEach(e => e.classList.add('is-in'));
+document.querySelectorAll('img[loading="lazy"]').forEach(e => e.loading = 'eager');
+document.documentElement.style.scrollBehavior = 'auto';
+document.querySelector(SELECTOR).scrollIntoView({ block: 'center' });
+// … wait again, then Page.captureScreenshot with no clip.
+```
+
+**The preloader runs on every page load and will otherwise fill your screenshot with
+flat ivory.** `--force-prefers-reduced-motion` is supposed to skip it and did not work;
+remove the element instead.
+
+Four traps, each of which cost a run:
+
+- **Disable the cache first.** A stepped mobile slider read as completely dead for
+  three runs because Chrome was serving a cached `js/site.js`. The code was correct the
+  whole time. A persistent `--user-data-dir` makes this worse, not better.
+- **`captureBeyondViewport: true` does not rasterise what was never on screen.** A
+  portrait came back as an empty green frame twice while `naturalWidth` reported 1178.
+  Scroll the section into view and clip in **viewport** coordinates instead.
+- **Closing the socket resets the emulation.** A follow-up probe in a new session is
+  measuring the default window, not your 390px override — which looked like
+  `matchMedia('(max-width:700px)')` disagreeing with the CSS that had plainly applied.
+- **`scroll-behavior:smooth` is set site-wide**, so a rect read straight after a
+  `scrollTo` is read mid-flight. Pass `behavior:'instant'`, or set
+  `scrollBehavior='auto'` as above, and wait.
+
+**Delete any temporary harness files when done**; they do not belong in the deliverable.
+Scratch scripts belong in the session scratchpad, not the repo.
 
 ### Check what should NOT be on the page, not only what should
 
@@ -326,6 +398,14 @@ State what you actually verified. "Checked headless at 1512×982" is useful; imp
 full breakpoint and browser sweep that did not happen is not.
 
 ## Scope
+
+**When the client is dictating a page section by section, "next" means next in the
+page.** A frameworks section was placed *above* an existing one on the reasoning that
+the homepage pairs those two blocks that way; the client had just given explicit
+placement for the previous section and meant append. It was rebuilt the same day.
+Matching another page's running order is not a reason to reorder a page somebody is
+handing you one screenshot at a time — and `content/copy.md` already records his own
+order for the main pages, so check there before inventing one (§44).
 
 Client feedback arrives informally, often via WhatsApp, and the client is not a designer
 or a copywriter. Build what is clearly actionable; where a comment conflicts with the
