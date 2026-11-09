@@ -1,8 +1,8 @@
 /* ============================================================
    OPS DETOX™ — shared behaviour (working design, no backend)
 
-   1. Mobile nav
-   2. Seven-module popups
+   1. Mobile nav (slide-in panel)
+   2. — removed: seven-module popups
    3. Noise / clarity switch
    4. Demo forms (client-side validation + success state)
    5. Reveal on scroll
@@ -19,66 +19,59 @@
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.querySelector('.site-nav');
 
+  /* The panel slides in from the right (rebuilt 7 Nov). One function owns
+     the state, because three things have to move together: the panel's own
+     class, aria-expanded on the toggle, and .nav-open on <html> — which
+     drives both the scrim and the body scroll lock in css/site.css. Letting
+     any of them be set independently is how they drift apart. */
   if (toggle && nav) {
+    var setNav = function (open) {
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.documentElement.classList.toggle('nav-open', open);
+    };
+
     toggle.addEventListener('click', function () {
-      var open = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!open));
-      nav.classList.toggle('is-open', !open);
+      setNav(toggle.getAttribute('aria-expanded') !== 'true');
     });
 
     // Close after tapping a link, and when returning to desktop width.
     nav.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') {
-        nav.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
+      if (e.target.tagName === 'A') setNav(false);
     });
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 850) {
-        nav.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
+      if (window.innerWidth > 850) setNav(false);
+    });
+
+    // Tapping the scrim closes it. The scrim is a pseudo-element on the
+    // header, so there is nothing to bind to — but any click that lands on
+    // the header while the panel is open, and is not the toggle or a nav
+    // link, is a scrim hit.
+    document.addEventListener('click', function (e) {
+      if (!document.documentElement.classList.contains('nav-open')) return;
+      if (toggle.contains(e.target) || nav.contains(e.target)) return;
+      setNav(false);
+    });
+
+    // Escape closes and hands focus back, the same contract the module
+    // popup used to follow.
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.documentElement.classList.contains('nav-open')) {
+        setNav(false);
+        toggle.focus();
       }
     });
   }
 
-  /* ---------- 2. Seven-module popups ---------- */
-  var modal = document.getElementById('modal');
+  /* ---------- 2. Seven-module popups — REMOVED 7 Nov 2026 ----------
+     Taken out at the user's request. The seven cards on detox.html are
+     plain <article> elements now rather than buttons, and the modal markup
+     is gone from detox.html and index.html — on index it had been dead
+     since the module section moved out (§18/§25), so it could never open.
 
-  if (modal) {
-    var mTitle = modal.querySelector('.modal-title');
-    var mSub = modal.querySelector('.modal-sub');
-    var mIcon = modal.querySelector('.modal-icon');
-    var mClose = modal.querySelector('.modal-close');
-    var lastFocus = null;
-
-    var openModal = function (trigger) {
-      lastFocus = trigger;
-      mTitle.textContent = trigger.dataset.title;
-      mSub.textContent = trigger.dataset.sub;
-      mIcon.src = trigger.querySelector('img').getAttribute('src');
-      modal.classList.add('is-open');
-      document.body.classList.add('is-locked');
-      mClose.focus();
-    };
-
-    var closeModal = function () {
-      modal.classList.remove('is-open');
-      document.body.classList.remove('is-locked');
-      if (lastFocus) lastFocus.focus();
-    };
-
-    document.querySelectorAll('.module').forEach(function (el) {
-      el.addEventListener('click', function () { openModal(el); });
-    });
-
-    mClose.addEventListener('click', closeModal);
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal) closeModal();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
-    });
-  }
+     This also closes BACKLOG.md §C's "module popup detail copy" ask: there
+     is no longer anywhere for that copy to go. */
 
   /* ---------- 3. Noise / clarity switch ---------- */
   document.querySelectorAll('.switch').forEach(function (sw) {
@@ -93,59 +86,15 @@
     });
   });
 
-  /* ---------- 3a. Wide O and D ----------
-     Brand guideline V1.0 p.25. Wraps each O and D in display type so the
-     ss01 alternate applies to that glyph alone; setting the feature on the
-     whole heading would swap every letter and lose the condensed character.
-     Runs over text nodes only, so existing markup and links survive. */
-  var OD_SELECTOR = 'h1, h2, .eyebrow, .toggle-row span, .stat-grid strong, ' +
-                    '.module h3, .button, .ticker div, .process-grid article > span, .pill-list li';
+  /* ---------- 3a. Wide O and D — REMOVED 7 Nov 2026 ----------
+     This section used to walk display type and wrap every O and D in
+     <i class="od"> so that ss01 could be applied to those glyphs alone.
 
-  function wrapOD(root) {
-    if (!root || root.closest('#modal')) return;
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode: function (n) {
-        if (!/[OD]/.test(n.nodeValue)) return NodeFilter.FILTER_REJECT;
-        if (n.parentNode.classList && n.parentNode.classList.contains('od')) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
-      }
-    });
-    var nodes = [], n;
-    while ((n = walker.nextNode())) nodes.push(n);
-
-    nodes.forEach(function (node) {
-      var parent = node.parentNode;
-      var frag = document.createDocumentFragment();
-
-      node.nodeValue.split(/([OD])/).forEach(function (part) {
-        if (!part) return;
-        if (part === 'O' || part === 'D') {
-          var i = document.createElement('i');
-          i.className = 'od';
-          i.textContent = part;
-          frag.appendChild(i);
-        } else {
-          frag.appendChild(document.createTextNode(part));
-        }
-      });
-
-      // In a flex or grid parent every child becomes its own item, which
-      // would collapse the spaces around each letter and apply the container
-      // gap between them. Keep the split text as one item.
-      var display = getComputedStyle(parent).display;
-      if (display === 'flex' || display === 'inline-flex' ||
-          display === 'grid' || display === 'inline-grid') {
-        var keeper = document.createElement('span');
-        keeper.className = 'od-run';
-        keeper.appendChild(frag);
-        frag = keeper;
-      }
-
-      parent.replaceChild(frag, node);
-    });
-  }
-
-  document.querySelectorAll(OD_SELECTOR).forEach(wrapOD);
+     The licensed font made it unnecessary and then actively harmful. In
+     PP Formula Condensed Bold "Alternate" the six brand letters — B C D G
+     O Q — are already the default forms, and ss01 now selects the NARROW
+     alternate rather than the wide one. Every wrapper was therefore
+     producing the opposite shape. See css/site.css §9a. */
 
   /* ---------- 3b. Brand toggle rows ----------
      The noise → clarity device from the brand book. Each row is its own
@@ -157,11 +106,18 @@
       var on = row.getAttribute('aria-pressed') !== 'true';
       row.setAttribute('aria-pressed', String(on));
 
+      /* The closing switch always returns to Clarity, but not before the
+         mark has finished travelling. The knob takes 520ms to cross (see
+         css/site.css §10a) and the hold is 300ms on top of that, so the
+         full right-to-left motion plays out and settles before it comes
+         back. At the old 350ms the knob only got about 45% across and the
+         whole thing read as a wobble rather than a switch. If the travel
+         duration changes, change this with it. */
       window.clearTimeout(clarityTimer);
       if (!on && row.classList.contains('choice-toggle')) {
         clarityTimer = window.setTimeout(function () {
           row.setAttribute('aria-pressed', 'true');
-        }, 350);
+        }, 820);
       }
     });
   });

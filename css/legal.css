@@ -23,26 +23,6 @@
 .section-rule{border-bottom:0}
 @media(min-width:1001px){ .container{width:min(1320px,calc(100% - 80px))} }
 
-/* ---------- 2. Deep Green header ----------
-   SIXTH COPY of this block. It is here rather than in the three documents
-   so it is at least one copy for three pages instead of three. It still
-   belongs in site.css with the other five. */
-.site-header{
-  background:var(--ink);
-  border-bottom-color:rgba(204,254,6,.22);
-}
-@supports(backdrop-filter:blur(1px)){
-  .site-header{background:rgba(20,51,24,.94)}
-}
-.site-nav a{color:var(--lime)}
-.nav-toggle{border-color:var(--lime)}
-.nav-toggle i,
-.nav-toggle i::before,
-.nav-toggle i::after{background:var(--lime)}
-.nav-toggle[aria-expanded="true"] i{background:transparent}
-.site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
-.site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
-
 /* ---------- 3. The ivory field and its dot texture ----------
    Same values as work-with-us.html §3, contact.html and keynote.html, so
    every ivory surface on the site carries the identical texture.
@@ -51,11 +31,10 @@
    p.37) and the switcher pattern (the website device, p.38) and a dot grid
    is neither. One deletable rule, held low enough to read as paper. */
 .lg{position:relative;overflow:hidden;background:var(--paper)}
-.lg::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background-image:radial-gradient(rgba(20,51,24,.16) 1.4px,#0000 1.5px);
-  background-size:26px 26px;
-}
+/* The dot field was removed on 7 Nov. Designer: it is not in the
+   guideline — V1.0 names only the logo pattern (merch, p.36) and the
+   switcher pattern (p.38). These sections are plain Soft Ivory now. */
+
 .lg>*{position:relative;z-index:1}
 
 /* ---------- 4. (was the draft bar — removed 2 November) ----------

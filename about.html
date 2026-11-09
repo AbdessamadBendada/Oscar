@@ -24,31 +24,6 @@
      same treatment is ever wanted on another page.
      ========================================================== */
 
-  /* ---------- The header goes Deep Green ----------
-     Same move as index.html §5 and for the same reason. The hero below is
-     a Deep Green ground, so an ivory header would put a near-white band
-     straight on top of it; and once the header is Deep Green the lime
-     logo, lime nav and lime pill CTA all have the only ground V1.0 p.21
-     allows them. It stays STICKY, as site.css has it — the hero's height
-     already subtracts --header-h, so the two do not fight. */
-  .site-header{
-    background:var(--ink);
-    border-bottom-color:rgba(204,254,6,.22);
-  }
-  @supports(backdrop-filter:blur(1px)){
-    .site-header{background:rgba(20,51,24,.94)}
-  }
-  .site-nav a{color:var(--lime)}
-  .nav-toggle{border-color:var(--lime)}
-  .nav-toggle i,
-  .nav-toggle i::before,
-  .nav-toggle i::after{background:var(--lime)}
-  .nav-toggle[aria-expanded="true"] i{background:transparent}
-  /* .button--line is a Deep Green pill and vanishes on a Deep Green
-     header — the same swap site.css already makes inside .on-dark. */
-  .site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
-  .site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
-
   /* ---------- The hero ----------
      The page opens on the framed picture, holds, then the frame grows to
      full width and full height while the lime border and the corner
@@ -398,13 +373,20 @@
     display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
     gap:clamp(28px,4.5vw,64px);align-items:start;
   }
-  /* Bigger, and no 15ch cap. The cap was forcing the sentence into six
-     short lines, which made a statement headline read as a narrow column
-     of small type — the opposite of the reference, where it is three big
-     lines. The column itself is the only limit it needs. */
+  /* No 15ch cap. The cap was forcing the sentence into six short lines,
+     which made a statement headline read as a narrow column of small type
+     — the opposite of the reference, where it is three big lines. The
+     column itself is the only limit it needs.
+
+     Size reduced 7 Nov, from clamp(30px,4vw,56px). The licensed font's
+     default letterforms run about 28% wider than the trial's and this is
+     an 86-character sentence in a 558px column, so 56px ran to five lines.
+     Stepped and measured in the browser: 42-52px all give four lines, 40px
+     is the first that comes back to the three the block is designed around.
+     RE-MEASURE if the copy or the column changes. */
   .ops-lead h2{
     margin:0;color:#fff;max-width:none;
-    font-size:clamp(30px,4vw,56px);line-height:1.02;
+    font-size:clamp(26px,2.85vw,40px);line-height:1.02;
     letter-spacing:.015em;text-transform:uppercase;
   }
   /* The one highlighted phrase, exactly as his headline does it. This is
@@ -513,14 +495,8 @@
     transition:transform .2s ease;
   }
   .prin-card:first-child{background:var(--lime)}
-  .prin-num{
-    width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
-    background:var(--lime);color:var(--ink);
-    font:20px/1 var(--display);letter-spacing:.04em;
-    /* A lime disc would vanish on the lime card, so it inverts there —
-       the same swap .cleanse-num makes. */
-  }
-  .prin-card:first-child .prin-num{background:var(--ink);color:var(--lime)}
+  /* .prin-num takes the shared numbered-circle treatment from
+     css/site.css, including the invert on the lime first card. 7 Nov. */
   .prin-card h3{
     margin:24px 0 14px;color:var(--ink);
     font:clamp(21px,1.9vw,28px)/1.05 var(--display);
@@ -719,194 +695,11 @@
     .ah-cap{font-size:11px;gap:6px 14px}
   }
   
-  /* ---------- Testimonials slider (copied from index.html) ----------
-     The testimonial row and the final CTA are the homepage's, copied
-     verbatim on request so the two pages end the same way.
-
-     The CTA needed markup only — site.css and site.js already carry
-     .choice, .toggle-row and the switch behaviour. The slider did NOT:
-     these rules live in index.html's own style block, so they are
-     reproduced here. THEY ARE NOW IN TWO PLACES — change one and the
-     pages drift apart. Lift the pair into css/site.css the moment a
-     third page wants this row. */
-  /* ---------- 4. Testimonials: moved up, and turned into one sliding row ----------
-     Client, 24 Oct: the testimonials belong under the IP section, and they
-     should be a single row that slides smoothly. The section markup now sits
-     directly after .frameworks and before .outcomes, so the order reads
-     cleanse → the IP it runs on → who says it worked → the numbers.
-
-     The slide is a marquee, not a paged carousel: four placeholder quotes do
-     not need prev/next controls, and continuous motion was what was asked
-     for. The track holds the four cards FOUR TIMES and translates by exactly
-     one set, which lands set 2 where set 1 started, so the loop has no jump.
-
-     Why four copies and not two: the track has to stay wider than the
-     viewport plus one set, or the row runs dry at the right-hand edge before
-     it wraps. One set is four cards at 420 + 28 = 1792px, so two copies left
-     a growing empty gap on anything wider than ~1800px — which is what a
-     1920 or zoomed-out screen is.
-
-     It is CSS-only on purpose. js/site.js is shared with the live site and a
-     review artefact must not touch it (AGENTS.md). */
-  .testimonials{overflow:hidden}
-  .testimonial-slider{
-    /* Full-bleed, so the row runs off both edges and reads as continuing
-       rather than as a cropped grid. The head above it stays in .container. */
-    position:relative;width:100%;overflow:hidden;
-    /* Cancels the track's shadow padding below, so the row occupies exactly
-       the height of the cards in the page flow and the air above and below it
-       stays even. The overflow area just overlaps the section's own padding. */
-    margin:-30px 0 -64px;
-  }
-  /* The end fades are two gradient overlays in the ground colour, NOT a
-     mask-image on the slider. A mask promotes the element to its own
-     composited layer, and macOS Chrome colour-manages that layer slightly
-     differently from the Soft Ivory painted behind it — the whole row showed
-     as a visibly paler band. Overlays keep everything on one layer. */
-  .testimonial-slider::before,
-  .testimonial-slider::after{
-    content:'';position:absolute;top:0;bottom:0;width:clamp(28px,7%,120px);
-    z-index:2;pointer-events:none;
-  }
-  .testimonial-slider::before{left:0;background:linear-gradient(90deg,var(--paper),rgba(254,253,242,0))}
-  .testimonial-slider::after{right:0;background:linear-gradient(270deg,var(--paper),rgba(254,253,242,0))}
-  /* One card's width and the gap are variables because the slide distance is
-     derived from them — see @keyframes below. */
-  .testimonial-track{
-    --tcard:min(420px,78vw);
-    --tgap:28px;
-    display:flex;width:max-content;gap:var(--tgap);
-    /* Room for the hover shadow, which is clipped by the slider's
-       overflow:hidden otherwise — the cut showed as a hard horizontal line
-       under a hovered card. --shadow is 0 18px 44px, so it reaches 18+44=62px
-       below the card and 44-18=26px above it; site.css also lifts the card
-       3px on hover. 30/64 covers both ends with a little slack. The slider
-       cancels this with a matching negative margin.
-       No horizontal padding: the slide distance is an exact multiple of the
-       card pitch and side padding would offset it. */
-    padding:30px 0 64px;
-    animation:t-slide 54s linear infinite;
-  }
-  .testimonial-track article{
-    flex:0 0 var(--tcard);min-height:300px;
-    /* No resting shadow. --shadow is a 44px blur, and eight-plus cards tiled
-       into an unbroken row pool it into a grey slab behind the whole band
-       (measured rgb(240,240,229) against the ivory's rgb(254,253,242)). The
-       row needs no lift at rest — it is already separated by the gaps. */
-    box-shadow:none;
-  }
-  .testimonial-track article:hover{box-shadow:var(--shadow)}
-
-  /* Moves by exactly one set of four — one card pitch × 4 — so set 2 lands
-     where set 1 was. Derived from the variables above rather than written as
-     -25%, because a percentage would have to absorb the flex gaps and would
-     drift the seam. Change the card count and this 4 changes with it. */
-  @keyframes t-slide{to{transform:translateX(calc(-4 * (var(--tcard) + var(--tgap))))}}
-
-  /* Hovering or tabbing into the row holds it still so a quote can actually
-     be read. :active covers the touch case, where there is no hover. */
-  .testimonial-slider:hover .testimonial-track,
-  .testimonial-slider:active .testimonial-track,
-  .testimonial-track:focus-within{animation-play-state:paused}
-
-  /* Reduced motion: no marquee at all. The row becomes a normal swipeable,
-     snapping scroller, and the duplicate half is dropped so the same quote
-     does not appear twice in something the user scrolls by hand. */
-  /* MOBILE GETS THE SAME BRANCH AS REDUCED MOTION, one card at a time
-     instead of the continuous marquee (client, 2 Nov).
-
-     Extended as a media QUERY LIST rather than copied into a second block:
-     the two cases want byte-identical rules — no marquee, no end fades, a
-     snapping scroller, duplicates dropped — so writing them twice would
-     just be two things to keep in step. The stepping itself is in
-     js/site.js §8, which runs on narrow screens only; reduced-motion users
-     still get a row they move themselves, which is the point of it.
-
-     700px is where site.css already drops the card grids to one column. */
-  @media(prefers-reduced-motion:reduce),(max-width:700px){
-    .testimonial-slider{
-      overflow-x:auto;scroll-snap-type:x mandatory;
-      -webkit-overflow-scrolling:touch;
-      padding-bottom:6px;
-    }
-    /* The overlays are absolutely positioned inside what is now a scroll
-       container, so they would scroll away with the content. The row is
-       user-driven here and does not need the fades. */
-    .testimonial-slider::before,.testimonial-slider::after{display:none}
-    .testimonial-track{animation:none;padding-inline:max(20px,calc((100% - 1320px) / 2))}
-    .testimonial-track article{scroll-snap-align:center}
-    .testimonial-track article[aria-hidden="true"]{display:none}
-  }
-  
-  /* ---------- The Noise / Clarity switch (copied from index.html §11) ----------
-     Copied with the CTA, and it is NOT optional decoration: without it
-     the toggle renders in site.css's shared state — knob to the RIGHT,
-     Clarity dimmed and Noise lit — which is the reverse of the
-     homepage. The markup and aria-pressed are identical on both pages;
-     this block is the entire difference.
-
-     Second copy of these rules, like the testimonial slider above.
-     Both belong in css/site.css. */
-  /* ---------- 11. The Noise / Clarity switch, read the other way ----------
-     Clarity now sits on the left and Noise on the right, and the switch
-     rests OFF: knob to the left, track empty.
-
-     Only the visuals are flipped, not the state. js/site.js (§3b) treats
-     aria-pressed="true" as the resting state — it snaps the choice-toggle
-     back to it 350ms after a click — and that file is shared with the live
-     site, so it must not be touched (AGENTS.md). "true" therefore still
-     means clarity, exactly as before; what changes is which side it
-     lights and which way the knob sits. Flipping the attribute instead
-     would have made the switch snap back to Noise, the opposite of the
-     section's point.
-
-     The colours are untouched: clarity is still the lime card with the
-     ink type, noise still the dark one. */
-  /* Left label (now Clarity) is lit at rest, right label (Noise) dimmed:
-     the reverse of the shared rule, so both states are overridden. */
-  .choice-toggle[aria-pressed="true"] .t-before{opacity:1}
-  .choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
-  .choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
-  .choice-toggle[aria-pressed="false"] .t-after{opacity:1}
-
-  /* The switch IS the logo mark: a lime pill carrying the O of the OD
-     monogram, so the knob is an ink RING with the track showing through
-     it, not a solid dot. That is the one detail that makes it read as the
-     brand's own switch rather than a generic iOS toggle.
-
-     Hence no inset highlight and no drop shadow on the knob — the mark is
-     flat, and both were what made the old knob look like a UI control
-     borrowed from somewhere else. */
-  .choice-toggle .t-switch{
-    background:var(--lime);
-    border:3px solid var(--ink);
-    box-shadow:none;
-  }
-  /* box-sizing MUST be border-box here. The shared rule sizes the knob
-     34x34 as a solid dot, where no border is in play; turning it into a
-     ring added 7px of stroke on every side, so it came out 48px wide in a
-     42px track and hung over both edges. With border-box the 34 is the
-     whole ring, stroke included.
-
-     Geometry: track 92 wide, 3px border, so the inner box is 86. Ring 34
-     at 4px from the left leaves 48 to the right edge, hence the 44px
-     travel below — 4px of lime left showing at either end. */
-  .choice-toggle .t-switch::before{
-    box-sizing:border-box;
-    top:4px;left:4px;width:34px;height:34px;
-    background:transparent;
-    border:6px solid var(--ink);
-    box-shadow:none;
-  }
-  /* At rest the ring sits left, as the O does in the mark. Pressed (noise)
-     slides it to the D's end. */
-  .choice-toggle[aria-pressed="true"] .t-switch::before{transform:none}
-  .choice-toggle[aria-pressed="false"] .t-switch::before{transform:translateX(44px)}
   </style>
 </head>
 <body>
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
-    <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44ZM244.41,125.25h-2.09c-15.9,0-28.8-12.87-28.8-28.75s12.9-28.78,28.8-28.78h2.09c14.94,1.06,26.77,13.58,26.77,28.78s-11.83,27.7-26.77,28.75ZM293.37,125.25h-25.62c3.24-2.87,5.99-6.28,8.11-10.07.08-.11.15-.23.22-.34h16.45c5.08,0,9.65-2.06,12.98-5.38,3.32-3.33,5.37-7.9,5.37-12.97,0-10.13-8.21-18.35-18.35-18.35h-16.45c-.1-.17-.21-.34-.31-.5-2.11-3.74-4.84-7.09-8.04-9.92h25.64c15.89,0,28.76,12.88,28.76,28.78s-12.87,28.75-28.76,28.75Z"/><path class="pl-knob" d="M243.04,78.16c-.23-.02-.46-.02-.7-.02-10.14,0-18.35,8.22-18.35,18.35s8.21,18.35,18.35,18.35h.7c9.81-.38,17.64-8.44,17.64-18.35s-7.83-17.95-17.64-18.33Z"/></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
+    <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -973,7 +766,7 @@
           <!-- Wide O and D wrapped by hand: js/site.js splits on uppercase
                /([OD])/ and this is sentence case uppercased by CSS, so the
                script would never match it. -->
-          <h1 class="ah-name"><i class="od">O</i>scar <i class="od">d</i>e Grauw</h1>
+          <h1 class="ah-name">Oscar de Grauw</h1>
           <p class="ah-cap"><span>Founder, OPS Detox™</span><span>TEDx speaker</span><span>17 years inside complex international organizations</span></p>
         </div>
       </div>
@@ -1000,7 +793,7 @@
           <div>
             <!-- Three spans rather than <br>: each word takes the rule
                  under it, and a screen reader still reads one heading. -->
-            <h2 class="lis-head" id="lis-heading"><span>Leader</span><span>Inn<i class="od">o</i>vat<i class="od">o</i>r</span><span>Speaker</span></h2>
+            <h2 class="lis-head" id="lis-heading"><span>Leader</span><span>Innovator</span><span>Speaker</span></h2>
             <p class="lis-copy">Founder of OPS Detox™ and TEDx speaker. At Sony Europe Oscar worked across seven functions and 29 countries, leading the work that halved the reporting, removed close to a third of the meeting time and moved decisions closer to the people doing the work. Today he brings that experience to scale-up founders.</p>
             <div class="actions">
               <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
@@ -1069,7 +862,7 @@
          used: §27 flags it as showing an audience that never existed. -->
     <section class="path reveal" aria-labelledby="path-heading">
       <div class="container">
-        <h2 class="path-head" id="path-heading"><i class="od">O</i>scar’s path</h2>
+        <h2 class="path-head" id="path-heading">Oscar’s path</h2>
         <ol class="path-list">
           <li class="tl-block reveal">
             <figure class="tl-figure"><img src="assets/img/oscar-steps.jpg" alt="" loading="lazy" decoding="async"></figure>
@@ -1290,7 +1083,7 @@
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
                   aria-label="Switch between Operational Clarity and Operational Noise">
             <span class="t-before">Operational Clarity</span>
-            <span class="t-switch" aria-hidden="true"></span>
+            <span class="t-switch" aria-hidden="true"><svg class="t-mark" viewBox="203.14 59.05 129.38 74.78" focusable="false"><path class="t-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="t-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="t-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="t-knob"><circle class="t-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="t-dot" cx="242.34" cy="96.50" r="18.35"/></g></svg></span>
             <span class="t-after">Operational Noise</span>
           </button>
         </div>

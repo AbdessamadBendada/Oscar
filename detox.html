@@ -20,10 +20,9 @@
        SCOPE RULE: every rule lives in the <style> block below.
        css/site.css and js/site.js are NOT touched.
 
-       THE SEVEN MODULE POPUPS ARE LOAD-BEARING. js/site.js opens
-       them from the .module buttons' data-title / data-sub and
-       returns focus to the card. Nothing was renamed or
-       reordered; this rework is paint. Click one after any edit.
+       THE SEVEN MODULE POPUPS WERE REMOVED on 7 Nov at the
+       user's request. The cards are plain <article> elements
+       now, not buttons, and js/site.js section 2 is gone.
 
        THE COPY IS UNCHANGED, apart from two em dashes removed
        per §29.4 (the signature line and the solution eyebrow).
@@ -38,26 +37,11 @@
   .section-rule{border-bottom:0}
   @media(min-width:1001px){ .container{width:min(1320px,calc(100% - 80px))} }
 
-  /* ---------- 2. Deep Green header ----------
-     NINTH copy, and the last page that needed it. Same pair of faults §33
-     found on contact.html: ivory header, logo pointing at
-     primary-deepgreen.svg. Swapped together. */
-  .site-header{background:var(--ink);border-bottom-color:rgba(204,254,6,.22)}
-  @supports(backdrop-filter:blur(1px)){.site-header{background:rgba(20,51,24,.94)}}
-  .site-nav a{color:var(--lime)}
-  .nav-toggle{border-color:var(--lime)}
-  .nav-toggle i,.nav-toggle i::before,.nav-toggle i::after{background:var(--lime)}
-  .nav-toggle[aria-expanded="true"] i{background:transparent}
-  .site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
-  .site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
-
-  /* ---------- 3. The dot field, on every ivory section ---------- */
+  /* ---------- 3. The ivory sections ---------- */
   .dx-hero,.dx-dots{position:relative;overflow:hidden;background:var(--paper)}
-  .dx-hero::before,.dx-dots::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background-image:radial-gradient(rgba(20,51,24,.16) 1.4px,#0000 1.5px);
-    background-size:26px 26px;
-  }
+  /* The dot field was removed on 7 Nov. Designer: it is not in the
+     guideline — V1.0 names only the logo pattern (merch, p.36) and the
+     switcher pattern (p.38). These sections are plain Soft Ivory now. */
   .dx-hero>*,.dx-dots>*{position:relative;z-index:1}
 
   /* ---------- 4. Section 1 — the hero ---------- */
@@ -74,67 +58,6 @@
     font-size:clamp(16px,1.35vw,19px);line-height:1.6;color:var(--muted);
   }
   .dx-hero-copy .actions{justify-content:center;margin-top:32px}
-
-  /* ---------- 5. The switcher pattern strip ----------
-     --ticker-h is NOT load-bearing on this page. On the homepage the hero is
-     calc(100svh - header - ticker-h) and the token is what lands the fold
-     exactly under the strip (§5); this hero is content-height, so the strip
-     is free to sit at its natural size. The token is kept at the homepage's
-     value anyway so the two strips are identical where they meet the eye.
-
-     Loop rule, same as every marquee in this project: four copies, a -25%
-     step, spacing as margin-LEFT, and the nth-child cycle MUST equal one
-     copy — 6 words, so 6n. Break any of those and it jumps once a cycle
-     (§24, §26). */
-  :root{--ticker-h:92px}
-  .pt-strip{
-    background:var(--ink);
-    height:var(--ticker-h);
-    display:grid;align-content:center;
-    padding:0;
-    overflow:hidden;
-  }
-  .pt-row{overflow:hidden}
-  .pt-track{
-    display:flex;width:max-content;
-    animation:pt-slide 42s linear infinite;
-    will-change:transform;
-  }
-  @keyframes pt-slide{from{transform:translateX(-25%)}to{transform:none}}
-  .pt{
-    flex:none;
-    padding:12px 34px 10px 120px;
-    margin-left:34px;
-    border-radius:var(--r-pill);
-    background:linear-gradient(90deg,
-      rgba(204,254,6,0) 0%,
-      rgba(204,254,6,.18) 26%,
-      rgba(204,254,6,.55) 48%,
-      rgba(204,254,6,.92) 64%,
-      var(--lime) 72%);
-    color:var(--ink);
-    font:18px/1 var(--display);
-    letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
-  }
-  .pt:nth-child(6n+1){padding-left:190px;margin-left:22px}
-  .pt:nth-child(6n+2){padding-left:96px;margin-left:48px}
-  .pt:nth-child(6n+3){padding-left:150px;margin-left:34px}
-  .pt:nth-child(6n+4){padding-left:118px;margin-left:28px}
-  .pt:nth-child(6n+5){padding-left:212px;margin-left:26px}
-  .pt:nth-child(6n+6){padding-left:104px;margin-left:42px}
-  @media(max-width:850px){
-    :root{--ticker-h:74px}
-    .pt{font-size:14px;padding:9px 22px 7px 64px;margin-left:18px}
-    .pt:nth-child(6n+1){padding-left:88px;margin-left:14px}
-    .pt:nth-child(6n+2){padding-left:52px;margin-left:24px}
-    .pt:nth-child(6n+3){padding-left:74px;margin-left:18px}
-    .pt:nth-child(6n+4){padding-left:60px;margin-left:16px}
-    .pt:nth-child(6n+5){padding-left:96px;margin-left:14px}
-    .pt:nth-child(6n+6){padding-left:56px;margin-left:22px}
-  }
-  @media(prefers-reduced-motion:reduce){
-    .pt-track{animation:none}
-  }
 
   /* ---------- 6. Section titles ----------
      §27 put every section title on one scale. site.css's generic h2 is
@@ -196,16 +119,23 @@
     transition:transform .18s,box-shadow .18s;
   }
   .process-grid article:hover,.reason-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-  .process-grid span,.reason-grid span{
+  /* .reason-grid span is NOT styled here any more. Its 01-06 are numerals,
+     so they take the shared numbered-circle treatment in css/site.css like
+     every other number on the site — designer, 7 Nov: "the numbering should
+     always be in a circle". The Deep Green pill that used to be declared
+     here was this page's local patch for the lime-on-white violation, and
+     it was the only pill among five numbering styles.
+
+     .process-grid span is a different thing and keeps a pill: it holds
+     "Step 1", "Step 2", "Step 3" — words, not numerals, which will not fit
+     a 52px disc. Colours matched to the circles: lime ground, Deep Green
+     type. */
+  .process-grid span{
     display:inline-grid;place-items:center;min-width:46px;height:46px;padding:0 14px;
-    border-radius:var(--r-pill);background:var(--ink);color:var(--lime);
+    border-radius:var(--r-pill);background:var(--lime);color:var(--ink);
     font:15px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;
     margin-bottom:18px;
   }
-  /* §8 "Still open" recorded .reason-grid span as a LIVE V1.0 VIOLATION —
-     Detox Green type on White, p.22's third watchout. The lime now sits on
-     a Deep Green pill, which is the sanctioned pairing (p.21).
-     THAT ITEM IS CLOSED. */
   .process-grid h3,.reason-grid h3{
     margin:0 0 10px;max-width:none;text-transform:none;
     font-family:var(--body);font-weight:700;font-size:18px;line-height:1.3;color:var(--ink);
@@ -216,15 +146,12 @@
     color:var(--ink);text-decoration:underline;text-underline-offset:3px;
   }
 
-  /* The seven modules. THE BUTTONS AND THEIR data-title / data-sub ARE
-     LOAD-BEARING — js/site.js opens the popup from them and returns focus
-     to the card. Paint only; nothing renamed. */
+  /* The seven modules. These were buttons opening a popup until 7 Nov;
+     they are plain cards now and nothing is clickable about them. */
   .system{background:var(--paper);padding:var(--section-y) 0;position:relative;overflow:hidden}
-  .system::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background-image:radial-gradient(rgba(20,51,24,.16) 1.4px,#0000 1.5px);
-    background-size:26px 26px;
-  }
+  /* The dot field was removed on 7 Nov. Designer: it is not in the
+     guideline — V1.0 names only the logo pattern (merch, p.36) and the
+     switcher pattern (p.38). These sections are plain Soft Ivory now. */
   .system>*{position:relative;z-index:1}
   .system-intro{margin-bottom:clamp(30px,3.4vw,48px)}
   .system-intro h2{max-width:20ch;font-size:clamp(30px,3.6vw,54px);line-height:1.04;color:var(--ink)}
@@ -236,7 +163,9 @@
     transition:transform .18s,box-shadow .18s,border-color .18s;
   }
   .module:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--ink)}
-  .module img{width:34px;height:34px;margin-bottom:16px}
+  /* 52px, the site's one icon-and-numeral size. The files carry their own
+     lime disc, so there is no CSS circle behind them. */
+  .module img{width:52px;height:52px;margin-bottom:16px}
   .module h3{
     margin:0 0 6px;max-width:none;text-transform:none;
     font-family:var(--display);font-size:19px;line-height:1.15;
@@ -287,105 +216,11 @@
     .dx-flat{grid-template-columns:1fr}
   }
 
-  /* ---------- 7. The Noise / Clarity switch, read the other way ----------
-     Copied verbatim from index.html §11, and this page SHIPPED WITHOUT IT.
-
-     The old markup here was site.css's shared `.switch-line` / `.switch`
-     with aria-pressed="false" and "Operational noise" carrying .is-on — so
-     the closing section of the contact page was arguing the opposite of the
-     closing section of the homepage. The markup below is index.html's.
-
-     Only the visuals are flipped, not the state. js/site.js §3b treats
-     aria-pressed="true" as the RESTING state and snaps the toggle back to
-     it 350ms after a click, and that file is shared, so it must not be
-     touched (AGENTS.md). "true" still means clarity; what changes is which
-     side lights and which way the knob sits. Flipping the attribute instead
-     would make the switch snap back to Noise — the opposite of the point. */
-  .choice-toggle[aria-pressed="true"] .t-before{opacity:1}
-  .choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
-  .choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
-  .choice-toggle[aria-pressed="false"] .t-after{opacity:1}
-
-  /* The switch IS the logo mark: a lime pill carrying the O of the OD
-     monogram, so the knob is an ink RING with the track showing through it,
-     not a solid dot. Hence no inset highlight and no drop shadow — the mark
-     is flat. */
-  .choice-toggle .t-switch{
-    background:var(--lime);
-    border:3px solid var(--ink);
-    box-shadow:none;
-  }
-  /* box-sizing MUST be border-box. The shared rule sizes the knob 34x34 as a
-     solid dot, where no border is in play; as a ring the stroke would add
-     7px on every side and it would come out 48px wide in a 42px track.
-     Geometry: track 92, 3px border, inner box 86. Ring 34 at 4px from the
-     left leaves 48 to the right edge, hence the 44px travel. */
-  .choice-toggle .t-switch::before{
-    box-sizing:border-box;
-    top:4px;left:4px;width:34px;height:34px;
-    background:transparent;
-    border:6px solid var(--ink);
-    box-shadow:none;
-  }
-  .choice-toggle[aria-pressed="true"] .t-switch::before{transform:none}
-  .choice-toggle[aria-pressed="false"] .t-switch::before{transform:translateX(44px)}
-
-  /* ---------- 8. Pattern divider, rebuilt in CSS ----------
-     Copied from index.html §10. Same bar language as the strip under the
-     hero, but bars only and two rows running opposite ways. It closes the
-     page into the Deep Green footer, which is what it does on the homepage
-     (§24) — this page ended on a hard ivory-to-green cut.
-
-     Each row travels the way its bars point: the gradient tail reads as the
-     trail behind the bar, so a bar lit at its right end has to move right.
-     Built the other way round first and both rows looked like they were
-     sliding backwards. */
-  .pb{
-    background:var(--ink);
-    padding:18px 0 20px;
-    display:grid;gap:14px;
-    overflow:hidden;
-  }
-  .pb-row{overflow:hidden}
-  .pb-track{display:flex;width:max-content;animation:pb-right 46s linear infinite}
-  .pb-row--b .pb-track{animation:pb-left 62s linear infinite}
-  @keyframes pb-left{from{transform:none}to{transform:translateX(-25%)}}
-  @keyframes pb-right{from{transform:translateX(-25%)}to{transform:none}}
-
-  .pb-bar{
-    flex:none;height:34px;margin-left:34px;
-    border-radius:var(--r-pill);
-    background:linear-gradient(90deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
-  }
-  /* Widths cycle on 6n so every one of the four copies matches. */
-  .pb-bar:nth-child(6n+1){width:300px}
-  .pb-bar:nth-child(6n+2){width:470px;margin-left:46px}
-  .pb-bar:nth-child(6n+3){width:190px;margin-left:28px}
-  .pb-bar:nth-child(6n+4){width:380px;margin-left:40px}
-  .pb-bar:nth-child(6n+5){width:560px;margin-left:30px}
-  .pb-bar:nth-child(6n+6){width:240px;margin-left:52px}
-  .pb-row--b .pb-bar{
-    background:linear-gradient(270deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
-  }
-
-  @media(max-width:850px){
-    .pb{padding:14px 0 16px;gap:10px}
-    .pb-bar{height:26px;margin-left:22px}
-    .pb-bar:nth-child(6n+1){width:170px}
-    .pb-bar:nth-child(6n+2){width:250px;margin-left:28px}
-    .pb-bar:nth-child(6n+3){width:120px;margin-left:18px}
-    .pb-bar:nth-child(6n+4){width:210px;margin-left:24px}
-    .pb-bar:nth-child(6n+5){width:300px;margin-left:20px}
-    .pb-bar:nth-child(6n+6){width:150px;margin-left:32px}
-  }
-  @media(prefers-reduced-motion:reduce){
-    .pb-track{animation:none}
-  }
   </style>
 </head>
 <body>
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
-    <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44ZM244.41,125.25h-2.09c-15.9,0-28.8-12.87-28.8-28.75s12.9-28.78,28.8-28.78h2.09c14.94,1.06,26.77,13.58,26.77,28.78s-11.83,27.7-26.77,28.75ZM293.37,125.25h-25.62c3.24-2.87,5.99-6.28,8.11-10.07.08-.11.15-.23.22-.34h16.45c5.08,0,9.65-2.06,12.98-5.38,3.32-3.33,5.37-7.9,5.37-12.97,0-10.13-8.21-18.35-18.35-18.35h-16.45c-.1-.17-.21-.34-.31-.5-2.11-3.74-4.84-7.09-8.04-9.92h25.64c15.89,0,28.76,12.88,28.76,28.78s-12.87,28.75-28.76,28.75Z"/><path class="pl-knob" d="M243.04,78.16c-.23-.02-.46-.02-.7-.02-10.14,0-18.35,8.22-18.35,18.35s8.21,18.35,18.35,18.35h.7c9.81-.38,17.64-8.44,17.64-18.35s-7.83-17.95-17.64-18.33Z"/></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
+    <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -456,32 +291,32 @@
       <div class="pt-row">
         <div class="pt-track">
           <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
           <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
-          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
-          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
 
           <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
           <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
-          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
-          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
 
           <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
           <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
-          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
-          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
 
           <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNC<i class="od">O</i>MPLICATE the <i class="od">d</i>ecisi<i class="od">o</i>n</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
           <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Uncl<i class="od">o</i>g the appr<i class="od">o</i>val queue</span>
-          <span class="pt">Strip the N<i class="od">O</i>ISE</span>
-          <span class="pt"><i class="od">D</i>rain the <i class="od">d</i>ecisi<i class="od">o</i>n backl<i class="od">o</i>g</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
         </div>
       </div>
     </div>
@@ -547,27 +382,27 @@
         </div>
 
         <div class="module-grid">
-          <button class="module" type="button" data-title="Meetings Detox" data-sub="Win back your execution time.">
-            <img src="assets/icons/meetings.svg" alt=""><h3>Meetings Detox</h3><p>Win back your execution time.</p>
-          </button>
-          <button class="module" type="button" data-title="Decision Detox" data-sub="Weeks become hours.">
-            <img src="assets/icons/decision.svg" alt=""><h3>Decision Detox</h3><p>Weeks become hours.</p>
-          </button>
-          <button class="module" type="button" data-title="Communication Detox" data-sub="Information without rework.">
-            <img src="assets/icons/communication.svg" alt=""><h3>Communication Detox</h3><p>Information without rework.</p>
-          </button>
-          <button class="module" type="button" data-title="Reporting Detox" data-sub="Reports that create decisions.">
-            <img src="assets/icons/reporting.svg" alt=""><h3>Reporting Detox</h3><p>Reports that create decisions.</p>
-          </button>
-          <button class="module" type="button" data-title="Tool Stack Detox" data-sub="Strip what doesn't serve you.">
-            <img src="assets/icons/tool-stack.svg" alt=""><h3>Tool Stack Detox</h3><p>Strip what doesn't serve you.</p>
-          </button>
-          <button class="module" type="button" data-title="Psychological Safety Detox" data-sub="Say the expensive thing out loud.">
-            <img src="assets/icons/psychological-safety.svg" alt=""><h3>Psychological Safety Detox</h3><p>Say the expensive thing out loud.</p>
-          </button>
-          <button class="module" type="button" data-title="Ownership Detox" data-sub="Close the ownership vacuum.">
-            <img src="assets/icons/ownership.svg" alt=""><h3>Ownership Detox</h3><p>Close the ownership vacuum.</p>
-          </button>
+          <article class="module">
+            <img src="assets/icons/meetings-lime.svg" alt=""><h3>Meetings Detox</h3><p>Win back your execution time.</p>
+          </article>
+          <article class="module">
+            <img src="assets/icons/decision-lime.svg" alt=""><h3>Decision Detox</h3><p>Weeks become hours.</p>
+          </article>
+          <article class="module">
+            <img src="assets/icons/communication-lime.svg" alt=""><h3>Communication Detox</h3><p>Information without rework.</p>
+          </article>
+          <article class="module">
+            <img src="assets/icons/reporting-lime.svg" alt=""><h3>Reporting Detox</h3><p>Reports that create decisions.</p>
+          </article>
+          <article class="module">
+            <img src="assets/icons/tool-stack-lime.svg" alt=""><h3>Tool Stack Detox</h3><p>Strip what doesn't serve you.</p>
+          </article>
+          <article class="module">
+            <img src="assets/icons/psychological-safety-lime.svg" alt=""><h3>Psychological Safety Detox</h3><p>Say the expensive thing out loud.</p>
+          </article>
+          <article class="module">
+            <img src="assets/icons/ownership-lime.svg" alt=""><h3>Ownership Detox</h3><p>Close the ownership vacuum.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -728,7 +563,7 @@
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
                   aria-label="Switch between Operational Clarity and Operational Noise">
             <span class="t-before">Operational Clarity</span>
-            <span class="t-switch" aria-hidden="true"></span>
+            <span class="t-switch" aria-hidden="true"><svg class="t-mark" viewBox="203.14 59.05 129.38 74.78" focusable="false"><path class="t-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="t-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="t-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="t-knob"><circle class="t-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="t-dot" cx="242.34" cy="96.50" r="18.35"/></g></svg></span>
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
@@ -777,15 +612,10 @@
     </div>
   </main>
 
-  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="modal-card">
-      <button class="modal-close" type="button" aria-label="Close">✕</button>
-      <img class="modal-icon" src="assets/icons/meetings.svg" alt="">
-      <h2 class="modal-title" id="modal-title">Module</h2>
-      <p class="modal-sub">Tagline</p>
-      <p class="modal-note">Module detail copy still to come from the client’s current website. This popup is wired and ready for it.</p>
-    </div>
-  </div>
+  <!-- The seven-module popup was removed on 7 Nov at the user's request.
+       The seven cards below are plain cards now, not buttons, and
+       js/site.js section 2 is gone. This also closes BACKLOG.md §C's
+       "module popup detail copy" ask — there is nothing left to fill. -->
 
   <footer>
     <div class="container">

@@ -14,3 +14,19 @@ Thumbs.db
 
 # Node (if tooling is added later)
 node_modules/
+
+# Designer's review source material, Nov 2026 — ~60MB of PDFs, the logo SVG,
+# the font archive and the animation reference video. Kept local; everything
+# the site actually needs was extracted into assets/.
+*- Feedback.pdf
+OPS_DETOX_Logo_Concept_R2.pdf
+OPS_DETOX_OPEN _LOGO.svg
+PP Formula - Alternate.zip
+WhatsApp Video *.mp4
+
+# The licensed font's DESKTOP file. This repo is public and PP Formula is a
+# paid Pangram Pangram licence — the webfont (woff2) is what the site serves
+# and is fine to ship, but the .otf is the desktop install and is not ours to
+# redistribute. Kept local. Every browser since 2016 supports woff2, so the
+# site does not need it.
+assets/fonts/*.otf

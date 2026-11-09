@@ -5,9 +5,9 @@ file is the short list of things that are easy to get wrong.
 
 ## Read first
 
-**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§44) and the dated banners
-at the top are the change log. **§43 is the current state of every page and §44 restates
-what is still open** — start there.
+**`HANDOFF.md` is the source of truth.** It is sectioned (§1–§45) and the dated banners
+at the top are the change log. **§45 is the most recent round** — the brand designer's
+review, 7 Nov — and §43/§44 are the page-by-page state before it. Start with §45.
 Read the banners plus any section a task touches before editing. Several decisions in it
 look like bugs and are not — see "Do not 'fix'" below.
 
@@ -63,25 +63,37 @@ them drift and do not import one into the other.
 
 **The same scope rule applies to the live pages themselves.** Each carries its own
 `<style>` block because `css/site.css` and `js/site.js` are shared across all eleven
-pages. The consequence is real duplication, and it is now the largest piece of debt in
-the repo:
+pages.
 
-| Block | Copies | Where |
+**THE BIG LIFT IS DONE (§45, 7 Nov).** Five blocks that lived in 7–9 copies each are
+now one copy in `css/site.css` — the Deep Green header, the closing switch, the
+pattern divider, the switcher strip and the testimonial slider. 1,689 lines went.
+
+| Block | Was | Now |
 |---|---|---|
-| Deep Green header | **9** | 8 pages + `css/legal.css` |
-| Noise/Clarity switch override | **8** | every page with a closing CTA |
-| Pattern divider | **7** | every page with a closing CTA except `about` |
-| Testimonial slider | **4** | index, about, work-with-us, keynote — each repeating its four quotes four times |
-| Frameworks / IP section | **2** | index, work-with-us (§44) — CSS *and* markup, and its three descriptions are placeholder |
+| Deep Green header | 9 copies | the **default** in `css/site.css`, not an override |
+| Closing switch | 8 | `css/site.css` §10a |
+| Pattern divider | 7 | §10b |
+| Switcher-pattern strip | 5 | §10c |
+| Testimonial slider | 4 | §**14a** — and it must stay there, see below |
 
-**Replacing one testimonial quote is sixteen edits across four files.** Change one copy
-of anything above and they drift apart silently. They belong in `css/site.css`, and the
-lift should happen *before* the real testimonials land — §42, §7 step 2.
+**Two rules that came out of doing it, and both cost a build:**
 
-The frameworks block is the newer and more dangerous one: its three descriptions are
-**drafted placeholders awaiting Oscar's wording**, so it is the single most likely thing
-in the table to be edited, and editing it in one file silently splits the two pages.
-Both copies carry a warning comment.
+- **Order matters more than you expect when lifting.** The testimonial markup carries
+  BOTH `testimonial-grid` and `testimonial-track`, and `.testimonial-grid` sets
+  `display:grid` at the same specificity. Lifted above it, the grid won and the row
+  silently stopped being a marquee. A page's own `<style>` block loads *after*
+  `css/site.css`, so anything moved out of one loses that advantage — **check what
+  else in the stylesheet matches the same element.**
+- **The `font` shorthand resets `font-feature-settings`.** The file sets `font:` on
+  display type in twenty-one places, which is why the case-punctuation rule has to be
+  the LAST thing in `css/site.css` (section 26).
+
+**Still duplicated:** the frameworks / IP section, in `index.html` and
+`work-with-us.html`, CSS *and* markup. Its three descriptions are **drafted
+placeholders awaiting Oscar's wording**, so it is the most likely thing in the repo to
+be edited, and editing it in one file silently splits the two pages. Both copies carry
+a warning comment.
 
 **`css/legal.css` is the one exception and the model for the fix.** The three legal
 pages are the same layout three times, so they share a real stylesheet instead of three
@@ -90,6 +102,10 @@ affected by it.
 
 `hero-sections.html` duplicates the design tokens from `css/site.css` section 2 by hand.
 If the palette moves, it has to be updated manually.
+
+**The font is licensed now** (7 Nov, §45): `assets/fonts/PPFormula-CondensedBold.woff2`
+plus the `.otf`, Pangram Pangram retail v2.000, bought in Oscar's name. The trial is
+deleted. This was the project's last hard launch blocker and it is closed.
 
 ## Copy and content
 
@@ -143,9 +159,9 @@ two omitted pages, twelve of them the "Book the FREE DIAGNOSTIC" CTA. Measured
 `contact.html` (§33) is the template, and `freebie.html`, `detox.html` and
 `diagnostic.html` were done to it:
 
-1. **Deep Green header** — and swap the logo to `primary-detoxgreen.svg` with it. Four
-   pages shipped with `primary-deepgreen.svg`, which is invisible the moment the band
-   darkens. **These two always change together.**
+1. **Deep Green header** — nothing to do, it is the default in `css/site.css` since
+   7 Nov. The logo must stay `primary-detoxgreen.svg`: `primary-deepgreen.svg` is
+   invisible on this band and that shipped on four pages once already.
 2. `<meta name="theme-color" content="#143318">`, not the old `#fbfbf9`.
 3. A hero on the page-title scale with the dot field.
 4. The **switcher-pattern strip** under the hero — not the old text ticker.
@@ -173,8 +189,27 @@ is the client's instruction, not a fallback. Two things about how that is wired:
 **Override the visuals, never flip the attribute.** Flipping it makes the switch rest on
 *Noise*, which is the page arguing the opposite of the homepage. That bug shipped on
 four pages and survived six weeks on `contact.html` because nobody opened the file.
-Copy the override from `index.html`; `.choice-toggle .t-switch::before` **must** keep
-`box-sizing:border-box` or the knob comes out 46px wide in a 42px track.
+
+**The switch IS the logo icon** since 7 Nov (§45) — built from the real subpaths of
+`assets/logo/primary-detoxgreen.svg`, in `css/site.css` §10a, one copy for all eight
+pages, and the preloader (§25) uses the identical build. **Four layers, three static:**
+a capsule, a background-coloured racetrack on top of it, a foreground racetrack inside
+that, and one opaque knob — a disc plus its dot, i.e. the whole O — that translates
+right-to-left by 50.98 viewBox units. The knob covers the track wherever it sits, so
+the far end reads as the D. Nothing mirrors, nothing scales, nothing is ever an empty
+socket. Two earlier attempts (mirroring the D with `scaleX(-1)`; sliding only the dot
+between two permanent cut-outs) were both rejected — don't reinvent either. Layers are
+painted, not cut out, so `--sw-bg` must equal the row's ground and the fill transition
+must stay at `.3s` to match `.toggle-row`. The snap-back in `js/site.js` §3b is 820ms
+because the travel is 520ms; move them together.
+
+**The capital B is forced narrow** by a second `@font-face` in `css/site.css` §1 —
+same file, `unicode-range:U+0042`, `font-feature-settings:"ss01"` as a descriptor. It
+is not a stray override; read the comment before touching it. Never add U+004F or
+U+0044 to that range — the wide O and D are the brand. Adding U+0043/U+0047/U+0051
+(narrowing C G Q) is a live proposal, not a tidy-up: it fixes the guideline's
+two-alternates-per-word cap, which DIAGNOSTIC currently breaks with four, but it is
+the designer's call.
 
 ## Copy rules that bite
 
@@ -183,6 +218,9 @@ Copy the override from `index.html`; `.choice-toggle .t-switch::before` **must**
   `data-success-message`, `aria-label` and `placeholder`. The sweep is complete as of
   2 Nov; the only `—` left anywhere is `<p class="diag-score">—</p>`, which the script
   overwrites.
+- **Hyphens in display type are NOT em dashes and must not be swept.** The licensed
+  font carries `hyphen.case`, raised for capitals and figures, and the `case` feature
+  at the foot of `css/site.css` is what fires it. "20-35%" is correct as typed.
 - **A coloured box in a supplied mockup is a sticky note until proved otherwise.** Six
   of them across three pages turned out to be editing furniture, not design: yellow
   "Maybe visual…" and "Blurb" labels, coral "Leads to contact", and violet selection
@@ -215,7 +253,8 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
 - **The testimonial row's four copies of the same four quotes** (§24) — the track must
   stay wider than the viewport plus one set or the row runs dry at the right edge. Two
   copies broke at 1920. The slide distance is one set, derived from `--tcard` and
-  `--tgap`; change the card count and change the `4` in the keyframe with it.
+  `--tgap`; change the card count and change the `4` in the keyframe with it. The CSS
+  is one copy now (`css/site.css` §14a) but the MARKUP still repeats per page.
 - **The testimonial track's lopsided `30px 0 64px` padding and the slider's matching
   negative margin** (§24) — those are the hover shadow's exact reach above and below the
   card. Trim either and the shadow gets sliced off by `overflow:hidden`; drop the margin
@@ -237,9 +276,11 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
   The looser leading is what gives the ring around "cleanse" a band of clear ground to
   travel through; the ring is drawn behind the letterforms and at `.88` it read as
   disconnected arcs. Tighten it and the ring breaks again.
-- **The hand-wrapped `<i class="od">` in the h1 and the strip's words** (§9, §26) —
-  `site.js` splits on uppercase and this copy is sentence case, so it never matched.
-  Do not "clean up" the wrappers, and re-wrap by hand if the copy changes.
+- ~~The hand-wrapped `<i class="od">` wrappers~~ **ALL 323 DELETED, 7 Nov (§45).** The
+  licensed font carries the wide B C D G O Q as its DEFAULTS, and its `ss01` selects
+  the NARROW forms — the inverse of the trial. Every wrapper was producing the wrong
+  shape. **Do not reintroduce an `.od` class**, and do not apply `ss01` to a whole word
+  to "narrow" something: it widens every other letter at the same time.
 - **The testimonial end-fades being gradient overlays rather than a `mask-image`** (§24)
   — a mask promotes the slider to its own composited layer and macOS Chrome tints it, so
   the whole row read as a paler band. Do not "simplify" it back to a mask.
@@ -255,18 +296,25 @@ These look like mistakes and are deliberate. Each is recorded in the handoff:
 - **The legal pages ending without a pattern divider** (§38) — every other page closes
   into the footer with one. It was left off deliberately: a moving lime marquee above a
   privacy policy is loud. Put to the user, not yet answered.
-- **The dot-grid background on every ivory section** — **not a V1.0 device.** The
-  guideline names exactly two patterns: the logo pattern (merch only, p.37) and the
-  switcher pattern (the website device, p.38). The dot field was invented during this
-  build on 31 Oct and has since spread to five pages. The client's own mockups now draw
-  it, which may mean his designer picked it up from us or arrived at it independently —
-  **unresolved, see `BACKLOG.md` §F.** It is one deletable rule per page.
+- ~~The dot-grid background~~ **GONE, 7 Nov (§45).** The designer confirmed it is not
+  a guideline device and asked for plain cream. Removed from seven pages and
+  `css/legal.css`. `BACKLOG.md` §F is answered. Do not reintroduce it.
 - **`detox.html`'s hero copy being word for word `work-with-us.html`'s** (§30, §41) —
   the overlap is real and it is the client's decision whether The DETOX still has a job.
   Do not resolve it by rewriting one of them.
 - **`detox.html`'s four bare `<article>Testimonial</article>` placeholders** (§41) —
   deliberately NOT a fourth copy of the homepage marquee. They pick up the real slider
   when it is lifted into `css/site.css`.
+- **The header dropping `backdrop-filter` below 850px** (§45) — load-bearing. An
+  element with a backdrop-filter is a containing block AND a filter region for its
+  fixed descendants, and the mobile nav panel is one, so with the filter on the panel
+  is clipped to the 68px header band. The opaque background goes with it.
+- **The case-punctuation rule being the LAST thing in `css/site.css`** (§45) — the
+  `font` shorthand resets `font-feature-settings` and the file uses it on display type
+  twenty-one times. Move the rule up and the raised hyphen silently stops working.
+- **`css/site.css` §14a sitting below section 14** (§45) — the testimonial markup
+  carries both `testimonial-grid` and `testimonial-track` at equal specificity, so
+  order is the only thing making the row a marquee rather than a grid.
 - **The `.ht-foot` overlapping the headline's grid cell, and the 1300/1600 breakpoints**
   (§23) — the subline and CTAs sit in the empty space beside the short last line. That
   only works while the foot is shorter than that line; the two breakpoints are where it
@@ -386,13 +434,19 @@ finally caught.
 
 ### Drive the interactive parts; do not assume them
 
-`js/diagnostic.js` binds to **fourteen classes and one id**, and `js/site.js` opens the
-seven module popups from the `.module` buttons' `data-*`. A visual rework of
-`diagnostic.html` or `detox.html` can break either silently.
+`js/diagnostic.js` binds to **fourteen classes and one id**. A visual rework of
+`diagnostic.html` can break it silently. (The seven-module popup was removed on 7 Nov,
+§45 — the cards on `detox.html` are plain `<article>` elements now and `js/site.js`
+section 2 is gone.)
 
-Click through them headless: answer all seven questions, assert the score, the seven
-module bars, the two friction points and that restart returns to question 1; and open a
-module popup and read its title back.
+Click through it headless: answer all seven questions, assert the score, the seven
+module bars, the two friction points and that restart returns to question 1.
+
+**Also drive, because all four have broken silently at least once:** the closing
+switch (rests on the logo, animates, snaps back), the mobile nav panel (off-screen and
+non-focusable when closed, Escape restores focus), the mobile testimonial stepping —
+**scroll the row into view first, it is started by an IntersectionObserver** and goes
+`0 -> 309 -> 641 -> 951` at 390px — and the forms.
 
 State what you actually verified. "Checked headless at 1512×982" is useful; implying a
 full breakpoint and browser sweep that did not happen is not.

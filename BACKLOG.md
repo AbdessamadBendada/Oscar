@@ -1,10 +1,15 @@
 # OPS DETOX™ — Backlog
 
-_What we are waiting on, and who owns it. Last updated: 2 November 2026._
+_What we are waiting on, and who owns it. Last updated: 7 November 2026._
 
 > **The site is live for review at <https://oscar.bendada.co>.** All eleven pages are on
 > one design system. Everything below is content, decisions or licensing — **none of it
 > is design work.**
+>
+> **7 Nov: the brand designer's review was worked through (HANDOFF §45), and it closed
+> three things on this list** — the Formula Condensed licence, the `css/site.css` lift
+> and the §F dot-grid question. The module-popup copy ask is gone too: the popup was
+> removed.
 
 This is the **ask list**. `HANDOFF.md` is the engineering record — what was built and
 why. If something here is answered, apply it, then delete the line.
@@ -126,7 +131,7 @@ in four tables; the names, providers and durations all come from the actual stac
 | **How many keynotes exist** | `keynote.html` §7 is a placeholder grid. The reference sells five; we know one, *Tracks of Time* | 1 Nov |
 | Copy and photographs for the other keynotes | Same | 1 Nov |
 | **Approved wording for the six About values** | `about.html` — currently filler | Long-standing |
-| Module popup detail copy | `detox.html` | Long-standing |
+| ~~Module popup detail copy~~ | **GONE 7 Nov.** The popup was removed, so there is nowhere for it to go | — |
 | **Real contact details** — address, email, phone | Every footer. Currently Canva placeholders, and the phone is also an A2 legal requirement | Long-standing |
 
 ---
@@ -149,8 +154,8 @@ in four tables; the names, providers and durations all come from the actual stac
 
 | Item | Note |
 |---|---|
-| **Licence Formula Condensed** | The committed font file is the **trial**. Serving it publicly is a licence breach. Single style, webfont tier, bought in Oscar's name. **Hard blocker on launch** |
-| **Lift the shared blocks into `css/site.css`** | Counted 2 Nov: Deep Green header **9**, switch override **8**, pattern divider **7**, testimonial slider **4** (each repeating its quotes 4×, so one quote change = 16 edits). `css/legal.css` is the model. The real testimonials landing is what will break these apart |
+| ~~Licence Formula Condensed~~ | **DONE 7 Nov.** Oscar had already bought it; the file reached us and is installed — PP Formula Condensed Bold v2.000, woff2 + otf, trial deleted. **The last hard launch blocker is closed.** Note the licensed cut carries the brand's wide B C D G O Q as DEFAULTS and its `ss01` is inverted — see HANDOFF §45 before touching display type |
+| ~~Lift the shared blocks into `css/site.css`~~ | **DONE 7 Nov.** Header 9→1 (and it is the default now, not an override), switch 8→1, divider 7→1, strip 5→1, slider 4→1. **1,689 lines deleted.** The frameworks block is still duplicated across `index` and `work-with-us`, CSS *and* markup — that one is left because its copy is still placeholder. Testimonial MARKUP still repeats per page, so a real quote is still 4 edits, not 16 |
 | ~~Rework `detox.html`, `diagnostic.html`, `freebie.html`~~ | **DONE 2 Nov.** All eleven pages are on one system |
 | ~~Settle the nav~~ | **DONE 2 Nov.** One nav, finished pages only. **Still open**: do The DETOX and Audit rejoin it, and does Work With Us replace The DETOX? 16 buttons still point at the two omitted pages |
 | **Safari testing** | Never done. Four builds have shipped broken on Chrome-only checks |
@@ -166,10 +171,29 @@ in four tables; the names, providers and durations all come from the actual stac
   open item on the project.
 - **Where do the frameworks live** — their own section, or folded into the two offers?
   His 29 Oct package breakdown may already answer this; worth confirming he meant it.
-- **The dot-grid background.** Not in the brand guideline — it was invented during this
-  build, and his own mockups now draw it. Establish which came first.
+- ~~The dot-grid background~~ **ANSWERED 7 Nov.** The designer confirmed it is not a
+  guideline device and asked for plain cream. Removed site-wide.
 - **Six values vs three principles** on the About page. Both are on it, two sections apart.
 - **The hero's two drawn marks** — the ring and the strike, removed 28 Oct.
 - **The AI keynote images** show an audience that did not exist. A credibility call.
 - **Oscar's line for the keynote slide** — §27 blanked *"Surviving ≠ Living"*, and he has
   now supplied that same idea as the spine of `keynote.html` §4.
+
+---
+
+## G. Back to the designer
+
+Two things came out of her own review that need her eye before anyone builds further.
+
+| Item | Why |
+|---|---|
+| **Long button labels** | "Book the FREE DIAGNOSTIC" now carries wide D/G/O. She asked to avoid alternates in long buttons — but in the licensed cut those are not alternates, they are the default letterforms. Narrowing them needs `ss01`, which widens every OTHER letter at the same time, so it cannot be applied to a whole label. **Do not rebuild per-letter machinery without asking her** |
+| **Two more icons, if she wants them** | The "what a clean operation feels like" list has six lines and the brand has seven module icons. Four map cleanly; "growth without new headcount" takes Ownership and "two weeks away" repeats Decision, because there is no icon for a company running without its founder. Reusing a module icon for a different meaning would quietly break what that icon means on `detox.html`. Two more in the same style would drop straight in |
+
+---
+
+## H. Ours, and still open (see also §E)
+
+| Item | Note |
+|---|---|
+| **The cut-out edges** | The designer is right that `oscar-cutout.png` is soft around the hair and shoulders — it was generated with the macOS Vision foreground-mask API and auto-mattes always are. **Parked by the user on 7 Nov**; it needs a hand cut from the source, which is hers or a retoucher's job, not a code fix |

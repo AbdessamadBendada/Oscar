@@ -1,6 +1,19 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 3 November 2026_
+_Last updated: 7 November 2026_
+
+> **7 Nov — the brand designer reviewed the site, and her notes were worked through.**
+> Twelve items, and two of them turned out to be much bigger than they looked. The
+> **licensed Formula Condensed went in** — closing the project's last hard launch
+> blocker — and it carries the brand's wide letters as its DEFAULTS, which made the
+> 323 hand-written `<i class="od">` wrappers and the script behind them not just
+> redundant but **backwards**. Separately, **the shared CSS was finally lifted into
+> `css/site.css`**: five blocks that lived in 7-9 copies each, now one copy, **1,689
+> lines deleted**. Also: the closing switch is the real logo icon now and animates the
+> way the guideline draws it, the mobile menu slides in from the right (it had lime
+> links on a near-white panel on **ten of eleven pages**), the dot grid is gone, the
+> numbering is one treatment instead of five, and the seven-module popup was removed.
+> See §45.
 
 > **2–3 Nov — Work With Us was built out to the client's own wireframe order.** Five
 > sections and a move, and **not one word of new copy**: every section's text already
@@ -3895,3 +3908,307 @@ Unchanged from §43, except where noted:
 
 - **The seven modules.**
 - **"From clutter to flow in 3 steps."**
+
+---
+
+## 45. The designer's review, worked through (7 November 2026)
+
+### What this was
+
+The brand's designer reviewed the live site and sent twelve notes. They are her
+words, grouped by page, and they are reproduced in the list below with what was done
+about each. Two of them turned out to be much larger jobs than they read as.
+
+Nothing in this round is new copy, and nothing was invented. Where a note needed a
+decision the client owns, it is still open and listed at the end.
+
+### The two that were bigger than they looked
+
+**1. "Make sure to use the licensed typeface that Oscar bought."**
+
+He had bought it. We did not have the file. It arrived as
+`PP Formula - Alternate.zip` and it is Pangram Pangram's retail PP Formula Condensed
+Bold v2.000 — 619 glyphs against the trial's 482, copyright and vendor records
+intact, and **woff2 included**, which is what a webfont licence ships. The trial that
+had been committed since 6 October is gone. **§9's hard launch blocker is closed.**
+
+Then the surprise. Measured against the trial, the licensed text came out **28-30%
+wider**, which is not something the same typeface should do. The reason:
+
+| | trial | licensed |
+|---|---|---|
+| default `O` | 396 units (narrow) | **949 (wide)** |
+| `O.ss01` | 840 (wide) | **444 (narrow)** |
+
+**The licensed cut is the "Alternate" one, and in it the brand's six wide letters —
+B C D G O Q, the set the guideline draws on p.25 — are the DEFAULT
+letterforms. `ss01` now selects the NARROW alternate.** It is inverted.
+
+The whole site was built the other way round. `js/site.js` §3a walked display type
+and wrapped every O and D in `<i class="od">` to fire `ss01`, and **323 of those
+wrappers existed across the pages**. The moment the licensed font went in, every one
+of them produced the opposite shape: narrow C's and D's, and wide U's where a U had
+been wrapped by hand. All of it is deleted — the wrappers, the CSS and the script
+section. The brand's wide O and D now come free, everywhere, and only on the six
+letters the guideline sanctions.
+
+**This also answered three of her other notes by itself**: the four wrongly widened
+U's in the homepage h1 are gone, "Fewer meetings, fewer reports, faster decisions"
+now gets its wide O and D automatically (it never had them — `site.js` split on
+uppercase `/([OD])/` and that copy is sentence case), and the "no more than two
+alternates per word" cap is moot now that the wide forms are defaults rather than
+alternates.
+
+**The capital B, and the thing the font does that nobody asked for.** Spotted by the
+client on `Book the FREE DIAGNOSTIC`. The Alternate cut ships six round capitals wide
+by default, `ss01` selecting the narrow companion:
+
+| | B | C | D | G | O | Q |
+|---|---|---|---|---|---|---|
+| default | 886 | 936 | 908 | 952 | 949 | 949 |
+| `.ss01` | 438 | 438 | 448 | 445 | 444 | 444 |
+
+**Guideline p.25 is narrower than that**: the wide **O and D** "should always be used
+as key brand details, reflecting the letterforms featured in the logo"; the others are
+optional, "introduced selectively", with **no more than two alternates used within a
+word**. The designer's own note listed the wide set as O, C, D, G, Q. B appears in
+neither — but the font was handing it to us on every capital B on the site.
+
+`ss01` cannot be set globally: it is a full swap, so it would widen A E F R U and
+**narrow the O and D**, which is the brand backwards. It has to be per-character, and
+the old per-letter wrapper machinery is deleted and is not coming back.
+
+So it is done in the font layer: a second `@font-face` over the same file, restricted
+by `unicode-range:U+0042`, with `font-feature-settings:"ss01"` as a **descriptor**.
+The browser resolves B against that face and everything else against the first.
+Measured in the browser, not assumed: B C G Q render 223.4px wide without it and
+105.9px with it, at 60px. A browser that ignores the descriptor just keeps the wide B
+— it degrades to the old behaviour. `css/site.css` §1 carries the full note.
+
+**Still open, and it needs the designer: the two-alternates-per-word cap is broken in
+five words.** With C G Q still wide by default:
+
+| Word | Wide letters | Where |
+|---|---|---|
+| DIAGNOSTIC | **4** — D G O C | seven pages |
+| CONDITIONS | **4** — C D O | terms |
+| OUTCOMES | 3 | index, detox, work-with-us |
+| COOKIE | 3 | cookies |
+| CHOOSE | 3 | keynote |
+
+The clean fix is one line — add `U+0043,U+0047,U+0051` to that unicode-range, leaving
+**only O and D always wide**, exactly as p.25 words it. That would put DIAGNOSTIC at
+two. But it restyles every C, G and Q on the site and it contradicts the list in her
+note, so it is not being done unilaterally.
+
+**Her hyphen and percent note was exactly right.** The licensed file carries
+`hyphen.case`, a hyphen raised to y369-411 so it sits optically centred against
+capitals and figures; the trial had **no case-sensitive punctuation at all**. The
+percent is also redrawn, 638 units against 490. The `case` feature is now on for
+display type and `tnum` for the stats strip, so the four figures share one width.
+
+**A trap worth knowing: the `font` shorthand resets `font-feature-settings`.** This
+file sets `font:` on display type in twenty-one places, so the feature rule has to be
+the LAST thing in `css/site.css`. It is section 26 and it says so.
+
+**What the wider font cost.** Four headings were re-measured in the browser and
+resized: the hero (150 -> 143px), `work-with-us` `.ws-head` (54 -> 46), `keynote`
+`.kp-head` (48 -> 40) and `about` `.ops-lead h2` (56 -> 40, which was already over
+before this). All four are back to three lines. **The hero fold still lands exactly
+on the viewport bottom at 390, 375, 360, 320 and 768** — checked, not assumed.
+
+**2. "Don't use the neon colour on white background" — it was on ten of eleven pages.**
+
+Two offenders, and the second was invisible from a desktop browser:
+
+- `css/site.css`'s `.reason-grid span` set 32px lime numerals on a white card with a
+  `.6px` ink stroke trying to rescue them. §8 recorded this as a live V1.0 violation
+  and §43 claimed it was **closed**. It was not — it had only ever been patched
+  inside `detox.html`. It was live on `about.html`.
+- **The mobile nav panel.** Eight pages set `.site-nav a{color:var(--lime)}` for the
+  Deep Green header, but only `index.html` also darkened the drop-down panel. On the
+  other ten — including the three legal pages through `css/legal.css` — the panel was
+  near-white `--paper` with lime links on it.
+
+Both are fixed, and the whole site was re-audited by walking every element on every
+page and comparing computed text colour against its effective background. Clean at
+1400 and at 390.
+
+### Her notes, and what was done
+
+| Her note | What happened |
+|---|---|
+| "Use the licensed typeface" | Installed. Launch blocker closed. See above |
+| "The hyphen and the percentage are not the original font" | Correct. Fixed by the real font plus the `case` feature |
+| "Only O, C, D, G, Q are on the alternate wide characters" | 323 wrappers deleted, and the capital **B** forced back narrow — it was wide on every page and is on neither her list nor the logo. See below |
+| "FEWER MEETINGS… let's make O and D in alternate character" | Now automatic |
+| "Don't use the neon colour on white background" | Two offenders, ten pages. Fixed and re-audited |
+| "The numbering should always be in a circle" | Five treatments became one. See below |
+| "The animation of the button is not correct… it should be a switch" | Rebuilt from the real logo geometry. See below |
+| "In the last CTA use the original logo icon" | Same item — the closing CTA's switch **is** the logo mark |
+| "The logo in the header should be a little bit bigger" | 134px -> 150px, all eleven pages |
+| "Why this dotted background? Stay with the plain cream colour" | Removed from seven pages plus `css/legal.css` |
+| "The icons bigger, same size as the circle numbers" | 22px tick discs -> 52px real brand icons |
+| "The mobile menu is awful… make it a slider from the right" | Rebuilt. See below |
+| "The edges are blurry, please cut the photo properly" | **Parked by the user.** Not done |
+
+### The numbering: five treatments became one
+
+There were five, and nobody had noticed because no two sat on the same screen:
+
+| Where | Was | Now |
+|---|---|---|
+| Homepage cleanse cards | 52px lime circle | unchanged — this was the standard |
+| Frameworks, index + work-with-us | **44px INVERTED ink circle** | 52px lime circle |
+| About, three principles | 52px lime circle | unchanged |
+| About, six values | **bare lime type on white, no shape** | 52px lime circle |
+| detox.html | **Deep Green PILL** | 52px lime circle |
+
+The standard is a lime disc with a Deep Green numeral, inverting to a Deep Green disc
+with a lime numeral when it sits ON a lime card. That is not an arbitrary pick: **the
+brand's own icon artwork is already a Deep Green glyph in a lime circle**, so the
+numerals and the icons are drawn as one system and are now the same 52px.
+
+### The switch is the real logo icon now
+
+What was there was an approximation — a CSS pill with a hollow ink ring sliding 44px
+across it. Her three complaints were all accurate: it was a ring rather than the
+mark's solid disc, it slid over the pill so it read as a circle coming out from
+behind, and it never resolved into the brand's icon.
+
+It took three attempts, and the two failed ones are worth recording because both
+looked plausible:
+
+1. **The flip.** Split the mark into an O group and a D group, translate the O and
+   mirror the D with `scaleX(-1)`. Rejected on sight — it is a flip, not a switch.
+2. **The shuttling dot.** Keep the logo's two sockets permanently cut out of the pill
+   and slide only the dot between them. Subtler, still wrong: there is always an
+   **empty socket** sitting on the far side, so the mark reads as two holes with a dot
+   running back and forth. The real motion only ever shows one circle.
+
+The actual construction is four layers, three of them static:
+
+| Layer | What it is | Colour |
+|---|---|---|
+| `.t-pill` | the outer capsule, straight from the logo path. Never moves | foreground |
+| `.t-track` | a racetrack drawn on top of it, x 213.56 → 322.10, corner radius **28.78** (the socket radius) | background |
+| `.t-well` | a smaller racetrack inside that, radius **18.35** (the dot radius) | foreground |
+| `.t-knob` | the only moving part: a disc at 28.78 with a dot at 18.35 inside it | background + foreground |
+
+`.t-track` minus `.t-well` leaves a ring-shaped band, and that band is what the eye
+reads as the outline of the O and of the D. The knob is **the whole O — outline and
+dot together — travelling as one piece.**
+
+**The knob is opaque and sits on top, and that is the entire trick.** Wherever it is,
+it covers the track beneath it; wherever it is not, the track's rounded end shows
+through and reads as the D. So one circle slides right to left and the D resolves
+behind it, without anything mirroring, scaling, or coming out from underneath.
+Mid-travel the knob's band and the track's band overlap into the two crescents the
+reference shows.
+
+Travel is **50.98 viewBox units** — the gap between the socket centres, 242.34 to
+293.32. `transform-box:view-box` keeps that in viewBox units so it holds at any
+rendered width. 520ms, ease-in-out, no overshoot. Every number is socket geometry, not
+taste; re-derive all of them if the logo file is replaced.
+
+**The same fix went into the preloader**, which had been carrying attempt 2 since §21
+— both sockets cut out and only the dot moving, leaving an empty socket on screen for
+the whole animation. Preloader and switch are now the same four layers.
+
+**The layers are painted, not cut out**, because the knob has to be opaque to cover
+the track. That means `--sw-bg` has to match the row's own ground exactly. It does,
+and the fill transition is `.3s ease` to match `.toggle-row`'s `background .3s ease`
+so the two never drift apart. Both grounds are flat, so this is safe — but if the row
+ever gains a gradient or an image this breaks and the mark has to go back to real
+holes.
+
+`js/site.js` §3b snaps the row back to Clarity. That delay was **350ms against a
+520ms travel**, so the knob only got ~45% across and the whole thing read as a wobble.
+It is now 820ms — the full crossing plus a 300ms hold. Change it with the duration.
+
+`aria-pressed="true"` is still the resting state and still means clarity. Driven on
+all eight pages: rests on the real logo, animates, snaps back to the logo.
+
+### The mobile menu
+
+A panel sliding in from the right: `min(82vw,340px)`, Deep Green ground, lime links,
+a scrim over the page, body scroll locked, links staggering in behind the panel.
+Closes on a link tap, on the scrim, on Escape (returning focus to the toggle) and on
+resize past 850px. Reduced motion gets the panel without the travel.
+
+**One real trap, and it cost a build.** The panel is a fixed-position child of
+`.site-header`, and the header carried `backdrop-filter`. An element with a
+backdrop-filter establishes a containing block **and a filter region** for its
+descendants, so the panel was clipped to the 68px header band — the links laid out
+down the full height of the screen but only the top 68px painted. The header now
+drops `backdrop-filter` at mobile widths, and goes fully opaque with it. If that line
+is ever removed, the panel breaks again.
+
+### The CSS lift, finally
+
+§7 step 1, `BACKLOG.md` §E and AGENTS.md had all been asking for this since 31
+October. Her notes made it a prerequisite rather than a nice-to-have: six of them are
+"across the website", and without the lift the new switch would have been built eight
+separate times.
+
+Every block was checked for drift first. They were byte-identical apart from
+whitespace, so all of it was a clean lift:
+
+| Block | Copies | Now |
+|---|---|---|
+| Deep Green header | **9** | 1 — and it is the DEFAULT now, not an override |
+| Closing switch override | **8** | 1 |
+| Pattern divider | **7** | 1 |
+| Switcher-pattern strip | **5** | 1 |
+| Testimonial slider | **4** | 1 |
+
+The header was the neat one: `css/site.css` painted it Soft Ivory and then all eleven
+pages overrode it back to Deep Green. Making Deep Green the default **deleted** nine
+copies rather than consolidating them.
+
+**One regression, caught by driving the page rather than reading it.** The testimonial
+markup carries BOTH classes — `<div class="testimonial-grid testimonial-track">` —
+and `.testimonial-grid` sets `display:grid` at the same specificity. Lifting
+`.testimonial-track` into `css/site.css` put it ABOVE that rule, so the grid started
+winning: the row rendered as a two-column grid, cards came out 1097px wide instead of
+304, and the mobile stepping had nothing to step. It only ever worked because each
+page's own `<style>` block loads after the stylesheet. The block is section **14a**
+now, below section 14, and the comment says why it must stay there. Verified back to
+`0 -> 309 -> 641 -> 951` at 390px, which is §44's own recorded sequence.
+
+### What was verified
+
+Driven over CDP with the cache disabled and the preloader removed:
+
+- **All eleven pages at twelve viewports** — 1680, 1440, 1280, 1180, 1024, 834, 768,
+  430, 390, 375, 360, 320. No horizontal overflow, no console errors, no page
+  exceptions, no failed requests.
+- **Shape asserted, not just presence**: exactly one `body > header`, one
+  `body > footer`, one `.footer-grid`, one nav; and **zero** of the things that were
+  removed — no modal, no `.od`, no module buttons, no dot-field painting anywhere.
+- **Tag balance** on all eleven pages and all six `playground/` files: nothing
+  unclosed, nothing stray.
+- **The diagnostic end to end**: seven questions, score, verdict, seven module bars,
+  two friction points named, restart returns to question 1.
+- **Forms** on contact, freebie and the footer newsletter: errors on empty, success
+  state on valid.
+- **The switch on all eight pages** that carry it, and the **mobile testimonial
+  stepping on all four**.
+- **The mobile menu** on five pages: parked off-screen and non-focusable when closed,
+  Deep Green with lime links when open, scroll locked, Escape restores everything.
+
+Not done, and unchanged from before: **Safari has still never been tested**, and
+there is no WebKit automation on this machine.
+
+### Still open after this
+
+1. **The cut-out edges.** Her note was right — `oscar-cutout.png` was generated with
+   the macOS Vision foreground-mask API and auto-mattes are soft around hair and
+   shoulders. **The user parked it deliberately**; it needs a hand cut from the source.
+2. **Long button labels.** "Book the FREE DIAGNOSTIC" now carries wide D/G/O by
+   default. She asked to avoid alternates in long buttons — but they are not
+   alternates any more, they are the font. Narrowing them needs `ss01`, which widens
+   every OTHER letter at the same time, so it cannot be applied to a whole label.
+   **Put this in front of her before anyone rebuilds per-letter machinery.**
+3. Everything in §44's list that is copy, photography, platforms or legal. None of it
+   moved today.

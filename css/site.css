@@ -15,7 +15,7 @@
    10. Editorial grid sections
    11. Process / steps
    12. Outcomes (dark panel)
-   13. Seven modules + modal
+   13. Seven module cards
    14. Testimonials
    15. About
    16. Lists (for / not for / feels like)
@@ -31,11 +31,70 @@
    ============================================================ */
 
 /* ---------- 1. Fonts ---------- */
+/* LICENSED, 7 Nov 2026. This is Pangram Pangram's retail PP Formula
+   Condensed Bold v2.000 (619 glyphs, copyright and vendor records intact),
+   bought by Oscar. It replaced the 482-glyph trial that had been committed
+   since 6 October, which was the project's last hard launch blocker.
+
+   woff2 first and otf as the fallback: woff2 is 45KB against the otf's 93KB
+   and every browser this site supports reads it.
+
+   The retail file is not just a licence swap — some glyphs are redrawn. The
+   percent is 638 units wide against the trial's 490, and the retail font
+   adds hyphen.case, a hyphen raised to y369-411 so it sits optically centred
+   against capitals and figures. The trial had no case-sensitive punctuation
+   at all, which is what made "20-35%" in the stats strip look wrong to the
+   designer. See the `case` feature on display type below. */
+/* woff2 only, deliberately. The licence pack also ships an .otf and it used
+   to be listed here as a fallback, but this repo is public and the .otf is
+   the DESKTOP install of a paid Pangram Pangram licence — not ours to
+   redistribute. It is gitignored. woff2 has been supported by every browser
+   since 2016, so the fallback never fired anyway. Do not add it back. */
 @font-face{
   font-family:Formula;
-  src:url('../assets/fonts/FormulaCondensed-Bold.otf') format('opentype');
+  src:url('../assets/fonts/PPFormula-CondensedBold.woff2') format('woff2');
   font-weight:700;
   font-display:swap;
+}
+/* THE CAPITAL B IS FORCED BACK TO ITS NARROW FORM. Read this before deleting
+   it — it looks like a stray override and it is not.
+
+   The licensed cut is PP Formula Condensed Bold "Alternate", in which the six
+   round capitals are WIDE by default and ss01 selects the narrow companion:
+
+     B 886/438   C 936/438   D 908/448   G 952/445   O 949/444   Q 949/444
+
+   The guideline (V1.0 p.25) says the wide O and D "should always be used as
+   key brand details, reflecting the letterforms featured in the logo", and
+   that the others are optional — "introduced selectively". The designer's
+   review then listed the wide set as O, C, D, G, Q. B is in neither the logo
+   nor her list, but the font was giving it to us on every single capital B
+   on the site, unasked. "Book the FREE DIAGNOSTIC" is where it was spotted.
+
+   ss01 cannot be set globally — it is a full swap, so it would also widen
+   A E F R U and NARROW the O and D, which is the opposite of the brand. It
+   has to be per-character, and the old way of doing that was wrapping every
+   letter in markup. That machinery is gone and is not coming back.
+
+   This does it in the font layer instead: a second @font-face over the same
+   file, restricted by unicode-range to U+0042, with ss01 turned on as a
+   DESCRIPTOR. Chrome resolves B against this face and every other character
+   against the one above. Verified in the browser, not assumed: B C G Q
+   measure 223.4px wide without it and 105.9px with it, at 60px.
+
+   If a browser ignores the font-feature-settings descriptor the B simply
+   stays wide — it degrades to today's behaviour, nothing breaks.
+
+   To bring B back, delete this block. To narrow C, G or Q as well, add their
+   codepoints (U+0043, U+0047, U+0051) — but that is the designer's call, not
+   a tidy-up. Never add U+004F or U+0044. */
+@font-face{
+  font-family:Formula;
+  src:url('../assets/fonts/PPFormula-CondensedBold.woff2') format('woff2');
+  font-weight:700;
+  font-display:swap;
+  unicode-range:U+0042;
+  font-feature-settings:"ss01";
 }
 @font-face{
   font-family:Inter;
@@ -86,11 +145,18 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 body.is-locked{overflow:hidden}
+/* Set on <html> by js/site.js §1 while the mobile nav panel is open. It
+   locks the page behind the panel and shows the scrim — see the mobile nav
+   block in section 23. */
+.nav-open,.nav-open body{overflow:hidden}
 a{color:inherit}
 img{display:block;max-width:100%}
 h1,h2,h3,p{margin:0}
 h1,h2,h3{line-height:1.05;text-transform:uppercase}
 h1,h2{font-family:var(--display);letter-spacing:.03em}
+
+/* Display type also takes the font's case-sensitive punctuation. That rule
+   has to be the LAST thing in this file — see section 24 at the foot. */
 /* Headings are sized to land in 3 lines or fewer. The measure (ch) is the
    lever: a tight max-width on display type turns a sentence into a word
    ladder, so keep these generous and let the type scale down instead. */
@@ -130,30 +196,66 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 .body-copy{color:var(--muted);font-size:15px}
 .body-copy p+p{margin-top:20px}
 
-/* ---------- 5. Header + mobile nav ---------- */
+/* ---------- 5. Header + mobile nav ----------
+   THE HEADER IS DEEP GREEN ON EVERY PAGE.
+
+   This rule used to paint a Soft Ivory header, and all eleven pages then
+   overrode it back to Deep Green in their own <style> blocks — eight site
+   pages plus css/legal.css for the other three. The nine copies were
+   identical apart from whitespace, so on 7 Nov the override became the
+   default here and every copy was deleted.
+
+   Detox Green on Deep Green is the one pairing the guideline sanctions
+   (V1.0 p.21). It is what lets the lime logo, the lime nav and the lime pill
+   CTA all sit legally on this band.
+
+   The logo must stay primary-detoxgreen.svg. primary-deepgreen.svg is
+   invisible the moment the band darkens, and that shipped on four pages once
+   already — the two always change together.
+
+   backdrop-filter stays even though an opaque background makes the blur a
+   no-op: it makes the header a containing block for fixed-position
+   descendants, and the mobile nav panel is one. Remove it and the panel
+   moves. */
 .site-header{
   height:var(--header-h);display:flex;align-items:center;
-  border-bottom:1px solid var(--rule);
-  background:rgba(254,253,242,.94);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(204,254,6,.22);
+  background:var(--ink);backdrop-filter:blur(12px);
   position:sticky;top:0;z-index:20;
 }
+/* Opaque is the fallback. Where the blur actually works the band goes
+   slightly translucent so content passing under it stays legible as a hint
+   of movement rather than disappearing at a hard edge. Every one of the nine
+   deleted copies carried this, so it is not an extra — keep the pair. */
+@supports(backdrop-filter:blur(1px)){
+  .site-header{background:rgba(20,51,24,.94)}
+}
 .header-inner{display:flex;align-items:center;justify-content:space-between;gap:32px}
-.brand{width:134px;flex:none}
+/* 150px, up from 134px on 7 Nov. Designer: "the logo in the header should
+   be a little bit bigger, not too much." The lockup is 622x193, so 150px
+   wide is 46.6px tall inside a 78px header (68px on mobile) and keeps the
+   p.13 clear space either side. */
+.brand{width:150px;flex:none}
 .site-nav{display:flex;gap:28px}
+.site-nav a{color:var(--lime)}
 .site-nav a[aria-current="page"]{text-decoration:underline;text-underline-offset:5px}
 .nav-toggle{
-  display:none;border:1px solid var(--ink);background:transparent;border-radius:var(--r-pill);
+  display:none;border:1px solid var(--lime);background:transparent;border-radius:var(--r-pill);
   width:44px;height:40px;padding:0;place-items:center;cursor:pointer;
 }
-.nav-toggle i{display:block;width:18px;height:1.5px;background:var(--ink);position:relative}
+.nav-toggle i{display:block;width:18px;height:1.5px;background:var(--lime);position:relative}
 .nav-toggle i::before,.nav-toggle i::after{
-  content:'';position:absolute;left:0;width:18px;height:1.5px;background:var(--ink);transition:.2s ease;
+  content:'';position:absolute;left:0;width:18px;height:1.5px;background:var(--lime);transition:.2s ease;
 }
 .nav-toggle i::before{top:-5px}
 .nav-toggle i::after{top:5px}
 .nav-toggle[aria-expanded="true"] i{background:transparent}
 .nav-toggle[aria-expanded="true"] i::before{top:0;transform:rotate(45deg)}
 .nav-toggle[aria-expanded="true"] i::after{top:0;transform:rotate(-45deg)}
+/* A Deep Green pill disappears on a Deep Green header, so the header CTA
+   takes the lime fill. The same swap site.css already makes inside .on-dark. */
+.site-header .header-cta{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+.site-header .header-cta:hover{background:transparent;color:var(--lime);border-color:var(--lime)}
 
 /* ---------- 6. Buttons + links ----------
    Guideline V1.0 p.29 specifies the pair exactly: the primary is a Detox
@@ -176,8 +278,9 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
   transition:transform .2s ease,background .2s ease,color .2s ease,box-shadow .2s ease;
 }
 /* The arrows belong to the old editorial system; the book's buttons carry
-   none. The .od-run wrapper is also a span, so it has to be spared. */
-.button span:not(.od-run){display:none}
+   none. This used to be `span:not(.od-run)` because the wide-O/D wrapper
+   emitted a span here too; that machinery was deleted on 7 Nov (§9a). */
+.button span{display:none}
 .button:hover{background:var(--ink);color:var(--lime);transform:translateY(-2px);box-shadow:var(--shadow)}
 /* Secondary: Deep Green pill, Detox Green type. */
 .button--line{background:var(--ink);color:var(--lime);border-color:var(--ink)}
@@ -296,15 +399,35 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 .trust-logos{display:grid;grid-template-columns:repeat(4,1fr);margin-top:28px}
 .trust-logos span{font:40px var(--display);color:#aab2aa}
 
-/* ---------- 9a. Wide O and D ----------
+/* ---------- 9a. Wide O and D — NOTHING TO DO HERE ANY MORE ----------
    V1.0 p.25: "The wider O and D should always be used as key brand details,
-   reflecting the letterforms featured in the logo." They are the ss01
-   alternates. The feature cannot be set on a whole heading — ss01 swaps every
-   letter that has an alternate and the condensed character is lost. So js
-   wraps each O and D individually and only those glyphs get the feature. */
-.od{font-style:normal;font-feature-settings:"ss01";font-variant-alternates:styleset(ss01)}
-/* Holds a split text run together inside a flex/grid parent. */
-.od-run{display:inline;white-space:pre-wrap}
+   reflecting the letterforms featured in the logo."
+
+   Until 7 Nov this was built by hand: js/site.js walked display type, wrapped
+   every O and D in <i class="od">, and that element alone got
+   font-feature-settings:"ss01". 323 of those wrappers existed across the
+   pages. All of it is gone, because the LICENSED font makes it unnecessary.
+
+   The licensed cut is PP Formula Condensed Bold "Alternate", and in it the
+   six brand letters are the DEFAULT forms:
+
+       B  C  D  G  O  Q     wide by default
+       everything else      normal, with a wide form available under ss01
+
+   which is exactly the set the guideline draws on p.24. So the brand's wide
+   O and D now come free, on every page, in every size, and only on the six
+   letters the guideline sanctions.
+
+   ss01 IS INVERTED BETWEEN THE TWO FILES, and this is the trap. In the trial
+   the default O was 396 units and O.ss01 was 840 — ss01 meant "wide". In the
+   licensed file the default O is 949 and O.ss01 is 444 — ss01 now means
+   "NARROW". Every one of those 323 wrappers was therefore making its letter
+   the wrong shape the moment the licensed font was installed: narrow C's and
+   D's, and wide U's where U was wrapped by hand.
+
+   DO NOT reintroduce an .od class. If a specific run ever needs the narrow
+   forms, that is what ss01 does now — but it widens every other letter at
+   the same time, so it cannot be applied to a whole word casually. */
 
 /* ---------- 9b. Brand components (from the book) ---------- */
 
@@ -365,12 +488,278 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 .toggle-row[aria-pressed="true"] .t-switch::before{transform:translateX(44px)}
 .toggle-row:focus-visible .t-switch{box-shadow:0 0 0 5px rgba(20,51,24,.18)}
 
+/* ---------- 10a. The closing Noise / Clarity switch ----------
+   LIFTED 7 Nov. This block was copied verbatim into seven pages' own
+   <style> blocks — index, about, work-with-us, contact, freebie, detox and
+   diagnostic. All seven were identical, so they now share this one.
+
+   READ THIS BEFORE CHANGING THE STATE LOGIC.
+
+   aria-pressed="true" is the RESTING state. js/site.js snaps the toggle
+   back to it 350ms after a click, so Clarity must rest lit. Only the
+   VISUALS are flipped here, never the attribute: flipping the attribute
+   makes the switch rest on Noise, which is the page arguing the opposite of
+   itself. That bug shipped on four pages and survived six weeks on
+   contact.html because nobody opened the file. */
+.choice-toggle[aria-pressed="true"] .t-before{opacity:1}
+.choice-toggle[aria-pressed="true"] .t-after{opacity:.35}
+.choice-toggle[aria-pressed="false"] .t-before{opacity:.35}
+.choice-toggle[aria-pressed="false"] .t-after{opacity:1}
+
+/* ---------- The switch IS the logo icon ----------
+   REBUILT 9 Nov, third time, against the designer's reference. Her note was
+   "the animation of the button is not correct. It should be a switch, moving
+   from right to left. The circle should not appear from behind."
+
+   TWO EARLIER ATTEMPTS WERE WRONG. Read this before touching it.
+
+   Attempt 1 split the mark into an O group and a D group, translated the O
+   and mirrored the D with scaleX(-1). That is a flip, not a switch.
+
+   Attempt 2 kept the logo's two sockets permanently cut out of the pill and
+   slid only the lime dot between them. That is subtler but still wrong: it
+   means there is always an EMPTY socket sitting on the far side, so the mark
+   reads as two holes with a dot shuttling between them. The real motion has
+   only ever one circle visible.
+
+   HOW IT ACTUALLY WORKS — four layers, three of them static:
+
+     .t-pill   the outer capsule. Solid foreground. Never moves.
+     .t-track  a racetrack in the row's BACKGROUND colour, drawn on top of
+               the pill. It spans both socket centres: x 213.56 to 322.10,
+               corner radius 28.78 — the exact socket radius.
+     .t-well   a smaller racetrack in the FOREGROUND colour inside it, radius
+               18.35 — the exact dot radius. .t-track minus .t-well leaves a
+               ring-shaped band, which is what the eye reads as the outline
+               of the O and of the D.
+     .t-knob   the only moving part: a background-coloured disc at the socket
+               radius with a foreground dot inside it. In other words, the
+               whole O — its outline AND its dot — travelling as one piece.
+
+   The knob is OPAQUE and sits on top, and that is the entire trick. Wherever
+   it is, it covers the track beneath it; wherever it is not, the track's
+   rounded end shows through and reads as the D. So one circle slides right
+   to left and the D appears to resolve behind it, without anything ever
+   mirroring, scaling, or emerging from underneath. Mid-travel the knob's
+   band and the track's band overlap into the two crescents the reference
+   shows.
+
+   At rest the knob is left: circle in the O, curved end on the right — the
+   real logo. Switched off it is right: 50.98 units across, the exact gap
+   between the socket centres (242.34 to 293.32), and the mark reads
+   mirrored. 520ms, ease-in-out, no overshoot, no bounce back.
+
+   transform-box:view-box keeps the 50.98 in viewBox units, so it holds at
+   any rendered width. Re-derive every number above from the artwork if the
+   logo file is ever replaced — they are all socket geometry, not taste.
+
+   aria-pressed="true" is CLARITY and is the resting state. Never flip the
+   attribute to change the look — see the note above. */
+.choice-toggle .t-switch{
+  width:92px;height:53px;padding:0;
+  background:none;border:0;box-shadow:none;
+  display:block;
+}
+.choice-toggle .t-switch::before{content:none}
+.t-mark{display:block;width:100%;height:100%;overflow:hidden}
+
+/* The row itself inverts — lime ground with Deep Green type at rest, Deep
+   Green ground with lime type when pressed — so a fixed-colour mark would
+   vanish into one of the two states. The first build painted the capsule
+   lime and it disappeared completely against the resting lime row.
+
+   The layers are PAINTED, not cut out, because the knob has to be opaque to
+   cover the track. So --sw-bg must match the row's own ground exactly. Both
+   grounds are flat, so this is safe — but if the row ever gains a gradient
+   or an image, this breaks and the mark has to go back to real holes. */
+.choice-toggle{--sw-fg:var(--ink);--sw-bg:var(--lime)}
+.choice-toggle[aria-pressed="false"]{--sw-fg:var(--lime);--sw-bg:var(--ink)}
+.t-pill,.t-well,.t-dot{fill:var(--sw-fg)}
+.t-track,.t-ring{fill:var(--sw-bg)}
+.t-pill,.t-well,.t-dot,.t-track,.t-ring{transition:fill .3s ease}
+.t-knob{
+  transform-box:view-box;
+  transition:transform .52s cubic-bezier(.65,0,.35,1);
+}
+
+/* Resting: the real logo — the circle is in the O. */
+.choice-toggle[aria-pressed="true"] .t-knob{transform:none}
+/* Noise: switched off — the circle has travelled to the far socket. */
+.choice-toggle[aria-pressed="false"] .t-knob{transform:translateX(50.98px)}
+
+@media(prefers-reduced-motion:reduce){
+  .t-knob{transition:none}
+}
+
 /* Section-break pattern — V1.0 p.38, the one device the guideline names for
    the website specifically. */
 .pattern-break{
   height:120px;
   background:url('../assets/patterns/section-break.png') center/cover no-repeat;
 }
+
+/* ---------- 10b. Pattern divider, rebuilt in CSS ----------
+   LIFTED 7 Nov from seven pages — index, work-with-us, keynote, contact,
+   freebie, detox and diagnostic — which carried byte-identical copies.
+   about.html is the one page with a closing CTA that does not use it.
+
+   Replaces the stretched section-break.png above the footer. Same bar
+   language as the strip under the hero, but bars only — no words — and two
+   rows running opposite ways.
+
+   Same loop rule as every other marquee here: four copies, a step of -25%,
+   spacing as margin-LEFT so nothing trails the last flex item, and the
+   nth-child cycle is 6n — one copy — so all four copies are identical.
+   Break any of those and it jumps once a cycle (§24, §26). */
+.pb{
+  background:var(--ink);
+  padding:18px 0 20px;
+  display:grid;gap:14px;
+  overflow:hidden;
+}
+.pb-row{overflow:hidden}
+/* Each row travels the way its bars point. The gradient tail reads as the
+   trail behind the bar, so a bar lit at its right end has to move right —
+   lit at the left end, left. Built the other way round first and both rows
+   looked like they were sliding backwards. */
+.pb-track{display:flex;width:max-content;animation:pb-right 46s linear infinite}
+.pb-row--b .pb-track{animation:pb-left 62s linear infinite}
+@keyframes pb-left{from{transform:none}to{transform:translateX(-25%)}}
+@keyframes pb-right{from{transform:translateX(-25%)}to{transform:none}}
+
+.pb-bar{
+  flex:none;height:34px;margin-left:34px;
+  border-radius:var(--r-pill);
+  background:linear-gradient(90deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+}
+/* The artwork's bars run short, long and very long. Widths cycle on 6n so
+   every copy matches. */
+.pb-bar:nth-child(6n+1){width:300px}
+.pb-bar:nth-child(6n+2){width:470px;margin-left:46px}
+.pb-bar:nth-child(6n+3){width:190px;margin-left:28px}
+.pb-bar:nth-child(6n+4){width:380px;margin-left:40px}
+.pb-bar:nth-child(6n+5){width:560px;margin-left:30px}
+.pb-bar:nth-child(6n+6){width:240px;margin-left:52px}
+/* Row B's bars are lit from the other end, as they are in the artwork. */
+.pb-row--b .pb-bar{
+  background:linear-gradient(270deg,rgba(204,254,6,0) 0%,rgba(204,254,6,.5) 45%,var(--lime) 86%);
+}
+
+@media(max-width:850px){
+  .pb{padding:14px 0 16px;gap:10px}
+  .pb-bar{height:26px;margin-left:22px}
+  .pb-bar:nth-child(6n+1){width:170px}
+  .pb-bar:nth-child(6n+2){width:250px;margin-left:28px}
+  .pb-bar:nth-child(6n+3){width:120px;margin-left:18px}
+  .pb-bar:nth-child(6n+4){width:210px;margin-left:24px}
+  .pb-bar:nth-child(6n+5){width:300px;margin-left:20px}
+  .pb-bar:nth-child(6n+6){width:150px;margin-left:32px}
+}
+@media(prefers-reduced-motion:reduce){
+  .pb-track{animation:none}
+}
+
+/* ---------- 10c. The switcher pattern strip ----------
+   LIFTED 7 Nov from five pages — index, contact, freebie, detox and
+   diagnostic — which carried byte-identical copies.
+   The switcher pattern from V1.0 p.38 rebuilt as live CSS rather than a
+   PNG, so the bars can carry the ticker's words and move. Each bar is a
+   pill with the pattern's own gradient — dark at the tail, full Detox
+   Green where the word sits, so the type always lands on solid lime and
+   stays legible (Deep Green on Detox Green, the sanctioned pairing).
+
+   The loop uses margins on the bars rather than a flex `gap`, which is
+   what makes it exact: the track holds four copies and translates by
+   -25%, so copy 2 lands precisely where copy 1 began. With `gap` the
+   spacing between copies would not be part of the 25% and the seam would
+   drift — the trap §24 records on the testimonial row.
+
+   One row. It runs left to right, the reverse of the original ticker it
+   replaced.
+
+   It is locked to --ticker-h, the token the hero subtracts from the
+   viewport to put the fold exactly under this strip (§5). Letting it take
+   its natural height would break that promise on every page, so the bars
+   are centred inside the fixed height instead. */
+/* The strip's height IS --ticker-h, the token the hero subtracts from the
+   viewport to land the fold under it (§5). So giving the bars more room
+   means raising the token, not padding the strip — pad it and the hero
+   stops reaching the fold. 46px was the old text ticker's height and left
+   the pills flush against both edges. */
+:root{--ticker-h:92px}
+.pt-strip{
+  background:var(--ink);
+  height:var(--ticker-h);
+  display:grid;align-content:center;
+  padding:0;
+  overflow:hidden;
+}
+.pt-row{overflow:hidden}
+.pt-track{
+  display:flex;width:max-content;
+  animation:pt-slide 42s linear infinite;
+  will-change:transform;
+}
+/* Runs left to right. The track starts one copy to the left and ends at
+   zero, so the motion is the reverse of the ticker above it — the two
+   strips pull against each other instead of reading as one band. */
+@keyframes pt-slide{from{transform:translateX(-25%)}to{transform:none}}
+
+.pt{
+  flex:none;
+  /* margin-LEFT rather than margin-right, so no margin can end up
+     trailing the last flex item where it might be dropped from the
+     track's max-content width. Measured after the change: the track is
+     8850.88px and one copy is 2212.72px, exactly a quarter, so the -25%
+     step lands precisely on the next copy.
+
+     A long tail and a short head: the word sits in the right-hand third,
+     where the bar is flat Detox Green, so Deep Green type always lands on
+     solid lime. In the artwork the bar fades up out of the ground over
+     most of its length — that tail is the shape, not decoration. */
+  padding:12px 34px 10px 120px;
+  margin-left:34px;
+  border-radius:var(--r-pill);
+  background:linear-gradient(90deg,
+    rgba(204,254,6,0) 0%,
+    rgba(204,254,6,.18) 26%,
+    rgba(204,254,6,.55) 48%,
+    rgba(204,254,6,.92) 64%,
+    var(--lime) 72%);
+  color:var(--ink);
+  font:18px/1 var(--display);
+  letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
+}
+/* The artwork's bars are not a regular rhythm — they run short, long and
+   very long. The tail and the gap cycle on nth-child to break the grid
+   the equal-width version fell into.
+
+   THE CYCLE MUST BE 6n — one copy of the word list. The first build mixed
+   3n and 4n; 4 does not divide the 6 bars in a copy, so copy 1 and copy 2
+   got different tails, the copies stopped being identical and the loop
+   jumped once per cycle. If a word is added or removed, this 6 changes
+   with it. */
+.pt:nth-child(6n+1){padding-left:190px;margin-left:22px}
+.pt:nth-child(6n+2){padding-left:96px;margin-left:48px}
+.pt:nth-child(6n+3){padding-left:150px;margin-left:34px}
+.pt:nth-child(6n+4){padding-left:118px;margin-left:28px}
+.pt:nth-child(6n+5){padding-left:212px;margin-left:26px}
+.pt:nth-child(6n+6){padding-left:104px;margin-left:42px}
+
+@media(max-width:850px){
+  :root{--ticker-h:74px}
+  .pt{font-size:14px;padding:9px 22px 7px 64px;margin-left:18px}
+  .pt:nth-child(6n+1){padding-left:88px;margin-left:14px}
+  .pt:nth-child(6n+2){padding-left:52px;margin-left:24px}
+  .pt:nth-child(6n+3){padding-left:74px;margin-left:18px}
+  .pt:nth-child(6n+4){padding-left:60px;margin-left:16px}
+  .pt:nth-child(6n+5){padding-left:96px;margin-left:14px}
+  .pt:nth-child(6n+6){padding-left:56px;margin-left:22px}
+}
+@media(prefers-reduced-motion:reduce){
+  .pt-track{animation:none}
+}
+
 
 /* Icon in a Deep Green circle — p.26. */
 .icon-circle{
@@ -410,6 +799,7 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 }
 .problem-portrait img{width:100%;height:100%;object-fit:cover;object-position:center 35%}
 
+
 /* ---------- 11. Process / steps ----------
    Cards, not hairline columns: the step number rides in a lime pill,
    matching the numbered bullets on p.15 of the book. */
@@ -436,12 +826,37 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 /* The free entry point leads, so it takes the Detox Green ground. */
 .cleanse-card--lime{background:var(--lime);color:var(--ink)}
 
-.cleanse-num{
-  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+/* ---------- Numbered circles — ONE treatment, site-wide ----------
+   Designer, 7 Nov: "the numbering should always be in a circle", and
+   "don't use the neon colour on white background".
+
+   There were FIVE different treatments before this: a 52px lime circle on
+   the homepage cleanse cards, a 44px INVERTED ink circle on the frameworks
+   cards, a 52px lime circle on the About principles, bare 32px LIME TYPE ON
+   WHITE in .reason-grid (V1.0 p.21's own watchout, live on about.html), and
+   a Deep Green PILL on detox.html. They now all share this.
+
+   The standard is a lime disc with a Deep Green numeral, which is also what
+   the brand's own icon artwork does — every file in 5_ICONS is a Deep Green
+   glyph in a lime circle. The numerals and the icons are meant to read as
+   the same object, which is why they are the same 52px.
+
+   The disc inverts to Deep Green with a lime numeral when it sits ON a lime
+   card, because a lime disc on lime would disappear.
+
+   NOTE a lime disc on a white card is NOT the watchout. p.21 is about Detox
+   Green TYPE on white; here the type is Deep Green sitting on Detox Green,
+   which is the one sanctioned pairing, and the disc is a graphic. */
+.cleanse-num,.fw-mark,.prin-num,.reason-grid span{
+  width:52px;height:52px;flex:none;border-radius:50%;
+  display:grid;place-items:center;
   background:var(--lime);color:var(--ink);
   font:20px/1 var(--display);letter-spacing:.04em;
+  -webkit-text-stroke:0;
 }
-.cleanse-card--lime .cleanse-num{background:var(--ink);color:var(--lime)}
+.cleanse-card--lime .cleanse-num,
+.frameworks-grid article:first-child .fw-mark,
+.prin-card:first-child .prin-num{background:var(--ink);color:var(--lime)}
 
 /* Two chip rows are reserved so a card whose chips wrap keeps its heading
    on the same line as the others. */
@@ -570,10 +985,17 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
   transition:transform .2s ease,background .2s ease;
 }
 .stat-grid article:hover{transform:translateY(-3px);background:rgba(255,255,255,.12)}
-.stat-grid strong{font:clamp(48px,4.5vw,70px)/1 var(--display);color:var(--lime)}
+/* font-feature-settings is declared here and NOT only in the display-type
+   block near the top, because the `font` shorthand resets it to normal —
+   so a shorthand further down the file silently undoes it. Any rule that
+   sets `font:` on display type has to restate the features. */
+.stat-grid strong{
+  font:clamp(48px,4.5vw,70px)/1 var(--display);color:var(--lime);
+  font-feature-settings:"case" 1,"tnum" 1;
+}
 .stat-grid p{font-size:13px;line-height:1.5;max-width:22ch;margin-top:12px;color:rgba(255,255,255,.85)}
 
-/* ---------- 13. Seven modules + modal ---------- */
+/* ---------- 13. Seven module cards ---------- */
 .system{padding:115px 0;background:var(--panel)}
 .system-intro{display:flex;justify-content:space-between;align-items:end;gap:60px;margin-bottom:48px}
 .system-intro p{max-width:42ch;color:var(--muted);font-size:15px}
@@ -581,47 +1003,26 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
    exactly as the icons are presented on p.26 — not a hairline grid. */
 .module-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .module{
-  background:var(--paper);border:0;cursor:pointer;border-radius:var(--r-card);
+  background:var(--paper);border:0;border-radius:var(--r-card);
   padding:28px 26px 26px;min-height:208px;text-align:left;color:var(--ink);
   display:flex;flex-direction:column;font-family:var(--sans);
   box-shadow:var(--shadow);
   transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
 }
 .module:first-child{grid-column:span 2}
-.module:hover{background:var(--lime);transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-.module img{
-  width:26px;height:26px;margin-bottom:auto;
-  padding:14px;box-sizing:content-box;border-radius:50%;background:var(--ink);
-}
+/* No cursor:pointer and no background change on hover: these stopped
+   being buttons on 7 Nov and must not look clickable. The lift stays, as
+   every other card on the site has one. */
+.module:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
+/* The icon files carry their own disc, so there is no CSS circle behind
+   them any more. 52px, matching the numbered circles everywhere else. */
+.module img{width:52px;height:52px;margin-bottom:auto}
 .module h3{font:22px/1.1 var(--display);letter-spacing:.01em;text-transform:none;margin-top:24px}
 .module p{margin-top:8px;font-size:13px;color:var(--muted)}
 .system-cta{text-align:center;margin-top:44px}
 
-.modal{
-  position:fixed;inset:0;z-index:40;display:none;
-  place-items:center;padding:24px;
-  background:rgba(20,51,24,.55);backdrop-filter:blur(3px);
-}
-.modal.is-open{display:grid}
-.modal-card{
-  background:var(--paper);width:min(560px,100%);max-height:86vh;overflow:auto;
-  padding:40px 38px 34px;position:relative;border-radius:var(--r-card);
-  animation:pop .26s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.modal-card img{width:34px;height:34px;margin-bottom:22px}
-.modal-card h2{font-size:38px;max-width:none}
-.modal-card .modal-sub{margin-top:12px;font-size:15px;color:var(--muted)}
-.modal-note{
-  margin-top:26px;padding-top:18px;border-top:1px solid var(--rule);
-  font-size:12px;color:var(--muted);
-}
-.modal-close{
-  position:absolute;top:16px;right:16px;width:36px;height:36px;cursor:pointer;
-  border:1px solid var(--rule);background:transparent;color:var(--ink);font-size:16px;line-height:1;
-  border-radius:50%;
-}
-.modal-close:hover{background:var(--lime);border-color:var(--ink)}
+/* The modal styles that used to sit here were deleted on 7 Nov with the
+   seven-module popup. See js/site.js section 2. */
 
 /* ---------- 14. Testimonials ---------- */
 .testimonials{padding:clamp(90px,9vw,125px) 0;background:var(--paper)}
@@ -653,6 +1054,132 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 }
 .testimonial-grid footer strong{font:20px/1.1 var(--display);letter-spacing:.03em;text-transform:uppercase}
 .testimonial-grid footer span{margin-top:7px;color:var(--muted);font-size:13px}
+
+/* ---------- 14a. Testimonial slider ----------
+   MUST STAY BELOW SECTION 14. The markup carries BOTH classes —
+   <div class="testimonial-grid testimonial-track"> — and
+   .testimonial-grid sets display:grid at the same specificity. When this
+   block was first lifted it landed above section 14 and the grid won, so
+   the row rendered as a two-column grid and the mobile stepping had
+   nothing to step. It worked before the lift only because each page's
+   own <style> block loads after this file. Order is the whole fix.
+
+   LIFTED 7 Nov from four pages — index, about, work-with-us and keynote —
+   which carried byte-identical copies. Each also repeats its four quotes
+   four times in the markup, so replacing one quote was sixteen edits across
+   four files; the CSS half of that is now one copy.
+
+   detox.html deliberately does NOT use this. It has four bare
+   <article>Testimonial</article> placeholders and picks the real row up
+   when the quotes land.
+   Client, 24 Oct: the testimonials belong under the IP section, and they
+   should be a single row that slides smoothly. The section markup now sits
+   directly after .frameworks and before .outcomes, so the order reads
+   cleanse → the IP it runs on → who says it worked → the numbers.
+
+   The slide is a marquee, not a paged carousel: four placeholder quotes do
+   not need prev/next controls, and continuous motion was what was asked
+   for. The track holds the four cards FOUR TIMES and translates by exactly
+   one set, which lands set 2 where set 1 started, so the loop has no jump.
+
+   Why four copies and not two: the track has to stay wider than the
+   viewport plus one set, or the row runs dry at the right-hand edge before
+   it wraps. One set is four cards at 420 + 28 = 1792px, so two copies left
+   a growing empty gap on anything wider than ~1800px — which is what a
+   1920 or zoomed-out screen is.
+
+   It is CSS-only on purpose. js/site.js is shared with the live site and a
+   review artefact must not touch it (AGENTS.md). */
+.testimonials{overflow:hidden}
+.testimonial-slider{
+  /* Full-bleed, so the row runs off both edges and reads as continuing
+     rather than as a cropped grid. The head above it stays in .container. */
+  position:relative;width:100%;overflow:hidden;
+  /* Cancels the track's shadow padding below, so the row occupies exactly
+     the height of the cards in the page flow and the air above and below it
+     stays even. The overflow area just overlaps the section's own padding. */
+  margin:-30px 0 -64px;
+}
+/* The end fades are two gradient overlays in the ground colour, NOT a
+   mask-image on the slider. A mask promotes the element to its own
+   composited layer, and macOS Chrome colour-manages that layer slightly
+   differently from the Soft Ivory painted behind it — the whole row showed
+   as a visibly paler band. Overlays keep everything on one layer. */
+.testimonial-slider::before,
+.testimonial-slider::after{
+  content:'';position:absolute;top:0;bottom:0;width:clamp(28px,7%,120px);
+  z-index:2;pointer-events:none;
+}
+.testimonial-slider::before{left:0;background:linear-gradient(90deg,var(--paper),rgba(254,253,242,0))}
+.testimonial-slider::after{right:0;background:linear-gradient(270deg,var(--paper),rgba(254,253,242,0))}
+/* One card's width and the gap are variables because the slide distance is
+   derived from them — see @keyframes below. */
+.testimonial-track{
+  --tcard:min(420px,78vw);
+  --tgap:28px;
+  display:flex;width:max-content;gap:var(--tgap);
+  /* Room for the hover shadow, which is clipped by the slider's
+     overflow:hidden otherwise — the cut showed as a hard horizontal line
+     under a hovered card. --shadow is 0 18px 44px, so it reaches 18+44=62px
+     below the card and 44-18=26px above it; site.css also lifts the card
+     3px on hover. 30/64 covers both ends with a little slack. The slider
+     cancels this with a matching negative margin.
+     No horizontal padding: the slide distance is an exact multiple of the
+     card pitch and side padding would offset it. */
+  padding:30px 0 64px;
+  animation:t-slide 54s linear infinite;
+}
+.testimonial-track article{
+  flex:0 0 var(--tcard);min-height:300px;
+  /* No resting shadow. --shadow is a 44px blur, and eight-plus cards tiled
+     into an unbroken row pool it into a grey slab behind the whole band
+     (measured rgb(240,240,229) against the ivory's rgb(254,253,242)). The
+     row needs no lift at rest — it is already separated by the gaps. */
+  box-shadow:none;
+}
+.testimonial-track article:hover{box-shadow:var(--shadow)}
+
+/* Moves by exactly one set of four — one card pitch × 4 — so set 2 lands
+   where set 1 was. Derived from the variables above rather than written as
+   -25%, because a percentage would have to absorb the flex gaps and would
+   drift the seam. Change the card count and this 4 changes with it. */
+@keyframes t-slide{to{transform:translateX(calc(-4 * (var(--tcard) + var(--tgap))))}}
+
+/* Hovering or tabbing into the row holds it still so a quote can actually
+   be read. :active covers the touch case, where there is no hover. */
+.testimonial-slider:hover .testimonial-track,
+.testimonial-slider:active .testimonial-track,
+.testimonial-track:focus-within{animation-play-state:paused}
+
+/* Reduced motion: no marquee at all. The row becomes a normal swipeable,
+   snapping scroller, and the duplicate half is dropped so the same quote
+   does not appear twice in something the user scrolls by hand. */
+/* MOBILE GETS THE SAME BRANCH AS REDUCED MOTION, one card at a time
+   instead of the continuous marquee (client, 2 Nov).
+
+   Extended as a media QUERY LIST rather than copied into a second block:
+   the two cases want byte-identical rules — no marquee, no end fades, a
+   snapping scroller, duplicates dropped — so writing them twice would
+   just be two things to keep in step. The stepping itself is in
+   js/site.js §8, which runs on narrow screens only; reduced-motion users
+   still get a row they move themselves, which is the point of it.
+
+   700px is where site.css already drops the card grids to one column. */
+@media(prefers-reduced-motion:reduce),(max-width:700px){
+  .testimonial-slider{
+    overflow-x:auto;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:6px;
+  }
+  /* The overlays are absolutely positioned inside what is now a scroll
+     container, so they would scroll away with the content. The row is
+     user-driven here and does not need the fades. */
+  .testimonial-slider::before,.testimonial-slider::after{display:none}
+  .testimonial-track{animation:none;padding-inline:max(20px,calc((100% - 1320px) / 2))}
+  .testimonial-track article{scroll-snap-align:center}
+  .testimonial-track article[aria-hidden="true"]{display:none}
+}
+
 
 /* ---------- 15. About ---------- */
 .about{grid-template-columns:minmax(0,1.08fr) minmax(340px,.82fr);align-items:center;gap:clamp(60px,8vw,105px)}
@@ -711,10 +1238,12 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 .reason-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .reason-grid article{background:var(--panel);border-radius:var(--r-card);box-shadow:var(--shadow);padding:34px 30px;min-height:200px;transition:transform .2s ease,box-shadow .2s ease}
 .reason-grid article:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
-.reason-grid span{
-  display:block;font:32px var(--display);color:var(--lime);
-  -webkit-text-stroke:.6px var(--ink);margin-bottom:22px;
-}
+/* Geometry and colour come from the shared numbered-circle rule above.
+   Only the spacing below it belongs to this grid. The old rule here set
+   32px lime type on the white card with a .6px ink stroke trying to rescue
+   it — that was the live V1.0 p.21 violation the handoff wrongly recorded
+   as closed; it had only ever been patched inside detox.html. */
+.reason-grid span{margin-bottom:22px}
 .reason-grid h3{margin-bottom:10px}
 .reason-grid p{font-size:13px;color:var(--muted)}
 
@@ -854,7 +1383,7 @@ footer{background:var(--ink);color:var(--paper);padding:64px 0}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .ticker div,.hero-copy .eyebrow,.hero-copy h1,.hero-copy p,
-  .hero-copy .actions,.hero-image,.modal-card{animation:none}
+  .hero-copy .actions,.hero-image{animation:none}
   .reveal{opacity:1;transform:none;transition:none}
   .button:hover,.module:hover,.diag-scale button:hover,.reason-grid article:hover{transform:none}
 }
@@ -869,16 +1398,87 @@ footer{background:var(--ink);color:var(--paper);padding:64px 0}
   :root{--header-h:68px;--ticker-h:42px;--section-y:75px}
   .container{width:min(100% - 40px,1180px)}
 
-  /* Mobile nav: panel drops under the sticky header */
-  .nav-toggle{display:grid}
-  .site-nav{
-    display:none;position:fixed;top:var(--header-h);left:0;right:0;
-    flex-direction:column;gap:0;
-    background:var(--paper);border-bottom:1px solid var(--rule);
-    padding:8px 20px 20px;z-index:19;
+  /* ---------- Mobile nav: a panel that slides in from the right ----------
+     REBUILT 7 Nov, on the designer's note ("the mobile menu is awful, make
+     it a slider from the right to left, and colours that suit each other").
+
+     It used to be a panel that dropped under the header on a Soft Ivory
+     ground — while the header rules set the nav links to Detox Green. Lime
+     type on near-white is V1.0 p.21's own watchout, and it was live on TEN
+     of the eleven pages; only index.html had ever been patched, in its own
+     <style> block. Deep Green with lime type is the one sanctioned pairing,
+     so the panel now takes the same ground as the header it comes out of.
+
+     THE HEADER DROPS backdrop-filter AT THIS WIDTH, and that is load-bearing
+     rather than tidying. The panel is a fixed-position child of
+     .site-header; an element with a backdrop-filter establishes both a
+     containing block AND a filter region for its descendants, so the panel
+     was being CLIPPED to the 68px header band — the links laid out down the
+     full height of the screen but only the top 68px of the panel painted.
+     Removing the filter at mobile widths puts the panel back on the
+     viewport. The blur is doing nothing visible on a phone anyway, but the
+     background has to go fully opaque with it, because the translucent
+     value below only looks right with the blur behind it. */
+  .site-header{backdrop-filter:none;background:var(--ink)}
+  .nav-toggle{display:grid;position:relative;z-index:2}
+
+  /* The scrim. Adding a real element would mean editing eleven files, so it
+     is a pseudo-element on the header. It is driven by a class on <html>
+     that js/site.js §1 sets, not by :has() on the toggle — the same class
+     also locks body scroll, so one state drives both and they cannot
+     disagree. */
+  .site-header::after{
+    content:'';position:fixed;inset:0;
+    background:rgba(10,26,12,.55);
+    opacity:0;visibility:hidden;
+    transition:opacity .34s ease,visibility .34s;
+    z-index:18;
   }
-  .site-nav.is-open{display:flex}
-  .site-nav a{padding:16px 0;border-bottom:1px solid var(--rule);font-size:13px}
+  .nav-open .site-header::after{opacity:1;visibility:visible}
+
+  .site-nav{
+    position:fixed;top:0;right:0;bottom:0;left:auto;
+    width:min(82vw,340px);
+    flex-direction:column;justify-content:center;gap:0;
+    background:var(--ink);
+    border-left:1px solid rgba(204,254,6,.22);
+    padding:0 32px;
+    z-index:19;
+    transform:translateX(100%);
+    /* visibility, not display:none. The panel has to stay in the layout for
+       the transform to animate, but a panel parked off-screen must not be
+       focusable or readable by a screen reader, and off-screen alone does
+       not achieve that. visibility is delayed out so the slide finishes
+       before it is pulled from the tree. */
+    visibility:hidden;
+    transition:transform .38s cubic-bezier(.4,0,.2,1),visibility .38s;
+    overflow-y:auto;overscroll-behavior:contain;
+  }
+  .site-nav.is-open{transform:none;visibility:visible}
+
+  .site-nav a{
+    padding:20px 0;border-bottom:1px solid rgba(204,254,6,.16);
+    font-size:17px;letter-spacing:.1em;
+    /* Each link arrives just behind the panel, one after the next. The
+       panel takes .38s, so the first link starts as it lands. */
+    opacity:0;transform:translateX(18px);
+    transition:opacity .3s ease,transform .3s ease;
+  }
+  .site-nav.is-open a{opacity:1;transform:none}
+  .site-nav.is-open a:nth-child(1){transition-delay:.16s}
+  .site-nav.is-open a:nth-child(2){transition-delay:.22s}
+  .site-nav.is-open a:nth-child(3){transition-delay:.28s}
+  .site-nav.is-open a:nth-child(4){transition-delay:.34s}
+  .site-nav a:last-child{border-bottom:0}
+
+  /* Reduced motion: the panel still appears, it just does not travel. */
+  @media(prefers-reduced-motion:reduce){
+    .site-nav{transition:none}
+    .site-nav a{transition:none;opacity:1;transform:none}
+    .site-nav.is-open a{transition-delay:0s}
+    .site-header::after{transition:none}
+  }
+
   .header-cta{display:none}
 
   .hero,.hero--page{grid-template-columns:1fr;gap:0}
@@ -1052,9 +1652,22 @@ footer{background:var(--ink);color:var(--paper);padding:64px 0}
   transform-origin:43.06% 50%;
   animation:pl-zoom .54s cubic-bezier(.76,0,.24,1) .64s both;
 }
-/* SVG elements default to transform-box:view-box, so this 50.98 is in
+/* The mark is built exactly like the closing switch (§10a) — read the long
+   comment there, it explains the whole construction. Four layers: a solid
+   lime capsule, a Deep Green racetrack on top of it, a lime racetrack inside
+   that, and one opaque knob (Deep Green disc + lime dot) that travels. The
+   knob covers the track wherever it sits, so the far end reads as the D.
+
+   The preloader had the earlier, wrong version of this: both sockets cut out
+   permanently and only the dot moving, which left an empty socket sitting
+   there for the whole animation. Fixed 9 Nov alongside the switch.
+
+   SVG elements default to transform-box:view-box, so this 50.98 is in
    viewBox units, not CSS px — it stays correct at every width the logo is
-   scaled to. */
+   scaled to. It is the gap between the two socket centres, 242.34 to
+   293.32. */
+.pl-track,.pl-ring{fill:var(--ink)}
+.pl-well,.pl-dot{fill:var(--lime)}
 .pl-knob{animation:pl-switch .44s cubic-bezier(.76,0,.24,1) .2s both}
 /* The words are held back until the switch has landed, so the eye reads the
    gesture first and the lockup second. */
@@ -1085,3 +1698,44 @@ footer{background:var(--ink);color:var(--paper);padding:64px 0}
    motion, never see it — the class is set by an inline script in <head> so
    the overlay is never painted in the first place. */
 .no-preloader .preloader{display:none}
+
+/* ---------- 26. Case-sensitive punctuation on display type ----------
+   THIS MUST STAY THE LAST RULE IN THIS FILE. Read the reason before moving
+   it.
+
+   The licensed font carries hyphen.case: a hyphen raised to y369-411 so it
+   lands optically centred against capitals and lining figures. The default
+   hyphen sits at y309-351, which is correct under lowercase and wrong under
+   caps. The trial font the site shipped with until 7 Nov had no
+   case-sensitive punctuation at all, and that is exactly what the designer
+   spotted in the stats strip: the hyphen in "20-35%" hanging low and short
+   against 70px numerals. (The retail percent is also a redrawn glyph, 638
+   units wide against the trial's 490.)
+
+   WHY IT IS LAST, and not declared next to each rule: the `font` shorthand
+   resets font-feature-settings to normal. This file sets `font:` on display
+   type in twenty-one places, so a declaration anywhere above would be
+   silently undone by whichever shorthand came after it. Placing it at the
+   foot means it wins against every one of them at equal specificity.
+
+   A page's own <style> block loads after this file, so a `font:` shorthand
+   on display type THERE will still reset it. If display punctuation ever
+   looks wrong on one page, that is the first thing to check.
+
+   Body copy is deliberately excluded: Inter's default hyphen is the right
+   one at text sizes, and raising it there would be a new fault, not a fix.
+
+   .od sets "ss01" instead, for the wide O/D, and so loses "case". That is
+   harmless — case only affects punctuation and .od only ever wraps a
+   letter. */
+h1,h2,h3,h4,h5,h6,
+.eyebrow,.button,.toggle-row,.pt,
+.trust-logos span,.footer-grid h2,
+.cleanse-num,.fw-mark,.icon-circle,
+.diag-score,.diag-scale strong,.diag-bars b,
+.module h3,.testimonial-grid footer strong{
+  font-feature-settings:"case" 1;
+}
+/* The stats strip adds tabular figures so the four numbers share one column
+   rhythm instead of each setting its own width. */
+.stat-grid strong{font-feature-settings:"case" 1,"tnum" 1}
