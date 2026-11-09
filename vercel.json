@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "routes": [
+    { "src": "/playground(/.*)?", "status": 404 },
+    { "src": "/content(/.*)?", "status": 404 },
+    { "src": "/[^/]*\\.md", "status": 404 },
+    { "src": "/\\.gitignore", "status": 404 },
+    { "handle": "filesystem" }
+  ]
+}
