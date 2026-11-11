@@ -51,6 +51,17 @@
      THE DOT FIELD WAS REMOVED on 7 Nov — the designer confirmed it is
      not a guideline device. These sections are plain Soft Ivory.
 
+  /* RESTORED 11 Nov. This rule was deleted by accident on 7 Nov along with
+     the dot field — the ::before that drew the dots sat directly beneath it
+     and the whole block went. Without it the hero had no padding at all, so
+     the page title ran straight into the header and the photograph sat flush
+     on the section's bottom edge. Keep the padding and the ground together;
+     they are not decoration. */
+  .ws-hero{
+    background:var(--paper);
+    padding:56px 0 var(--section-y);
+  }
+
   .ws-dots{position:relative;overflow:hidden}
   /* The dot field was removed on 7 Nov. Designer: it is not in the
      guideline — V1.0 names only the logo pattern (merch, p.36) and the
