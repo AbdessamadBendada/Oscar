@@ -211,6 +211,31 @@ U+0044 to that range — the wide O and D are the brand. Adding U+0043/U+0047/U+
 two-alternates-per-word cap, which DIAGNOSTIC currently breaks with four, but it is
 the designer's call.
 
+## Where the work lives right now
+
+**Nothing from the designer's review is on the live site.** `main` is the before and is
+untouched; the whole of §45-46 sits on **`designer-review`**, deployed to a Vercel
+preview for the client to approve. When he does, **merge the branch** — do not copy
+files across. See §46.
+
+**The font ships as woff2 only.** The licence pack's `.otf` is the desktop install of a
+paid Pangram Pangram licence and this repo is public, so it is gitignored and is not in
+the `@font-face` `src`. Do not add it back.
+
+**`vercel.json` 404s the working notes** — `HANDOFF.md`, `AGENTS.md`, `BACKLOG.md`,
+`README.md`, `content/`, `playground/`. Keep `"handle": "filesystem"` last or the rules
+will swallow the site.
+
+**Checking a Vercel deployment:** never follow redirects. Protection failures return
+`302` to `vercel.com/sso-api`, and following that redirect yields a `200` from the
+*login page*, which reads exactly like success. Check the un-followed status code and
+grep for a marker you know is in the build.
+
+**After any CSS lift, diff the rules out of every page's `<style>` block against the
+previous commit.** `.ws-hero` was deleted by accident on 7 Nov along with the dot field
+it sat above, and six verification passes missed it because the page still rendered —
+just with no hero padding at all. One command catches it.
+
 ## Copy rules that bite
 
 - **No em dashes in visible copy or in attributes** — the client's own instruction,
