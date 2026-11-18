@@ -5,17 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#143318">
   <title>OPS DETOX™ — Parked sections</title>
-  <meta name="description" content="Two homepage sections cut from the running order and kept for reuse on another page.">
+  <meta name="description" content="Three homepage sections cut from the running order and kept for reuse on another page.">
   <meta name="robots" content="noindex">
   <link rel="icon" href="../assets/logo/favicon.png">
   <link rel="stylesheet" href="../css/site.css">
   <!-- ==========================================================
        NOT A SITE PAGE. A holding file for sections that have been
        taken out of the homepage but are still wanted — most likely
-       on the Work With Us page. Both sections below are VERBATIM:
-       no copy, markup, class or id was changed when they were
-       lifted, so #system and the seven module popups still work
-       exactly as they do on the live site.
+       on the Work With Us page. The original two sections below
+       are VERBATIM: no copy, markup, class or id was changed when
+       they were lifted, so #system and the seven module popups
+       still work exactly as they do on the live site. The third
+       section preserves the previous homepage offer layout; only
+       its paths and heading id were made safe for this file.
 
        To reuse one: copy the <section> into the target page. It
        needs css/site.css (already shared), js/site.js for the
@@ -47,16 +49,63 @@
     }
     /* .container sets a width and auto margins, which an inline span ignores. */
     .parked-label>.container{display:block}
+
+    /* Archived homepage offer layout, 18 November 2026. These rules were
+       page-scoped in index.html and are parked with the matching markup. */
+    .cleanse-step{
+      display:grid;grid-template-columns:1.5fr minmax(0,.8fr);
+      grid-template-areas:
+        "tag  meta"
+        "head cta"
+        "body cta";
+      align-items:start;gap:14px 48px;
+      min-height:0;padding:40px 44px;
+    }
+    .cleanse-step-tag{
+      grid-area:tag;align-self:center;
+      display:inline-flex;align-items:center;gap:10px;
+      background:var(--ink);color:var(--lime);
+      border-radius:var(--r-pill);padding:9px 18px 7px;
+      font:16px/1 var(--display);letter-spacing:.05em;text-transform:uppercase;
+    }
+    .cleanse-step h3{grid-area:head;margin:10px 0 0;font-size:clamp(28px,2.6vw,40px)}
+    .cleanse-step>p:not(.cleanse-meta){grid-area:body;margin:12px 0 0;max-width:62ch}
+    .cleanse-step .cleanse-meta{grid-area:meta;justify-self:end;margin:0;min-height:0}
+    .cleanse-step .cleanse-cta{grid-area:cta;align-self:end;justify-self:end;margin:0}
+    .cleanse-branch{
+      display:grid;justify-items:center;gap:0;margin:0;text-align:center;
+    }
+    .cleanse-branch::before{
+      content:'';width:2px;height:46px;background:var(--ink);opacity:.28;
+    }
+    .cleanse-branch span{
+      display:block;padding:18px 0 22px;
+      color:var(--ink);font:17px/1.2 var(--display);
+      letter-spacing:.05em;text-transform:uppercase;
+    }
+    .cleanse-grid--two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .cleanse-grid--two .cleanse-meta{margin-top:0}
+
+    @media(max-width:850px){
+      .cleanse-step{
+        grid-template-columns:1fr;
+        grid-template-areas:"tag" "meta" "head" "body" "cta";
+        gap:0;padding:30px 26px 28px;max-width:560px;margin:auto;
+      }
+      .cleanse-step .cleanse-meta{justify-self:start;margin:22px 0 0}
+      .cleanse-step .cleanse-cta{justify-self:start;margin-top:26px}
+      .cleanse-grid--two{grid-template-columns:1fr}
+      .cleanse-branch::before{height:34px}
+    }
   </style>
 </head>
 <body>
   <div class="parked-note">
     <div class="container">
       <h1>Parked sections</h1>
-      <p>These two sections were cut from the homepage running order on 24 October 2026 and
-         kept here because they are likely wanted on another page. They are unchanged from the
-         homepage build. See §25 of <b>HANDOFF.md</b> for what was removed and why, and for how
-         to drop one back into a page.</p>
+      <p>The first two sections were cut from the homepage running order on 24 October 2026.
+         The third is the previous homepage offer layout, archived on 18 November 2026 when
+         the client-feedback layout replaced it. Each is kept intact for possible reuse.</p>
     </div>
   </div>
 
@@ -117,6 +166,44 @@
         </div>
 
         <p class="system-cta"><a class="button button--line" href="../detox.html">Learn more</a></p>
+      </div>
+    </section>
+
+    <p class="parked-label"><span class="container">3 - Previous homepage offer layout</span></p>
+
+    <section class="cleanse-section section-rule reveal" aria-labelledby="parked-cleanse-heading">
+      <div class="container">
+        <div class="cleanse-head">
+          <span class="eyebrow">The cleanse</span>
+          <h2 class="cleanse-heading" id="parked-cleanse-heading">How the cleanse works:</h2>
+        </div>
+
+        <article class="cleanse-card cleanse-card--lime cleanse-step">
+          <span class="cleanse-step-tag">Step 1, free for everyone</span>
+          <p class="cleanse-meta"><span>Free</span><span>8 minute</span></p>
+          <h3>OPS Detox Diagnostic™</h3>
+          <p>Before anything is stripped, we measure where the time and the decisions actually go. You, your key people and your team answer the same questions, where the answers differ, the clutter sits.</p>
+          <a class="button button--line cleanse-cta" href="../diagnostic.html">Book the free diagnostic</a>
+        </article>
+
+        <p class="cleanse-branch"><span>Then we strip, on one of two tracks</span></p>
+
+        <div class="cleanse-grid cleanse-grid--two">
+          <article class="cleanse-card">
+            <p class="cleanse-meta"><span>Meetings</span><span>Reporting</span><span>Decisions</span></p>
+            <h3>Operational flow</h3>
+            <p class="cleanse-bottleneck">Founder Bottleneck</p>
+            <p>For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
+            <a class="button cleanse-cta" href="../detox.html">Learn more</a>
+          </article>
+          <article class="cleanse-card">
+            <p class="cleanse-meta"><span>Communication</span><span>Ownership</span><span>Psychological Safety</span></p>
+            <h3>Organisational flow</h3>
+            <p class="cleanse-bottleneck">Team Bottleneck</p>
+            <p>For teams where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
+            <a class="button cleanse-cta" href="../detox.html#modules">Learn more</a>
+          </article>
+        </div>
       </div>
     </section>
 
