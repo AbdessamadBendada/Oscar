@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143318">
+  <title>OPS DETOX™: Premium homepage study</title>
+  <meta name="description" content="A premium editorial homepage direction for OPS Detox, prepared as a separate review build.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../assets/logo/favicon.png">
+  <link rel="stylesheet" href="../css/site.css">
+  <!-- REVIEW ARTEFACT ONLY. This page does not replace index.html. Its visual
+       rules remain scoped here until the direction is approved. Hero photo:
+       Vitaly Gariev on Pexels, photo 36713442. -->
+  <style>
+    .premium-page{
+      --p-ink:#143318;
+      --p-lime:#c6ff00;
+      --p-paper:#f8f6eb;
+      --p-rule:rgba(20,51,24,.34);
+      background:var(--p-paper);color:var(--p-ink);
+    }
+    .premium-page main{overflow:hidden;background:var(--p-paper)}
+    .premium-page .site-header{border-bottom:1px solid rgba(198,255,0,.18)}
+    .premium-page .p-wrap{width:min(1760px,calc(100% - 64px));margin-inline:auto}
+    .premium-page .p-kicker{
+      display:block;font:clamp(16px,1.25vw,22px)/1 var(--display);
+      letter-spacing:.08em;text-transform:uppercase;
+    }
+    .premium-page .p-title{
+      margin:0;font:clamp(78px,10.8vw,190px)/.76 var(--display);
+      letter-spacing:-.035em;text-transform:uppercase;
+    }
+    .premium-page .p-title span{display:block;width:max-content;max-width:100%}
+    .premium-page .p-title span:nth-child(2){margin-left:15%}
+    .premium-page .p-title span:nth-child(3){margin-left:34%}
+    .premium-page .p-copy{
+      font-size:clamp(17px,1.35vw,23px);line-height:1.55;
+      max-width:62ch;margin:0;
+    }
+    .premium-page .p-section{padding:clamp(90px,10vw,180px) 0;border-top:1px solid var(--p-rule)}
+    .premium-page .button{border-radius:999px}
+
+    /* Hero: a photographic field, one lime wash and an editorial headline.
+       No moving ticker or decorative pattern is used in this study. */
+    .premium-page .p-hero{
+      position:relative;min-height:calc(100svh - 84px);isolation:isolate;
+      display:flex;align-items:stretch;background:var(--p-lime);
+    }
+    .premium-page .p-hero::before{
+      content:"";position:absolute;inset:0;z-index:-3;
+      background:url('../assets/img/premium-office-pexels.jpg') center 48%/cover no-repeat;
+    }
+    .premium-page .p-hero::after{
+      content:"";position:absolute;inset:0;z-index:-2;
+      background:
+        linear-gradient(90deg,rgba(198,255,0,.94) 0%,rgba(198,255,0,.81) 48%,rgba(198,255,0,.64) 100%),
+        linear-gradient(0deg,rgba(20,51,24,.12),transparent 42%);
+    }
+    .premium-page .p-hero-inner{
+      width:min(1760px,calc(100% - 64px));margin:auto;
+      padding:clamp(76px,8vw,132px) 0 46px;display:grid;
+      min-height:inherit;grid-template-rows:auto 1fr auto;
+    }
+    .premium-page .p-hero-head{align-self:center}
+    .premium-page .p-hero-title{
+      margin:24px 0 0;font:clamp(86px,10.8vw,190px)/.76 var(--display);
+      letter-spacing:-.045em;text-transform:uppercase;
+    }
+    .premium-page .p-hero-title span{display:block;width:max-content;max-width:100%}
+    .premium-page .p-hero-title span:nth-child(2){margin-left:7%}
+    .premium-page .p-hero-title span:nth-child(3){margin-left:16%}
+    .premium-page .p-hero-foot{
+      display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px;
+      align-items:end;margin-top:52px;
+    }
+    .premium-page .p-hero-copy{max-width:800px;font-size:clamp(18px,1.55vw,27px);line-height:1.42}
+    .premium-page .p-actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-end}
+    .premium-page .p-actions .button{white-space:nowrap}
+    .premium-page .p-featured{
+      grid-column:1/-1;display:grid;grid-template-columns:auto repeat(3,minmax(140px,240px));
+      gap:clamp(28px,5vw,92px);align-items:center;margin-top:clamp(48px,7vw,100px);
+      padding-top:30px;border-top:1px solid rgba(20,51,24,.34);
+    }
+    .premium-page .p-featured h2{
+      margin:0;font:clamp(25px,2vw,37px)/1 var(--display);text-transform:uppercase;
+    }
+    .premium-page .p-featured img{display:block;width:100%;height:58px;object-fit:contain;filter:brightness(0) saturate(100%) invert(16%) sepia(25%) saturate(934%) hue-rotate(76deg) brightness(88%) contrast(92%)}
+    .premium-page .p-featured .brand-tour img{height:74px}
+
+    /* Problem and authority */
+    .premium-page .p-problem-title span:nth-child(2){margin-left:18%}
+    .premium-page .p-problem-title span:nth-child(3){margin-left:42%}
+    .premium-page .p-problem-grid{
+      display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+      gap:clamp(48px,7vw,120px);align-items:end;margin-top:clamp(70px,8vw,130px);
+    }
+    .premium-page .p-photo-stage{
+      min-height:680px;position:relative;overflow:hidden;background:var(--p-ink);
+    }
+    .premium-page .p-photo-stage::before{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(rgba(20,51,24,.30),rgba(20,51,24,.68)),url('../assets/img/premium-office-pexels.jpg') center/cover;
+      filter:saturate(.75);
+    }
+    .premium-page .p-photo-stage img{
+      position:absolute;z-index:1;left:4%;bottom:-2%;height:95%;width:auto;
+      filter:drop-shadow(28px 18px 22px rgba(4,17,6,.34));
+    }
+    .premium-page .p-problem-copy{padding-bottom:36px}
+    .premium-page .p-problem-copy .p-copy+p{margin-top:26px}
+    .premium-page .p-signature{
+      display:grid;justify-items:end;margin-top:40px;
+      font-size:clamp(18px,1.25vw,22px);line-height:1.45;
+    }
+    .premium-page .p-signature strong{font-family:var(--display);font-size:clamp(28px,2.2vw,40px);font-weight:400}
+    .premium-page .p-signature-mark{font:italic clamp(44px,4vw,68px)/.8 Georgia,serif;transform:rotate(-8deg);margin-top:12px}
+
+    /* Three latest offers, using the PDF's square-card language. */
+    .premium-page .p-offers-head{text-align:right}
+    .premium-page .p-offers-title span:nth-child(2){margin-left:8%}
+    .premium-page .p-offers-title span:nth-child(3){margin-left:0}
+    .premium-page .p-offers-title{display:inline-block;text-align:left}
+    .premium-page .p-offer-grid{
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;
+      margin-top:clamp(70px,8vw,130px);
+    }
+    .premium-page .p-offer{
+      position:relative;min-height:720px;padding:46px 42px;
+      display:flex;flex-direction:column;border:2px solid var(--p-ink);
+      overflow:hidden;background:var(--p-paper);
+    }
+    .premium-page .p-offer--dark{background:var(--p-ink);color:var(--p-paper);border-color:var(--p-ink)}
+    .premium-page .p-offer--photo{color:var(--p-ink);border-color:#8ab21b}
+    .premium-page .p-offer--photo::before{
+      content:"";position:absolute;inset:0;z-index:0;
+      background:linear-gradient(rgba(198,255,0,.79),rgba(198,255,0,.88)),url('../assets/img/work-two-ways.jpg') 57% center/cover;
+    }
+    .premium-page .p-offer>*{position:relative;z-index:1}
+    .premium-page .p-offer-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+    .premium-page .p-offer-index{font:clamp(48px,5vw,88px)/.8 var(--display)}
+    .premium-page .p-offer-badge{
+      border:1px solid currentColor;border-radius:999px;padding:8px 14px 6px;
+      font:16px/1 var(--display);letter-spacing:.05em;text-transform:uppercase;
+    }
+    .premium-page .p-offer h3{
+      margin:auto 0 18px;font:clamp(50px,5vw,88px)/.82 var(--display);
+      letter-spacing:-.025em;text-transform:uppercase;
+    }
+    .premium-page .p-offer p{font-size:18px;line-height:1.52;max-width:38ch}
+    .premium-page .p-offer .button{align-self:flex-start;margin-top:28px}
+    .premium-page .p-offer--dark .button{background:var(--p-lime);color:var(--p-ink);border-color:var(--p-lime)}
+    .premium-page .p-offer-media{
+      margin:34px -42px -46px;height:300px;overflow:hidden;border-top:1px solid rgba(248,246,235,.34);
+    }
+    .premium-page .p-offer-media img{width:100%;height:100%;object-fit:cover;object-position:center 38%}
+
+    /* Proof */
+    .premium-page .p-testimonials{background:var(--p-ink);color:var(--p-paper)}
+    .premium-page .p-testimonials .p-title{color:var(--p-lime)}
+    .premium-page .p-testimonial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:80px}
+    .premium-page .p-quote{
+      min-height:420px;padding:40px;display:flex;flex-direction:column;
+      border:2px solid var(--p-paper);background:transparent;
+    }
+    .premium-page .p-quote .label{
+      color:var(--p-lime);font:16px/1 var(--display);letter-spacing:.07em;text-transform:uppercase;
+    }
+    .premium-page .p-quote blockquote{margin:34px 0;font-size:clamp(20px,1.65vw,28px);line-height:1.42}
+    .premium-page .p-quote footer{margin-top:auto;font:clamp(26px,2vw,36px)/1 var(--display);text-transform:uppercase}
+    .premium-page .p-quote footer span{display:block;margin-top:10px;font:14px/1.4 Arial,sans-serif;opacity:.72;text-transform:none}
+
+    /* Frameworks: the strongest table-like treatment from the proposal. */
+    .premium-page .p-framework-intro{max-width:760px;margin:48px 0 0 auto}
+    .premium-page .p-frameworks{margin-top:80px;border-top:2px solid var(--p-ink)}
+    .premium-page .p-framework{
+      display:grid;grid-template-columns:.32fr .68fr 1fr;gap:48px;
+      align-items:start;padding:58px 0;border-bottom:2px solid var(--p-ink);
+    }
+    .premium-page .p-framework-num{font:clamp(100px,11vw,190px)/.7 var(--display)}
+    .premium-page .p-framework h3{margin:8px 0 0;font:clamp(40px,3.8vw,68px)/.9 var(--display)}
+    .premium-page .p-framework-copy h4{margin:6px 0 14px;font:clamp(24px,2vw,34px)/1 var(--display);text-transform:uppercase}
+    .premium-page .p-framework-copy p{font-size:18px;line-height:1.55;max-width:48ch;margin:0}
+    .premium-page .p-text-link{
+      display:inline-flex;margin-top:24px;color:var(--p-ink);font:20px/1 var(--display);
+      text-transform:uppercase;text-decoration:none;border-bottom:2px solid currentColor;
+    }
+
+    /* Outcomes */
+    .premium-page .p-outcomes-title span:nth-child(2){margin-left:22%}
+    .premium-page .p-outcome-grid{
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;
+      margin-top:90px;border-top:2px solid var(--p-ink);border-bottom:2px solid var(--p-ink);
+    }
+    .premium-page .p-outcome{padding:42px 34px 48px;border-right:1px solid var(--p-rule)}
+    .premium-page .p-outcome:last-child{border-right:0}
+    .premium-page .p-outcome strong{display:block;font:clamp(64px,7vw,118px)/.85 var(--display);white-space:nowrap}
+    .premium-page .p-outcome p{margin:24px 0 0;font-size:17px;line-height:1.5}
+
+    /* About */
+    .premium-page .p-about-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(56px,8vw,140px);align-items:center}
+    .premium-page .p-about-media{min-height:900px;overflow:hidden}
+    .premium-page .p-about-media img{width:100%;height:100%;min-height:900px;object-fit:cover;object-position:center top}
+    .premium-page .p-about-title{font-size:clamp(76px,9.2vw,165px)}
+    .premium-page .p-about-title span:nth-child(2){margin-left:28%}
+    .premium-page .p-about-copy{margin-top:64px}
+    .premium-page .p-about-copy p{font-size:clamp(17px,1.25vw,21px);line-height:1.58;max-width:54ch}
+    .premium-page .p-about-copy .button{margin-top:24px}
+
+    /* Closing switch retains the real shared interaction, without the moving
+       pattern divider used by the current homepage. */
+    .premium-page .choice{border-top:1px solid var(--p-rule);background:var(--p-paper);padding:130px 0 150px}
+    .premium-page .choice h2{
+      max-width:1180px;margin-inline:auto;font-size:clamp(76px,10vw,170px);
+      line-height:.78;letter-spacing:-.035em;
+    }
+    .premium-page .choice-note{margin-top:44px}
+    .premium-page .toggle-rows{margin-top:46px}
+    .premium-page #contact-footer{border-top:0}
+
+    @media(max-width:1100px){
+      .premium-page .p-featured{grid-template-columns:1fr repeat(3,minmax(100px,180px))}
+      .premium-page .p-problem-grid,.premium-page .p-about-grid{grid-template-columns:1fr}
+      .premium-page .p-photo-stage{min-height:620px}
+      .premium-page .p-offer-grid{grid-template-columns:1fr 1fr}
+      .premium-page .p-offer:first-child{grid-column:1/-1;min-height:480px}
+      .premium-page .p-testimonial-grid{grid-template-columns:1fr 1fr}
+      .premium-page .p-quote:last-child{grid-column:1/-1;min-height:320px}
+      .premium-page .p-outcome-grid{grid-template-columns:1fr 1fr}
+      .premium-page .p-outcome:nth-child(2){border-right:0}
+      .premium-page .p-outcome:nth-child(-n+2){border-bottom:1px solid var(--p-rule)}
+      .premium-page .p-framework{grid-template-columns:.22fr .78fr}
+      .premium-page .p-framework-copy{grid-column:2}
+      .premium-page .p-about-media,.premium-page .p-about-media img{min-height:760px}
+    }
+    @media(max-width:700px){
+      .premium-page .p-wrap,.premium-page .p-hero-inner{width:min(100% - 36px,1760px)}
+      .premium-page .p-section{padding:76px 0}
+      .premium-page .p-title,.premium-page .p-hero-title,.premium-page .p-about-title{
+        font-size:clamp(58px,20vw,92px);line-height:.82;letter-spacing:-.025em;
+      }
+      .premium-page .p-title span:nth-child(n),
+      .premium-page .p-hero-title span:nth-child(n){margin-left:0;width:auto}
+      .premium-page .p-hero{min-height:auto}
+      .premium-page .p-hero-inner{padding:78px 0 34px;min-height:860px}
+      .premium-page .p-hero-title{margin-top:22px}
+      .premium-page .p-hero-foot{grid-template-columns:1fr;gap:26px;margin-top:48px}
+      .premium-page .p-actions{justify-content:flex-start}
+      .premium-page .p-actions .button{width:100%;justify-content:center}
+      .premium-page .p-featured{grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
+      .premium-page .p-featured h2{grid-column:1/-1}
+      .premium-page .p-featured img{height:34px}
+      .premium-page .p-featured .brand-tour img{height:44px}
+      .premium-page .p-problem-grid{margin-top:52px;gap:42px}
+      .premium-page .p-photo-stage{min-height:500px}
+      .premium-page .p-photo-stage img{left:-12%;height:91%}
+      .premium-page .p-signature{justify-items:start}
+      .premium-page .p-offers-head{text-align:left}
+      .premium-page .p-offer-grid,.premium-page .p-testimonial-grid{grid-template-columns:1fr;margin-top:52px}
+      .premium-page .p-offer:first-child,.premium-page .p-quote:last-child{grid-column:auto}
+      .premium-page .p-offer{min-height:590px;padding:32px 26px}
+      .premium-page .p-offer:first-child{min-height:540px}
+      .premium-page .p-offer h3{font-size:60px}
+      .premium-page .p-offer-media{margin:28px -26px -32px}
+      .premium-page .p-quote{min-height:360px;padding:30px 26px}
+      .premium-page .p-framework-intro{margin-top:34px}
+      .premium-page .p-frameworks{margin-top:48px}
+      .premium-page .p-framework{grid-template-columns:80px minmax(0,1fr);gap:22px;padding:40px 0}
+      .premium-page .p-framework-num{font-size:92px}
+      .premium-page .p-framework h3{font-size:42px}
+      .premium-page .p-framework-copy{grid-column:1/-1}
+      .premium-page .p-outcome-grid{grid-template-columns:1fr;margin-top:52px}
+      .premium-page .p-outcome{border-right:0;border-bottom:1px solid var(--p-rule)}
+      .premium-page .p-outcome:nth-child(-n+2){border-bottom:1px solid var(--p-rule)}
+      .premium-page .p-outcome:last-child{border-bottom:0}
+      .premium-page .p-about-grid{gap:48px}
+      .premium-page .p-about-media,.premium-page .p-about-media img{min-height:590px}
+      .premium-page .p-outcomes-title{font-size:clamp(54px,17vw,78px)}
+      .premium-page .p-about-title{font-size:clamp(54px,17vw,78px);margin-top:12px}
+      .premium-page .p-about-copy{margin-top:38px}
+      .premium-page .choice{padding:90px 0 110px}
+      .premium-page .choice h2{font-size:clamp(62px,19vw,90px);line-height:.82}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .premium-page *{scroll-behavior:auto!important}
+    }
+  </style>
+</head>
+<body class="premium-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html" aria-label="OPS DETOX home">
+        <img src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+      </a>
+      <nav class="site-nav" id="nav" aria-label="Main navigation">
+        <a href="../work-with-us.html">Work With Us</a>
+        <a href="../keynote.html">Keynote</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <a class="button button--small button--line header-cta" href="../contact.html">Let’s talk</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="p-hero" aria-labelledby="premium-hero-heading">
+      <div class="p-hero-inner">
+        <span class="p-kicker">Operational detox for scale-ups</span>
+        <div class="p-hero-head">
+          <h1 class="p-hero-title" id="premium-hero-heading">
+            <span>Cleanse your</span>
+            <span>business systems,</span>
+            <span>win your time back.</span>
+          </h1>
+          <div class="p-hero-foot">
+            <p class="p-hero-copy">We help scale-ups cleanse the systems clogged by meetings nobody needs, reports nobody reads and decisions nobody takes, so time flows back into growing the company.</p>
+            <div class="p-actions">
+              <a class="button" href="../contact.html">Let’s talk</a>
+              <a class="button button--line" href="../diagnostic.html">Book the free diagnostic</a>
+            </div>
+          </div>
+        </div>
+        <div class="p-featured" aria-labelledby="premium-featured-heading">
+          <h2 id="premium-featured-heading">Featured in</h2>
+          <img src="../assets/logo/featured/tedx.png" width="258" height="72" alt="TEDx">
+          <img src="../assets/logo/featured/doac.png" width="1666" height="454" alt="DOAC">
+          <span class="brand-tour"><img src="../assets/logo/featured/brand-on-tour.webp" width="1751" height="689" alt="Brand on Tour"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-section p-problem" aria-labelledby="premium-problem-heading">
+      <div class="p-wrap">
+        <h2 class="p-title p-problem-title" id="premium-problem-heading">
+          <span>Fewer meetings.</span>
+          <span>Fewer reports.</span>
+          <span>More decisions.</span>
+        </h2>
+        <div class="p-problem-grid">
+          <figure class="p-photo-stage">
+            <img src="../assets/img/oscar-cutout.png" width="513" height="854" alt="Oscar de Grauw holding a laptop">
+          </figure>
+          <div class="p-problem-copy">
+            <p class="p-copy">Most scale-ups don't have a strategy problem. They have a company full of work that piled up as they grew, meetings that outlived their purpose, reports nobody reads, decisions that wait on founder’s desk, all kept alive by one sentence: "that's how we've always done it."</p>
+            <p class="p-copy">OPS Detox clears out what growth left behind. Together with your team, we strip away the meetings, reports and approval layers that no longer serve the business, and rebuild a structure your people can run on their own, long after we have left.</p>
+            <div class="p-signature">
+              <strong>Oscar de Grauw</strong>
+              <span>Founder | Speaker | Visionary</span>
+              <span class="p-signature-mark" aria-label="Oscar's signature placeholder">Oscar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-section p-offers" aria-labelledby="premium-offers-heading">
+      <div class="p-wrap">
+        <div class="p-offers-head">
+          <span class="p-kicker">The cleanse</span>
+          <h2 class="p-title p-offers-title" id="premium-offers-heading">
+            <span>Three ways to</span>
+            <span>restore flow.</span>
+          </h2>
+        </div>
+        <div class="p-offer-grid">
+          <article class="p-offer">
+            <div class="p-offer-top">
+              <span class="p-offer-index">01</span>
+              <span class="p-offer-badge">Free · 8 minutes</span>
+            </div>
+            <h3>OPS Detox Diagnostic™</h3>
+            <p>Before anything is stripped, we measure where the time and the decisions actually go. Where the answers differ, the clutter sits.</p>
+            <a class="button button--line" href="../diagnostic.html">Book the free diagnostic</a>
+          </article>
+
+          <article class="p-offer p-offer--dark">
+            <div class="p-offer-top">
+              <span class="p-offer-index">02</span>
+              <span class="p-offer-badge">Most booked</span>
+            </div>
+            <h3>Operational Flow</h3>
+            <p>For founders whose company has become meeting-heavy, buried in reports and dependent on their approval.</p>
+            <a class="button" href="../detox.html">Learn more</a>
+            <div class="p-offer-media">
+              <img src="../assets/img/work-whiteboard.jpg" width="1370" height="1142" alt="Oscar working through an operational flow with a client">
+            </div>
+          </article>
+
+          <article class="p-offer p-offer--photo">
+            <div class="p-offer-top">
+              <span class="p-offer-index">03</span>
+              <span class="p-offer-badge">Team bottleneck</span>
+            </div>
+            <h3>Organisational Flow</h3>
+            <p>For teams where delegation, accountability and information no longer keep pace with growth.</p>
+            <a class="button button--line" href="../detox.html#modules">Learn more</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-section p-testimonials" aria-labelledby="premium-testimonials-heading">
+      <div class="p-wrap">
+        <h2 class="p-title" id="premium-testimonials-heading">
+          <span>What leaders</span>
+          <span>say.</span>
+        </h2>
+        <div class="p-testimonial-grid">
+          <article class="p-quote">
+            <span class="label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer>Client name<span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article class="p-quote">
+            <span class="label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer>Client name<span>COO · SaaS company</span></footer>
+          </article>
+          <article class="p-quote">
+            <span class="label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer>Client name<span>VP Operations · International team</span></footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-section p-framework-section" aria-labelledby="premium-frameworks-heading">
+      <div class="p-wrap">
+        <span class="p-kicker">Proprietary frameworks</span>
+        <h2 class="p-title" id="premium-frameworks-heading">
+          <span>The IP the detox</span>
+          <span>runs on.</span>
+        </h2>
+        <p class="p-copy p-framework-intro">The cleanse is not improvisation. Three frameworks, developed over 17 years inside complex international organizations, decide what gets seen, what gets stripped and who decides what.</p>
+
+        <div class="p-frameworks">
+          <article class="p-framework">
+            <span class="p-framework-num">1</span>
+            <h3>See – Strip – Choose™</h3>
+            <div class="p-framework-copy">
+              <h4>The core method.</h4>
+              <p>Make the clutter visible before touching it, remove what no longer earns its place, then decide deliberately what the company keeps.</p>
+              <a class="p-text-link" href="../work-with-us.html">Learn more</a>
+            </div>
+          </article>
+          <article class="p-framework">
+            <span class="p-framework-num">2</span>
+            <h3>Truth Latency™</h3>
+            <div class="p-framework-copy">
+              <h4>The delay between knowing and saying.</h4>
+              <p>In most companies someone knew the truth weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
+              <a class="p-text-link" href="../work-with-us.html">Learn more</a>
+            </div>
+          </article>
+          <article class="p-framework">
+            <span class="p-framework-num">3</span>
+            <h3>DRMT™</h3>
+            <div class="p-framework-copy">
+              <h4>The decision engine.</h4>
+              <p>Who decides, who is consulted, and what happens when nobody does. DRMT closes the ownership vacuum that leaves decisions queued on the founder's desk.</p>
+              <a class="p-text-link" href="../work-with-us.html">Learn more</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-section p-outcomes" aria-labelledby="premium-outcomes-heading">
+      <div class="p-wrap">
+        <h2 class="p-title p-outcomes-title" id="premium-outcomes-heading">
+          <span>OPS Detox</span>
+          <span>outcomes.</span>
+        </h2>
+        <div class="p-outcome-grid">
+          <article class="p-outcome">
+            <strong>20-35%</strong>
+            <p>Less non-essential meeting time. Up to €8K reclaimed per employee.</p>
+          </article>
+          <article class="p-outcome">
+            <strong>25-40%</strong>
+            <p>Faster decision cycles, with less escalation and faster execution.</p>
+          </article>
+          <article class="p-outcome">
+            <strong>30-60%</strong>
+            <p>Less reporting overhead. €50K+ reclaimed capacity per team each year.</p>
+          </article>
+          <article class="p-outcome">
+            <strong>10-30%</strong>
+            <p>Tooling and SaaS cost optimization. €150K-300K on a €1M spend.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-section p-about" aria-labelledby="premium-about-heading">
+      <div class="p-wrap p-about-grid">
+        <figure class="p-about-media">
+          <img src="../assets/img/oscar-about.jpg" width="1201" height="1800" alt="Oscar de Grauw holding a laptop">
+        </figure>
+        <div>
+          <span class="p-kicker">About Oscar de Grauw</span>
+          <h2 class="p-title p-about-title" id="premium-about-heading">
+            <span>Why work</span>
+            <span>with me.</span>
+          </h2>
+          <div class="p-about-copy">
+            <p>I spent 17 years inside complex, international organizations, working across borders, departments and leadership levels. I've seen strategies succeed and fail because day-to-day operations couldn't keep up.</p>
+            <p>I don't approach your organization as an outsider with a framework. I work from the inside out, focusing on how work really flows.</p>
+            <p>My work is built on frameworks I developed myself: See – Strip – Choose™, Truth Latency™ and DRMT™, not someone else's playbook. You get a repeatable, structured approach that scales.</p>
+            <a class="button" href="../about.html">More about Oscar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="choice">
+      <div class="container">
+        <span class="eyebrow">The choice</span>
+        <h2>What will you choose?</h2>
+        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+        <div class="toggle-rows">
+          <button class="toggle-row choice-toggle" type="button" aria-pressed="true" aria-label="Switch between Operational Clarity and Operational Noise">
+            <span class="t-before">Operational Clarity</span>
+            <span class="t-switch" aria-hidden="true"><svg class="t-mark" viewBox="203.14 59.05 129.38 74.78" focusable="false"><path class="t-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="t-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="t-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="t-knob"><circle class="t-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="t-dot" cx="242.34" cy="96.50" r="18.35"/></g></svg></span>
+            <span class="t-after">Operational Noise</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <img class="footer-logo" src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+          <div class="footer-social">
+            <a href="#" aria-label="LinkedIn"><img src="../assets/social/linkedin.svg" alt=""></a>
+            <a href="#" aria-label="Instagram"><img src="../assets/social/instagram.svg" alt=""></a>
+            <a href="#" aria-label="YouTube"><img src="../assets/social/youtube.svg" alt=""></a>
+          </div>
+        </div>
+        <form data-demo-form data-success-message="Subscribed, demo only, no email is sent yet.">
+          <h2>Newsletter</h2>
+          <div class="field"><input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required><span class="field-error" aria-live="polite"></span></div>
+          <div class="field"><input type="email" name="email" placeholder="EMAIL" aria-label="Email" data-label="Email" required><span class="field-error" aria-live="polite"></span></div>
+          <button type="submit">Subscribe</button>
+          <p class="footer-status" role="status"></p>
+        </form>
+        <div>
+          <h2>Contact</h2>
+          <p><b>EMAIL</b><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p>
+          <p><b>PHONE</b><a href="tel:+1234567890">(123) 456 7890</a></p>
+          <p><b>ADDRESS</b>123 Anywhere St.,<br>Any City 1234</p>
+        </div>
+        <div>
+          <h2>Legal</h2>
+          <a href="#">Imprint</a>
+          <a href="../terms.html">Terms and Conditions</a>
+          <a href="../privacy.html">Privacy Policy</a>
+          <a href="../cookies.html">Cookies</a>
+        </div>
+      </div>
+      <p class="footer-legal">© 2026 OPS Detox™, Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+    </div>
+  </footer>
+
+  <script src="../js/site.js"></script>
+</body>
+</html>

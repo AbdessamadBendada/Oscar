@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#143318">
+  <meta name="description" content="A brand-led premium homepage direction for OPS Detox.">
+  <title>ABDESSAMAD-DIRECTION</title>
+  <link rel="icon" href="../assets/logo/favicon.png">
+  <style>
+    @font-face{
+      font-family:Formula;
+      src:url('../assets/fonts/PPFormula-CondensedBold.woff2') format('woff2');
+      font-display:swap;
+      font-weight:700;
+    }
+    @font-face{
+      font-family:Formula;
+      src:url('../assets/fonts/PPFormula-CondensedBold.woff2') format('woff2');
+      font-weight:700;
+      font-display:swap;
+      unicode-range:U+0042;
+      font-feature-settings:"ss01";
+    }
+    @font-face{
+      font-family:Inter;
+      src:url('../assets/fonts/Inter-Variable.ttf') format('truetype');
+      font-display:swap;
+      font-weight:100 900;
+    }
+
+    :root{
+      --ink:#143318;
+      --lime:#ccfe06;
+      --paper:#fefdf2;
+      --white:#fff;
+      --muted:#536957;
+      --line:rgba(20,51,24,.22);
+      --container:min(1440px,calc(100% - 96px));
+      --header-h:88px;
+      --display:Formula,Impact,sans-serif;
+      --body:Inter,Arial,sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--ink)}
+    body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--body);overflow-x:hidden}
+    body.menu-open{overflow:hidden}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
+    button{color:inherit}
+    ::selection{background:var(--lime);color:var(--ink)}
+    :focus-visible{outline:3px solid var(--lime);outline-offset:4px}
+
+    .skip-link{position:fixed;z-index:100;left:18px;top:18px;padding:10px 16px;background:var(--lime);color:var(--ink);transform:translateY(-180%)}
+    .skip-link:focus{transform:none}
+    .wrap{width:var(--container);margin-inline:auto}
+    .eyebrow{margin:0;font:700 14px/1 var(--body);letter-spacing:.14em;text-transform:uppercase}
+    .display{margin:0;font:700 clamp(54px,6vw,104px)/1.04 var(--display);letter-spacing:-.018em;text-transform:uppercase}
+    .display .wide{letter-spacing:.01em}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 22px 10px;border:1px solid currentColor;border-radius:999px;font:700 17px/1 var(--display);letter-spacing:.01em;text-transform:none;transition:background .2s,color .2s,border-color .2s,transform .2s}
+    .button:hover{transform:translateY(-2px)}
+    .button--lime{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+    .button--lime:hover{background:var(--white);border-color:var(--white)}
+    .button--ink{background:var(--ink);border-color:var(--ink);color:var(--lime)}
+    .button--ink:hover{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+    .button--ghost{background:transparent;color:inherit}
+
+    /* Header */
+    .site-header{position:fixed;z-index:50;inset:0 0 auto;height:var(--header-h);background:var(--ink);color:var(--paper);border-bottom:1px solid rgba(255,255,255,.14)}
+    .header-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:28px}
+    .brand{width:148px;flex:none}
+    .brand img{width:100%;height:auto}
+    .nav{display:flex;align-items:center;gap:clamp(26px,3vw,54px)}
+    .nav a{font:700 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;transition:opacity .2s}
+    .nav a:hover{opacity:.62}
+    .nav .button{font:700 16px/1 var(--display);letter-spacing:0;text-transform:none}
+    .menu-toggle{display:none;width:44px;height:44px;border:1px solid rgba(204,254,6,.55);border-radius:50%;background:none;position:relative}
+    .menu-toggle::before,.menu-toggle::after{content:"";position:absolute;left:11px;right:11px;height:1px;background:var(--lime);transition:transform .25s,top .25s}
+    .menu-toggle::before{top:16px}.menu-toggle::after{top:26px}
+    .menu-toggle[aria-expanded="true"]::before{top:21px;transform:rotate(45deg)}
+    .menu-toggle[aria-expanded="true"]::after{top:21px;transform:rotate(-45deg)}
+
+    /* Shared brand switch. The geometry is taken from the actual logo. */
+    .brand-switch{--sw-fg:var(--ink);--sw-bg:var(--lime);display:inline-flex;align-items:center;gap:14px;border:0;background:none;padding:0;cursor:pointer}
+    .brand-switch[aria-pressed="false"]{--sw-fg:var(--lime);--sw-bg:var(--ink)}
+    .switch-mark{display:block;width:82px;height:48px;overflow:visible}
+    .t-pill,.t-well,.t-dot{fill:var(--sw-fg)}
+    .t-track,.t-ring{fill:var(--sw-bg)}
+    .t-pill,.t-well,.t-dot,.t-track,.t-ring{transition:fill .3s ease}
+    .t-knob{transform-box:view-box;transition:transform .52s cubic-bezier(.65,0,.35,1)}
+    .brand-switch[aria-pressed="true"] .t-knob{transform:none}
+    .brand-switch[aria-pressed="false"] .t-knob{transform:translateX(50.98px)}
+
+    /* Hero: a single typographic composition over quiet photography. */
+    .masthead{position:relative;isolation:isolate;background:var(--ink);color:var(--paper);padding:calc(var(--header-h) + 78px) 0 76px;min-height:850px;display:flex;align-items:center}
+    .masthead-photo{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:50% 45%;filter:grayscale(1)}
+    .masthead::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(12,31,16,.94) 0%,rgba(12,31,16,.83) 48%,rgba(12,31,16,.48) 100%)}
+    .masthead-inner{container-type:inline-size}
+    .masthead .eyebrow{font-size:12px;line-height:1.5;letter-spacing:.16em;color:rgba(254,253,242,.7);margin-bottom:40px}
+    .masthead h1{margin:0;font:700 clamp(48px,8.2cqw,122px)/1.04 var(--display);letter-spacing:-.018em;text-transform:uppercase;font-feature-settings:"case"}
+    .masthead h1 span{display:block}
+    .masthead h1 span:nth-child(2){margin-left:5%}
+    .masthead h1 span:nth-child(3){margin-left:10%}
+    .masthead-bottom{max-width:550px;margin-top:46px}
+    .masthead-bottom p{margin:0;color:rgba(254,253,242,.8);font-size:17px;line-height:1.7}
+    .masthead-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:28px}
+    .masthead-actions .button{min-height:50px;padding-inline:25px}
+    .masthead-actions .button--ghost{border-color:rgba(254,253,242,.45)}
+    .masthead-actions .button--ghost:hover{background:var(--paper);color:var(--ink)}
+    @media(max-width:850px){
+      .masthead{min-height:760px;padding-top:calc(var(--header-h) + 64px);padding-bottom:64px}
+      .masthead h1{font-size:8.2cqw}
+      .masthead-bottom{max-width:500px;margin-top:36px}
+      .masthead-photo{object-position:62% center}
+    }
+    @media(max-width:560px){
+      .masthead{min-height:calc(100svh - 40px);padding-top:calc(var(--header-h) + 54px);padding-bottom:54px}
+      .masthead .eyebrow{font-size:10px;margin-bottom:30px}
+      .masthead h1{font-size:10.9cqw;line-height:1.12}
+      .masthead h1 span:nth-child(2){margin-left:0}
+      .masthead h1 span:nth-child(3){margin-left:0;margin-top:14px}
+      .masthead-bottom p{font-size:15px;line-height:1.65}
+      .masthead-actions{gap:12px;align-items:stretch;flex-direction:column}
+      .masthead::before{background:linear-gradient(90deg,rgba(12,31,16,.94),rgba(12,31,16,.73))}
+    }
+
+    /* Proof */
+    .proof{background:var(--white);border-bottom:1px solid var(--line);padding:44px 0}
+    .proof-grid{display:grid;grid-template-columns:180px minmax(0,1fr);align-items:center;gap:48px}
+    .proof h2{margin:0;font:700 28px/1 var(--display);text-transform:uppercase}
+    .logo-grid{display:grid;grid-template-columns:repeat(8,minmax(80px,1fr));align-items:center;gap:clamp(26px,4vw,72px)}
+    .logo-grid figure{height:62px;margin:0;display:grid;place-items:center;min-width:0}
+    .logo-grid img{width:auto;max-width:100%;max-height:42px;object-fit:contain;filter:grayscale(1) brightness(0)}
+    .logo-grid .logo-square img{max-height:58px}
+    .logo-grid .logo-tedx img{max-height:30px}
+    .logo-grid .logo-doac img{max-height:26px}
+
+    /* The problem */
+    .problem{padding:clamp(110px,11vw,210px) 0;background:var(--paper)}
+    .problem-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(50px,8vw,120px);align-items:start}
+    .problem h2{font-size:clamp(58px,6.5vw,108px);max-width:100%}
+    .problem h2 span{display:block}
+    .problem h2 span:nth-child(2){margin-left:8%}
+    .problem-side{padding-top:20px}
+    .problem-side .eyebrow{margin-bottom:34px}
+    .problem-side p{margin:0 0 1.2em;max-width:58ch;font-size:clamp(18px,1.45vw,24px);line-height:1.5}
+    .clutter-rail{margin-top:clamp(70px,9vw,150px);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    .clutter-row{display:grid;grid-template-columns:80px minmax(0,.85fr) minmax(0,1.15fr);gap:32px;align-items:center;padding:24px 0;border-bottom:1px solid var(--line)}
+    .clutter-row:last-child{border-bottom:0}
+    .clutter-row strong{font:700 clamp(30px,3.1vw,58px)/.92 var(--display);text-transform:uppercase}
+    .clutter-row p{margin:0;max-width:56ch;color:var(--muted)}
+    .clutter-icon{width:46px;height:28px;border:3px solid var(--ink);border-radius:20px;position:relative}
+    .clutter-icon::before{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:var(--ink);left:4px;top:3px}
+
+    /* Transformation */
+    .transformation{background:var(--ink);color:var(--paper);padding:clamp(110px,10vw,190px) 0}
+    .transform-intro{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:80px;align-items:end;margin-bottom:clamp(70px,8vw,140px)}
+    .transform-intro h2{color:var(--paper)}
+    .transform-intro p{margin:0;max-width:44ch;font-size:clamp(18px,1.35vw,23px);color:rgba(255,255,255,.7)}
+    .pathways{border-top:1px solid rgba(255,255,255,.3)}
+    .pathway{display:grid;grid-template-columns:52px minmax(0,1.1fr) minmax(0,1fr) 100px;gap:32px;align-items:center;min-height:250px;padding:40px 0;border-bottom:1px solid rgba(255,255,255,.3);position:relative;isolation:isolate;transition:color .4s}
+    .pathway::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(255,255,255,.035);transform:scaleY(0);transform-origin:bottom;transition:transform .45s cubic-bezier(.22,1,.36,1)}
+    .pathway:hover{color:var(--paper)}
+    .pathway:hover::before{transform:scaleY(1)}
+    .path-num{font:700 17px/1 var(--body);letter-spacing:.12em}
+    .pathway h3{margin:0;font:700 clamp(34px,3.2vw,54px)/1.12 var(--display);text-transform:uppercase}
+    .pathway-copy{max-width:58ch}
+    .pathway-copy p{margin:0;font-size:clamp(16px,1.05vw,19px);color:rgba(255,255,255,.72);transition:color .4s}
+    .pathway:hover .pathway-copy p{color:var(--paper)}
+    .pathway:nth-child(2) .path-meta span:first-child{color:var(--lime);border-color:var(--lime)}
+    .path-meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+    .path-meta span{border:1px solid currentColor;border-radius:999px;padding:6px 10px 5px;font:700 11px/1 var(--body);letter-spacing:.06em;text-transform:uppercase}
+    .pathway a{justify-self:end;font:700 18px/1 var(--display);border-bottom:2px solid currentColor;padding-bottom:5px}
+
+    /* Frameworks */
+    .frameworks{padding:clamp(110px,11vw,210px) 0;background:var(--white);overflow:hidden}
+    .frameworks-head{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:60px;align-items:end;margin-bottom:clamp(70px,8vw,130px)}
+    .frameworks-head p{margin:0 0 8px;max-width:43ch;font-size:clamp(18px,1.3vw,22px)}
+    .framework-list{border-top:1px solid var(--ink)}
+    .framework{display:grid;grid-template-columns:80px minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(30px,5vw,90px);padding:clamp(40px,5vw,80px) 0;border-bottom:1px solid var(--ink);align-items:start;position:relative}
+    .framework::after{content:"";position:absolute;right:-7%;top:50%;width:190px;height:190px;border:1px solid var(--ink);border-radius:50%;transform:translateY(-50%) scale(.45);opacity:0;transition:transform .5s,opacity .5s}
+    .framework:hover::after{transform:translateY(-50%) scale(1);opacity:.13}
+    .framework-num{font:700 18px/1 var(--body);letter-spacing:.12em}
+    .framework h3{margin:0;font:700 clamp(36px,3.5vw,60px)/1.12 var(--display);text-transform:uppercase}
+    .framework-copy{padding-right:24px}
+    .framework-copy h4{margin:0 0 12px;font:700 clamp(22px,2vw,34px)/1 var(--display);text-transform:uppercase}
+    .framework-copy p{margin:0;max-width:54ch;color:var(--muted)}
+    .draft-note{margin:28px 0 0;color:var(--muted);font-size:13px}
+
+    /* Outcomes */
+    .outcomes{background:var(--ink);color:var(--paper);padding:clamp(100px,10vw,180px) 0}
+    .outcomes-head{display:flex;align-items:end;justify-content:space-between;gap:40px;margin-bottom:70px}
+    .outcomes-head h2{font-size:clamp(58px,6vw,104px)}
+    .outcomes-head p{margin:0 0 8px;max-width:32ch;color:rgba(255,255,255,.7);font-size:18px}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(204,254,6,.46);border-bottom:1px solid rgba(204,254,6,.46)}
+    .stat{min-height:300px;padding:34px 28px 36px 0;border-right:1px solid rgba(204,254,6,.46);display:flex;flex-direction:column;justify-content:space-between}
+    .stat:not(:first-child){padding-left:28px}
+    .stat:last-child{border-right:0}
+    .stat strong{font:700 clamp(48px,4.2vw,72px)/1.1 var(--display);letter-spacing:-.015em}
+    .stat p{margin:20px 0 0;max-width:25ch;color:var(--white);font-size:16px}
+
+    /* Oscar */
+    .about{background:var(--paper);color:var(--ink);padding:clamp(90px,9vw,160px) 0;border-top:1px solid var(--line)}
+    .about-grid{display:grid;grid-template-columns:minmax(340px,.72fr) minmax(0,1.28fr);gap:clamp(60px,9vw,170px);align-items:center}
+    .about-visual{margin:0;position:relative;padding:0 0 46px 46px}
+    .about-arch{height:min(72vw,760px);max-height:760px;border-radius:320px 320px 0 0;overflow:hidden;background:var(--ink)}
+    .about-arch img{width:100%;height:100%;object-fit:cover;object-position:50% 28%;filter:grayscale(1) contrast(1.04);mix-blend-mode:luminosity}
+    .about-visual::before{content:"";position:absolute;left:0;bottom:0;width:58%;aspect-ratio:1;border:2px solid var(--ink);border-radius:50%;z-index:2}
+    .about-copy .eyebrow{margin-bottom:32px}
+    .about-copy h2{font-size:clamp(58px,6vw,104px)}
+    .about-text{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;margin-top:45px}
+    .about-text p{margin:0;font-size:17px}
+    .about-cta{margin-top:40px}
+
+    /* Closing choice */
+    .closing{background:var(--white);padding:clamp(100px,10vw,180px) 0}
+    .closing .eyebrow{text-align:center;margin-bottom:26px}
+    .closing h2{text-align:center;font-size:clamp(58px,7vw,120px)}
+    .choice-panel{margin-top:70px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:34px 0;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:34px}
+    .choice-label{font:700 clamp(36px,3.6vw,62px)/1.08 var(--display);text-transform:uppercase;transition:opacity .3s}
+    .choice-label:last-child{text-align:right}
+    .choice-panel[data-choice="clarity"] .choice-label:first-child{opacity:.25}
+    .choice-panel[data-choice="noise"] .choice-label:last-child{opacity:.25}
+    .closing-switch{--sw-fg:var(--ink);--sw-bg:var(--white)}
+    .closing-switch[aria-pressed="false"]{--sw-fg:var(--lime);--sw-bg:var(--ink)}
+    .closing-switch .switch-mark{width:130px;height:76px}
+    .closing-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:45px}
+
+    /* Pattern and footer */
+    .pattern{height:72px;background:var(--ink);overflow:hidden;display:grid;align-content:center;gap:12px}
+    .pattern-row{display:flex;width:max-content;gap:0;animation:pattern-left 42s linear infinite}
+    .pattern-row:nth-child(2){animation-name:pattern-right;transform:translateX(-25%)}
+    .pattern-set{display:flex;align-items:center;gap:34px;padding-left:34px}
+    .pattern-bar{display:block;width:clamp(90px,10vw,190px);height:8px;background:var(--lime);opacity:.28;border-radius:999px}
+    .pattern-bar:nth-child(2){width:72px}.pattern-bar:nth-child(3){width:130px}.pattern-bar:nth-child(4){width:220px}
+    @keyframes pattern-left{to{transform:translateX(-25%)}}
+    @keyframes pattern-right{to{transform:translateX(0)}}
+    .site-footer{background:var(--ink);color:var(--paper);padding:70px 0 34px}
+    .footer-top{display:grid;grid-template-columns:1.2fr repeat(2,.4fr);gap:60px;padding-bottom:70px}
+    .footer-brand img{width:190px;margin-bottom:26px}
+    .footer-brand p{margin:0;max-width:36ch;color:rgba(255,255,255,.66)}
+    .footer-col h2{margin:0 0 20px;color:var(--lime);font:700 18px/1 var(--display);text-transform:uppercase}
+    .footer-col a{display:block;margin-top:10px;color:rgba(255,255,255,.76)}
+    .footer-bottom{padding-top:24px;border-top:1px solid rgba(255,255,255,.18);display:flex;justify-content:space-between;gap:30px;color:rgba(255,255,255,.5);font-size:13px}
+
+    /* Content is visible by default. Entrance motion is a one-shot enhancement;
+       no script, reduced motion, or an interrupted animation never hides content. */
+    .reveal{opacity:1;transform:none}
+
+    @media(max-width:1200px){
+      :root{--container:min(calc(100vw - 56px),1720px)}
+      .logo-grid{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:28px}
+      .pathway{grid-template-columns:52px minmax(0,1fr) minmax(0,1fr)}
+      .pathway a{grid-column:3;justify-self:start}
+      .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid rgba(204,254,6,.46)}
+    }
+
+    @media(max-width:850px){
+      :root{--container:min(calc(100vw - 36px),1720px);--header-h:72px}
+      .site-header{height:var(--header-h)}
+      .brand{width:122px}
+      .menu-toggle{display:block}
+      .nav{position:fixed;inset:var(--header-h) 0 0;background:var(--ink);display:flex;flex-direction:column;align-items:flex-start;padding:48px 24px;gap:28px;transform:translateX(100%);transition:transform .35s cubic-bezier(.22,1,.36,1)}
+      .nav.is-open{transform:none}
+      .nav a{font-size:18px}
+      .proof-grid,.problem-head,.transform-intro,.frameworks-head,.about-grid{grid-template-columns:minmax(0,1fr)}
+      .proof-grid{gap:30px}
+      .problem h2 span:nth-child(2){margin-left:0}
+      .clutter-row{grid-template-columns:56px minmax(0,1fr)}
+      .clutter-row p{grid-column:2}
+      .pathway{grid-template-columns:56px minmax(0,1fr);min-height:0;padding:42px 0}
+      .pathway-copy,.pathway a{grid-column:2}
+      .framework{grid-template-columns:56px minmax(0,1fr)}
+      .framework-copy{grid-column:2;padding-right:0}
+      .framework::after{display:none}
+      .outcomes-head{display:block}.outcomes-head p{margin-top:26px}
+      .about-visual{max-width:600px}.about-arch{height:720px}
+      .choice-panel{grid-template-columns:minmax(0,1fr);text-align:center}
+      .choice-label:last-child{text-align:center}
+      .closing-switch{justify-self:center}
+      .footer-top{grid-template-columns:minmax(0,1fr) repeat(2,minmax(0,.5fr))}
+    }
+
+    @media(max-width:560px){
+      .display{line-height:1.08;font-size:clamp(40px,10.5vw,58px)}
+      .logo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .problem,.transformation,.frameworks,.outcomes,.about,.closing{padding-block:92px}
+      .clutter-row{grid-template-columns:44px minmax(0,1fr);gap:18px}
+      .pathway{grid-template-columns:40px minmax(0,1fr);gap:18px}
+      .pathway h3{font-size:clamp(28px,7.5vw,42px)}
+      .framework{grid-template-columns:40px minmax(0,1fr);gap:18px}
+      .stats{grid-template-columns:minmax(0,1fr)}
+      .stat{border-right:0!important;border-bottom:1px solid rgba(204,254,6,.46);padding:30px 0!important;min-height:220px}
+      .stat:last-child{border-bottom:0}
+      .about-visual{padding:0 0 28px 28px}.about-arch{height:540px;border-radius:220px 220px 0 0}
+      .about-text{grid-template-columns:minmax(0,1fr)}
+      .choice-panel{margin-top:45px}
+      .closing-switch .switch-mark{width:100px;height:60px}
+      .footer-top{grid-template-columns:minmax(0,1fr)}
+      .footer-bottom{display:block}.footer-bottom span{display:block;margin-top:8px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+      .reveal{opacity:1;transform:none}
+    }
+    .display,.pathway h3,.framework h3,.stat strong,.choice-label{font-feature-settings:"case"}
+    .framework-copy h4{line-height:1.18}
+    .button--ghost{border-color:currentColor}
+    .button--ink{color:var(--paper)}
+    .footer-col h2{color:var(--paper)}
+    .stat{text-align:center;padding-inline:24px;align-items:center}
+    .stat:not(:first-child){padding-left:24px}
+    .stat strong{font-feature-settings:"case","tnum"}
+    .path-num,.framework-num{display:grid;place-items:center;width:40px;height:40px;border:1px solid currentColor;border-radius:50%;font-size:12px}
+    .stats,.stat{border-color:rgba(255,255,255,.24)}
+    .button--ink:hover{background:var(--paper);border-color:var(--ink)}
+    .closing-switch[aria-pressed="false"]{--sw-fg:var(--ink);--sw-bg:var(--white)}
+    @media(max-width:850px){
+      .problem-head,.transform-intro,.frameworks-head{gap:40px}
+      .transform-intro,.frameworks-head{margin-bottom:56px}
+    }
+    @media(max-width:560px){
+      .problem h2,.outcomes-head h2 h2,.about-copy h2,.closing h2{font-size:clamp(40px,10.5vw,58px)}
+      .problem h2 span:nth-child(2){margin-left:8%}
+      .framework h3{font-size:32px}
+      .framework-copy h4{line-height:1.2}
+      .about-arch{height:440px}
+      .choice-label{font-size:38px}
+    }
+    /* Source content restored verbatim from premium-direction-v2.html. */
+    .problem h2{font-size:clamp(42px,4.7vw,78px)}
+    .display > span{display:block}
+    .source-signature{font-size:14px!important;margin-top:28px!important}
+    .source-signature b{display:inline-block;margin-bottom:4px}
+    .transform-intro,.frameworks-head{grid-template-columns:minmax(0,1fr)}
+    .transform-intro .eyebrow{grid-row:1}
+    .pathway{grid-template-columns:52px minmax(0,.85fr) minmax(0,1.25fr) max-content}
+    .pathway a{line-height:1.3;white-space:nowrap}
+    .button,.framework-link,.site-footer button{white-space:nowrap}
+    .entrance-pending{opacity:0}
+    @media(prefers-reduced-motion:reduce){.entrance-pending{opacity:1}}
+    .framework-link{display:inline-block;margin-top:24px;border-bottom:1px solid currentColor;font-size:14px}
+    .about-text{grid-template-columns:minmax(0,1fr);max-width:60ch;gap:20px}
+    .choice-note{text-align:center;margin:28px 0 0;color:var(--muted)}
+    .voices{background:var(--paper);padding:100px 0}
+    .voices-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px;margin-top:60px}
+    .voice{padding:30px 0;border-top:1px solid var(--line)}
+    .testimonial-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .voice blockquote{margin:24px 0;font-size:21px;line-height:1.6}
+    .voice footer{display:grid;gap:4px;font-size:14px}
+    .voice footer span{color:var(--muted)}
+    .site-footer .footer-grid{display:grid;grid-template-columns:1fr 1.2fr 1fr .7fr;gap:48px}
+    .site-footer .footer-logo{width:170px}
+    .footer-social{display:flex;gap:16px;margin-top:24px}
+    .footer-social img{width:24px;height:24px}
+    .site-footer h2{font:700 24px/1.2 var(--display);margin:0 0 24px}
+    .site-footer .field{margin-bottom:14px}
+    .site-footer input{width:100%;padding:14px 0;border:0;border-bottom:1px solid #ffffff55;background:transparent;color:var(--paper);border-radius:0}
+    .site-footer input::placeholder{color:#ffffffaa}
+    .site-footer button{padding:10px 24px;background:var(--paper);color:var(--ink);border:0;border-radius:24px;cursor:pointer}
+    .site-footer .footer-grid p{font-size:14px}
+    .site-footer .footer-grid b,.site-footer .footer-grid > div:last-child a{display:block;margin:12px 0 6px}
+    .footer-legal{font-size:12px;color:#ffffff99;border-top:1px solid #ffffff33;padding-top:28px;margin:48px 0 0}
+    @media(max-width:1200px){.pathway{grid-template-columns:52px minmax(0,1fr) minmax(0,1fr)}}
+    @media(max-width:850px){.pathway{grid-template-columns:40px minmax(0,1fr)}.site-footer .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:560px){.voices{padding:72px 0}.voices-grid,.site-footer .footer-grid{grid-template-columns:minmax(0,1fr)}.problem h2{font-size:11vw}}
+    /* A prominent founder portrait, paired with the existing source copy. */
+    .problem{padding-block:clamp(80px,8vw,140px)}
+    .problem-head{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:min-content 1fr;column-gap:clamp(48px,6vw,96px);row-gap:36px;align-items:start}
+    .problem-head > h2{grid-column:2;grid-row:1;font-size:clamp(44px,4.8vw,76px);line-height:1.08}
+    .problem-side{grid-column:2;grid-row:2;padding-top:0}
+    .problem-side p{font-size:clamp(17px,1.3vw,20px);line-height:1.7}
+    .founder-portrait{grid-column:1;grid-row:1 / span 2;margin:0}
+    .founder-photo{aspect-ratio:4/5;overflow:hidden;background:#514e49}
+    .founder-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 24%}
+    .founder-portrait figcaption{padding-top:22px;border-top:1px solid var(--line);margin-top:20px;font-size:12px;letter-spacing:.04em;line-height:1.7;color:var(--muted)}
+    .founder-portrait figcaption b{display:block;font-size:16px;letter-spacing:0;color:var(--ink);margin-bottom:3px}
+    @media(max-width:1100px) and (min-width:851px){.problem-head{column-gap:40px}.problem-head > h2{font-size:4.5vw}}
+    @media(max-width:850px){
+      .problem-head{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:36px}
+      .problem-head > h2{grid-column:1;grid-row:1;font-size:clamp(42px,8vw,66px)}
+      .founder-portrait{grid-column:1;grid-row:2;max-width:560px;width:100%}
+      .problem-side{grid-column:1;grid-row:3}
+      .founder-photo{aspect-ratio:5/6}
+    }
+    @media(max-width:560px){.problem-head > h2{font-size:10.8vw}.problem-side p{font-size:17px}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html" aria-label="OPS Detox home"><img src="../assets/logo/primary-detoxgreen.svg" alt="OPS Detox"></a>
+      <nav class="nav" id="site-nav" aria-label="Primary navigation">
+        <a href="../work-with-us.html">Work With Us</a>
+        <a href="../keynote.html">Keynote</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a class="button button--lime" href="../contact.html">Let’s talk</a>
+      </nav>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="masthead" aria-labelledby="hero-title">
+      <img class="masthead-photo" src="../assets/img/premium-office-pexels.jpg" alt="" fetchpriority="high">
+      <div class="wrap masthead-inner">
+        <h1 id="hero-title"><span>Cleanse your</span><span>business systems,</span><span>win your time back.</span></h1>
+        <div class="masthead-bottom">
+          <p>We help scale-ups cleanse the systems clogged by meetings nobody needs, reports nobody reads and decisions nobody takes, so time flows back into growing the company.</p>
+          <div class="masthead-actions">
+            <a class="button button--lime" href="../diagnostic.html">Book the free diagnostic</a>
+            <a class="button button--ghost" href="../contact.html">Let’s talk</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof" aria-labelledby="proof-title">
+      <div class="wrap proof-grid">
+        <h2 id="proof-title">Featured in:</h2>
+        <div class="logo-grid">
+          <figure class="logo-tedx"><img src="../assets/logo/featured/tedx.png" width="258" height="72" alt="TEDx"></figure>
+          <figure class="logo-doac"><img src="../assets/logo/featured/doac.png" width="1666" height="454" alt="DOAC"></figure>
+          <figure><img src="../assets/logo/featured/brand-on-tour.webp" width="1751" height="689" alt="Brand on Tour"></figure>
+          <figure class="logo-square"><img src="../assets/logo/featured/funky-people.webp" width="760" height="760" alt="Funky People"></figure>
+          <figure class="logo-square"><img src="../assets/logo/featured/rauw-gesproken.webp" width="720" height="720" alt="Rauw Gesproken Podcast"></figure>
+          <figure class="logo-square"><img src="../assets/logo/featured/sacha-bol.webp" width="743" height="760" alt="Sacha Bol"></figure>
+          <figure class="logo-square"><img src="../assets/logo/featured/everybody-networks-here.webp" width="500" height="500" alt="Everybody Networks Here"></figure>
+          <figure><img src="../assets/logo/featured/nectora.webp" width="1000" height="428" alt="Nectora"></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="problem" aria-labelledby="problem-title">
+      <div class="wrap">
+        <div class="problem-head">
+          <figure class="founder-portrait reveal">
+            <div class="founder-photo"><img src="../assets/img/oscar-office-portrait.jpg" width="1044" height="1506" alt="Oscar de Grauw" loading="lazy"></div>
+            <figcaption><b>Oscar de Grauw</b>Founder | Speaker | Visionary</figcaption>
+          </figure>
+          <h2 class="display reveal" id="problem-title"><span>Fewer meetings</span>
+          <span>Fewer reports</span>
+          <span>More decisions</span></h2>
+          <div class="problem-side reveal">
+            <p>Most scale-ups don't have a strategy problem. They have a company full of work that piled up as they grew, meetings that outlived their purpose, reports nobody reads, decisions that wait on founder’s desk, all kept alive by one sentence: "that's how we've always done it."</p>
+            <p>OPS Detox clears out what growth left behind. Together with your team, we strip away the meetings, reports and approval layers that no longer serve the business, and rebuild a structure your people can run on their own, long after we have left.</p>
+</div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="transformation" id="programs" aria-labelledby="transform-title">
+      <div class="wrap">
+        <div class="transform-intro">
+          <h2 class="display reveal" id="transform-title"><span>Three ways to</span>
+            <span>work together</span></h2>
+          <p class="eyebrow">Programs</p>
+        </div>
+
+        <div class="pathways">
+          <article class="pathway reveal">
+            <span class="path-num">01</span>
+            <h3>OPS Detox<br>Diagnostic™</h3>
+            <div class="pathway-copy">
+              <div class="path-meta"><span>Free · 8 minutes</span></div>
+              <p>Before anything is stripped, we measure where the time and the decisions actually go. You, your key people and your team answer the same questions, where the answers differ, the clutter sits.</p>
+            </div>
+            <a href="../diagnostic.html">Book the free diagnostic</a>
+          </article>
+
+          <article class="pathway reveal">
+            <span class="path-num">02</span>
+            <h3>Operational flow</h3>
+            <div class="pathway-copy">
+              <div class="path-meta"><span>Most booked</span><span>Meetings · Reporting · Decisions</span></div>
+              <p>For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
+            </div>
+            <a href="../detox.html">Learn more</a>
+          </article>
+
+          <article class="pathway reveal">
+            <span class="path-num">03</span>
+            <h3>Keynotes</h3>
+            <div class="pathway-copy">
+              <p>Oscar’s keynotes start with a story few audiences forget. Twenty-three years ago he ran toward a train and survived. What followed, from seventeen years at Sony to a sunrise on Kilimanjaro, became the question he leaves every room with: am I truly living my life, or simply surviving the one I inherited?</p>
+            </div>
+            <a href="../keynote.html">Learn more</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="voices" aria-labelledby="voices-title"><div class="wrap"><h2 class="display reveal" id="voices-title"><span>What leaders</span>
+          <span>say</span></h2><div class="voices-grid"><article class="voice reveal">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+<article class="voice reveal">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+<article class="voice reveal">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+<article class="voice reveal">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article></div></div></section>
+
+    <section class="frameworks" aria-labelledby="framework-title">
+      <div class="wrap">
+        <div class="frameworks-head">
+          <h2 class="display reveal" id="framework-title"><span>The IP the detox</span>
+          <span>runs on</span></h2>
+        </div>
+
+        <div class="framework-list">
+          <article class="framework reveal">
+            <span class="framework-num">01</span>
+            <h3>See – Strip – Choose™</h3>
+            <div class="framework-copy"><h4>The core method.</h4><p>Make the clutter visible before touching it, remove what no longer earns its place, then decide deliberately what the company keeps. Every engagement runs through these three moves.</p><a class="framework-link" href="../work-with-us.html">Learn more</a></div>
+          </article>
+          <article class="framework reveal">
+            <span class="framework-num">02</span>
+            <h3>Truth Latency™</h3>
+            <div class="framework-copy"><h4>The delay between knowing and saying.</h4><p>In most companies someone knew the truth weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p><a class="framework-link" href="../work-with-us.html">Learn more</a></div>
+          </article>
+          <article class="framework reveal">
+            <span class="framework-num">03</span>
+            <h3>DRMT™</h3>
+            <div class="framework-copy"><h4>The decision engine.</h4><p>Who decides, who is consulted, and what happens when nobody does. DRMT closes the ownership vacuum that leaves decisions queued on the founder's desk.</p><a class="framework-link" href="../work-with-us.html">Learn more</a></div>
+          </article>
+        </div>
+        <p class="draft-note"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording. DRMT™ is shown as "the decision engine" because that is the only description that exists. The three framework pages do not exist yet, so Learn more points at Work With Us.</p>
+      </div>
+    </section>
+
+    <section class="outcomes" aria-labelledby="outcomes-title">
+      <div class="wrap">
+        <div class="outcomes-head">
+          <h2 class="display reveal" id="outcomes-title"><span>OPS Detox</span>
+          <span>outcomes:</span></h2>
+        </div>
+        <div class="stats reveal">
+          <article class="stat"><strong>20-35%</strong><p>less non-essential meeting time. Up to €8K reclaimed per employee</p></article>
+          <article class="stat"><strong>25-40%</strong><p>faster decision cycles. Less escalation, faster execution</p></article>
+          <article class="stat"><strong>30-60%</strong><p>less reporting overhead. €50K+ reclaimed capacity per team/year</p></article>
+          <article class="stat"><strong>10-30%</strong><p>tooling &amp; SaaS cost optimization. €150K-300K on a €1M spend</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" aria-labelledby="about-title">
+      <div class="wrap about-grid">
+        <figure class="about-visual reveal"><div class="about-arch"><img src="../assets/img/oscar-chair.jpg" width="1024" height="1536" alt="Oscar de Grauw"></div></figure>
+        <div class="about-copy reveal">
+          <p class="eyebrow">About Oscar de Grauw</p>
+          <h2 class="display" id="about-title"><span>Why work</span>
+              <span>with me</span></h2>
+          <div class="about-text">
+            <p>I spent 17 years inside complex, international organizations, working across borders, departments and leadership levels. I've seen strategies succeed and fail because day-to-day operations couldn't keep up.</p>
+            <p>I don't approach your organization as an outsider with a framework. I work from the inside out, focusing on how work really flows.</p>
+            <p>My work is built on frameworks I developed myself: See – Strip – Choose™, Truth Latency™ and DRMT™, not someone else's playbook. You get a repeatable, structured approach that scales.</p>
+            </div>
+          <p class="about-cta"><a class="button button--ink" href="../about.html">More about Oscar</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <div class="wrap">
+        <h2 class="display reveal" id="closing-title">What will you choose?</h2>
+        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+        <div class="choice-panel reveal" data-choice="clarity">
+          <span class="choice-label">Operational Noise</span>
+          <button class="brand-switch closing-switch" type="button" aria-pressed="true" data-closing-switch aria-label="Switch between Operational Clarity and Operational Noise">
+            <svg class="switch-mark" viewBox="203.14 59.05 129.38 74.78" aria-hidden="true"><path class="t-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="t-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="t-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="t-knob"><circle class="t-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="t-dot" cx="242.34" cy="96.50" r="18.35"/></g></svg>
+          </button>
+          <span class="choice-label">Operational Clarity</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="pattern" aria-hidden="true">
+      <div class="pattern-row"><div class="pattern-set"><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span></div><div class="pattern-set"><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span></div><div class="pattern-set"><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span></div><div class="pattern-set"><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span></div></div>
+      <div class="pattern-row"><div class="pattern-set"><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span></div><div class="pattern-set"><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span></div><div class="pattern-set"><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span></div><div class="pattern-set"><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span><span class="pattern-bar"></span></div></div>
+    </div>
+  </main>
+
+  <footer id="contact-footer" class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <img class="footer-logo" src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+          <div class="footer-social">
+            <a href="#" aria-label="LinkedIn"><img src="../assets/social/linkedin.svg" alt=""></a>
+            <a href="#" aria-label="Instagram"><img src="../assets/social/instagram.svg" alt=""></a>
+            <a href="#" aria-label="YouTube"><img src="../assets/social/youtube.svg" alt=""></a>
+          </div>
+        </div>
+
+        <form data-demo-form data-success-message="Subscribed, demo only, no email is sent yet.">
+          <h2>Newsletter</h2>
+          <div class="field">
+            <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
+            <span class="field-error" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <input type="email" name="email" placeholder="EMAIL" aria-label="Email" data-label="Email" required>
+            <span class="field-error" aria-live="polite"></span>
+          </div>
+          <button type="submit">Subscribe</button>
+          <p class="footer-status" role="status"></p>
+        </form>
+
+        <div>
+          <h2>Contact</h2>
+          <p><b>EMAIL</b><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p>
+          <p><b>PHONE</b><a href="tel:+1234567890">(123) 456 7890</a></p>
+          <p><b>ADDRESS</b>123 Anywhere St.,<br>Any City 1234</p>
+        </div>
+
+        <div>
+          <h2>Legal</h2>
+          <a href="#">Imprint</a>
+          <a href="../terms.html">Terms and Conditions</a>
+          <a href="../privacy.html">Privacy Policy</a>
+          <a href="../cookies.html">Cookies</a>
+        </div>
+      </div>
+      <p class="footer-legal">© 2026 OPS Detox™, Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    document.querySelector('[data-demo-form]')?.addEventListener('submit', event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      if (form.reportValidity()) form.querySelector('.footer-status').textContent = form.dataset.successMessage;
+    });
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const closingSwitch = document.querySelector('[data-closing-switch]');
+    const choicePanel = document.querySelector('.choice-panel');
+    closingSwitch?.addEventListener('click', () => {
+      const clarity = closingSwitch.getAttribute('aria-pressed') !== 'true';
+      closingSwitch.setAttribute('aria-pressed', String(clarity));
+      choicePanel.dataset.choice = clarity ? 'clarity' : 'noise';
+      if (!clarity) setTimeout(() => {
+        closingSwitch.setAttribute('aria-pressed', 'true');
+        choicePanel.dataset.choice = 'clarity';
+      }, 1100);
+    });
+
+    const toggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('.nav');
+    const mobileNav = matchMedia('(max-width: 850px)');
+    const syncNavAccess = () => {
+      nav.inert = mobileNav.matches && !nav.classList.contains('is-open');
+    };
+    const closeMenu = (restoreFocus = false) => {
+      toggle?.setAttribute('aria-expanded', 'false');
+      toggle?.setAttribute('aria-label', 'Open menu');
+      nav?.classList.remove('is-open');
+      document.body.classList.remove('menu-open');
+      syncNavAccess();
+      if (restoreFocus) toggle?.focus();
+    };
+    toggle?.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      nav.classList.toggle('is-open', open);
+      document.body.classList.toggle('menu-open', open);
+      syncNavAccess();
+    });
+    nav?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => closeMenu()));
+    addEventListener('keydown', event => {
+      if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') closeMenu(true);
+    });
+    mobileNav.addEventListener('change', () => closeMenu());
+    syncNavAccess();
+
+    const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+    const activeEntrances = new Set();
+    const entranceEase = 'cubic-bezier(.22,1,.36,1)';
+    let entranceObserver;
+    const enter = (element, delay = 0, photo = false) => {
+      if (!element || motionPreference.matches || !element.animate) return;
+      const frames = photo
+        ? [{opacity:0, transform:'scale(1.035)'}, {opacity:1, transform:'scale(1)'}]
+        : [{opacity:0, transform:'translateY(26px)'}, {opacity:1, transform:'translateY(0)'}];
+      const animation = element.animate(frames, {
+        duration: photo ? 1400 : 850,
+        delay,
+        easing: entranceEase,
+        fill:'backwards'
+      });
+      element.classList.remove('entrance-pending');
+      activeEntrances.add(animation);
+      animation.finished.catch(() => {}).finally(() => activeEntrances.delete(animation));
+    };
+
+    if (!motionPreference.matches && 'IntersectionObserver' in window) {
+      // Observe each item itself. A visible parent must never start an entrance
+      // for children that are still below the fold, especially on phones.
+      const targets = new Set(document.querySelectorAll(
+        '.masthead-photo, .masthead h1 span, .masthead-bottom p, .masthead-actions, ' +
+        '.proof-grid > h2, .logo-grid figure, .stat'
+      ));
+      document.querySelectorAll('.reveal').forEach(element => {
+        if (element.matches('.stats')) return;
+        if (element.matches('.pathway, .framework, .voice, .about-copy, .problem-side')) {
+          element.querySelectorAll('h2, h3, h4, p, blockquote, .path-meta, .pathway-copy > a, .framework-link, :scope > a, :scope > footer').forEach(child => targets.add(child));
+        } else {
+          targets.add(element);
+        }
+      });
+      entranceObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting || entry.intersectionRatio < .15) return;
+          const element = entry.target;
+          enter(element, 0, element.matches('.masthead-photo, .about-visual'));
+          entranceObserver.unobserve(element);
+        });
+      }, {threshold:.15, rootMargin:'-88px 0px -32px 0px'});
+      targets.forEach(element => {
+        element.classList.add('entrance-pending');
+        entranceObserver.observe(element);
+      });
+      document.addEventListener('focusin', event => {
+        const element = event.target.closest('.entrance-pending');
+        if (!element) return;
+        element.classList.remove('entrance-pending');
+        entranceObserver.unobserve(element);
+      });
+    }
+    motionPreference.addEventListener('change', event => {
+      if (!event.matches) return;
+      entranceObserver?.disconnect();
+      activeEntrances.forEach(animation => animation.cancel());
+      activeEntrances.clear();
+      document.querySelectorAll('.entrance-pending').forEach(element => element.classList.remove('entrance-pending'));
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,6 +1,18 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 7 November 2026_
+_Last updated: 20 November 2026_
+
+> **20 Nov — `designer-review` was merged and the review is now the live site.** A clean
+> fast-forward, `585db63` → `796a225`; `main` had nothing on it that the branch did not
+> already carry, so there is no merge commit and no conflict to read. All eleven pages
+> `200` and the live homepage is byte-identical to `main`. **Two corrections came out of
+> this.** `oscar.bendada.co` is served by **Cloudflare, not Vercel** — §46 says Vercel
+> throughout and is wrong about the live site; the Vercel deployment it describes was the
+> temporary before/after preview only. Which means **`vercel.json` has never applied to
+> the live site**: `HANDOFF.md`, `AGENTS.md`, `BACKLOG.md`, `.gitignore` and
+> `/playground/` are all reachable on production right now, and §46's claim that they are
+> 404'd was never true there. Separately, **every page carries a placeholder email
+> address**, `hello@reallygreatsite.com`, and it is live. See §47.
 
 > **7 Nov — the brand designer reviewed the site, and her notes were worked through.**
 > Twelve items, and two of them turned out to be much bigger than they looked. The
@@ -230,7 +242,15 @@ the client exactly how the thing behaves, without a backend behind it.
 - **The repo root is the live deliverable** — **eleven pages**, real navigation, working
   interactions, responsive from 320px up. No backend, no build step, no dependencies.
   Flattened out of `website-design/` on 1 Nov; see §32.
-- **Live for review at <https://oscar.bendada.co>.** All eleven pages return 200.
+- **Live for review at <https://oscar.bendada.co>.** All eleven pages return 200. The
+  host is **Cloudflare**, not Vercel — see §47 before trusting anything §46 says about
+  the deployment. As of 20 Nov this URL carries the designer's review: `designer-review`
+  was merged into `main` and `main` is what Cloudflare serves.
+- **The working notes are publicly readable on the live site.** `HANDOFF.md`,
+  `AGENTS.md`, `BACKLOG.md`, `.gitignore` and `/playground/` all return 200 there.
+  `vercel.json` was meant to 404 them but Cloudflare does not read it; the equivalent
+  needs writing as `_redirects` or `_headers`. The repo is public anyway, so none of it
+  is secret — but `/playground/home-comments` is the client's own review comments. §47.
 - **Every page is on one design system** as of 2 Nov (§40, §41), and the nav is one list
   on all of them (§39).
 - `playground/` holds the review artefacts and frozen records, none of them site pages.
@@ -4217,6 +4237,14 @@ there is no WebKit automation on this machine.
 
 ## 46. Shipped to a branch, not to the live site (9-11 November 2026)
 
+> **Read §47 first. This section gets the live site's host wrong.** It says Vercel
+> throughout. `oscar.bendada.co` is **Cloudflare** and always was; the Vercel deployment
+> described below was a second, temporary site, stood up only for the before/after
+> comparison. Everything here about *Vercel* is accurate — about that preview. Nothing
+> here about `vercel.json` ever applied to the live site, including the verification at
+> the end of the `vercel.json` sub-section. The branch has since been merged, so the
+> "two sites" framing is also finished.
+
 ### Why there are two sites now
 
 The client asked to see the review applied *beside* the live site rather than on
@@ -4256,6 +4284,12 @@ deployed URL. They are 404'd now. `"handle": "filesystem"` after the rules keeps
 real page and asset serving normally — without it the rules would swallow the site.
 Confirmed on the live deployment: all eleven pages `200`, all six blocked paths `404`.
 
+> **Corrected 20 Nov.** That last sentence held for the **Vercel preview** and nowhere
+> else. "The live deployment" it names was the preview, not `oscar.bendada.co`, which is
+> Cloudflare and ignores `vercel.json` entirely. On the live site those six paths have
+> always answered `200`. `vercel.json` is still in the repo and still harmless; it just
+> protects nothing now that the preview is gone. §47.
+
 ### The font ships as woff2 only
 
 `@font-face` used to list the `.otf` as a fallback. **This repo is public and PP
@@ -4292,4 +4326,114 @@ branch served side by side, screenshotted headless at matched widths, with the
 designer's notes and a pair of live links per page. The HTML is written **ASCII-only,
 every non-ASCII character as a numeric entity** — the first build had no charset
 declaration and the curly quotes came out as `aEURTM`.
+
+---
+
+## 47. The branch was merged, and the host was never Vercel (20 November 2026)
+
+### What this was
+
+The client approved the review, so `designer-review` went into `main` and `main` is the
+live site now. The merge took one command. Checking it afterwards is what turned up two
+things that had been wrong in the docs for a week and a half.
+
+### The merge
+
+A **clean fast-forward**, `585db63` → `796a225`. Four commits, 32 files, +1887/−2253.
+
+```
+git checkout main
+git merge --ff-only designer-review
+git push origin main
+```
+
+`main` carried **nothing** that the branch did not already have — `git log
+designer-review..main` was empty — so there was no conflict available to hit and no
+merge commit worth making. One straight line of history. `--ff-only` is the honest flag
+here: if `main` *had* moved it would have refused rather than quietly building a merge.
+
+`designer-review` is left in place, pointing at the same commit, locally and on origin.
+
+### `oscar.bendada.co` is Cloudflare, and §46 says Vercel
+
+§46 describes the deployment as Vercel throughout. **The live site is served by
+Cloudflare.** The response headers settle it — `server: cloudflare`, `cf-cache-status`,
+a `cf-nel` report-to block, and **no `x-vercel-id` on any response**:
+
+```
+curl -s -D - -o /dev/null https://oscar.bendada.co/ | grep -i -E "server|x-vercel|cf-"
+```
+
+Both things in §46 are true, of different sites. `oscar.bendada.co` is the original
+Cloudflare site and has been all along — it is the "Before" row in §46's own table, and
+that row never said what hosted it. The Vercel deployment was the **"After"** site,
+stood up on 9 Nov purely so the client could see the review beside the live site, on a
+`vercel.app` URL that is not recorded anywhere in these docs. §46 then wrote about "the
+deployment" as though there were only one.
+
+**The trap for anyone checking this later:** the two sites behave almost identically.
+Both serve clean URLs, both serve all eleven pages, both 200 on the pages you would
+think to test. The difference only shows in the headers and in the paths that were
+supposed to be blocked.
+
+### Which means `vercel.json` protects nothing
+
+`vercel.json` 404s `HANDOFF.md`, `AGENTS.md`, `BACKLOG.md`, `README.md`, `.gitignore`,
+`content/` and `playground/`. **Cloudflare does not read `vercel.json`.** On the live
+site, every one of those answers `200` today. `/playground/home-comments.html` 308s to
+`/playground/home-comments` and serves — that is the page carrying the client's own
+review comments.
+
+§46 closes its `vercel.json` section with "confirmed on the live deployment: all eleven
+pages `200`, all six blocked paths `404`". That confirmation was run against the
+preview. It was never true of `oscar.bendada.co`.
+
+**How bad it is: mild, and worth being clear about why.** This repo is public on GitHub,
+so none of these files were ever private — anyone who wanted them could read them there.
+The 404s were tidiness, keeping working notes off a URL being shown to a client, not a
+secret being kept. Nothing has leaked that was not already public.
+
+**What it needs:** Cloudflare's equivalent, which is a `_redirects` or `_headers` file,
+not `vercel.json`. Not written yet — the current Cloudflare Pages config needs looking at
+first rather than guessed at. `vercel.json` can stay in the repo; it is inert and
+harmless. **Do not delete it on the assumption it is doing the job.**
+
+### A placeholder email address is live on every page
+
+Every page's footer, plus the contact page body, reads:
+
+```
+hello@reallygreatsite.com
+```
+
+That is template filler — it is in all eleven pages and five `playground/` files, and it
+is live. It appears nowhere in `BACKLOG.md` and nowhere in §1–§46, so it looks like it
+has simply never been noticed rather than been deferred. **It needs Oscar's real
+address**, which is why it was not fixed in this pass. Thirteen lines to change once the
+address is known:
+
+```
+grep -rn "reallygreatsite" . --include="*.html"
+```
+
+### How the merge was verified live
+
+Status codes on all eleven pages, then the homepage **byte-compared against the merged
+`main`** rather than eyeballed. That is the check worth repeating, because the build
+markers §46 recommends (`t-knob`, `unicode-range:U+0042`) no longer discriminate — both
+builds carry them now, so they cannot tell you which one you are looking at.
+
+The byte-compare comes out at **one difference, and it is Cloudflare's**: it rewrites the
+footer's `mailto:` into a `/cdn-cgi/l/email-protection` link and injects
+`email-decode.min.js` to undo it in the browser. That is Cloudflare's Email Address
+Obfuscation feature hiding addresses from scrapers. **Expect it on every byte-level diff
+against this site and do not read it as a bad deploy.**
+
+### Still open after this
+
+- **The working notes are readable on the live site.** Needs `_redirects`/`_headers`.
+- **The placeholder email**, on all eleven pages. Needs the real address.
+- **`AGENTS.md` still says Vercel**, in its deployment notes and in its "checking a
+  deployment" guidance. Same correction as this section; not yet applied there.
+- Everything §46 left open is unchanged — it was a hosting change, not a design one.
 
