@@ -26,12 +26,10 @@
        rendered PDF rather than from a written description.
 
        CONTENT: the design is hers, the words are the repo's. The
-       PDF predates the 11 Nov client decisions, so the offers are
-       Diagnostic / Operational Flow / Organisational Flow rather
-       than the mockup's Diagnosis / Workshops / Keynotes, the
-       outcome figures are the four approved ones, and the mockup's
-       own typos ("Foudner", "Visionair", "OPS DISGNOSIS") are not
-       carried across.
+       approved 22 Nov direction changes the offer row to Diagnostic /
+       Workshops / Keynotes. The outcome figures are the four approved
+       ones, and the mockup's own typos ("Foudner", "Visionair",
+       "OPS DISGNOSIS") are not carried across.
 
        Hero photograph: "People during Training Course" on Pexels, photo
        18999540,
@@ -776,6 +774,51 @@
     .premium-page .choice .toggle-row{padding:14px 18px 11px}
   }
 
+  /* ============================================================
+     APPROVED DIRECTION ADJUSTMENTS, 22 NOVEMBER
+     Anzhelika's composition remains the master. These are the six
+     agreed borrowings or corrections from Abdessamad's direction.
+     ============================================================ */
+
+  /* 1. White hero typography on the existing Deep Green duotone. */
+  .premium-page .pr-hero[data-ground="deep"]{--pr-ink:#fff}
+  .premium-page .pr-hero[data-ground="deep"] .pr-hero-h,
+  .premium-page .pr-hero[data-ground="deep"] .pr-hero-foot{color:#fff}
+
+  /* 3. The About portrait uses Abdessamad's Deep Green arch treatment. */
+  .premium-page .pr-about figure{
+    position:relative;padding:0 0 clamp(28px,3vw,46px) clamp(28px,3vw,46px);
+  }
+  .premium-page .pr-about-arch{
+    position:relative;z-index:1;overflow:hidden;background:var(--ink);
+    border-radius:999px 999px 0 0;
+  }
+  .premium-page .pr-about figure .pr-about-arch img{
+    display:block;width:100%;aspect-ratio:3/4.15;object-fit:contain;object-position:50% 100%;
+    filter:grayscale(1) contrast(1.08);mix-blend-mode:luminosity;
+  }
+  .premium-page .pr-about figure::before{
+    content:"";position:absolute;z-index:2;left:0;bottom:0;
+    width:58%;aspect-ratio:1;border:2px solid var(--ink);border-radius:50%;
+    pointer-events:none;
+  }
+
+  /* 6. Restore the closing switch to Abdessamad's confident scale. */
+  .premium-page .choice .toggle-rows{max-width:980px;margin-top:40px}
+  .premium-page .choice .toggle-row{
+    padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
+    gap:clamp(20px,3vw,46px);
+  }
+  .premium-page .choice .choice-toggle .t-switch{
+    width:130px;height:76px;flex:0 0 auto;
+  }
+
+  @media(max-width:760px){
+    .premium-page .pr-about figure{max-width:520px;padding:0 0 28px 28px}
+    .premium-page .choice .toggle-row{padding:18px 20px 15px;gap:14px}
+    .premium-page .choice .choice-toggle .t-switch{width:100px;height:60px}
+  }
+
   </style>
 </head>
 <body class="premium-page">
@@ -789,7 +832,7 @@
         <img src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
       </a>
       <nav class="site-nav" id="nav" aria-label="Main navigation">
-        <a href="../work-with-us.html">Work With Us</a>
+        <a href="ANZHELIKA-WORK-WITH-US-HERO.html">Work With Us</a>
         <a href="../keynote.html">Keynote</a>
         <a href="../about.html">About</a>
         <a href="../contact.html">Contact</a>
@@ -930,14 +973,13 @@
           </article>
 
           <article class="pr-card pr-card--dark reveal">
-            <span class="pr-badge">Most booked</span>
             <div class="pr-card-body">
-              <p class="pr-card-meta">Meetings · Reporting · Decisions</p>
-              <p class="pr-copy">For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
-              <a class="button pr-card-btn" href="../detox.html">Learn more</a>
+              <p class="pr-card-meta">Speak Up Gym · Out Loud</p>
+              <p class="pr-copy">A few intensive hours with your leadership team. In the Speak Up Gym and over the Out Loud card game, people practise saying the uncomfortable thing out loud and the clutter starts to show.</p>
+              <a class="button pr-card-btn" href="../work-with-us.html">Learn more</a>
             </div>
             <figure class="pr-card-figure">
-              <h3>Operational<br>flow</h3>
+              <h3>Workshops</h3>
               <!-- Background removed, desk kept. Vision's subject lift
                    returns the two people and nothing else, because it
                    segments subjects rather than furniture, so the matte
@@ -950,23 +992,11 @@
             </figure>
           </article>
 
-          <!-- KEYNOTES, per the client's card on 19 Nov. Two things about
-               this card conflict with the 11 Nov checklist and are flagged
-               rather than settled here:
-
-                 1. That list says "Remove the standalone Keynotes section
-                    from the homepage", and names Organisational Flow as
-                    the third offer. This card does the reverse, so
-                    Organisational Flow is no longer on the homepage at
-                    all. Work With Us is the only place it now appears.
-                 2. The paragraph in the supplied card is card 2's text
-                    repeated, which is the designer's placeholder rather
-                    than keynote copy. Oscar's approved keynote paragraph
-                    from keynote.html is used instead.
-
-               No meta chips: the other two carry them, but there is no
-               approved three-word summary for Keynotes and inventing one
-               is not ours to do. -->
+          <!-- KEYNOTES is the approved third card in the 22 Nov direction.
+               The paragraph in the supplied card repeated card 2's copy,
+               so Oscar's existing keynote paragraph is used instead. No
+               meta chips are added because no approved short summary
+               exists and inventing one is not ours to do. -->
           <article class="pr-card pr-card--lime reveal">
             <div class="pr-card-bg">
               <img src="../assets/img/speaking-keynote.jpg" width="1600" height="1067" alt="" loading="lazy">
@@ -1164,7 +1194,9 @@
     <section class="pr-about" aria-labelledby="pr-about-heading">
       <div class="pr-wrap pr-about-grid reveal">
         <figure>
-          <img src="../assets/img/oscar-about.jpg" width="1201" height="1800" alt="Oscar de Grauw holding a laptop" loading="lazy">
+          <div class="pr-about-arch">
+            <img src="../assets/img/oscar-cutout.png" width="504" height="860" alt="Oscar de Grauw holding a laptop" loading="lazy">
+          </div>
         </figure>
 
         <div>
@@ -1254,6 +1286,28 @@
       <p class="footer-legal">© 2026 OPS Detox™, Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
     </div>
   </footer>
+
+  <!-- The moving switcher lines now finish the page below the footer,
+       instead of interrupting the transition into the footer. Four
+       identical six-bar sets keep both marquee seams continuous. -->
+  <div class="pb" aria-hidden="true">
+    <div class="pb-row">
+      <div class="pb-track">
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      </div>
+    </div>
+    <div class="pb-row pb-row--b">
+      <div class="pb-track">
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      </div>
+    </div>
+  </div>
 
   <script src="../js/site.js"></script>
   <script>

@@ -139,7 +139,7 @@
       e.preventDefault();
       var valid = true;
 
-      form.querySelectorAll('input, textarea').forEach(function (input) {
+      form.querySelectorAll('input, textarea, select').forEach(function (input) {
         var value = input.value.trim();
         var label = input.dataset.label || 'This field';
         var message = '';
@@ -204,8 +204,8 @@
 
      An inline script in <head> has already set .no-preloader for
      reduced-motion users, so there is nothing to do for them. The
-     ops-preloaded flag is still written below but nothing reads it while
-     the preloader is under review and running on every load. */
+     ops-preloaded flag is read by each page's inline head script, so the
+     animation runs only once per browser tab session. */
   var preloader = document.getElementById('preloader');
 
   if (preloader && !document.documentElement.classList.contains('no-preloader')) {

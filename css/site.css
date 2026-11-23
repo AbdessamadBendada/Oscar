@@ -1261,7 +1261,7 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 }
 .field textarea{min-height:120px;resize:vertical}
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--ink);outline:none}
-.field input[aria-invalid="true"],.field textarea[aria-invalid="true"]{border-color:#b3261e}
+.field input[aria-invalid="true"],.field textarea[aria-invalid="true"],.field select[aria-invalid="true"]{border-color:#b3261e}
 .field-error{display:block;margin-top:6px;font-size:11px;color:#b3261e;min-height:14px}
 .form-note{margin-top:16px;font-size:11px;color:var(--muted)}
 .form-status{

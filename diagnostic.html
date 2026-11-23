@@ -8,10 +8,9 @@
   <meta name="description" content="Find out where your organization is losing time, clarity and execution speed. A full diagnostic of your operational friction.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
-  <!-- Decided before first paint. While the preloader is under review it
-       runs on every load; restore the once-per-session behaviour by putting
-       sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
-  <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <!-- Decide before first paint: reduced-motion visitors and anyone who has
+       already seen the preloader this session go straight to the page. -->
+  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
   <!-- ==========================================================
        DIAGNOSTIC — brought onto the current design system,
        2 November 2026. It was still the 14 October build.
@@ -59,29 +58,53 @@
   .dg-hero-copy .actions{justify-content:center;margin-top:32px}
 
   /* ---------- 6. "Why complete the diagnostic" ----------
-     site.css's .process-grid, restyled into the brand's round-rect cards.
-     The numerals take the lime disc the homepage's cleanse cards use;
-     Deep Green ground is the only legal one for it (V1.0 p.21). */
+     One process card and two result cards, grouped by their labels without
+     nesting cards inside another card. The first card is Deep Green so the
+     three-column rhythm has hierarchy without adding any new copy. */
   .dg-why{padding:var(--section-y) 0}
   .dg-why .section-heading{margin-bottom:clamp(30px,3.4vw,48px)}
   .dg-why h2{max-width:none;font-size:clamp(30px,3.4vw,48px);line-height:1.04;color:var(--ink)}
-  .dg-why .process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.4vw,34px)}
-  .dg-why .process-grid article{
-    background:#fff;border:1px solid var(--rule);
-    border-radius:var(--r-card);padding:clamp(24px,2.6vw,36px);
-    transition:transform .18s,box-shadow .18s;
+  .dg-why-layout{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);
+    gap:clamp(20px,2.4vw,34px);align-items:stretch;
   }
-  .dg-why .process-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-  .dg-why .process-grid span{
+  .dg-why-group{display:flex;min-width:0;flex-direction:column;gap:14px}
+  .dg-why-group>.eyebrow{
+    display:block;margin:0;color:var(--ink);font-size:13px;letter-spacing:.12em;
+  }
+  .dg-receive-grid{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:clamp(20px,2.4vw,34px);height:100%;
+  }
+  .dg-how-card,.dg-receive-grid article{
+    min-height:280px;padding:clamp(28px,3vw,42px);
+    background:#fff;border:1px solid var(--rule);
+    border-radius:var(--r-card);transition:transform .18s,box-shadow .18s;
+    display:flex;flex-direction:column;align-items:flex-start;
+  }
+  .dg-how-card{background:var(--ink);border-color:var(--ink)}
+  .dg-how-card:hover,.dg-receive-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .dg-card-num{
     display:grid;place-items:center;width:46px;height:46px;
     border-radius:50%;background:var(--ink);color:var(--lime);
-    font:17px/1 var(--display);letter-spacing:.04em;margin-bottom:18px;
+    font:17px/1 var(--display);letter-spacing:.04em;margin-bottom:auto;
   }
-  .dg-why .process-grid h3{
+  .dg-how-card .dg-card-num{background:var(--lime);color:var(--ink)}
+  .dg-how-card h3,.dg-receive-grid h3{
     margin:0 0 10px;max-width:none;text-transform:none;
     font-family:var(--body);font-weight:700;font-size:18px;line-height:1.3;color:var(--ink);
   }
-  .dg-why .process-grid p{margin:0;font-size:15.5px;line-height:1.6;color:var(--muted)}
+  .dg-how-card p,.dg-receive-grid p{margin:0;font-size:15.5px;line-height:1.6;color:var(--muted)}
+  .dg-how-card h3{color:#fff}
+  .dg-how-card p{color:rgba(255,255,255,.72)}
+
+  @media(max-width:850px){
+    .dg-why-layout{grid-template-columns:minmax(0,1fr)}
+  }
+  @media(max-width:620px){
+    .dg-receive-grid{grid-template-columns:minmax(0,1fr)}
+    .dg-how-card,.dg-receive-grid article{min-height:240px}
+  }
 
   /* ---------- 7. "Share it with your colleagues" ----------
      Deep Green, so the page alternates instead of running as one ivory
@@ -256,18 +279,31 @@
     </div>
 
 
-    <!-- ===== SECTION 3 — why complete it =====
-         site.css's .process-grid, restyled into the brand's round-rect
-         cards. Copy and markup unchanged. -->
+    <!-- ===== SECTION 3 — why, what and how =====
+         The meeting asked for the reasons, deliverables and process to stop
+         reading as one mixed list. The wording below is unchanged; only the
+         existing points are grouped by what they answer. -->
     <section class="dg-why reveal">
       <div class="container">
       <div class="section-heading">
         <div><span class="eyebrow">Why complete it</span><h2>Why complete the diagnostic</h2></div>
       </div>
-      <div class="process-grid">
-        <article><span>01</span><h3>Takes 6-8 minutes</h3><p>Short enough to finish in one sitting, long enough to be honest.</p></article>
-        <article><span>02</span><h3>Module-level score profile across 7 areas</h3><p>You see which part of the operation is clogged, not just that something is.</p></article>
-        <article><span>03</span><h3>Your two biggest friction points, named</h3><p>Plus a personal copy of the results emailed to you.</p></article>
+      <div class="dg-why-layout">
+        <div class="dg-why-group">
+          <span class="eyebrow">How it works</span>
+          <article class="dg-how-card">
+            <span class="dg-card-num">01</span>
+            <h3>Takes 6-8 minutes</h3>
+            <p>Short enough to finish in one sitting, long enough to be honest.</p>
+          </article>
+        </div>
+        <div class="dg-why-group">
+          <span class="eyebrow">What you receive</span>
+          <div class="dg-receive-grid">
+            <article><span class="dg-card-num">02</span><h3>Module-level score profile across 7 areas</h3><p>You see which part of the operation is clogged, not just that something is.</p></article>
+            <article><span class="dg-card-num">03</span><h3>Your two biggest friction points, named</h3><p>Plus a personal copy of the results emailed to you.</p></article>
+          </div>
+        </div>
       </div>
       </div>
     </section>
@@ -344,7 +380,7 @@
         </div>
 
         <div class="actions">
-          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+          <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
         </div>
       </div>
     </section>

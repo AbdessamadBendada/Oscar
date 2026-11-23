@@ -24,10 +24,9 @@
        own wording ("Book the systems audit", etc.) was not
        carried across.
        ========================================================== -->
-  <!-- Decided before first paint. While the preloader is under review it
-       runs on every load; restore the once-per-session behaviour by putting
-       sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
-  <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <!-- Decide before first paint: reduced-motion visitors and anyone who has
+       already seen the preloader this session go straight to the page. -->
+  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
 
   <style>
   /* ---------- 1. Desktop pass: the blank space ----------
@@ -630,7 +629,7 @@
 
           <div class="ht-actions actions">
             <a class="button" href="contact.html">Let’s talk</a>
-            <a class="button button--line" href="diagnostic.html">Book the FREE DIAGNOSTIC</a>
+            <a class="button button--line" href="diagnostic.html">Book the free diagnostic</a>
           </div>
 
         </div>

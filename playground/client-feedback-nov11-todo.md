@@ -1,9 +1,11 @@
 # Client feedback, 11 November 2026
 
 Temporary implementation checklist derived from the Fathom action points and full
-meeting transcript. Work belongs on `client-feedback-nov11`, based on
-`designer-review`. Do not merge to `main` until the client approves the completed
-review build.
+meeting transcript. Work belongs on `client-feedback-nov11`, based on the current
+`main`. Do not merge to `main` until the client approves the completed review build.
+
+Direction-neutral implementation pass completed 20 November. Visual-system changes
+remain parked until the client selects one of the two premium directions.
 
 ## Homepage
 
@@ -37,41 +39,43 @@ review build.
 
 ## Resources and framework pages
 
-- [ ] Create a Resources/Free Resources page with the Diagnostic primary, the Noise
+- [x] Create a Resources/Free Resources page with the Diagnostic primary, the Noise
   Tax Calculator later, and space for e-books.
-- [ ] Confirm the page name and whether it belongs in the main navigation.
+- [ ] Confirm the final page name and whether it belongs in the main navigation.
+  `resources.html` exists for review but was deliberately not added to the nav.
 - [ ] Create concise pages for See – Strip – Choose™, Truth Latency™ and DRMT™ from
   Oscar’s source documents. Do not invent the expansion of DRMT™.
 
 ## Work With Us
 
-- [ ] Remove the duplicated large “Work With Us” opening treatment.
-- [ ] Present Operational Flow and Organisational Flow side by side; mark Operational
+- [x] Remove the duplicated large “Work With Us” opening treatment.
+- [x] Present Operational Flow and Organisational Flow side by side; mark Operational
   Flow “Most booked.” Do not show prices.
-- [ ] Keep Tool Stack Detox as a clearly labelled add-on rather than a third equal
+- [x] Keep Tool Stack Detox as a clearly labelled add-on rather than a third equal
   programme.
-- [ ] Do not list every module as an independently purchasable service.
+- [x] Do not list every module as an independently purchasable service.
 - [ ] Add Keynotes and Workshops as another way to work with Oscar.
 - [ ] Convert the referenced six-item text section into an approved visual after
   confirming which six-item block the meeting referred to.
 
 ## About
 
-- [ ] Change the identity words to Speaker · Leader · Visionary.
+- [x] Change the identity words to Speaker · Leader · Visionary.
 - [ ] Confirm the exact preferred portrait from the meeting.
 - [ ] Refine the main cutout, remove the awkward grey/green combination, test a
   subtle shadow, and move Oscar slightly upward and centrally beneath the left copy.
-- [ ] Keep the timeline, rename “Oscar’s path” to “Oscar’s journey,” and replace its
-  placeholder images with relevant milestone photographs.
-- [ ] Confirm whether the detailed values section, the three-principles section, or
-  both should be removed as redundant.
+- [x] Keep the timeline and rename “Oscar’s path” to “Oscar’s journey.”
+- [ ] Replace the timeline placeholders with relevant milestone photographs.
+- [x] Remove the redundant six-values section and retain the three principles, as
+  agreed at 47:42 in the client meeting.
 
 ## Contact
 
-- [ ] Remove the mid-page CTA that interrupts the contact flow.
-- [ ] Add an approved enquiry-type dropdown, likely OPS Detox, Keynote, Workshop and
+- [x] Remove the mid-page CTA that interrupts the contact flow. It was already absent
+  in the current build and remains absent.
+- [x] Add an enquiry-type dropdown with OPS Detox, Keynote, Workshop and
   Consultation/Other.
-- [ ] Rename “What’s clogged?” to “Your message.”
+- [x] Rename “What’s clogged?” to “Your message.”
 
 ## Keynotes and Workshops
 
@@ -85,20 +89,21 @@ review build.
 ## Diagnostic and Noise Tax
 
 - [ ] Add the supplied Diagnostic mockup near the hero.
-- [ ] Separate “why take it,” “what you receive” and “how it works.”
+- [x] Separate “why take it,” “what you receive” and “how it works,” using only the
+  existing approved points and without touching the seven-question engine.
 - [ ] Rewrite the outcome section from Oscar’s approved bullets without breaking the
   existing seven-question interaction and scoring.
-- [ ] Confirm whether “Share with colleagues” is copy, a share button, an email action
-  or a team-invitation feature.
+- [x] Keep “Share with colleagues” as informational copy. No share or email feature
+  was invented without a specific request.
 - [ ] Create the Noise Tax landing page later with its mockup and outcomes.
 - [ ] Confirm whether the Noise Tax task includes the actual calculator or only its
   landing page; the Diagnostic remains the primary free resource.
 
 ## Sitewide
 
-- [ ] Standardize contact CTAs as “Let’s talk” and diagnostic CTAs as “Book the free
+- [x] Standardize contact CTAs as “Let’s talk” and diagnostic CTAs as “Book the free
   diagnostic,” preserving the correct destination for each.
-- [ ] Change the preloader to run once per session.
+- [x] Change the preloader to run once per session.
 - [ ] Replace placeholder testimonials with four approved LinkedIn recommendations
   and consistent attribution across all slider pages.
 - [ ] Keep the Soft Ivory homepage hero, current animated strip, About opening

@@ -1,6 +1,13 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 20 November 2026_
+_Last updated: 22 November 2026_
+
+> **22 Nov — Anzhelika's premium direction was selected, with six explicit
+> adjustments.** They are staged only in the review artefacts: white hero type,
+> Workshops as the second offer with no “Most booked” label, a Deep Green Oscar
+> portrait treatment, the moving pattern below the footer, an image-led Work With Us
+> hero, and the larger closing switch. The live pages are untouched by this selection.
+> See §49.
 
 > **20 Nov — `designer-review` was merged and the review is now the live site.** A clean
 > fast-forward, `585db63` → `796a225`; `main` had nothing on it that the branch did not
@@ -4437,3 +4444,118 @@ against this site and do not read it as a bad deploy.**
   deployment" guidance. Same correction as this section; not yet applied there.
 - Everything §46 left open is unchanged — it was a hosting change, not a design one.
 
+---
+
+## 48. Direction-neutral client feedback pass (20 November 2026)
+
+Work continues on `client-feedback-nov11`, fast-forwarded from the current `main` at
+`640b5ee`. Nothing in this section is merged, committed or pushed. The two premium
+homepage concepts remain review artefacts; this pass deliberately avoids choosing
+either visual direction.
+
+### What changed
+
+- **Sitewide CTAs:** contact links now read “Let’s talk”; Diagnostic links now read
+  “Book the free diagnostic.” Destinations did not change. Diagnostic’s internal
+  “Start the diagnostic” control remains distinct because it starts the tool.
+- **Preloader:** all twelve current root pages now read `ops-preloaded` before first
+  paint. It runs once per tab session, still skips for reduced motion, and keeps the
+  existing timing and skip controls.
+- **Contact:** the interrupting mid-page CTA was already absent. The form now includes
+  a required enquiry-type select for OPS Detox, Keynote, Workshop and Consultation or
+  other; “What is clogged?” is now “Your message.” Shared demo validation now handles
+  selects as well as inputs and textareas.
+- **About:** the identity stack is Speaker / Leader / Visionary, “Oscar’s path” is now
+  “Oscar’s journey,” and the overlapping six-values section is removed. The three
+  principles remain, matching the explicit decision at 47:42 in the client meeting.
+  Timeline photographs and the portrait treatment remain pending.
+- **Work With Us:** the duplicate giant “WORK WITH US” title is gone. Operational and
+  Organisational Flow are genuinely side by side on desktop, Operational carries a
+  “Most booked” badge, and Tool Stack remains a full-width, quieter add-on below. The
+  inner module grids use `minmax(0,1fr)`; bare `1fr` clipped Psychological Safety once
+  the parent cards became half width.
+- **Diagnostic:** the existing approved points are regrouped under “How it works” and
+  “What you receive,” while “Why complete the diagnostic” remains the section title.
+  A first pass nested two result cards inside a larger result card and was rejected on
+  sight; the final treatment is three aligned independent cards, with the process card
+  in Deep Green and the two deliverables on white.
+  The seven-question markup, classes, scoring and scripts are untouched. “Share it
+  with your colleagues” remains informational rather than inventing a share feature.
+- **Resources:** `resources.html` is a new reviewable root page, not in the nav. The
+  Diagnostic is the primary card; Noise Tax Calculator and e-books are visibly marked
+  “Coming later.” The final page name and nav placement are still client decisions.
+
+The working checklist is `playground/client-feedback-nov11-todo.md`; it now separates
+completed direction-neutral work from items still blocked by content, photography,
+links or the premium-direction decision.
+
+`playground/client-feedback-before-after.html` is the visual review artefact for this
+pass. It places each implemented comment above real 1512 × 982 Before and After
+captures. The Before images were rendered from an exported copy of untouched `main`
+at `640b5ee`; the After images were rendered from this working branch. Its PNGs live
+only in `playground/client-feedback-report-assets/` and neither the report nor its
+assets are dependencies of a site page.
+
+### What was verified
+
+Chrome browser QA against a local static server:
+
+- all twelve root pages: one direct body header, footer, footer grid and nav; expected
+  main-child counts; no old CTA labels; no horizontal document overflow;
+- Resources, Work With Us, About and Diagnostic visually inspected at desktop and
+  phone layouts;
+- Work With Us: two 640px offer columns at the desktop check, one column on phone,
+  three contained module tracks and the add-on still distinct;
+- Contact: empty submission reports four required fields including the select; a valid
+  local demo submission clears every error and shows the success state;
+- Diagnostic driven through all seven questions: 51% result, seven module bars, two
+  friction points; restart returns to question 1;
+- changed pages report one header, footer and footer grid, with no console warnings or
+  errors observed in the interactive checks.
+
+The browser viewport bridge reported 1680px and 433px layout widths for the desktop
+and phone checks. Safari remains untested, as before.
+
+---
+
+## 49. Anzhelika direction selected with six adjustments (22 November 2026)
+
+The premium direction decision is now Anzhelika's composition, with six explicit
+changes borrowed from or compared against Abdessamad's direction. This is still a
+**review-artifact pass only**. No selected-direction styling has been lifted into the
+live pages, `index.html` or `css/site.css`.
+
+### Homepage direction
+
+`playground/ANZHELIKA-DIRECTION.html` now carries the approved changes:
+
+- hero display type is white on the existing Deep Green photographic treatment;
+- the middle offer is **Workshops**, using the existing approved workshop copy, and
+  the old “Most booked” label is gone;
+- the Why Work With Me portrait uses the existing transparent Oscar cutout on a Deep
+  Green arch, so the supplied photograph's grey background is no longer visible;
+- the shared moving pattern is after the footer rather than above it; and
+- the closing Noise / Clarity switch is enlarged to the scale of Abdessamad's version,
+  with a measured mobile size rather than a desktop control squeezed into one row.
+
+The three homepage offer cards are now Diagnostic / Workshops / Keynotes. This is a
+direction-specific decision and supersedes the older note inside the artefact that
+described Diagnostic / Operational Flow / Organisational Flow.
+
+### Work With Us hero
+
+`playground/ANZHELIKA-WORK-WITH-US-HERO.html` is a new standalone review artefact for
+the sixth comment. It uses Abdessamad's office photograph with Anzhelika's offset white
+display typography, and uses the existing Work With Us kicker, headline, paragraph and
+CTAs without drafting replacement copy. Its logo returns to the homepage direction;
+the page is not in the live navigation and nothing on the site depends on it.
+
+### Verification
+
+Both artefacts were rendered in Chrome at 1512 × 982. The homepage hero, offer row,
+portrait, enlarged switch, footer and relocated pattern were visually inspected. The
+Work With Us hero was also checked at a true 390 × 844 device viewport after correcting
+its shared navigation class, so the menu collapses into the existing mobile drawer.
+The portrait was changed from a too-pale full photograph, then from an over-dark
+multiply treatment, to the final transparent cutout on Deep Green. Temporary CDP
+harness files were deleted after the captures. Safari remains untested.

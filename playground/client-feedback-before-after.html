@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143318">
+  <title>OPS Detox Client Feedback | Before and After</title>
+  <style>
+    @font-face {
+      font-family: "Formula";
+      src: url("../assets/fonts/PPFormula-CondensedBold.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    :root {
+      --green: #143318;
+      --lime: #c7ff00;
+      --paper: #f8f7ed;
+      --white: #ffffff;
+      --ink: #143318;
+      --line: rgba(20, 51, 24, .18);
+      --muted: #667168;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 32px clamp(24px, 5vw, 80px) 40px;
+      color: var(--white);
+      background: var(--green);
+      border-bottom: 1px solid rgba(199, 255, 0, .34);
+    }
+
+    .header-inner,
+    main {
+      width: min(1680px, 100%);
+      margin: 0 auto;
+    }
+
+    .kicker,
+    .comment-label,
+    .shot-label,
+    .status {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .kicker { color: var(--lime); }
+
+    h1,
+    h2,
+    .number {
+      margin: 0;
+      font-family: "Formula", Impact, sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: .92;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin-top: 14px;
+      font-size: clamp(58px, 8vw, 128px);
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+      gap: 32px;
+      align-items: end;
+      margin-top: 30px;
+    }
+
+    .intro p {
+      max-width: 760px;
+      margin: 0;
+      color: rgba(255, 255, 255, .72);
+      font-size: 17px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .meta span {
+      padding: 8px 12px;
+      color: var(--green);
+      background: var(--lime);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    main { padding: 56px clamp(18px, 4vw, 64px) 100px; }
+
+    .change {
+      padding: 46px 0 56px;
+      border-top: 1px solid var(--line);
+    }
+
+    .change:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .comment {
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .number {
+      color: var(--green);
+      font-size: 46px;
+    }
+
+    .comment-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+    }
+
+    h2 {
+      max-width: 1120px;
+      font-size: clamp(36px, 4.4vw, 70px);
+    }
+
+    .note {
+      max-width: 920px;
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .status {
+      padding: 8px 12px;
+      color: var(--green);
+      background: var(--lime);
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    figure {
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 18px 46px rgba(20, 51, 24, .08);
+    }
+
+    figcaption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 13px 16px;
+      color: var(--muted);
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .shot-label { color: var(--green); }
+
+    figure.after .shot-label::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 8px;
+      background: var(--lime);
+      border: 1px solid var(--green);
+      border-radius: 50%;
+    }
+
+    figure a {
+      display: block;
+      color: inherit;
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1512 / 982;
+      object-fit: cover;
+      background: #efeee4;
+    }
+
+    .behavior-note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      color: var(--white);
+      background: var(--green);
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .behavior-note strong { color: var(--lime); }
+
+    footer {
+      padding: 26px clamp(24px, 5vw, 80px);
+      color: rgba(255, 255, 255, .65);
+      background: var(--green);
+      font-size: 13px;
+    }
+
+    footer strong { color: var(--lime); }
+
+    @media (max-width: 900px) {
+      .intro,
+      .comparison { grid-template-columns: 1fr; }
+      .meta { justify-content: flex-start; }
+      .comment { grid-template-columns: 54px minmax(0, 1fr); }
+      .comment .status { grid-column: 2; justify-self: start; }
+      .number { font-size: 36px; }
+    }
+
+    @media (max-width: 560px) {
+      header { padding-top: 24px; }
+      main { padding-top: 36px; }
+      .change { padding: 34px 0 42px; }
+      .comment { grid-template-columns: 1fr; gap: 10px; }
+      .comment .status { grid-column: 1; }
+      .number { color: var(--muted); font-size: 26px; }
+      figure { border-radius: 10px; }
+      figcaption span:last-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <span class="kicker">Client feedback review</span>
+      <h1>Before and after</h1>
+      <div class="intro">
+        <p>Direction-neutral changes completed before a premium visual direction is selected. Every Before image is rendered from the untouched <strong>main</strong> baseline. Every After image is rendered from the current client-feedback branch.</p>
+        <div class="meta" aria-label="Report details">
+          <span>10 changes</span>
+          <span>Desktop 1512 × 982</span>
+          <span>20 November 2026</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="change">
+      <div class="comment">
+        <span class="number">01</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Standardize the CTA language sitewide</h2>
+          <p class="note">“Let’s talk” is now used for contact routes. “Book the free diagnostic” is now used for Diagnostic routes. Destinations did not change.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>Mixed casing and labels</span></figcaption>
+          <a href="client-feedback-report-assets/cta-before.png" target="_blank"><img src="client-feedback-report-assets/cta-before.png" alt="Homepage before CTA wording was standardized"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>One consistent CTA system</span></figcaption>
+          <a href="client-feedback-report-assets/cta-after.png" target="_blank"><img src="client-feedback-report-assets/cta-after.png" alt="Homepage after CTA wording was standardized"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">02</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Update the Contact form</h2>
+          <p class="note">Add an enquiry-type dropdown for OPS Detox, Keynote, Workshop and Consultation or other. Rename “What is clogged?” to “Your message.”</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>No enquiry routing</span></figcaption>
+          <a href="client-feedback-report-assets/contact-before.png" target="_blank"><img src="client-feedback-report-assets/contact-before.png" alt="Contact form before the enquiry dropdown"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Dropdown and clear message label</span></figcaption>
+          <a href="client-feedback-report-assets/contact-after.png" target="_blank"><img src="client-feedback-report-assets/contact-after.png" alt="Contact form after the enquiry dropdown and message label were added"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">03</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Use Speaker, Leader, Visionary</h2>
+          <p class="note">The About identity stack now reflects the language Oscar selected in the meeting.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>Leader, Innovator, Speaker</span></figcaption>
+          <a href="client-feedback-report-assets/identity-before.png" target="_blank"><img src="client-feedback-report-assets/identity-before.png" alt="About identity section before the wording update"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Speaker, Leader, Visionary</span></figcaption>
+          <a href="client-feedback-report-assets/identity-after.png" target="_blank"><img src="client-feedback-report-assets/identity-after.png" alt="About identity section after the wording update"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">04</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Rename Oscar’s path to Oscar’s journey</h2>
+          <p class="note">Only the agreed heading changed. The locked timeline copy remains untouched.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>Oscar’s path</span></figcaption>
+          <a href="client-feedback-report-assets/journey-before.png" target="_blank"><img src="client-feedback-report-assets/journey-before.png" alt="About timeline before the heading update"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Oscar’s journey</span></figcaption>
+          <a href="client-feedback-report-assets/journey-after.png" target="_blank"><img src="client-feedback-report-assets/journey-after.png" alt="About timeline after the heading update"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">05</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Remove the redundant values section</h2>
+          <p class="note">The three principles remain as the single “How Oscar works” statement. The overlapping “Six values, no exceptions” block is removed, so the page now moves directly into testimonials.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>Second, overlapping values block</span></figcaption>
+          <a href="client-feedback-report-assets/values-before.png" target="_blank"><img src="client-feedback-report-assets/values-before.png" alt="Six values section before it was removed"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Principles flow directly into testimonials</span></figcaption>
+          <a href="client-feedback-report-assets/values-after.png" target="_blank"><img src="client-feedback-report-assets/values-after.png" alt="About page after the redundant values section was removed"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">06</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Remove the duplicate Work With Us title</h2>
+          <p class="note">The page no longer repeats its navigation label as an oversized heading. The offer proposition and working photograph become the opening focus.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>Duplicate title above the proposition</span></figcaption>
+          <a href="client-feedback-report-assets/work-hero-before.png" target="_blank"><img src="client-feedback-report-assets/work-hero-before.png" alt="Work With Us opening before the duplicate title was removed"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Proposition begins the page</span></figcaption>
+          <a href="client-feedback-report-assets/work-hero-after.png" target="_blank"><img src="client-feedback-report-assets/work-hero-after.png" alt="Work With Us opening after the duplicate title was removed"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">07</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Show the two offers side by side</h2>
+          <p class="note">Operational Flow and Organisational Flow are now directly comparable. Operational Flow carries “Most booked.” Tool Stack remains a quieter add-on below both tracks.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>Two full-width stacked tracks</span></figcaption>
+          <a href="client-feedback-report-assets/offers-before.png" target="_blank"><img src="client-feedback-report-assets/offers-before.png" alt="Work With Us offers before the side-by-side layout"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Comparable tracks and distinct add-on</span></figcaption>
+          <a href="client-feedback-report-assets/offers-after.png" target="_blank"><img src="client-feedback-report-assets/offers-after.png" alt="Work With Us offers after the side-by-side layout and most-booked badge"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">08</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Clarify the Diagnostic outcomes</h2>
+          <p class="note">The existing approved points are regrouped into “How it works” and “What you receive.” The seven-question diagnostic itself and all scoring logic remain untouched.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>Process and outcomes mixed together</span></figcaption>
+          <a href="client-feedback-report-assets/diagnostic-before.png" target="_blank"><img src="client-feedback-report-assets/diagnostic-before.png" alt="Diagnostic outcomes before they were regrouped"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Process separated from deliverables</span></figcaption>
+          <a href="client-feedback-report-assets/diagnostic-after.png" target="_blank"><img src="client-feedback-report-assets/diagnostic-after.png?v=2" alt="Diagnostic outcomes after they were regrouped"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">09</span>
+        <div>
+          <span class="comment-label">Client comment</span>
+          <h2>Create a Resources page</h2>
+          <p class="note">The Diagnostic is the primary resource. Noise Tax Calculator and e-books are clearly marked “Coming later.” The page is reviewable but is not in the navigation until its final name and placement are approved.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>No Resources page existed</span></figcaption>
+          <a href="client-feedback-report-assets/resources-before.png" target="_blank"><img src="client-feedback-report-assets/resources-before.png" alt="The untouched baseline returning a 404 because Resources did not exist"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Diagnostic first, future resources labelled</span></figcaption>
+          <a href="client-feedback-report-assets/resources-after.png" target="_blank"><img src="client-feedback-report-assets/resources-after.png" alt="The new Resources page"></a>
+        </figure>
+      </div>
+    </section>
+
+    <section class="change">
+      <div class="comment">
+        <span class="number">10</span>
+        <div>
+          <span class="comment-label">Supporting usability improvement</span>
+          <h2>Run the preloader once per tab session</h2>
+          <p class="note">The existing animation still appears on the first visit and still respects reduced-motion preferences. It no longer blocks every page and repeat visit in the same tab.</p>
+        </div>
+        <span class="status">Implemented</span>
+      </div>
+      <div class="comparison">
+        <figure>
+          <figcaption><span class="shot-label">Before</span><span>Second load is blocked again</span></figcaption>
+          <a href="client-feedback-report-assets/preloader-before.png" target="_blank"><img src="client-feedback-report-assets/preloader-before.png" alt="Preloader covering the page again on a repeat load"></a>
+        </figure>
+        <figure class="after">
+          <figcaption><span class="shot-label">After</span><span>Second load goes straight to the page</span></figcaption>
+          <a href="client-feedback-report-assets/preloader-after.png" target="_blank"><img src="client-feedback-report-assets/preloader-after.png" alt="Homepage visible immediately on a repeat load after the preloader update"></a>
+        </figure>
+      </div>
+      <p class="behavior-note"><strong>How this pair was captured:</strong> both versions completed one full first load, then were reloaded in the same tab and captured 350ms later.</p>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Scope:</strong> visual review artefact only. This file does not modify or feed the live website.
+  </footer>
+</body>
+</html>

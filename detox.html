@@ -8,10 +8,9 @@
   <meta name="description" content="OPS Detox™ is a modular system for the real bottlenecks in how work flows. Diagnose, strip, rebuild. together with your team.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
-  <!-- Decided before first paint. While the preloader is under review it
-       runs on every load; restore the once-per-session behaviour by putting
-       sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
-  <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <!-- Decide before first paint: reduced-motion visitors and anyone who has
+       already seen the preloader this session go straight to the page. -->
+  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
   <!-- ==========================================================
        THE DETOX — brought onto the current design system,
        2 November 2026. It was the last page on the 14 October
@@ -275,7 +274,7 @@
           <h1>GIVE YOUR LEADERSHIP TEAM A THIRD OF ITS WEEK BACK.</h1>
           <p>We help scale-up founders run a faster, leaner company by cleansing its operations of everything growth left behind, together with their team.</p>
           <div class="actions">
-            <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+            <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
             <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
           </div>
         </div>
@@ -569,7 +568,7 @@
         </div>
 
         <div class="actions">
-          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+          <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
         </div>
       </div>
     </section>

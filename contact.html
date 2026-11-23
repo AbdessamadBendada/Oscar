@@ -26,10 +26,9 @@
        section are verbatim. Nothing was written to fill the new
        layout — the hero's h1 and eyebrow simply swapped rank.
        ========================================================== -->
-  <!-- Decided before first paint. While the preloader is under review it
-       runs on every load; restore the once-per-session behaviour by putting
-       sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
-  <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <!-- Decide before first paint: reduced-motion visitors and anyone who has
+       already seen the preloader this session go straight to the page. -->
+  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
 
   <style>
   /* ---------- 1. Page shell ----------
@@ -254,7 +253,7 @@
         <a href="about.html">About</a>
         <a href="contact.html" aria-current="page">Contact</a>
       </nav>
-      <a class="button button--small button--line header-cta" href="#book">Book a call <span>→</span></a>
+      <a class="button button--small button--line header-cta" href="#book">Let’s talk <span>→</span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
     </div>
   </header>
@@ -347,7 +346,18 @@
                 <span class="field-error" aria-live="polite"></span>
               </div>
               <div class="field">
-                <label for="c-message">What is clogged?</label>
+                <label for="c-interest">Enquiry type</label>
+                <select id="c-interest" name="interest" data-label="Enquiry type" required>
+                  <option value="">Choose one</option>
+                  <option value="ops-detox">OPS Detox</option>
+                  <option value="keynote">Keynote</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="other">Consultation or other</option>
+                </select>
+                <span class="field-error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="c-message">Your message</label>
                 <textarea id="c-message" name="message" data-label="Message" required></textarea>
                 <span class="field-error" aria-live="polite"></span>
               </div>
@@ -367,7 +377,7 @@
             <div class="ct-embed">
               <div>
                 <p class="ct-embed-label">Booking embed</p>
-                <p class="body-copy">Calendly or meetergo goes here. Drop the embed snippet into this panel once the platform is confirmed. Every “Book the FREE DIAGNOSTIC” and “Let’s talk” CTA on the site already points at it.</p>
+                <p class="body-copy">Calendly or meetergo goes here. Drop the embed snippet into this panel once the platform is confirmed. Every “Book the free diagnostic” and “Let’s talk” CTA on the site already points at it.</p>
               </div>
             </div>
           </div>
@@ -421,7 +431,7 @@
         </div>
 
         <div class="actions">
-          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+          <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
         </div>
       </div>
     </section>

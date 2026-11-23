@@ -11,10 +11,9 @@
   <meta name="description" content="Seventeen years inside Sony Europe. OPS Detox exists to clear operational clutter and give those hours back.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
-  <!-- Decided before first paint. While the preloader is under review it
-       runs on every load; restore the once-per-session behaviour by putting
-       sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
-  <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <!-- Decide before first paint: reduced-motion visitors and anyone who has
+       already seen the preloader this session go straight to the page. -->
+  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
 
   <style>
   /* ==========================================================
@@ -270,7 +269,7 @@
      copy moves here, directly beneath it, rather than being lost. It is
      locked client copy and is reproduced word for word; only the heading
      level changed, since the page's h1 is now the name. */
-  /* ---------- Leader / Innovator / Speaker ----------
+  /* ---------- Speaker / Leader / Visionary ----------
      Built from the client's own section-2 mockup. Copy is reproduced word
      for word; everything else is translated out of the mockup's black and
      grey into V1.0.
@@ -793,10 +792,10 @@
           <div>
             <!-- Three spans rather than <br>: each word takes the rule
                  under it, and a screen reader still reads one heading. -->
-            <h2 class="lis-head" id="lis-heading"><span>Leader</span><span>Innovator</span><span>Speaker</span></h2>
+            <h2 class="lis-head" id="lis-heading"><span>Speaker</span><span>Leader</span><span>Visionary</span></h2>
             <p class="lis-copy">Founder of OPS Detox™ and TEDx speaker. At Sony Europe Oscar worked across seven functions and 29 countries, leading the work that halved the reporting, removed close to a third of the meeting time and moved decisions closer to the people doing the work. Today he brings that experience to scale-up founders.</p>
             <div class="actions">
-              <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+              <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
               <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
             </div>
           </div>
@@ -847,7 +846,7 @@
       <div>Flush the pipelines <span>•</span> UNCOMPLICATE the decision <span>•</span> CLEAN THE SYSTEMS <span>•</span> Unclog the approval queue <span>•</span> Strip the NOISE <span>•</span> Drain the decision backlog <span>•</span></div>
     </div>
 
-    <!-- Oscar's path. Copy is the client's, word for word, including the
+    <!-- Oscar's journey. Copy is the client's, word for word, including the
          US spelling of "organization" in the FIRST CHAPTER and NOW entries,
          which the rest of the site also uses.
 
@@ -862,7 +861,7 @@
          used: §27 flags it as showing an audience that never existed. -->
     <section class="path reveal" aria-labelledby="path-heading">
       <div class="container">
-        <h2 class="path-head" id="path-heading">Oscar’s path</h2>
+        <h2 class="path-head" id="path-heading">Oscar’s journey</h2>
         <ol class="path-list">
           <li class="tl-block reveal">
             <figure class="tl-figure"><img src="assets/img/oscar-steps.jpg" alt="" loading="lazy" decoding="async"></figure>
@@ -921,10 +920,9 @@
          is a list artefact from the document it was pasted out of, not
          copy, so it is not reproduced.
 
-         NOTE — this overlaps the "Six values, no exceptions" section
-         further down this same page: Uncomfortable honesty, Ownership and
-         Courage are three of those six. The page currently says both. See
-         the handoff note; it needs a decision, not a silent deletion. -->
+         The overlapping "Six values, no exceptions" section was removed
+         after the 11 Nov client review. These three principles are the one
+         retained statement of how Oscar works. -->
     <section class="prin reveal" aria-labelledby="prin-heading">
       <div class="container">
         <div class="prin-head">
@@ -948,20 +946,6 @@
             <p>Adding a meeting is easy. Stripping one out takes nerve. OPS Detox helps you make the deliberate choices that habit has been making for you.</p>
           </article>
         </div>
-      </div>
-    </section>
-
-    <section class="container section-pad reveal">
-      <div class="section-heading">
-        <div><span class="eyebrow">How I work</span><h2>Six values, no exceptions</h2></div>
-      </div>
-      <div class="reason-grid">
-        <article><span>01</span><h3>Uncomfortable honesty</h3><p>The expensive thing gets said out loud, early.</p></article>
-        <article><span>02</span><h3>Clarity</h3><p>Fewer moving parts, named owners, visible decisions.</p></article>
-        <article><span>03</span><h3>Ownership</h3><p>Every process has someone who can act on it.</p></article>
-        <article><span>04</span><h3>Substance</h3><p>Implementation, not a report.</p></article>
-        <article><span>05</span><h3>Courage</h3><p>Stripping things out takes more nerve than adding them.</p></article>
-        <article><span>06</span><h3>Depth</h3><p>From the inside out, not an outsider with a framework.</p></article>
       </div>
     </section>
 
@@ -1089,8 +1073,8 @@
         </div>
 
         <div class="actions">
-          <a class="button" href="diagnostic.html">Free OPS Diagnostic</a>
-          <a class="button button--line" href="contact.html">Let us talk</a>
+          <a class="button" href="diagnostic.html">Book the free diagnostic</a>
+          <a class="button button--line" href="contact.html">Let’s talk</a>
         </div>
       </div>
     </section>

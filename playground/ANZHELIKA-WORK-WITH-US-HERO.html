@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143318">
+  <title>Work With Us Hero | Anzhelika Direction</title>
+  <link rel="icon" href="../assets/logo/favicon.png">
+  <link rel="stylesheet" href="../css/site.css">
+  <style>
+    /* Standalone review artefact for the Work With Us hero. Nothing in
+       this file is consumed by the live site. */
+    body{margin:0;background:var(--ink);color:#fff}
+    .site-header{position:absolute;inset-inline:0;width:100%;background:rgba(20,51,24,.92);border-bottom:1px solid rgba(255,255,255,.16)}
+    .site-header .site-nav a[aria-current="page"]{color:var(--lime)}
+    .ww-hero{
+      position:relative;isolation:isolate;min-height:100svh;overflow:hidden;
+      display:flex;align-items:flex-end;padding:calc(var(--header-h) + 58px) 0 clamp(54px,6vw,96px);
+      background:var(--ink);color:#fff;
+    }
+    .ww-hero-bg{position:absolute;z-index:-2;inset:0}
+    .ww-hero-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 48%;filter:grayscale(1) contrast(1.08)}
+    .ww-hero::after{
+      content:"";position:absolute;z-index:-1;inset:0;
+      background:linear-gradient(90deg,rgba(20,51,24,.95) 0%,rgba(20,51,24,.72) 44%,rgba(20,51,24,.28) 76%),
+                 linear-gradient(0deg,rgba(20,51,24,.88) 0%,rgba(20,51,24,0) 56%);
+    }
+    .ww-wrap{width:min(1600px,calc(100% - 96px));margin-inline:auto}
+    .ww-kicker{display:block;margin-bottom:20px;color:var(--lime);font:15px/1 var(--display);letter-spacing:.11em;text-transform:uppercase}
+    .ww-title{margin:0;max-width:1460px;color:#fff;font:clamp(62px,9.4vw,176px)/.78 var(--display);letter-spacing:-.018em;text-transform:uppercase}
+    .ww-title span{display:block;width:max-content;max-width:100%}
+    .ww-title span:nth-child(2){margin-left:6%}
+    .ww-title span:nth-child(3){margin-left:31%}
+    .ww-foot{display:grid;grid-template-columns:minmax(0,560px) auto;gap:36px;align-items:end;margin-top:clamp(38px,5vw,78px)}
+    .ww-foot p{margin:0;color:rgba(255,255,255,.78);font-size:clamp(16px,1.25vw,20px);line-height:1.6}
+    .ww-actions{display:flex;flex-wrap:wrap;gap:12px;justify-self:end}
+    .ww-actions .button{white-space:nowrap}
+    .ww-actions .button--line{color:#fff;border-color:#fff;background:transparent}
+    .ww-actions .button--line:hover{background:#fff;color:var(--ink)}
+    .ww-review-tag{
+      position:absolute;right:22px;bottom:18px;padding:7px 11px;border:1px solid rgba(255,255,255,.28);
+      color:rgba(255,255,255,.56);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    }
+    @media(max-width:850px){
+      .site-header{position:fixed}
+      .ww-wrap{width:min(100%,calc(100% - 36px))}
+      .ww-hero{align-items:flex-end;padding-bottom:46px}
+      .ww-hero::after{background:linear-gradient(0deg,rgba(20,51,24,.96) 0%,rgba(20,51,24,.62) 70%,rgba(20,51,24,.34) 100%)}
+      .ww-title{font-size:clamp(48px,14vw,84px);line-height:.84}
+      .ww-title span{width:auto;margin-left:0!important}
+      .ww-foot{grid-template-columns:minmax(0,1fr);gap:26px;margin-top:34px}
+      .ww-actions{justify-self:start}
+      .ww-review-tag{display:none}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="ANZHELIKA-DIRECTION.html" aria-label="Back to the Anzhelika homepage direction">
+        <img src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+      </a>
+      <nav class="site-nav" id="nav" aria-label="Main navigation">
+        <a href="ANZHELIKA-WORK-WITH-US-HERO.html" aria-current="page">Work With Us</a>
+        <a href="../keynote.html">Keynote</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <a class="button header-cta" href="../contact.html">Let’s talk</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="ww-hero" aria-labelledby="ww-title">
+      <div class="ww-hero-bg">
+        <img src="../assets/img/premium-office-pexels.jpg" width="2400" height="1600" alt="" fetchpriority="high">
+      </div>
+      <div class="ww-wrap">
+        <span class="ww-kicker">Operational detox for scale-ups</span>
+        <h1 class="ww-title" id="ww-title">
+          <span>Give your leadership</span>
+          <span>team a third of its</span>
+          <span>week back.</span>
+        </h1>
+        <div class="ww-foot">
+          <p>We help scale-up founders run a faster, leaner company by cleansing its operations of everything growth left behind, together with their team.</p>
+          <div class="ww-actions">
+            <a class="button" href="../contact.html">Let’s talk</a>
+            <a class="button button--line" href="../diagnostic.html">Book the free diagnostic</a>
+          </div>
+        </div>
+      </div>
+      <span class="ww-review-tag">Work With Us hero review</span>
+    </section>
+  </main>
+
+  <script src="../js/site.js"></script>
+</body>
+</html>

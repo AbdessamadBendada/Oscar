@@ -22,10 +22,9 @@
        THE COPY IS UNCHANGED. Every string on this page was
        already on it; nothing was written to fill the layout.
        ========================================================== -->
-  <!-- Decided before first paint. While the preloader is under review it
-       runs on every load; restore the once-per-session behaviour by putting
-       sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
-  <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <!-- Decide before first paint: reduced-motion visitors and anyone who has
+       already seen the preloader this session go straight to the page. -->
+  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
 
   <style>
   /* ---------- 1. Page shell ---------- */
@@ -279,7 +278,7 @@
         </div>
 
         <div class="actions">
-          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+          <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
         </div>
       </div>
     </section>

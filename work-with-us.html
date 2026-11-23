@@ -28,10 +28,9 @@
        copied verbatim from about.html so the page joins the site
        rather than looking like a one-off.
        ========================================================== -->
-  <!-- Decided before first paint. While the preloader is under review it
-       runs on every load; restore the once-per-session behaviour by putting
-       sessionStorage.getItem('ops-preloaded')|| back in front of the test. -->
-  <script>try{if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <!-- Decide before first paint: reduced-motion visitors and anyone who has
+       already seen the preloader this session go straight to the page. -->
+  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
 
   <style>
   /* ---------- 1. Page shell ----------
@@ -67,19 +66,6 @@
      guideline — V1.0 names only the logo pattern (merch, p.36) and the
      switcher pattern (p.38). These sections are plain Soft Ivory now. */
   .ws-dots>*{position:relative;z-index:1}
-
-  /* The page title. One step above the section scale (§27 set every section
-     title to clamp(42px,4.7vw,70px)); this one is the page's name, so it
-     sits above them rather than among them. The wide O comes from
-     js/site.js §3a on its own — the string is typed in literal uppercase, so
-     the script's /([OD])/ match actually fires here, unlike the sentence-case
-     headings elsewhere on the site. */
-  .ws-title{
-    margin:0 0 clamp(40px,5vw,74px);
-    text-align:center;max-width:none;
-    font-size:clamp(44px,7.4vw,112px);line-height:.9;
-    letter-spacing:.02em;color:var(--ink);
-  }
 
   .ws-hero-grid{
     display:grid;grid-template-columns:1fr 1.04fr;
@@ -297,12 +283,14 @@
 
      As cards they get a visible edge, an ivory gutter between them, and the
      brand's own 36px round-rect (V1.0) — the same device the homepage uses
-     for exactly this pair. They stay IDENTICALLY treated on purpose: these
-     are two equal tracks and a choice between them, not a sequence, so
-     making one dominant would imply a default. The separation comes from
-     the frame and the bottleneck label, not from ranking them. */
+     for exactly this pair. The client has now named Operational Flow as the
+     most-booked track, so a compact badge identifies it without changing
+     the two cards' underlying structure. */
   .ws-offers{background:var(--paper);padding:var(--section-y) 0}
-  .ws-offers-grid{display:grid;gap:clamp(24px,3vw,40px)}
+  .ws-offers-grid{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:clamp(24px,3vw,40px);align-items:stretch;
+  }
 
   .ws-offer{
     background:var(--ink);color:var(--paper);
@@ -321,6 +309,16 @@
     font:clamp(14px,1.15vw,17px)/1.2 var(--display);
     letter-spacing:.12em;text-transform:uppercase;
   }
+  .ws-offer-labels{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:14px;margin:0 0 10px;
+  }
+  .ws-offer-labels .ws-offer-tag{margin:0}
+  .ws-booked{
+    flex:none;padding:7px 13px 6px;border-radius:var(--r-pill);
+    background:var(--lime);color:var(--ink);
+    font:13px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;
+  }
   .ws-offer-lead{
     margin:22px 0 0;max-width:60ch;
     color:rgba(254,253,242,.86);
@@ -334,7 +332,7 @@
      the homepage. */
   .ws-mods{
     list-style:none;margin:clamp(32px,4vw,46px) 0 0;padding:0;
-    display:grid;grid-template-columns:repeat(3,1fr);
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
     gap:clamp(14px,1.6vw,22px);
   }
   .ws-mods li{
@@ -372,11 +370,16 @@
     border-radius:var(--r-card);
     padding:clamp(28px,3.4vw,46px) clamp(24px,3vw,40px);
     text-align:center;
+    grid-column:1/-1;width:min(900px,100%);justify-self:center;
   }
   .ws-addon .eyebrow{color:var(--ink);font-size:16px;letter-spacing:.14em}
   .ws-addon h2{
     margin:10px 0 0;max-width:none;color:var(--ink);
     font-size:clamp(28px,3vw,44px);
+  }
+  @media(max-width:1050px){
+    .ws-offers-grid{grid-template-columns:minmax(0,1fr)}
+    .ws-addon{grid-column:auto}
   }
   .ws-addon p{
     margin:16px auto 0;max-width:56ch;
@@ -781,9 +784,6 @@
          button goes, and both are wired accordingly. -->
     <section class="ws-hero ws-dots">
       <div class="container">
-        <!-- Typed in literal uppercase so js/site.js widens the O itself. -->
-        <h1 class="ws-title">WORK WITH US</h1>
-
         <div class="ws-hero-grid">
           <div class="ws-copy">
             <!-- The D is wrapped BY HAND, exactly as on index.html. site.js
@@ -807,7 +807,7 @@
                  the two pages offer the same pair in the same way. -->
             <div class="actions">
               <a class="button" href="contact.html">Let’s talk</a>
-              <a class="button button--line" href="diagnostic.html">Book the FREE DIAGNOSTIC</a>
+              <a class="button button--line" href="diagnostic.html">Book the free diagnostic</a>
             </div>
           </div>
 
@@ -906,7 +906,10 @@
       <div class="ws-offers-grid">
 
       <article class="ws-offer" aria-labelledby="offer-operational">
-        <span class="ws-offer-tag">Founder bottleneck</span>
+        <div class="ws-offer-labels">
+          <span class="ws-offer-tag">Founder bottleneck</span>
+          <span class="ws-booked">Most booked</span>
+        </div>
         <!-- EVERY o is wide, not just the capital. js/site.js §3a splits on
              uppercase /([OD])/, so it widens the leading O by itself and
              leaves the two lowercase ones narrow — the same letter three
@@ -1341,7 +1344,7 @@
         <div class="actions">
           <!-- The same pair, in the same order, as this page's own hero
                (§30) — so the page opens and closes with one ask. -->
-          <a class="button" href="diagnostic.html">Book the FREE DIAGNOSTIC <span>→</span></a>
+          <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
           <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
         </div>
       </div>
