@@ -46,6 +46,7 @@ assets with `../`:
 | `home-comments.html` | The homepage review build — 15 Oct comments (§22), the revised section order and testimonial slider (§24), and the CSS pattern work (§26). Superseded; its hero went live |
 | `about-hero.html` | Standalone demo the About hero options were reviewed in (§29) |
 | `index-old.html` | The pre-rework homepage, kept as a reference |
+| `home-old.html` | The homepage replaced by the approved Anzhelika direction on 23 Nov 2026; paths rewritten for `playground/` |
 | `parked-sections.html` | Holding file for the Cost and System sections, cut from the homepage but kept verbatim for reuse on another page (§25) |
 
 **Adding a file to `playground/`**: rewrite its `href`/`src`/`srcset`/`url()` references

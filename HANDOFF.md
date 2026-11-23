@@ -1,6 +1,16 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 22 November 2026_
+_Last updated: 23 November 2026_
+
+> **23 Nov — the approved Anzhelika direction is now the live homepage.**
+> `index.html` is the promoted premium composition, with live paths, metadata,
+> navigation and the once-per-session preloader restored. The outgoing homepage is
+> preserved at `playground/home-old.html`. See §51.
+
+> **23 Nov — the Featured In logos were replaced with the client's better
+> podcast assets, and DOAC was removed.** Five existing brands were upgraded in
+> place, This Expat Life was added, and the live homepage now uses the same
+> automatic one-logo step as the selected Anzhelika direction. See §50.
 
 > **22 Nov — Anzhelika's premium direction was selected, with six explicit
 > adjustments.** They are staged only in the review artefacts: white hero type,
@@ -4559,3 +4569,67 @@ its shared navigation class, so the menu collapses into the existing mobile draw
 The portrait was changed from a too-pale full photograph, then from an over-dark
 multiply treatment, to the final transparent cutout on Deep Green. Temporary CDP
 harness files were deleted after the captures. Safari remains untested.
+
+---
+
+## 50. Podcast logo replacement and DOAC removal (23 November 2026)
+
+The client supplied six transparent podcast marks in `Oscar podcasts` and asked to use
+those better files and remove DOAC. Five were replacements for brands already present:
+Nectora, Funky People, Everybody Networks Here, Sacha Bol and Rauw Gesproken. They
+replace the previous WebP assets **in place**, so there are no duplicate variants in
+the active set. This Expat Life is the only new logo file.
+
+The source PNGs all used an 800 × 550 canvas but carried very different transparent
+margins. Those empty margins were trimmed before lossless WebP conversion; the visible
+artwork itself was not altered. The active eight-logo set is Brand on Tour, TEDx, This
+Expat Life, Nectora, Funky People, Everybody Networks Here, Sacha Bol and Rauw
+Gesproken. DOAC remains only as a historical asset referenced by frozen older review
+artefacts; it is absent from `index.html` and the selected
+`playground/ANZHELIKA-DIRECTION.html`.
+
+The live homepage's old three-column row could not hold eight marks cleanly, so it now
+advances by one logo every two seconds without previous/next controls, matching the
+already approved interaction. It shows four complete logo slots on desktop and two on
+phone, pauses on hover or keyboard focus, pauses in a hidden tab, and remains still for
+reduced-motion users. `js/site.js` §9 owns that behavior; the Anzhelika review artefact
+keeps its own scoped implementation under the review-artifact rule.
+
+Chrome verification covered `index.html` at 1512 × 982 and a true 390 × 844 viewport,
+plus the Anzhelika direction at 1512 × 982. All eight originals loaded at their trimmed
+intrinsic dimensions, each track cloned to sixteen items for its seamless reset, both
+live breakpoints moved by exactly one slot after two seconds, and document overflow was
+zero. Temporary QA files were deleted. Safari remains untested.
+
+---
+
+## 51. Anzhelika direction promoted to the live homepage (23 November 2026)
+
+The client approved the Anzhelika premium direction and explicitly asked to make it
+the live homepage. `index.html` is now a promoted copy of
+`playground/ANZHELIKA-DIRECTION.html`; the review source remains in `playground/` as the
+record of the approved direction.
+
+Promotion was not a raw rename. The live copy was made production-safe:
+
+- removed the review page's `noindex` metadata and review-only title/description;
+- converted every `../assets`, `../css`, `../js` and page link to root-relative paths;
+- changed the Work With Us nav item from the standalone review hero to the real
+  `work-with-us.html` page;
+- restored the site's once-per-session preloader and its first-paint decision script;
+- removed review-only comments and replaced them with a short live-page source note;
+- confirmed that no link or asset in the live homepage depends on `playground/`.
+
+The outgoing homepage is preserved as `playground/home-old.html`, not as a twelfth
+root-level site page. Its asset, stylesheet, script and page links were rewritten with
+`../`, and it retains `noindex`. The live nav therefore remains the settled four items.
+
+Chrome verification covered the promoted `index.html` at 1512 × 982 and a true
+390 × 844 viewport. It has one direct header, one direct footer, nine main sections,
+no document overflow, no playground links and no runtime exceptions. The eight-logo
+track has eight originals plus eight seam clones and advances. The mobile navigation
+opens and closes with the correct state, and the closing switch returns to
+`aria-pressed="true"`. Hero, logo band, offer row, founder portrait and closing switch
+were visually inspected. The initially reported broken images were below-fold lazy
+images before scrolling; each loaded when its section entered the viewport. Safari
+remains untested.

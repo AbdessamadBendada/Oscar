@@ -12,7 +12,8 @@ remain parked until the client selects one of the two premium directions.
 - [x] Change the H1 to “Cleanse your business systems, win your time back.”
   Preserve three desktop lines and natural mobile wrapping.
 - [x] Replace the placeholder trust treatment with “Featured in” or “Known from”
-  and the Brand on Tour, TEDx and DOAC logos.
+  and the Brand on Tour, TEDx and supplied podcast logos. DOAC was removed
+  from the active logo sets on 23 Nov at the client's request.
 - [x] Remove the small “TEDx speaker · 17 years…” proof line once the logo row is
   carrying that credibility.
 - [ ] Create review variants for the problem-section photograph: blended background,
@@ -111,7 +112,7 @@ remain parked until the client selects one of the two premium directions.
 
 ## Inputs and decisions
 
-- [x] Brand on Tour, TEDx and DOAC logo files supplied.
+- [x] Brand on Tour, TEDx and six podcast logo files supplied. DOAC removed.
 - [ ] BrennanTour logo, if it is separate from Brand on Tour.
 - [ ] Oscar’s keynote/workshop copy, formats, audience and takeaways.
 - [ ] Diagnostic outcome bullets.

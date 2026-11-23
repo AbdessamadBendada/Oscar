@@ -347,4 +347,78 @@
       }
     });
   }
+
+  /* ---------- 9. Homepage Featured In logos ----------
+     The homepage now has more appearances than fit cleanly in one row. It
+     advances by exactly one logo every two seconds, with no arrow controls.
+     Hovering, focusing or hiding the tab pauses it. The original set is
+     cloned once so the transition can cross the seam, then it resets to the
+     identical first frame without animation. */
+  var logoTrack = document.getElementById('homepage-featured-logo-track');
+
+  if (logoTrack) {
+    var logoViewport = logoTrack.closest('.featured-logo-viewport');
+    var logoOriginals = Array.prototype.slice.call(logoTrack.children);
+    var logoCount = logoOriginals.length;
+    var logoIndex = 0;
+    var logoTimer = null;
+
+    logoOriginals.forEach(function (item) {
+      var clone = item.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      var image = clone.querySelector('img');
+      if (image) image.alt = '';
+      logoTrack.appendChild(clone);
+    });
+
+    function logoDistance() {
+      return logoTrack.children.length > 1
+        ? logoTrack.children[1].offsetLeft - logoTrack.children[0].offsetLeft
+        : 0;
+    }
+
+    function placeLogos() {
+      logoTrack.style.transform = 'translate3d(' + (-logoIndex * logoDistance()) + 'px,0,0)';
+    }
+
+    function stopLogos() {
+      window.clearInterval(logoTimer);
+      logoTimer = null;
+    }
+
+    function startLogos() {
+      stopLogos();
+      if (!reduceMotion && !document.hidden) {
+        logoTimer = window.setInterval(function () {
+          logoIndex += 1;
+          placeLogos();
+        }, 2000);
+      }
+    }
+
+    logoTrack.addEventListener('transitionend', function (event) {
+      if (event.propertyName !== 'transform' || logoIndex < logoCount) return;
+      logoTrack.classList.add('is-jumping');
+      logoIndex = 0;
+      placeLogos();
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          logoTrack.classList.remove('is-jumping');
+        });
+      });
+    });
+
+    if (logoViewport) {
+      logoViewport.addEventListener('pointerenter', stopLogos);
+      logoViewport.addEventListener('pointerleave', startLogos);
+      logoViewport.addEventListener('focusin', stopLogos);
+      logoViewport.addEventListener('focusout', startLogos);
+    }
+
+    window.addEventListener('resize', placeLogos);
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stopLogos(); else startLogos();
+    });
+    startLogos();
+  }
 })();

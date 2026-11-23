@@ -5,595 +5,811 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#143318">
   <title>OPS DETOX™: Homepage</title>
-  <meta name="description" content="OPS Detox™. operational detox for scale-ups. Cleanse your business systems of operational clutter and win your time back.">
-  <meta name="robots" content="noindex">
+  <meta name="description" content="OPS Detox™. Operational detox for scale-ups. Cleanse your business systems and win your time back.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
-  <!-- ==========================================================
-       REVIEW BUILD. A copy of home-comments.html — so it carries
-       all the 15 Oct client-comment work — with the homepage hero
-       replaced by the type-led, full-bleed Detox Green treatment.
-       index.html, home-comments.html and css/site.css are all
-       deliberately untouched: every rule below is an override
-       scoped to this document, so nothing here can leak into the
-       live site. When a change is approved, lift it out of this
-       block into css/site.css and delete it here.
 
-       THE COPY IS UNCHANGED. The headline, the subline and both
-       CTA labels are exactly the ones on index.html. The mockup's
-       own wording ("Book the systems audit", etc.) was not
-       carried across.
+  <!-- ==========================================================
+       LIVE HOMEPAGE. Promoted from the approved Anzhelika premium
+       direction on 23 November 2026. Page-specific composition remains
+       scoped to .premium-page; shared site behavior stays in site.js.
+       The previous homepage is preserved at playground/home-old.html.
        ========================================================== -->
+
   <!-- Decide before first paint: reduced-motion visitors and anyone who has
        already seen the preloader this session go straight to the page. -->
   <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
 
   <style>
-  /* ---------- 1. Desktop pass: the blank space ----------
-     The client reads the desktop view as empty. Every rule here is gated
-     behind min-width:1001px, because the mobile layout is the part he
-     approved and must not move. Nothing below is a redesign — it is the
-     same layout using the width it already has. */
-  @media(min-width:1001px){
-    /* The container capped at 1180px while the hero runs full-bleed, so on
-       a 1440 or 1920 screen the content sat in a narrow channel with wide
-       dead margins. The hero's own padding is derived from the same cap and
-       has to move with it, or the hero copy stops aligning with the sections
-       underneath it. */
-    .container{width:min(1320px,calc(100% - 80px))}
-    .hero--brand,.hero--brand.on-dark{padding:0 max(40px,calc((100% - 1320px) / 2))}
+  /* ---------- Ground ----------
+     The PDF runs on three flat fields and nothing else: a Detox Green
+     hero, a cream body and one Deep Green band for the testimonials.
+     No gradients, no cards floating on shadows, no rounded corners
+     anywhere except the buttons. */
+  .premium-page{background:var(--paper);color:var(--ink)}
+  .premium-page main{background:var(--paper);overflow-x:clip}
+  /* css/site.css sets `img{max-width:100%}` and nothing else, so the HTML
+     height attribute still applies as a used height and a CSS aspect-ratio
+     is ignored. Without this the 1800px-tall portraits render at 1800px.
+     The rules that want a filled box set height:100% after this one. */
+  .premium-page main img{height:auto}
+  .premium-page .pr-wrap{width:min(1600px,calc(100% - 96px));margin-inline:auto}
+  .premium-page .pr-bleed{width:min(1600px,calc(100% - 96px));margin-inline:auto}
 
-    /* 120px of air between sections reads as generous on a phone and as a
-       gap on a 27" display. */
-    :root{--section-y:96px}
-    .trust{padding:60px 0}
-    .cleanse-section{padding:100px 0}
-    .outcomes{padding:96px 0}
+  /* ---------- The headline system ----------
+     The one device the whole page is built on. Three things make it:
+     a line-height under 1 so the lines overlap rather than stack, a
+     per-line horizontal offset, and lines of deliberately different
+     length. The offsets are measured off the PDF as a percentage of
+     the content width, so they hold as the page scales.
 
-    /* The hero was a full viewport tall while the portrait was capped at
-       640px, which left a band of empty Deep Green under the arch — the
-       single largest blank area on the page. The arch now takes the height
-       the hero actually has. */
-    .hero--brand .hero-image{
-      height:min(780px,calc(100svh - var(--header-h) - var(--ticker-h) - 32px));
-    }
+     Every offset is a margin-left on a max-content block. They are
+     all zeroed below 760px — forcing them onto a phone is what turns
+     an editorial headline into a clipped one. */
+  .premium-page .pr-h{
+    margin:0;max-width:none;
+    font-family:var(--display);font-weight:400;
+    font-size:var(--fs);line-height:var(--lh,.79);
+    letter-spacing:-.018em;text-transform:uppercase;
+    color:var(--ink);
+  }
+  .premium-page .pr-h span{display:block;width:max-content;max-width:100%}
 
-    /* Measure caps written for a 1180px container leave the right-hand
-       third of every text column empty once the container grows. Widened to
-       a comfortable reading measure rather than removed. */
-    .hero--brand .hero-copy p{max-width:56ch;font-size:18px}
-    .problem-copy,.about-copy{max-width:none}
-    .problem .body-copy{max-width:68ch}
-    .body-copy{font-size:16px}
+  .premium-page .pr-kicker{
+    display:block;font:clamp(15px,1.15vw,21px)/1 var(--display);
+    letter-spacing:.07em;text-transform:uppercase;color:var(--ink);
+  }
+  /* Body copy is justified throughout the PDF, in a narrow measure
+     set against very large display type. */
+  .premium-page .pr-copy{
+    margin:0;font-size:clamp(15px,1.05vw,18px);line-height:1.55;
+    text-align:justify;hyphens:auto;
+  }
+  .premium-page .pr-copy+.pr-copy{margin-top:1.1em}
 
-    /* 520px of card for three short paragraphs. The two-column branch below
-       makes the cards wider, so they need less height, not more. */
-    .cleanse-card{min-height:440px}
+  /* ---------- Hero ----------
+     Full-bleed photograph under a flat brand field, so it reads as one
+     branded surface with depth rather than a stock photo with a panel on
+     top. The PDF uses the Detox Green ground. The guideline (V1.0 p.21,
+     "Colours in use") sanctions four grounds, all four were built and
+     compared, and DEEP GREEN WAS CHOSEN, 19 Nov 2026: a full Detox Green
+     screen read as too much, and Detox Green type on Deep Green is the
+     pairing the book singles out for vibrancy and impact.
+
+     The other three stay here, and the hero's `data-ground` attribute in
+     the markup is the whole switch. Change that one word:
+
+       detox  Deep Green type on a Detox Green field   (the PDF, panel 1)
+       deep   Detox Green type on a Deep Green field   (panel 2, CHOSEN)
+       ivory  Deep Green type on Soft Ivory            (panel 3)
+       white  Deep Green type on White                 (panel 4)
+
+     The book marks Detox Green ON Soft Ivory and ON White as LOW
+     CONTRAST, which is why the type stays Deep Green on both of those.
+
+     Each ground sets --pr-ground (the flat field), --pr-ink (the type) and
+     --pr-rgb (the same ground as channels, for the legibility floor below).
+     Nothing else in the hero is duplicated per variant.
+
+     The switcher used to make this choice has been deleted, per the rule
+     that a staging block goes once its question is settled. */
+  .premium-page .pr-hero{
+    --pr-ground:var(--lime);--pr-ink:var(--ink);--pr-rgb:204,254,6;
+    --pr-blend:multiply;--pr-filter:grayscale(1) brightness(1.5) contrast(.6);
+    --pr-opacity:1;
+    position:relative;isolation:isolate;
+    min-height:calc(100svh - var(--header-h));
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:clamp(40px,6vw,96px) 0 0;
+    background:var(--pr-ground);color:var(--pr-ink);overflow:hidden;
+  }
+  /* Deep Green. A multiply would crush the photograph to black here, so the
+     blend flips to luminosity: the picture keeps its light and takes its
+     hue from the ground, which is what makes it a Deep Green duotone
+     rather than a grey photo sitting on a green box. */
+  .premium-page .pr-hero[data-ground="deep"]{
+    --pr-ground:var(--ink);--pr-ink:var(--lime);--pr-rgb:20,51,24;
+    --pr-blend:luminosity;--pr-filter:grayscale(1) brightness(.92) contrast(1.02);
+    --pr-opacity:.5;
+  }
+  .premium-page .pr-hero[data-ground="ivory"]{
+    --pr-ground:var(--paper);--pr-ink:var(--ink);--pr-rgb:254,253,242;
+    --pr-filter:grayscale(1) brightness(1.5) contrast(.62);--pr-opacity:.9;
+  }
+  .premium-page .pr-hero[data-ground="white"]{
+    --pr-ground:var(--panel);--pr-ink:var(--ink);--pr-rgb:255,255,255;
+    --pr-filter:grayscale(1) brightness(1.5) contrast(.62);--pr-opacity:.9;
+  }
+  .premium-page .pr-hero-bg{position:absolute;inset:0;z-index:-1;background:var(--pr-ground)}
+  .premium-page .pr-hero-bg img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 40%;
+    mix-blend-mode:var(--pr-blend);opacity:var(--pr-opacity);
+    filter:var(--pr-filter);
+  }
+  /* In the PDF the foot of the hero falls on the bright white table, so the
+     subline, the buttons and the logo band all sit on clean ground. This
+     photo has a seated figure there instead, so the field is washed back in
+     over the bottom third. It is a legibility floor, not a decorative scrim:
+     the scene above it is untouched. */
+  .premium-page .pr-hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to bottom,
+      rgba(var(--pr-rgb),0) 50%,rgba(var(--pr-rgb),.55) 70%,rgba(var(--pr-rgb),.95) 92%);
+  }
+  .premium-page .pr-hero-inner{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(34px,4vw,64px)}
+  /* .pr-h hard-sets Deep Green, which is right for every section on the
+     cream body and wrong inside the hero: there the type colour belongs
+     to the chosen ground. Inherit it instead. */
+  .premium-page .pr-hero-h{--fs:clamp(42px,11vw,198px);--lh:.76;color:inherit}
+  .premium-page .pr-hero .pr-featured h2{color:inherit}
+  .premium-page .pr-hero-h span:nth-child(2){margin-left:3.6%}
+  .premium-page .pr-hero-foot{max-width:52ch}
+  .premium-page .pr-hero-foot .pr-copy{font-size:clamp(15px,1.15vw,19px)}
+  .premium-page .pr-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+  /* The PDF's hero pair is deliberately small and tight, so the headline
+     stays the only loud thing on the screen. The shared .button is sized
+     for a page where it is the focal point. */
+  .premium-page .pr-actions .button{--btn-size:17px;padding:9px 20px 7px}
+  /* The secondary is outlined, exactly as the PDF draws it, in whatever
+     the ground's type colour is. */
+  .premium-page .pr-btn-ghost{
+    background:transparent;color:var(--pr-ink);border-color:var(--pr-ink);
+  }
+  .premium-page .pr-btn-ghost:hover{background:var(--pr-ink);color:var(--pr-ground);border-color:var(--pr-ink)}
+  /* On Deep Green the primary has to be the lime pill, or it vanishes. */
+  .premium-page .pr-hero[data-ground="deep"] .pr-actions .button--line{
+    background:var(--lime);color:var(--ink);border-color:var(--lime);
+  }
+  .premium-page .pr-hero[data-ground="deep"] .pr-actions .button--line:hover{
+    background:transparent;color:var(--lime);
   }
 
-  /* ---------- 2. Three offers, compared in one view ----------
-     Client meeting, 11 Nov: the diagnostic and the two paid flows belong
-     side by side. Operational Flow is the primary paid offer, so it carries
-     the only "Most booked" marker; the Diagnostic stays the bright, easiest
-     first yes and Organisational Flow recedes to a light card. */
-  .cleanse-grid--offers{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-  .cleanse-grid--offers .cleanse-card{
-    position:relative;min-height:540px;
+  /* ---------- Featured in ----------
+     Eight unique appearances now live here. The track advances by one
+     logo every two seconds, pauses while hovered or focused and stops
+     entirely for reduced motion. Alternate files for the same brand are
+     deliberately not included. */
+  .premium-page .pr-featured{
+    display:grid;grid-template-columns:auto minmax(0,1fr);
+    align-items:center;gap:clamp(24px,4vw,70px);
+    padding:clamp(26px,3vw,46px) 0 clamp(26px,3vw,44px);
   }
-  .cleanse-grid--offers .cleanse-meta{margin-top:0}
-  .cleanse-card--featured{
-    border:2px solid var(--lime);
-    box-shadow:0 22px 54px rgba(20,51,24,.2);
-    transform:translateY(-10px);
+  .premium-page .pr-featured h2{
+    margin:0;flex:none;max-width:none;letter-spacing:0;
+    font:clamp(17px,1.5vw,27px)/1 var(--display);text-transform:uppercase;
   }
-  .cleanse-card--featured:hover{transform:translateY(-14px)}
-  .offer-badge{
-    position:absolute;z-index:1;top:-16px;right:24px;
-    border-radius:var(--r-pill);padding:9px 17px 7px;
-    background:var(--lime);color:var(--ink);
-    font:15px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;
-    box-shadow:0 8px 20px rgba(20,51,24,.18);
+  .premium-page .pr-logo-slider{
+    min-width:0;overflow:hidden;
   }
-  .cleanse-card--quiet{
-    background:var(--panel);color:var(--ink);
-    border:1px solid var(--rule);box-shadow:none;
+  .premium-page .pr-logo-viewport{
+    min-width:0;overflow:hidden;
   }
-  .cleanse-card--quiet .cleanse-meta span{border-color:rgba(20,51,24,.35);color:var(--ink)}
-  .cleanse-card--quiet h3,
-  .cleanse-card--quiet>p:not(.cleanse-meta){color:var(--ink)}
-  .cleanse-card--quiet .cleanse-bottleneck{color:var(--ink)!important;opacity:.72}
-  .cleanse-card--quiet .cleanse-cta:hover{
-    background:transparent;color:var(--ink);border-color:var(--ink);
+  .premium-page .pr-featured ul{
+    --logo-gap:clamp(28px,4vw,72px);
+    margin:0;padding:0;list-style:none;
+    display:grid;grid-auto-flow:column;
+    grid-auto-columns:calc((100% - (3 * var(--logo-gap))) / 4);
+    gap:var(--logo-gap);align-items:center;
+    transition:transform .65s cubic-bezier(.22,.7,.2,1);will-change:transform;
   }
-  @media(max-width:960px){
-    .cleanse-grid--offers{grid-template-columns:1fr;gap:28px;max-width:620px;margin:auto}
-    .cleanse-grid--offers .cleanse-card{min-height:0}
-    .cleanse-card--featured,.cleanse-card--featured:hover{transform:none}
+  .premium-page .pr-featured ul.is-jumping{transition:none}
+  .premium-page .pr-featured li{
+    height:88px;min-width:0;display:grid;place-items:center;
   }
+  /* The supplied marks are full-colour files. On the light grounds the PDF
+     shows them flat black, which is also the only way TEDx's red stops
+     fighting the field; on Deep Green they have to invert to stay visible. */
+  .premium-page .pr-featured img{display:block;width:auto;max-width:100%;max-height:58px;object-fit:contain;filter:brightness(0)}
+  .premium-page .pr-hero[data-ground="deep"] .pr-featured img{filter:brightness(0) invert(1)}
+  .premium-page .pr-logo-tedx img{max-height:38px}
+  .premium-page .pr-logo-expat img{max-height:72px}
+  .premium-page .pr-logo-brand img{max-height:46px}
+  .premium-page .pr-logo-funky img,
+  .premium-page .pr-logo-sacha img{max-height:82px}
+  .premium-page .pr-logo-funky img{transform:scale(1.22)}
+  .premium-page .pr-logo-sacha img{transform:scale(1.16)}
+  .premium-page .pr-logo-rauw img,
+  .premium-page .pr-logo-enh img{max-height:76px}
+  .premium-page .pr-logo-nectora img{max-height:44px}
 
-  /* ---------- 3. Frameworks ----------
-     The IP had no section of its own: it was a six-item list buried in one
-     About paragraph. Three frameworks now carry it, on the Soft Ivory ground
-     so the band reads as substance rather than decoration. */
-  .frameworks{padding:var(--section-y) 0;background:var(--paper)}
-  .frameworks-head{max-width:66ch}
-  .frameworks-head h2{margin:14px 0 18px;font-size:clamp(36px,3.9vw,58px);max-width:none}
-  .frameworks-head p{color:var(--muted);font-size:clamp(15px,1.25vw,17px);line-height:1.6}
-  .frameworks-grid{
-    margin-top:clamp(40px,4.5vw,60px);
-    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;
+  /* ---------- Problem ----------
+     The headline staircases to the right and the portrait is pushed
+     up into it, so the picture interrupts the type instead of sitting
+     politely beneath it. The square crop is the PDF's; the portrait
+     file is 2:3, so it is cropped to the top of the frame. */
+  .premium-page .pr-problem{padding:clamp(70px,8vw,130px) 0 clamp(60px,7vw,110px)}
+  .premium-page .pr-problem-h{--fs:clamp(38px,6.3vw,118px)}
+  .premium-page .pr-problem-h span:nth-child(2){margin-left:18%}
+  .premium-page .pr-problem-h span:nth-child(3){margin-left:40%}
+  .premium-page .pr-problem-body{
+    display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
+    gap:clamp(40px,6vw,110px);align-items:start;
   }
-  .frameworks-grid article{
-    display:flex;flex-direction:column;
-    background:var(--panel);border:1px solid var(--rule);
-    border-radius:var(--r-card);padding:34px 32px 32px;
-    transition:transform .2s ease,box-shadow .2s ease;
-  }
-  .frameworks-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-  /* The lead framework is the one he named first and the one the method is
-     built on, so it takes the Detox Green ground the diagnostic card uses. */
-  .frameworks-grid article:first-child{background:var(--lime);border-color:var(--lime)}
-  /* .fw-mark takes the shared numbered-circle treatment from css/site.css
-     (lime disc, Deep Green numeral, inverting on the lime first card). It
-     used to be a 44px INVERTED disc declared here, which made it the odd
-     one out among the site's five numbering styles. 7 Nov. */
-  .frameworks-grid h3{
-    margin:24px 0 14px;color:var(--ink);
-    font:clamp(23px,2vw,31px)/1.05 var(--display);
-    letter-spacing:.03em;text-transform:uppercase;
-  }
-  .fw-line{margin:0 0 14px;color:var(--ink);font-size:17px;font-weight:700;line-height:1.35}
-  .frameworks-grid article>p:last-of-type{
-    margin:0;color:var(--muted);font-size:15px;line-height:1.55;
-  }
-  .frameworks-grid article:first-child .fw-line,
-  .frameworks-grid article:first-child>p:last-of-type{color:var(--ink)}
-  /* Copy placeholder marker. Delete the element and this rule together once
-     Oscar has supplied the real framework descriptions. */
-  .fw-draft{
-    margin:22px 0 0;padding:14px 18px;
-    border:1.5px dashed rgba(20,51,24,.4);border-radius:var(--r-card);
-    color:var(--muted);font-size:13px;line-height:1.5;max-width:72ch;
-  }
-  @media(max-width:1000px){
-    .frameworks-grid{grid-template-columns:1fr 1fr}
-    .frameworks-grid article:first-child{grid-column:span 2}
-  }
-  @media(max-width:700px){
-    .frameworks-grid{grid-template-columns:1fr}
-    .frameworks-grid article:first-child{grid-column:span 1}
-  }
+  /* The break-out composite. The box holds a blurred room; the cutout
+     stands in it and grows straight out of the top, so Oscar reads as
+     emerging from the environment rather than pasted into a card. Three
+     things make it work and all three are load-bearing:
 
-  /* ---------- 6. Type-led hero ----------
-     No photograph. That is the point of this direction, not an omission:
-     §20 records that no alpha-channel cut-out of Oscar exists anywhere in
-     the project, which caps every portrait-led hero option. A hero built
-     out of the headline needs no asset that does not exist, and it drops
-     hero-concept.png — the 1.8MB placeholder the client's "picture quality"
-     comment was actually about.
+       - the figure is the positioning context AND stays overflow:visible,
+         so only the room is clipped by the box, never the cutout;
+       - the cutout is pinned to bottom:0 and sized in % of the box, so
+         the amount that breaks out holds at every width;
+       - z-index lifts the whole figure over the headline, which is what
+         puts his head in front of the type instead of behind it.
 
-     Colour is all V1.0: the ground is Detox Green #CCFE06, the type is Deep
-     Green #143318. The mockup's black is NOT in the palette — Deep Green on
-     Detox Green is the sanctioned pairing (p.21) and at this size it reads
-     as black anyway. */
-  .hero--type{
-    --ht-gutter:max(24px,calc((100% - 1480px) / 2));
-    /* ONE row, not 1fr + auto. The first build gave the headline its own
-       1fr row and centred it there, so on a tall screen the leftover height
-       opened as a band of empty lime across the middle of the hero. The
-       whole block is now a single centred item: the leftover becomes even
-       margin above and below, which reads as framing rather than as a gap. */
-    grid-template-columns:1fr;grid-template-rows:1fr;
-    align-items:stretch;gap:0;
-    width:100%;max-width:none;padding:0;
-    background:var(--lime);color:var(--ink);
+     The drop-shadow is the "optional subtle shadow" from the 11 Nov list.
+     It is on the cutout, not the box, so it follows his actual outline. */
+  /* NO padding on this element. A % height on the cutout resolves against
+     the figure's padding box, so padding here silently scales him up with
+     it — the first build put him at 160% of the intended size. The figure
+     is exactly the box; the break-out is overflow, not reserved space. */
+  /* The padding is deliberate and load-bearing, which is the opposite of
+     the first build where it was a mistake. The client asked for a shorter
+     box without moving Oscar. He is pinned to the box's BOTTOM, so taking
+     height off the box would drag him up with it; the padding puts that
+     height back above the box, leaving the bottom edge, and therefore him,
+     exactly where it was. A % height on the cutout resolves against this
+     padding box, so his size is unchanged too. */
+  .premium-page .pr-problem-fig{position:relative;z-index:2;margin:0;padding-top:15%}
+  .premium-page .pr-fig-box{
     position:relative;overflow:hidden;
+    aspect-ratio:4/3;background:var(--ink);   /* shortened, client 19 Nov */
   }
-  /* The eyebrow and headline stack normally; .ht-foot is deliberately placed
-     in the SAME grid cell as the headline, pinned bottom-right, so it fills
-     the empty space beside the short last line ("back") instead of being
-     parked in its own strip at the foot of the screen. The overlap is only
-     safe while the headline is set in three lines, so it unwinds below
-     1300px. */
-  .hero--type .ht-inner{
-    display:grid;grid-template-columns:minmax(0,1fr);
-    align-content:center;
-    padding:40px var(--ht-gutter);
+  .premium-page .pr-fig-box img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 50%;
+    transform:scale(1.14);                 /* hides the blur's soft edge */
+    filter:blur(9px) saturate(.5) brightness(1.1);
   }
-  .hero--type .eyebrow{
-    grid-area:1/1;align-self:start;
-    color:var(--ink);font-size:15px;letter-spacing:.14em;margin:0 0 26px;
+  .premium-page .pr-cutout{
+    /* Left of centre, as the mockup places him: his cutout starts ~10%
+       into the box and leaves roughly a quarter of it clear on the right. */
+    position:absolute;left:7%;bottom:0;
+    height:124%;width:auto;max-width:none;
+    filter:drop-shadow(0 16px 24px rgba(20,51,24,.3));
   }
-  /* Three lines, broken by hand. The final short line leaves room for
-     .ht-foot in the same grid cell. On a phone the forced breaks are removed
-     and the sentence wraps naturally. */
-  .hero--type .ht-head{
-    grid-area:2/1;
-    margin:0;color:var(--ink);max-width:none;
-    /* 1.0, not .88. The original reason was the ring around "cleanse",
-       which needed a band of clear lime to travel through. The ring is
-       gone (28 Oct), but the leading stays: the size and the three
-       hand-forced lines were both calibrated against 1.0, and tightening
-       it now changes the block's height and so the fold that §5 holds the
-       hero to. Only retune it together with the size, and re-check the
-       fold if you do.
+  .premium-page .pr-problem-copy{padding-top:clamp(20px,4vw,74px)}
+  /* One row: the CTA on the left, the attribution and signature hard
+     right. They used to be two stacked blocks with the button centred
+     under them, which left the button floating on its own line. */
+  .premium-page .pr-sign{
+    margin-top:clamp(28px,3vw,52px);
+    display:flex;justify-content:space-between;align-items:flex-end;
+    gap:24px;flex-wrap:wrap;
+  }
+  .premium-page .pr-sign-by{
+    display:flex;align-items:flex-end;gap:20px;text-align:right;
+  }
+  .premium-page .pr-sign p{margin:0;font-size:clamp(14px,1vw,17px);line-height:1.45}
+  .premium-page .pr-sign b{display:block;font-weight:600}
+  /* Oscar's real signature, supplied 19 Nov. The file is 69x159 and has
+     NO alpha channel, so it is dark strokes on a white rectangle: the
+     multiply blend is what drops the white out against the cream, not a
+     decorative choice. Remove it and a white box appears.
 
-       SIZE RE-MEASURED 7 Nov, after the licensed font went in. It was
-       clamp(38px,10.3vw,150px), set against the trial face. The licensed
-       cut carries the wide B C D G O Q as its DEFAULT letterforms, which
-       makes this headline about 28% wider — "CLEANSE YOUR BUSINESS" alone
-       went from 7858 to 9586 font units. At 150px the longest hand-broken
-       line no longer fitted and the three lines became five.
+     It is displayed at roughly native size because there is no detail to
+     scale into — see the note in BACKLOG terms: a transparent PNG or SVG
+     at 3x would let this sit properly on a retina screen. */
+  .premium-page .pr-sign img{
+    flex:none;width:clamp(52px,4.4vw,72px);height:auto;
+    mix-blend-mode:multiply;
+  }
 
-       The 18 Nov copy is shorter, but the existing 143px ceiling and fluid
-       step are retained so the hero keeps its established scale and fold.
+  /* ---------- Programs ----------
+     Three straight-edged panels of equal weight, so the two paid
+     tracks can be read against the free one in a single view. The
+     PDF gives each a different surface — outline, Deep Green, lime
+     duotone — and that is what keeps the row from reading as three
+     identical SaaS cards. */
+  .premium-page .pr-programs{padding:clamp(40px,5vw,80px) 0 clamp(70px,8vw,130px)}
+  .premium-page .pr-programs-head{text-align:right}
+  /* The kicker needs clearing: at a line-height of .79 the cap of the first
+     line sits above its own box and collides with anything directly over it. */
+  .premium-page .pr-programs-h{--fs:clamp(38px,6.3vw,118px);margin-top:clamp(16px,1.8vw,30px)}
+  .premium-page .pr-programs-h span{width:auto}
+  .premium-page .pr-programs-h span:nth-child(1){padding-right:2.5%}
+  .premium-page .pr-cards{
+    margin-top:clamp(36px,4vw,64px);
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.4vw,40px);
+  }
+  .premium-page .pr-card{
+    position:relative;display:flex;flex-direction:column;
+    min-height:clamp(420px,38vw,620px);
+  }
+  .premium-page .pr-card-body{padding:clamp(26px,2.4vw,42px)}
+  .premium-page .pr-card h3{
+    margin:0;font:var(--fs,clamp(24px,2.1vw,38px))/.94 var(--display);
+    letter-spacing:-.01em;text-transform:uppercase;
+  }
+  .premium-page .pr-card-meta{
+    margin:0 0 18px;font:12px/1.4 var(--sans);font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;opacity:.72;
+  }
+  .premium-page .pr-card .pr-copy{font-size:clamp(14px,.98vw,17px)}
+  .premium-page .pr-card-link{
+    display:inline-block;margin-top:22px;
+    font:14px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;
+    text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:5px;
+  }
+  .premium-page .pr-card-link:hover{opacity:.65}
+  .premium-page .pr-card-title{margin-top:auto;padding:clamp(26px,2.4vw,42px);padding-top:0}
 
-       RE-MEASURE BOTH if the copy, the line breaks or the face change. */
-    font-size:clamp(38px,9.15vw,143px);line-height:1.0;
+  .premium-page .pr-card--outline{border:1px solid var(--ink);background:transparent}
+  .premium-page .pr-card--dark{background:var(--ink);color:var(--paper)}
+  /* The figure is a cutout, not a photo panel: the two of them stand
+     directly on the Deep Green and meet the card's bottom edge, which is
+     where the source photograph's desk used to be. No crop and no
+     aspect-ratio here on purpose — object-fit would cut the silhouette,
+     and the point is that there is no rectangle. */
+  /* margin:0 is not cosmetic. The UA stylesheet gives <figure> a default
+     `margin:1em 40px`, which was insetting the cutout 40px on each side
+     and stopping it reaching the card's edges. */
+  .premium-page .pr-card--dark .pr-card-figure{margin:0;margin-top:auto;position:relative}
+  .premium-page .pr-card--dark .pr-card-figure img{width:100%;height:auto;display:block}
+  .premium-page .pr-card--dark h3{
+    position:absolute;right:clamp(16px,1.4vw,26px);top:clamp(-26px,-2vw,-18px);
+    color:var(--lime);text-align:right;
+  }
+  .premium-page .pr-card--lime{position:relative;isolation:isolate;background:var(--lime);color:var(--ink)}
+  .premium-page .pr-card--lime .pr-card-bg{position:absolute;inset:0;z-index:-1;background:var(--lime);overflow:hidden}
+  .premium-page .pr-card--lime .pr-card-bg img{
+    /* The keynote shot is a dark stage, so it needs lifting harder than
+       the bright office did before a multiply leaves anything visible.
+       Cropped left of centre to keep Oscar in frame on a portrait card. */
+    width:100%;height:100%;object-fit:cover;object-position:30% 45%;
+    mix-blend-mode:multiply;opacity:.62;
+    filter:grayscale(1) brightness(2.1) contrast(.5);
+  }
+  .premium-page .pr-card--lime h3{text-align:right;margin-left:auto}
+  /* margin-top:auto pushes the title and the copy together down to the
+     lower half, so the photograph reads through the top of the card
+     before any type starts. That is the supplied card's composition. */
+  .premium-page .pr-card--lime .pr-card-head{
+    margin-top:auto;padding:clamp(26px,2.4vw,42px) clamp(26px,2.4vw,42px) 0;
+  }
+  /* Square, like everything else in the row. */
+  .premium-page .pr-badge{
+    position:absolute;z-index:2;top:0;right:0;
+    background:var(--lime);color:var(--ink);
+    font:14px/1 var(--display);letter-spacing:.07em;text-transform:uppercase;
+    padding:10px 16px 8px;
+  }
+
+  /* ---------- Testimonials ----------
+     The page's one dark band. Outlined boxes, no shadow, no marquee:
+     the PDF sets them as three still panels and movement here would
+     fight the type. */
+  /* ---------- Testimonials ----------
+     This is the SHARED slider from css/site.css §14a, not a second
+     carousel. The markup carries the same classes the four live pages
+     use (.testimonial-slider > .testimonial-grid.testimonial-track >
+     article), so it inherits the desktop marquee, the hover-to-pause,
+     the reduced-motion branch and the one-card-at-a-time stepping that
+     js/site.js §8 runs below 700px. No new JavaScript, and js/site.js
+     is untouched.
+
+     Three things the shared component assumes, all load-bearing:
+
+       - FOUR quotes per set, repeated FOUR times. The keyframe slides by
+         `-4 * (--tcard + --tgap)`, i.e. exactly one set, and it lives in
+         the shared file because this composition is homepage-specific. Three
+         quotes would desynchronise the loop. Copies 2 to 4 are
+         aria-hidden and the mobile branch display:none's them.
+       - The end fades are painted gradients in the GROUND colour, and
+         the shared ones are Soft Ivory. On this Deep Green band they
+         have to be repainted or two cream smears appear at the edges.
+       - .testimonial-grid sets a white rounded card with a shadow, so
+         the outlined square treatment is an override, not the default. */
+  .premium-page .pr-voices{
+    background:var(--ink);color:var(--paper);overflow:hidden;
+    padding:clamp(60px,7vw,110px) 0 clamp(70px,8vw,120px);
+  }
+  .premium-page .pr-voices-h{--fs:clamp(44px,7.4vw,138px);color:var(--lime)}
+  .premium-page .pr-voices-h span:nth-child(1){margin-left:28%}
+  .premium-page .pr-voices-h span:nth-child(2){margin-left:45%}
+  .premium-page .pr-voices .testimonial-slider{margin-top:clamp(20px,2.4vw,40px)}
+  .premium-page .pr-voices .testimonial-slider::before{
+    background:linear-gradient(90deg,var(--ink),rgba(20,51,24,0));
+  }
+  .premium-page .pr-voices .testimonial-slider::after{
+    background:linear-gradient(270deg,var(--ink),rgba(20,51,24,0));
+  }
+  .premium-page .pr-voices .testimonial-track article{
+    background:transparent;border:1px solid var(--paper);border-radius:0;
+    box-shadow:none;min-height:0;padding:clamp(24px,2.2vw,40px);
+  }
+  .premium-page .pr-voices .testimonial-track article:hover{box-shadow:none;transform:none}
+  /* The shared card opens with a big lime quote glyph. The PDF's cards
+     carry no such mark, so it is suppressed here only. */
+  .premium-page .pr-voices .testimonial-grid article::before{content:none}
+  .premium-page .pr-voices .testimonial-label{
+    margin:0 0 14px;padding:4px 10px 3px;border:0;border-radius:0;
+    background:var(--lime);color:var(--ink);
+    font:12px/1.2 var(--display);letter-spacing:.09em;
+  }
+  .premium-page .pr-voices .testimonial-grid blockquote{
+    color:var(--paper);font-size:clamp(14px,.98vw,17px);line-height:1.55;text-align:justify;
+  }
+  .premium-page .pr-voices .testimonial-grid footer{color:var(--paper);padding-top:clamp(20px,2vw,34px)}
+  .premium-page .pr-voices .testimonial-grid footer strong{
+    font:clamp(18px,1.5vw,27px)/1 var(--display);letter-spacing:.02em;text-transform:uppercase;
+  }
+  .premium-page .pr-voices .testimonial-grid footer span{
+    margin-top:8px;color:var(--paper);opacity:.7;font-size:12px;letter-spacing:.08em;
+  }
+
+  /* ---------- The IP ----------
+     A table, not cards. Full-bleed rules, a very large figure in the
+     left column and the description held off to the right. */
+  .premium-page .pr-ip{padding:clamp(70px,8vw,130px) 0 clamp(60px,6vw,100px)}
+  .premium-page .pr-ip-h{--fs:clamp(40px,7.2vw,134px)}
+  .premium-page .pr-ip-h span:nth-child(2){margin-left:6%}
+  .premium-page .pr-ip-rows{margin-top:clamp(40px,4.5vw,74px);border-bottom:1px solid var(--ink)}
+  .premium-page .pr-ip-row{
+    display:grid;grid-template-columns:minmax(0,.4fr) minmax(0,1fr) minmax(0,1.3fr) minmax(0,.4fr);
+    gap:clamp(20px,3vw,50px);align-items:start;
+    border-top:1px solid var(--ink);
+    padding:clamp(22px,2.4vw,40px) clamp(24px,4vw,64px);
+  }
+  .premium-page .pr-ip-num{
+    font:var(--fs,clamp(54px,5.4vw,104px))/.8 var(--display);letter-spacing:-.02em;
+  }
+  .premium-page .pr-ip-row h3{
+    margin:0;font:clamp(20px,1.9vw,34px)/1.1 var(--display);
+    letter-spacing:.01em;text-transform:none;
+  }
+  .premium-page .pr-ip-row h4{
+    margin:0 0 8px;font:clamp(15px,1.25vw,22px)/1.15 var(--display);
     letter-spacing:.01em;text-transform:uppercase;
   }
-  .hero--type .ht-br{display:block;height:0}
-  /* Same cell as the headline, pinned to its bottom right. */
-  .hero--type .ht-foot{
-    grid-area:2/1;align-self:end;justify-self:end;
-    /* Must stay SHORTER than the last headline line it sits beside, or it
-        rides up and collides with line 2. Wider column => the subline sets
-        in two lines instead of three, which is what buys the room. */
-    width:min(58%,700px);
-    display:flex;flex-direction:column;align-items:flex-start;gap:14px;
-    padding-bottom:.06em;
+  .premium-page .pr-ip-row p{margin:0;font-size:clamp(14px,.98vw,17px);line-height:1.5}
+  .premium-page .pr-ip-link{
+    align-self:center;justify-self:end;white-space:nowrap;
+    font:14px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;
+    text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:5px;
   }
-  .hero--type .ht-sub{
-    margin:0;max-width:58ch;color:var(--ink);font-size:16px;line-height:1.45;
-  }
-  /* Emphasis only — the sentence is the locked site copy, word for word.
-     The underline the first build used reads as a hyperlink and nothing
-     else on the web; people try to click it. Weight carries it instead. */
-  .hero--type .ht-mark{font-weight:700}
-  /* Side by side, not stacked. Stacked buttons made the block taller than
-     the line it sits beside, which is what forced it down into its own
-     strip in the first build. */
-  .hero--type .ht-actions{
-    display:flex;flex-wrap:wrap;gap:12px;margin:0;
-  }
-  /* On a Detox Green ground the pair inverts: the primary becomes the Deep
-     Green pill, because a lime pill on lime is invisible. */
-  .hero--type .button{background:var(--ink);color:var(--lime);border-color:var(--ink)}
-  .hero--type .button:hover{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .hero--type .button--line{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .hero--type .button--line:hover{background:var(--ink);color:var(--lime);border-color:var(--ink)}
+  .premium-page .pr-ip-link:hover{opacity:.65}
+  .premium-page .pr-ip-note{margin:clamp(24px,2.5vw,40px) 0 0;max-width:72ch;font-size:14px;line-height:1.55;color:var(--muted)}
 
-  @keyframes htRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .hero--type .eyebrow,
-  .hero--type .ht-head,
-  .hero--type .ht-foot{animation:htRise .6s .05s both cubic-bezier(.2,.7,.3,1)}
-  .hero--type .ht-head{animation-delay:.1s}
-  .hero--type .ht-foot{animation-delay:.2s}
-  @media(prefers-reduced-motion:reduce){
-    .hero--type .eyebrow,
-    .hero--type .ht-head,
-    .hero--type .ht-foot{animation:none}
+  /* ---------- Outcomes ----------
+     The figures are the content, so they are set at display scale
+     with the copy kept small underneath. Centred at the client's
+     instruction of 11 Nov; the PDF left-aligns them in their columns. */
+  .premium-page .pr-outcomes{padding:clamp(60px,6vw,100px) 0 clamp(70px,8vw,130px)}
+  .premium-page .pr-outcomes-h{--fs:clamp(44px,8vw,150px)}
+  .premium-page .pr-outcomes-h span:nth-child(1){margin-left:27%}
+  .premium-page .pr-outcomes-h span:nth-child(2){margin-left:23%}
+  .premium-page .pr-stats{
+    margin-top:clamp(40px,4.5vw,76px);
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(22px,2.6vw,46px);
   }
+  .premium-page .pr-stats article{text-align:center}
+  .premium-page .pr-stats strong{
+    display:block;font:clamp(40px,5vw,94px)/.9 var(--display);
+    font-weight:400;letter-spacing:-.015em;
+  }
+  .premium-page .pr-stats p{margin:14px 0 0;font-size:clamp(14px,.98vw,17px);line-height:1.5}
 
-  /* The overlap only holds while .ht-foot is SHORTER than the last headline
-     line it sits beside — that line is .88 x the font size, and the font is
-     12vw, so it shrinks faster than the foot does. Left alone the subline
-     picks up a third line on the way down and collides with line 2 at about
-     1450px, which includes the 1440 laptop the client is most likely to open
-     this on. So the foot gets compact between 1300 and 1600 — a wider column
-     keeps the subline at two lines and the gaps tighten — and only unwinds
-     into a stack below 1300. Re-measure both if the subline or buttons
-     change. */
-  @media(max-width:1600px){
-    .hero--type .ht-foot{width:min(62%,760px);gap:10px}
-    .hero--type .ht-sub{font-size:15px;line-height:1.4}
+  /* ---------- About ---------- */
+  .premium-page .pr-about{padding:clamp(40px,5vw,80px) 0 clamp(70px,8vw,130px)}
+  .premium-page .pr-about-grid{
+    display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);
+    gap:clamp(40px,6vw,110px);align-items:center;
   }
-  @media(max-width:1300px){
-    .hero--type .ht-foot{
-      grid-area:3/1;justify-self:stretch;align-self:auto;
-      width:auto;margin-top:34px;padding-bottom:0;
+  .premium-page .pr-about figure{margin:0}
+  .premium-page .pr-about figure img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 20%}
+  .premium-page .pr-about-head{text-align:right}
+  .premium-page .pr-about-h{--fs:clamp(38px,6.1vw,114px);margin-top:clamp(16px,1.8vw,30px)}
+  .premium-page .pr-about-h span{width:auto}
+  .premium-page .pr-about-h span:nth-child(1){padding-right:5%}
+  .premium-page .pr-about-copy{margin-top:clamp(28px,3.4vw,58px)}
+  .premium-page .pr-about-cta{margin-top:clamp(26px,3vw,46px)}
+
+  /* ---------- Closing switch ----------
+     The shared block, re-dressed. aria-pressed="true" is the RESTING
+     state and js/site.js snaps it back to it — the attribute is not
+     touched here, only the type around it. */
+  .premium-page .choice{padding:clamp(40px,5vw,70px) 0 clamp(80px,9vw,150px);text-align:left;background:var(--paper)}
+  .premium-page .choice .container{width:min(1600px,calc(100% - 96px))}
+  .premium-page .choice h2{
+    margin:0;max-width:none;
+    font-family:var(--display);font-size:var(--fs);line-height:var(--lh,.79);
+    letter-spacing:-.018em;text-transform:uppercase;
+  }
+  .premium-page .pr-choice-h{--fs:clamp(44px,7.8vw,146px)}
+  .premium-page .pr-choice-h span:nth-child(1){margin-left:24%}
+  .premium-page .pr-choice-h span:nth-child(2){margin-left:47%}
+  .premium-page .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-page .choice .toggle-rows{margin-top:22px}
+
+  /* ---------- Responsive ----------
+     The offsets are the first thing to go. Below 760px every headline
+     is flush left at a readable line-height, the three-column rows
+     become one column, and the IP table drops to a stacked list. */
+  @media(max-width:1100px){
+    .premium-page .pr-wrap,.premium-page .pr-bleed,.premium-page .choice .container{width:min(100%,calc(100% - 56px))}
+    .premium-page .pr-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .premium-page .pr-cards .pr-card--lime{grid-column:span 2;min-height:360px}
+    .premium-page .pr-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .premium-page .pr-ip-row{grid-template-columns:minmax(0,.35fr) minmax(0,1fr) minmax(0,1.3fr);padding-inline:clamp(16px,3vw,40px)}
+    .premium-page .pr-ip-link{grid-column:2/4;justify-self:start;margin-top:6px}
+    .premium-page .pr-featured ul{grid-auto-columns:calc((100% - (2 * var(--logo-gap))) / 3)}
+  }
+  @media(max-width:860px){
+    .premium-page .pr-problem-body,.premium-page .pr-about-grid{grid-template-columns:minmax(0,1fr);gap:34px}
+    .premium-page .pr-problem-fig{margin-top:0;max-width:520px}
+    .premium-page .pr-problem-copy{padding-top:0}
+    .premium-page .pr-about figure{max-width:460px}
+    .premium-page .pr-about-head,.premium-page .pr-programs-head{text-align:left}
+    .premium-page .pr-featured{grid-template-columns:minmax(0,1fr);align-items:start;gap:22px}
+    .premium-page .pr-logo-slider{width:100%}
+  }
+  @media(max-width:760px){
+    .premium-page .pr-wrap,.premium-page .pr-bleed,.premium-page .choice .container{width:min(100%,calc(100% - 36px))}
+    .premium-page .pr-h span,
+    .premium-page .choice h2 span{margin-left:0!important;padding-right:0!important;width:auto}
+    .premium-page .pr-h,.premium-page .choice h2{--lh:.88;letter-spacing:-.01em;text-align:left}
+    .premium-page .pr-programs-head,.premium-page .pr-about-head{text-align:left}
+    .premium-page .pr-hero-h{--fs:clamp(38px,12.6vw,74px)}
+    .premium-page .pr-problem-h,.premium-page .pr-programs-h,
+    .premium-page .pr-about-h{--fs:clamp(34px,10.4vw,62px)}
+    .premium-page .pr-voices-h,.premium-page .pr-ip-h,
+    .premium-page .pr-outcomes-h,.premium-page .pr-choice-h{--fs:clamp(36px,11.4vw,68px)}
+    .premium-page .pr-card--lime h3,.premium-page .pr-card--dark h3{text-align:left}
+    .premium-page .pr-card--lime h3{margin-left:0}
+    .premium-page .pr-cards{grid-template-columns:minmax(0,1fr)}
+    .premium-page .pr-cards .pr-card--lime{grid-column:auto}
+    .premium-page .pr-card{min-height:0}
+    .premium-page .pr-stats{grid-template-columns:minmax(0,1fr);gap:34px}
+    .premium-page .pr-ip-row{grid-template-columns:minmax(0,1fr);gap:12px;padding-inline:0}
+    .premium-page .pr-ip-link{grid-column:auto}
+    .premium-page .pr-ip-num{font-size:clamp(44px,13vw,70px)}
+    /* Stacks here: attribution and signature first, CTA under them. */
+    .premium-page .pr-sign{flex-direction:column-reverse;align-items:flex-start;gap:26px}
+    .premium-page .pr-sign-by{flex-direction:row-reverse;text-align:left}
+    .premium-page .pr-sign img{width:46px}
+    /* The break-out has to shrink here or his head eats two lines of the
+       headline. Same principle as zeroing the headline offsets: the
+       device survives, the collision does not. */
+    .premium-page .pr-cutout{height:112%;left:10%}
+    .premium-page .pr-copy,
+    .premium-page .pr-voices .testimonial-grid blockquote{text-align:left;hyphens:none}
+    .premium-page .pr-hero{min-height:0;padding-top:52px}
+    .premium-page .pr-featured ul{grid-auto-columns:calc((100% - var(--logo-gap)) / 2)}
+    /* The hero is much shorter here, so the copy lands higher up the
+       photograph. The lime floor has to start higher with it. */
+    .premium-page .pr-hero-bg::after{
+      background:linear-gradient(to bottom,
+        rgba(var(--pr-rgb),0) 20%,rgba(var(--pr-rgb),.74) 40%,rgba(var(--pr-rgb),.96) 68%);
     }
-    .hero--type .ht-sub{max-width:62ch}
+    .premium-page .choice-note{text-align:left;margin-inline:0}
   }
 
-  @media(max-width:850px){
-    .hero--type{--ht-gutter:20px}
-    /* The hand-forced breaks are sized for three full-width desktop lines.
-       On a phone the sentence has to wrap wherever it fits. */
-    .hero--type .ht-br{display:none}
-    .hero--type .ht-inner{padding:24px var(--ht-gutter) 26px}
-    .hero--type .eyebrow{font-size:12px;margin-bottom:14px}
-    /* 14.5vw, not 10.2. At 10.2 the headline came out ~40px on a 390pt
-       phone — barely larger than the subline under it, which loses the whole
-       point of a type-led hero. 14.5 puts it at ~57px there and fills the
-       width the way it does on desktop. Check at 390, not at 500: headless
-       Chrome clamps to a 500px minimum window, so 390 only scales on paper. */
-    .hero--type .ht-head{font-size:clamp(36px,12.6vw,70px)}
-    .hero--type .ht-foot{margin-top:26px;gap:16px}
-    /* Dropped a point, so the headline keeps a clear lead over it. */
-    .hero--type .ht-sub{font-size:15px;line-height:1.45}
-    /* Sized to their labels and sitting side by side where they fit. Two
-       full-width stacked pills took a quarter of the screen and out-shouted
-       the headline. */
-    .hero--type .ht-actions{gap:10px}
-    .hero--type .ht-actions .button{flex:0 1 auto;padding-left:26px;padding-right:26px}
-    /* The Deep Green mobile nav panel used to be patched here, on this page
-       only — which is why the other ten pages shipped with lime links on a
-       near-white panel. It is in css/site.css now, with the slide-in panel
-       that replaced the drop-down on 7 Nov. */
+  /* ============================================================
+     V2 ELEVATION PASS
+     Everything above this line is v1 verbatim. Everything below is
+     the change set, appended rather than edited in, so the whole
+     final craft pass for this homepage is this
+     block plus the markup edits listed in the head comment.
+
+     Six fixes from the design review, then a craft pass drawn from
+     current premium/editorial practice: one spacing scale, material
+     grain on the flat fields, scroll reveals, wiped underlines and
+     restrained hover states. Motion is deliberately small; heavy
+     scroll effects date a site within a season.
+     ============================================================ */
+
+  /* ---- 1. ONE SPACING SCALE ----------------------------------
+     v1's gaps between sections measured 190, 240, 250, 200, 210 and
+     200px, because each was whatever that section's own top and
+     bottom padding happened to add to. Every section now contributes
+     half the gap, so the interval between any two is exactly --gap
+     and the page keeps one pace all the way down. */
+  .premium-page{--gap:clamp(104px,10.5vw,184px)}
+  .premium-page .pr-problem,
+  .premium-page .pr-programs,
+  .premium-page .pr-voices,
+  .premium-page .pr-ip,
+  .premium-page .pr-outcomes,
+  .premium-page .pr-about{padding-block:calc(var(--gap) / 2)}
+  .premium-page .choice{padding-block:calc(var(--gap) / 2) var(--gap)}
+
+  /* ---- 2. GRAIN ON THE FLAT FIELDS ---------------------------
+     Two large areas of flat colour read as digital-perfect and a
+     little cheap at this scale. An SVG turbulence overlay at ~5%
+     gives them the tooth of printed stock. It is one inline data
+     URI, no request, and it sits under the content: the hero's and
+     the band's children are lifted to z-index 2 for exactly that. */
+  .premium-page .pr-voices{position:relative}
+  .premium-page .pr-hero::after,
+  .premium-page .pr-voices::after{
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    opacity:.05;mix-blend-mode:overlay;background-size:170px 170px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
+  .premium-page .pr-hero-inner,
+  .premium-page .pr-featured,
+  .premium-page .pr-voices > .pr-wrap,
+  .premium-page .pr-voices .testimonial-slider{position:relative;z-index:2}
 
-  /* ---------- 5. No hairlines between sections ----------
-     Client, 24 Oct. .section-rule draws a 1px --rule line under a section;
-     on the Soft Ivory stretches it read as a stray wireframe line rather
-     than as structure, and the sections already separate on their grounds
-     and their spacing. Killed here rather than stripped from the markup, so
-     the class stays available if any of them is wanted back. */
-  .section-rule{border-bottom:0}
-
-  /* ---------- 7. Switcher-pattern scale ----------
-     Client, 24 Oct: the pattern motif reads too big. site.css sizes the
-     artwork to the full viewport width (`100% auto`) on the dark bands and
-     `cover` on the divider, so on a 1920 screen the 3841px artwork renders
-     at half size — each bar ends up enormous. Here it is given an explicit
-     width and tiled instead, so the motif is a constant size at every
-     viewport rather than growing with the screen.
-     --pattern-w is the one knob: smaller value, smaller bars. */
-  :root{--pattern-w:760px}
-  .hero--brand::before,.outcomes::before{
-    background-size:var(--pattern-w) auto;
-    background-repeat:repeat;
+  /* ---- 3. CTA HIERARCHY --------------------------------------
+     v1 had it backwards: the three programmes carried the quietest
+     links on the page while "Read more" to the About page got a full
+     lime pill, twice over. Now the primary paid offer carries the
+     only pill in the row, the other two cards carry a proper link,
+     and the body sections step down to text links. The duplicate
+     About link is gone: the problem section points at the offers. */
+  .premium-page .pr-card-btn{
+    --btn-size:16px;align-self:flex-start;margin-top:24px;padding:11px 22px 9px;
   }
-  /* The divider is deliberately NOT retiled. The artwork is not seamless
-     horizontally — bars run off both edges and do not line up (measured: 36
-     lime rows on the left edge against 53 on the right), so repeating it
-     puts a hard vertical cut every tile. At 6% that is invisible; at the
-     divider's full strength it reads as a rendering fault, which is worse
-     than the bars being large. Making the divider's motif smaller needs
-     either a seamless version of the asset from the designer, or the
-     divider rebuilt in CSS. */
-
-
-  /* ---------- 8. The wide O/D in the headline ----------
-     NOTHING TO DO HERE ANY MORE. This used to explain why the h1's O and D
-     were wrapped by hand: site.js split on uppercase /([OD])/ and this copy
-     is sentence case uppercased by CSS, so the script never matched it.
-
-     The licensed font (7 Nov) makes the wide B C D G O Q the DEFAULT
-     letterforms, so the headline gets them for free and all the wrappers
-     were deleted. See css/site.css §9a — and note that ss01 is INVERTED in
-     the licensed file: it now selects the narrow forms. */
-
-  /* ---------- 12. One size for the section titles ----------
-     The homepage carried six different title sizes — 43px on The Problem
-     and About, 58px on the Frameworks, 55px on Keynotes, 70px on the
-     cleanse, the testimonials and the outcomes. The client's reference is
-     "How the cleanse works:", so its scale becomes the homepage's section
-     title: clamp(42px,4.7vw,70px), which is 70px at 1512.
-
-     The Problem and About were not small by choice. site.css:123 caps any
-     heading inside a two-column .section-grid at 44px, a rule written for
-     the old 1180px container and shared with the five interior pages.
-     Overriding it HERE rather than editing site.css keeps those pages where
-     they are until they get their own rework (§8).
-
-     Two sections are deliberately NOT on this scale, and both are
-     deliberate rather than overlooked:
-       - .values-inner h2 ("How I work") is a label inside a compact lime
-         strip, not a section title. At 70px it stops being a strip.
-       - .choice h2 ("What will you choose?") is 102px because it is the
-         page's closing statement. Levelling it down would flatten the end
-         of the page. */
-  /* The two .section-grid selectors are written long ON PURPOSE. The rule
-     being overridden is `.section-grid>div:first-child h2` (0,2,1), so a
-     plain `.problem-heading` (0,1,0) loses to it and nothing moves — which
-     is exactly what happened on the first attempt. These match its shape and
-     add the section class to win. */
-  .problem.section-grid>div:first-child h2,
-  .about.section-grid>div:first-child h2,
-  .frameworks-head h2{
-    font-size:clamp(42px,4.7vw,70px);
-    max-width:none;
+  .premium-page .pr-card--dark .pr-card-btn{background:var(--lime);color:var(--ink)}
+  .premium-page .pr-card--dark .pr-card-btn:hover{background:var(--paper);color:var(--ink)}
+  .premium-page .pr-text-link{
+    display:inline-block;font:15px/1 var(--display);letter-spacing:.06em;
+    text-transform:uppercase;text-decoration:none;padding-bottom:7px;
   }
+  /* A wiped underline rather than a hover colour change. The resting
+     rule is held at 35% so the link still reads as a link. */
+  .premium-page .pr-card-link,
+  .premium-page .pr-ip-link,
+  .premium-page .pr-text-link{
+    position:relative;border-bottom:1px solid color-mix(in srgb,currentColor 35%,transparent);
+  }
+  .premium-page .pr-card-link::after,
+  .premium-page .pr-ip-link::after,
+  .premium-page .pr-text-link::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+    background:currentColor;transform:scaleX(0);transform-origin:left;
+    transition:transform .45s cubic-bezier(.22,1,.36,1);
+  }
+  .premium-page .pr-card-link:hover::after,
+  .premium-page .pr-ip-link:hover::after,
+  .premium-page .pr-text-link:hover::after{transform:scaleX(1)}
+  .premium-page .pr-card-link:hover,
+  .premium-page .pr-ip-link:hover,
+  .premium-page .pr-text-link:hover{opacity:1}
+  .premium-page .pr-card-link,.premium-page .pr-ip-link{font-size:15px;letter-spacing:.07em}
 
-  /* ---------- 12a. Featured-in row ----------
-     Client meeting, 11 Nov: this is third-party credibility, not a client
-     list. The supplied Brand on Tour and DOAC marks are white artwork, so the
-     row uses their intended dark ground; TEDx keeps its official red. */
-  .trust--featured{
-    width:100%;max-width:none;padding:62px 0 66px;
-    background:var(--ink);color:var(--paper);text-align:left;
-  }
-  .trust--featured .trust-inner{width:min(1120px,calc(100% - 80px));margin:auto}
-  .trust--featured h2{
-    max-width:none;margin:0 0 34px;color:var(--lime);
-    font-size:clamp(22px,2.3vw,34px);line-height:1;letter-spacing:.09em;
-  }
-  .featured-logos{
-    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-    align-items:center;
-  }
-  .featured-logo{
-    min-width:0;min-height:112px;padding:8px clamp(24px,4vw,58px);
-    display:flex;align-items:center;justify-content:center;
-    border-left:1px solid rgba(254,253,242,.2);
-  }
-  .featured-logo:first-child{border-left:0}
-  .featured-logo img{display:block;width:auto;max-width:100%;object-fit:contain}
-  .featured-logo--brand img{max-height:104px}
-  .featured-logo--tedx img{max-height:64px}
-  .featured-logo--doac img{max-height:72px}
-  @media(max-width:700px){
-    .trust--featured{padding:48px 0 50px;text-align:center}
-    .trust--featured .trust-inner{width:min(430px,calc(100% - 40px))}
-    .trust--featured h2{margin-bottom:22px}
-    .featured-logos{grid-template-columns:1fr}
-    .featured-logo{
-      min-height:96px;padding:24px 34px;
-      border-left:0;border-top:1px solid rgba(254,253,242,.2);
-    }
-    .featured-logo:first-child{border-top:0}
-    .featured-logo--brand img{max-height:90px}
-    .featured-logo--tedx img{max-height:54px}
-    .featured-logo--doac img{max-height:60px}
-  }
+  /* ---- 4. THE HOLLOW FIRST CARD ------------------------------
+     Measured in v1: content ended 381px into a 659px card, so 42% of
+     the free entry point was empty while the two beside it filled.
+     It is the one card with no photograph, so its name becomes the
+     image. Same device as the rest of the page: type at scale. */
+  /* A real bug surfaced while measuring this. .pr-card-title carries
+     margin-top:auto to pin the name to the foot of the card, but
+     `.premium-page .pr-card h3 {margin:0}` is specificity 0,2,1 against
+     the title rule's 0,2,0, so margin:0 was winning and the auto margin
+     never applied, in v1 as well. Hence the gap sat under the name
+     rather than above it. The selector below outranks both.
 
-  /* Client meeting, 11 Nov: the ranges cannot count up, so stronger centring
-     does the visual work instead. */
-  .stat-grid article{
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-    text-align:center;
-  }
-  .stat-grid p{margin-left:auto;margin-right:auto}
-
-  /* ---------- 13. The bottleneck each track fixes ----------
-     Sits directly under the card's h3 as part of the title block, not as a
-     lead-in to the paragraph — hence the negative top margin pulling it up
-     into the h3's 16px bottom gap, and the full gap kept below it.
-
-     Set in the display face, uppercase and tracked, one clear step smaller
-     than the h3 so it reads as a qualifier rather than a second heading.
-     Lime on Deep Green is the sanctioned pairing (V1.0 p.21).
-
-     The :not() is load-bearing: site.css:465 paints every <p> in these cards
-     at rgba(255,255,255,.84), so without matching that rule's specificity
-     this line would come out body-white. */
-  .cleanse-card>p.cleanse-bottleneck:not(.cleanse-meta){
-    margin:-10px 0 16px;color:var(--lime);
-    font:clamp(14px,1.15vw,17px)/1.2 var(--display);
-    letter-spacing:.12em;text-transform:uppercase;
-  }
-
-  /* ---------- 14. The values, as a caption under the portrait ----------
-     Sized to the photo above it, so the two read as one object. The lime is
-     kept — it is what made the values register at all — but as a panel the
-     width of the portrait rather than as a band across the whole page.
-
-     Two columns, not the old single dot-separated row: six values in a ~460px
-     column would run to three ragged lines. Two columns of three give it a
-     shape, and the dots that separated the old row are dropped because the
-     grid does that job now. */
-  /* The arch moves from the figure to the image. site.css:660 makes the
-     figure itself the arch — aspect-ratio:3/4, overflow:hidden, the 260px
-     top radius — so a caption placed inside it is simply clipped away, which
-     is exactly what happened on the first attempt: the panel rendered and was
-     invisible. The figure becomes a plain column; the img keeps the ratio,
-     the radius and the panel ground, so the portrait is unchanged. */
-  .about figure{
-    display:flex;flex-direction:column;
-    aspect-ratio:auto;overflow:visible;border-radius:0;background:none;
-  }
-  .about figure img{
-    height:auto;aspect-ratio:3/4;background:var(--panel);
-    border-radius:260px 260px var(--r-card) var(--r-card);
-  }
-  .about-values{
+     The name then sits on a Detox Green panel, which gives this card
+     the same visual weight at its foot that the photographs give the
+     other two, and is the pairing the brand book sanctions: Deep Green
+     type on a Detox Green field. */
+  .premium-page .pr-card .pr-card-title{margin-top:auto}
+  .premium-page .pr-card--outline h3{font-size:clamp(34px,3.5vw,62px);line-height:.9}
+  .premium-page .pr-card--outline .pr-card-title{
     background:var(--lime);color:var(--ink);
-    margin-top:14px;padding:20px 24px 22px;border-radius:18px;
-  }
-  .about-values h3{
-    margin:0 0 12px;color:var(--ink);
-    font:clamp(19px,1.6vw,23px)/1 var(--display);
-    letter-spacing:.03em;text-transform:uppercase;
-  }
-  /* Chips, not a two-column grid. The six values range from "Clarity" to
-     "Uncomfortable honesty", so in columns nothing lines up and the right
-     half empties out. Chips size to their own words and wrap to fill the
-     panel evenly, and they are already the site's device for a list like
-     this — the offer cards use the same outlined pill for their topic rows
-     (site.css:452). Ink outline on lime matches .cleanse-card--lime. */
-  .about-values ul{
-    list-style:none;margin:0;padding:0;
-    display:flex;flex-wrap:wrap;gap:8px;
-  }
-  .about-values li{
-    border:1.5px solid rgba(20,51,24,.45);border-radius:999px;
-    padding:6px 13px 5px;
-    font-size:13px;font-weight:650;line-height:1.15;white-space:nowrap;
-  }
-  @media(max-width:520px){
-    .about-values{padding:18px 20px 20px}
-    .about-values li{font-size:12px;padding:5px 11px 4px}
+    padding:clamp(28px,2.6vw,44px);
   }
 
-  /* ---------- 16. Soft Ivory hero ----------
-     APPROVED AND LIVE, 31 October. The type-led hero's ground is Soft Ivory
-     #FEFDF2, not Detox Green #CCFE06. Promoted from hero-ivory.html, which
-     was the 29 Oct comparison build (§28) and is now a frozen record — do
-     not keep patching that file.
-
-     This block must stay LAST in the stylesheet. It overrides rules in
-     section 6 above at equal specificity, so it wins on source order alone.
-     Move it up and the hero goes back to lime silently.
-
-     Changing the ground forces four other changes, because V1.0 p.21 bans
-     Detox Green on Soft Ivory. Nothing in the hero may be lime any more:
-
-     1. The buttons invert back. On lime the primary had to be a Deep Green
-        pill (a lime pill on lime is invisible) with lime type. On ivory the
-        sanctioned primary returns: Deep Green pill, and its type can be
-        lime, because lime ON Deep Green is the one legal lime pairing.
-     2. The hero needs a bottom edge. Against lime the Deep Green switcher
-        strip below it was a hard colour change; ivory to Deep Green is
-        still a change, but the hero no longer reads as a block, so a
-        hairline keeps the first screen from bleeding into the strip.
-     3. The faded word "clutter" is re-weighted. .55 Deep Green on lime and
-        .55 Deep Green on ivory are not the same contrast — ivory is lighter,
-        so the same alpha reads weaker. It goes to .62.
-     4. The header stays Deep Green. It was made Deep Green in §5 to give the
-        lime hero a legal top edge, and that reason is gone — but an ivory
-        header on an ivory hero erases the band entirely and the lime logo
-        has nowhere legal to sit. Deep Green is still the only ground the
-        lime logo, lime nav and lime pill CTA can all share.
-
-     The trade the client accepted (§28): ivory is calmer and Deep Green on
-     ivory is a higher-contrast pair than Deep Green on lime, but the brand
-     is no longer stated on the first screen — the only lime above the fold
-     is the logo and one button. */
-  .hero--type{background:var(--paper)}
-  .hero--type::after{
-    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
-    background:rgba(20,51,24,.14);
+  /* ---- 5. THE CLOSING SWITCH ---------------------------------
+     1040 x 105px in v1, which made it the loudest object on a page
+     whose argument is restraint. The shared component is untouched;
+     only its scale here. */
+  .premium-page .choice .toggle-rows{max-width:700px;margin-top:34px}
+  .premium-page .choice .toggle-row{
+    padding:17px 26px 14px;font-size:clamp(17px,1.8vw,26px);gap:clamp(14px,2vw,28px);
   }
-  .hero--type .ht-fade{color:rgba(20,51,24,.62)}
-  /* The V1.0 default pair, restored: primary = Deep Green pill with lime
-     type; secondary = Deep Green outline. On hover the primary empties out
-     to the outline rather than flipping to a lime fill, which is illegal
-     here. */
-  .hero--type .button{background:var(--ink);color:var(--lime);border-color:var(--ink)}
-  .hero--type .button:hover{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .hero--type .button--line{background:transparent;color:var(--ink);border-color:rgba(20,51,24,.5)}
-  .hero--type .button--line:hover{background:var(--ink);color:var(--lime);border-color:var(--ink)}
+  .premium-page .choice .choice-toggle .t-switch{width:64px;height:37px}
+
+  /* ---- 6. THE ABOUT PORTRAIT ---------------------------------
+     The weakest image in v1: a flat rectangle with a band of dead
+     wall above his head. A taller crop pushed down to 38% puts him in
+     the frame instead of the ceiling. A Detox Green slab offset behind
+     it was tried first and removed: against a photograph with no
+     relationship to it, it read as a mistake rather than a device. */
+  .premium-page .pr-about figure img{
+    aspect-ratio:3/4.15;object-position:50% 38%;filter:saturate(.92) contrast(1.05);
+  }
+
+  /* ---- 7. SCROLL REVEALS -------------------------------------
+     The shared .reveal from css/site.css §22, nothing new: opacity
+     and an 18px rise, driven by the IntersectionObserver already in
+     js/site.js, and already switched off under prefers-reduced-motion.
+     Applied per card and per table row rather than per section, so
+     the stagger comes from the scroll position itself. */
+  .premium-page .reveal{transition-duration:.75s}
+
+  /* ---- 8. HOVER, HELD BACK ----------------------------------- */
+  .premium-page .pr-card{transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s ease}
+  .premium-page .pr-card:hover{transform:translateY(-6px)}
+  .premium-page .pr-card--outline:hover{box-shadow:0 26px 60px rgba(20,51,24,.10)}
+  .premium-page .pr-card--dark:hover,
+  .premium-page .pr-card--lime:hover{box-shadow:0 26px 60px rgba(20,51,24,.22)}
+  .premium-page .pr-ip-row{transition:background .35s ease}
+  .premium-page .pr-ip-row:hover{background:rgba(20,51,24,.035)}
+
+  /* ---- 9. LABEL TRACKING -------------------------------------
+     Wide tracking on small uppercase is the cheapest signal of an
+     editorial hand, and v1 was a little tight. */
+  .premium-page .pr-card-meta{letter-spacing:.145em;font-size:11px}
+  .premium-page .pr-kicker{letter-spacing:.1em}
+  .premium-page .pr-featured h2{letter-spacing:.04em}
+  /* The divider that sat directly under the CTA buttons is deliberately
+     removed. The logo band now begins after the hero as its own complete
+     trust section, so shorter desktop viewports never crop the marks at
+     the fold. */
+  .premium-page .pr-featured{border-top:0}
+  .premium-page .pr-featured ul{
+    --logo-gap:clamp(34px,7vw,130px);
+    justify-content:flex-start;
+  }
+  .premium-page .pr-featured-band{background:var(--ink);color:var(--lime)}
+  .premium-page .pr-featured-band .pr-featured img{filter:brightness(0) invert(1)}
+
+  @media(max-width:760px){
+    .premium-page .choice .toggle-row{padding:14px 18px 11px}
+  }
+
+  /* ============================================================
+     APPROVED DIRECTION ADJUSTMENTS, 22 NOVEMBER
+     Anzhelika's composition remains the master. These are the six
+     agreed borrowings or corrections from Abdessamad's direction.
+     ============================================================ */
+
+  /* 1. White hero typography on the existing Deep Green duotone. */
+  .premium-page .pr-hero[data-ground="deep"]{--pr-ink:#fff}
+  .premium-page .pr-hero[data-ground="deep"] .pr-hero-h,
+  .premium-page .pr-hero[data-ground="deep"] .pr-hero-foot{color:#fff}
+
+  /* 3. The About portrait uses Abdessamad's Deep Green arch treatment. */
+  .premium-page .pr-about figure{
+    position:relative;padding:0 0 clamp(28px,3vw,46px) clamp(28px,3vw,46px);
+  }
+  .premium-page .pr-about-arch{
+    position:relative;z-index:1;overflow:hidden;background:var(--ink);
+    border-radius:999px 999px 0 0;
+  }
+  .premium-page .pr-about figure .pr-about-arch img{
+    display:block;width:100%;aspect-ratio:3/4.15;object-fit:contain;object-position:50% 100%;
+    filter:grayscale(1) contrast(1.08);mix-blend-mode:luminosity;
+  }
+  .premium-page .pr-about figure::before{
+    content:"";position:absolute;z-index:2;left:0;bottom:0;
+    width:58%;aspect-ratio:1;border:2px solid var(--ink);border-radius:50%;
+    pointer-events:none;
+  }
+
+  /* 6. Restore the closing switch to Abdessamad's confident scale. */
+  .premium-page .choice .toggle-rows{max-width:980px;margin-top:40px}
+  .premium-page .choice .toggle-row{
+    padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
+    gap:clamp(20px,3vw,46px);
+  }
+  .premium-page .choice .choice-toggle .t-switch{
+    width:130px;height:76px;flex:0 0 auto;
+  }
+
+  @media(max-width:760px){
+    .premium-page .pr-about figure{max-width:520px;padding:0 0 28px 28px}
+    .premium-page .choice .toggle-row{padding:18px 20px 15px;gap:14px}
+    .premium-page .choice .choice-toggle .t-switch{width:100px;height:60px}
+  }
+
   </style>
 </head>
-<body>
+<body class="premium-page">
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
     <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- The shared Deep Green header. A new page does not add itself to
+       the nav. This homepage keeps the settled four-page navigation. -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="OPS DETOX home">
         <img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
       </a>
-      <!-- ONE NAV, EVERY PAGE. Settled 2 November, after the site had grown
-           four different navs across eleven pages (five, six, seven and
-           eight items) because each new page added itself.
-
-           THE RULE: the nav carries FINISHED PAGES ONLY.
-
-           Deliberately NOT in it:
-             - detox.html ("The DETOX") and diagnostic.html ("Audit") are
-               still on the 14 October build and are not client-ready.
-               Put them back when they are reworked.
-             - index.html#results ("Results") was an anchor, not a page,
-               and the logo already goes home.
-             - freebie.html, and the three legal pages, which belong in
-               the footer.
-
-           SIXTEEN BUTTONS STILL POINT AT THE TWO DROPPED PAGES (four to
-           detox, twelve to diagnostic). Taking them out of the nav does
-           not hide them -- see the backlog. -->
       <nav class="site-nav" id="nav" aria-label="Main navigation">
         <a href="work-with-us.html">Work With Us</a>
         <a href="keynote.html">Keynote</a>
@@ -606,373 +822,390 @@
   </header>
 
   <main id="main">
-    <!-- Type-led hero. No portrait: see the note in the style block above.
-         Headline copy updated by the client on 18 Nov. -->
-    <section class="hero hero--type">
-      <div class="ht-inner">
-        <!-- The D is wrapped BY HAND, like the headline's letters (§26).
-             js/site.js §3a wraps the wide O/D alternates itself, but it
-             splits on UPPERCASE /([OD])/ and this line is typed in sentence
-             case and uppercased by CSS — so the script only ever matched the
-             one literal capital O, and the D stayed narrow. site.js is shared
-             with the five live interior pages and must not be touched.
 
-             Client rule, 28 Oct: "Operational Detox" always carries a wide O
-             and a wide D. One letter each — never ss01 on the whole word,
-             which swaps every alternate and destroys the condensed face (§9). -->
-        <span class="eyebrow">Operational detox for scale-ups</span>
+    <!-- data-ground picks the field. See the Hero block in the style
+         sheet above for the four the guideline sanctions. -->
+    <section class="pr-hero" data-ground="deep" aria-labelledby="pr-hero-heading">
+      <div class="pr-hero-bg">
+        <img src="assets/img/premium-hero-session.jpg" width="2400" height="1600" alt="">
+      </div>
 
-        <h1 class="ht-head">Cleanse your business <span class="ht-br"></span>systems, win your time <span class="ht-br"></span>back.</h1>
+      <div class="pr-wrap pr-hero-inner">
+        <h1 class="pr-h pr-hero-h" id="pr-hero-heading">
+          <span>Cleanse your</span>
+          <span>business systems,</span>
+          <span>win your time back.</span>
+        </h1>
 
-        <div class="ht-foot">
-          <p class="ht-sub">We help scale-ups cleanse the systems clogged by <b class="ht-mark">meetings nobody needs</b>, <b class="ht-mark">reports nobody reads</b> and <b class="ht-mark">decisions nobody takes</b>, so time flows back into growing the company.</p>
-
-          <div class="ht-actions actions">
-            <a class="button" href="contact.html">Let’s talk</a>
-            <a class="button button--line" href="diagnostic.html">Book the free diagnostic</a>
+        <div class="pr-hero-foot">
+          <p class="pr-copy">We help scale-ups cleanse the systems clogged by meetings nobody needs, reports nobody reads and decisions nobody takes, so time flows back into growing the company.</p>
+          <div class="pr-actions">
+            <a class="button button--line" href="contact.html">Let’s talk</a>
+            <a class="button pr-btn-ghost" href="diagnostic.html">Book the free diagnostic</a>
           </div>
-
         </div>
       </div>
+
     </section>
 
-
-    <!-- The switcher pattern (V1.0 p.38) rebuilt in CSS as a moving strip,
-         with the ticker's words riding the bars. Approved by the client on
-         25 Oct and it REPLACED the original text ticker, which is gone from
-         this page.
-
-         The O and D are wrapped by hand for the same reason as the headline:
-         js/site.js splits on uppercase /([OD])/ and this copy is sentence
-         case, uppercased by CSS, so it would never match.
-
-         It replaced the original scrolling ticker on 25 Oct, so it now
-         carries that strip's label. -->
-    <div class="pt-strip" aria-label="OPS Detox principles">
-      <div class="pt-row">
-        <div class="pt-track">
-          <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNCOMPLICATE the decision</span>
-          <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Unclog the approval queue</span>
-          <span class="pt">Strip the NOISE</span>
-          <span class="pt">Drain the decision backlog</span>
-
-          <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNCOMPLICATE the decision</span>
-          <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Unclog the approval queue</span>
-          <span class="pt">Strip the NOISE</span>
-          <span class="pt">Drain the decision backlog</span>
-
-          <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNCOMPLICATE the decision</span>
-          <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Unclog the approval queue</span>
-          <span class="pt">Strip the NOISE</span>
-          <span class="pt">Drain the decision backlog</span>
-
-          <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNCOMPLICATE the decision</span>
-          <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Unclog the approval queue</span>
-          <span class="pt">Strip the NOISE</span>
-          <span class="pt">Drain the decision backlog</span>
-        </div>
-      </div>
-    </div>
-
-    <section class="trust trust--featured" aria-labelledby="trust-heading">
-      <div class="trust-inner">
-        <h2 id="trust-heading">Featured in</h2>
-        <div class="featured-logos">
-          <div class="featured-logo featured-logo--brand">
-            <img src="assets/logo/featured/brand-on-tour.webp" width="1751" height="689" alt="Brand on Tour">
-          </div>
-          <div class="featured-logo featured-logo--tedx">
-            <img src="assets/logo/featured/tedx.png" width="258" height="72" alt="TEDx">
-          </div>
-          <div class="featured-logo featured-logo--doac">
-            <img src="assets/logo/featured/doac.png" width="1666" height="454" alt="DOAC">
+    <!-- Kept outside the viewport-height hero so the trust row always
+         enters the page as a complete band instead of being cut by the
+         first fold on shorter desktop screens. -->
+    <section class="pr-featured-band" aria-labelledby="pr-featured-heading">
+      <div class="pr-wrap pr-featured">
+        <h2 id="pr-featured-heading">Featured in:</h2>
+        <div class="pr-logo-slider" role="region" aria-label="Featured appearances, rotating automatically">
+          <div class="pr-logo-viewport" tabindex="0" aria-live="off">
+            <!-- One file per unique brand. Folder alternates excluded as
+                 duplicates: two extra Funky People artworks, the Sacha Bol
+                 sage variant and Nectora's symbol-only variant. -->
+            <ul id="featured-logo-track">
+              <li class="pr-logo-tedx"><img src="assets/logo/featured/tedx.png" width="258" height="72" alt="TEDx"></li>
+              <li class="pr-logo-brand"><img src="assets/logo/featured/brand-on-tour.webp" width="1751" height="689" alt="Brand on Tour"></li>
+              <li class="pr-logo-expat"><img src="assets/logo/featured/this-expat-life.webp" width="505" height="487" alt="This Expat Life podcast"></li>
+              <li class="pr-logo-funky"><img src="assets/logo/featured/funky-people.webp" width="612" height="515" alt="Funky People"></li>
+              <li class="pr-logo-rauw"><img src="assets/logo/featured/rauw-gesproken.webp" width="510" height="364" alt="Rauw Gesproken Podcast"></li>
+              <li class="pr-logo-sacha"><img src="assets/logo/featured/sacha-bol.webp" width="484" height="494" alt="Sacha Bol, Founder of Radical Reprogramming"></li>
+              <li class="pr-logo-enh"><img src="assets/logo/featured/everybody-networks-here.webp" width="467" height="421" alt="Everybody Networks Here"></li>
+              <li class="pr-logo-nectora"><img src="assets/logo/featured/nectora.webp" width="697" height="222" alt="Nectora"></li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="problem container section-grid section-rule reveal">
-      <div class="problem-copy">
-        <h2 class="problem-heading">
-          <span>Fewer meetings,</span>
-          <span>fewer reports,</span>
-          <span>faster decisions</span>
+    <!-- The client's copy, verbatim from index.html, typos included. -->
+    <section class="pr-problem" aria-labelledby="pr-problem-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h pr-problem-h" id="pr-problem-heading">
+          <span>Fewer meetings</span>
+          <span>Fewer reports</span>
+          <span>More decisions</span>
         </h2>
-        <div class="body-copy">
-          <p>Most scale-ups don't have a strategy problem. They have a company full of work that piled up as they grew, meetings that outlived their purpose, reports nobody reads, decisions that wait on founder’s desk, all kept alive by one sentence: "that's how we've always done it."</p>
-          <p>OPS Detox clears out what growth left behind. Together with your team, we strip away the meetings, reports and approval layers that no longer serve the business, and rebuild a structure your people can run on their own, long after we have left.</p>
-        </div>
-      </div>
-      <figure class="artwork problem-portrait">
-        <img src="assets/img/oscar-problem.jpg" width="1201" height="1800"
-             alt="Oscar de Grauw" loading="lazy" decoding="async">
-      </figure>
-    </section>
 
-    <section class="cleanse-section section-rule reveal" aria-labelledby="cleanse-heading">
-      <div class="container">
-        <div class="cleanse-head">
-          <span class="eyebrow">The cleanse</span>
-          <h2 class="cleanse-heading" id="cleanse-heading">How the cleanse works:</h2>
-        </div>
-        <div class="cleanse-grid cleanse-grid--offers">
-          <article class="cleanse-card cleanse-card--lime">
-            <p class="cleanse-meta"><span>Free</span><span>8 minute</span></p>
-            <h3>OPS Detox Diagnostic™</h3>
-            <p>Before anything is stripped, we measure where the time and the decisions actually go. You, your key people and your team answer the same questions, where the answers differ, the clutter sits.</p>
-            <a class="button button--line cleanse-cta" href="diagnostic.html">Book the free diagnostic</a>
-          </article>
-          <article class="cleanse-card cleanse-card--featured">
-            <span class="offer-badge">Most booked</span>
-            <p class="cleanse-meta"><span>Meetings</span><span>Reporting</span><span>Decisions</span></p>
-            <h3>Operational flow</h3>
-            <!-- Client, 28 Oct: name the bottleneck each track fixes. Placed
-                 under the heading rather than as an eyebrow above it, because
-                 the card already opens with the .cleanse-meta chips and a
-                 third stacked label would mean three lines of small type
-                 before the card says anything. Under the heading it reads as
-                 what the heading means, and the pair — founder vs team — is
-                 the actual choice between the two tracks. -->
-            <p class="cleanse-bottleneck">Founder Bottleneck</p>
-            <p>For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
-            <a class="button cleanse-cta" href="detox.html">Learn more</a>
-          </article>
-          <article class="cleanse-card cleanse-card--quiet">
-            <p class="cleanse-meta"><span>Communication</span><span>Ownership</span><span>Psychological Safety</span></p>
-            <h3>Organisational flow</h3>
-            <p class="cleanse-bottleneck">Team Bottleneck</p>
-            <!-- "companies" -> "teams" at the client's instruction, 28 Oct.
-                 This is the locked copy being changed by its owner, not an
-                 edit; the rest of the sentence is untouched. -->
-            <p>For teams where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
-            <a class="button cleanse-cta" href="detox.html#modules">Learn more</a>
-          </article>
+        <div class="pr-problem-body reveal">
+          <!-- The break-out composite. The box is a blurred room, the
+               cutout stands in it and grows out of the top.
+
+               THE CUTOUT: assets/img/oscar-portrait-cutout.png, the
+               navy-suit portrait the mockup uses. It is GENERATED, not
+               supplied: oscar-portrait.jpg run through Vision's
+               VNGenerateForegroundInstanceMaskRequest, the same subject
+               lift macOS Preview uses, then scaled to 751x1200.
+
+               Two earlier routes failed and are not worth retrying. A
+               flood-fill key of the studio backdrop walked straight
+               through the subject's own gradients and removed him as
+               well. The crop supplied on 19 Nov carries an alpha channel
+               but 0% of its pixels are transparent: it is a flat
+               screenshot, with headline pixels baked into one corner.
+
+               Still worth a human eye on the edge before this ships. -->
+          <figure class="pr-problem-fig">
+            <!-- The room behind him. This is the hero photograph again,
+                 blurred past recognition: it is a real meeting room, it
+                 carries no second Oscar to smudge (speaking.jpg and both
+                 work-*.jpg do), and reusing it ties the section back to
+                 the top of the page. -->
+            <div class="pr-fig-box">
+              <img src="assets/img/premium-hero-session.jpg" width="2400" height="1600" alt="" loading="lazy">
+            </div>
+            <img class="pr-cutout" src="assets/img/oscar-portrait-cutout.png" width="751" height="1200"
+                 alt="Oscar de Grauw" loading="lazy">
+          </figure>
+
+          <div class="pr-problem-copy">
+            <p class="pr-copy">Most scale-ups don't have a strategy problem. They have a company full of work that piled up as they grew, meetings that outlived their purpose, reports nobody reads, decisions that wait on founder’s desk, all kept alive by one sentence: "that's how we've always done it."</p>
+            <p class="pr-copy">OPS Detox clears out what growth left behind. Together with your team, we strip away the meetings, reports and approval layers that no longer serve the business, and rebuild a structure your people can run on their own, long after we have left.</p>
+
+            <div class="pr-sign">
+              <a class="pr-text-link" href="#programs">Three ways to work together</a>
+              <div class="pr-sign-by">
+                <p><b>Oscar de Grauw</b>Founder | Speaker | Visionary</p>
+                <img src="assets/img/oscar-signature.png" width="69" height="159"
+                     alt="Oscar de Grauw's signature" loading="lazy">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Client's revised section order, 24 Oct: the proof lands immediately
-         after the offer, before the IP. The four quotes are one continuously
-         sliding row — see section 4 of the style block for why the set is
-         repeated four times. -->
-    <section class="testimonials section-rule reveal" aria-labelledby="testimonials-heading">
-      <div class="container">
-        <div class="testimonials-head">
-          <span class="eyebrow">Testimonials</span>
-          <h2 id="testimonials-heading">What leaders say</h2>
+    <section class="pr-programs" id="programs" aria-labelledby="pr-programs-heading">
+      <div class="pr-wrap">
+        <div class="pr-programs-head">
+          <span class="pr-kicker">Programs</span>
+          <h2 class="pr-h pr-programs-h" id="pr-programs-heading">
+            <span>Three ways to</span>
+            <span>work together</span>
+          </h2>
         </div>
-      </div>
-      <div class="testimonial-slider">
-        <div class="testimonial-grid testimonial-track" role="list">
-          <article role="listitem">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
-            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
-          </article>
-          <article role="listitem">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
-            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
-          </article>
-          <article role="listitem">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
-            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
-          </article>
-          <article role="listitem">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
-            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+
+        <div class="pr-cards">
+          <article class="pr-card pr-card--outline reveal">
+            <div class="pr-card-body">
+              <p class="pr-card-meta">Free · 8 minutes</p>
+              <p class="pr-copy">Before anything is stripped, we measure where the time and the decisions actually go. You, your key people and your team answer the same questions, where the answers differ, the clutter sits.</p>
+              <a class="pr-card-link" href="diagnostic.html">Book the free diagnostic</a>
+            </div>
+            <h3 class="pr-card-title">OPS Detox<br>Diagnostic™</h3>
           </article>
 
-
-          <!-- Copy 2 of 4. See the style block: the track has to be wider
-               than the viewport plus one set, or the row runs dry before it
-               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
-            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
-            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
-            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
-            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          <article class="pr-card pr-card--dark reveal">
+            <div class="pr-card-body">
+              <p class="pr-card-meta">Speak Up Gym · Out Loud</p>
+              <p class="pr-copy">A few intensive hours with your leadership team. In the Speak Up Gym and over the Out Loud card game, people practise saying the uncomfortable thing out loud and the clutter starts to show.</p>
+              <a class="button pr-card-btn" href="work-with-us.html">Learn more</a>
+            </div>
+            <figure class="pr-card-figure">
+              <h3>Workshops</h3>
+              <!-- Background removed, desk kept. Vision's subject lift
+                   returns the two people and nothing else, because it
+                   segments subjects rather than furniture, so the matte
+                   is that mask UNION a polygon traced along the bottle
+                   cap, the laptop lid, the mug rim and the desk's back
+                   edge. Everything standing on the desk survives; only
+                   the whiteboard, wall and plant are cut away. -->
+              <img src="assets/img/work-whiteboard-cutout.png" width="1100" height="796"
+                   alt="Oscar working through an operational flow with a client" loading="lazy">
+            </figure>
           </article>
 
-
-          <!-- Copy 3 of 4. See the style block: the track has to be wider
-               than the viewport plus one set, or the row runs dry before it
-               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
-            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
-            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
-            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
-            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
-          </article>
-
-
-          <!-- Copy 4 of 4. See the style block: the track has to be wider
-               than the viewport plus one set, or the row runs dry before it
-               wraps on a wide screen. Add or remove a quote in ALL FOUR. -->
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
-            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
-            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
-            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
-          </article>
-          <article aria-hidden="true">
-            <span class="testimonial-label">Placeholder testimonial</span>
-            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
-            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          <!-- KEYNOTES is the approved third card in the 22 Nov direction.
+               The paragraph in the supplied card repeated card 2's copy,
+               so Oscar's existing keynote paragraph is used instead. No
+               meta chips are added because no approved short summary
+               exists and inventing one is not ours to do. -->
+          <article class="pr-card pr-card--lime reveal">
+            <div class="pr-card-bg">
+              <img src="assets/img/speaking-keynote.jpg" width="1600" height="1067" alt="" loading="lazy">
+            </div>
+            <div class="pr-card-head">
+              <h3>Keynotes</h3>
+            </div>
+            <div class="pr-card-body">
+              <p class="pr-copy">Oscar’s keynotes start with a story few audiences forget. Twenty-three years ago he ran toward a train and survived. What followed, from seventeen years at Sony to a sunrise on Kilimanjaro, became the question he leaves every room with: am I truly living my life, or simply surviving the one I inherited?</p>
+              <a class="pr-card-link" href="keynote.html">Learn more</a>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- The IP, given a section of its own. In the client's revised order it
-         follows the offer and the proof, and still sits before the outcomes,
-         so the numbers arrive as the result of something named. Only the
-         three frameworks Oscar flagged as website-relevant appear as cards;
-         the workshop material is one closing line. -->
-    <section class="frameworks section-rule reveal" aria-labelledby="frameworks-heading">
-      <div class="container">
-        <div class="frameworks-head">
-          <span class="eyebrow">Proprietary frameworks</span>
-          <h2 id="frameworks-heading">The IP the detox runs on</h2>
-          <p>The cleanse is not improvisation. Three frameworks, developed over 17 years inside complex international organizations, decide what gets seen, what gets stripped and who decides what.</p>
-        </div>
+    <!-- PLACEHOLDERS. The four approved LinkedIn recommendations and their
+         attribution are still outstanding, so these are marked on the page
+         rather than dressed as real endorsements. -->
+    <section class="pr-voices" aria-labelledby="pr-voices-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h pr-voices-h" id="pr-voices-heading">
+          <span>What leaders</span>
+          <span>say</span>
+        </h2>
 
-        <div class="frameworks-grid">
-          <article>
-            <span class="fw-mark" aria-hidden="true">01</span>
-            <h3>See – Strip – Choose™</h3>
-            <p class="fw-line">The core method. Three moves, in order.</p>
+        <div class="testimonial-slider">
+          <div class="testimonial-grid testimonial-track" role="list">
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article role="listitem">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+          <!-- Copy 2 of 4. The track must stay wider than the viewport
+               plus one set or the row runs dry at the right edge before it
+               wraps; the keyframe in css/site.css §14a slides by exactly
+               one set of four. Edit a quote in ALL FOUR copies. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+          <!-- Copy 3 of 4. The track must stay wider than the viewport
+               plus one set or the row runs dry at the right edge before it
+               wraps; the keyframe in css/site.css §14a slides by exactly
+               one set of four. Edit a quote in ALL FOUR copies. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+
+          <!-- Copy 4 of 4. The track must stay wider than the viewport
+               plus one set or the row runs dry at the right edge before it
+               wraps; the keyframe in css/site.css §14a slides by exactly
+               one set of four. Edit a quote in ALL FOUR copies. -->
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“We finally saw which meetings, reports and approval steps were slowing the company down, and what to remove first.”</blockquote>
+            <footer><strong>Client name</strong><span>Founder · B2B scale-up</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“The team left with clearer ownership, faster decisions and a system they could continue running without outside support.”</blockquote>
+            <footer><strong>Client name</strong><span>COO · SaaS company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Oscar made the operational clutter visible. The conversations became more honest and the next actions became obvious.”</blockquote>
+            <footer><strong>Client name</strong><span>Chief of Staff · Growth company</span></footer>
+          </article>
+          <article aria-hidden="true">
+            <span class="testimonial-label">Placeholder testimonial</span>
+            <blockquote>“Instead of adding another framework, OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+            <footer><strong>Client name</strong><span>VP Operations · International team</span></footer>
+          </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The three frameworks that belong on the site. Async Mastery™, Speak
+         Up Gym™ and the Seven Contextual Gaps™ stay off the homepage. The
+         descriptions are the drafted placeholders from index.html, awaiting
+         Oscar's own wording, and the links point at Work With Us until the
+         framework pages exist. -->
+    <section class="pr-ip" aria-labelledby="pr-ip-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h pr-ip-h" id="pr-ip-heading">
+          <span>The IP the detox</span>
+          <span>runs on</span>
+        </h2>
+      </div>
+
+      <div class="pr-bleed pr-ip-rows">
+        <div class="pr-ip-row reveal">
+          <span class="pr-ip-num">1</span>
+          <h3>See – Strip – Choose™</h3>
+          <div>
+            <h4>The core method.</h4>
             <p>Make the clutter visible before touching it, remove what no longer earns its place, then decide deliberately what the company keeps. Every engagement runs through these three moves.</p>
-          </article>
-          <article>
-            <span class="fw-mark" aria-hidden="true">02</span>
-            <h3>Truth Latency™</h3>
-            <p class="fw-line">The delay between knowing and saying.</p>
-            <!-- "the truth" added to the description at the client's mark,
-                 28 Oct. The one-liner above it is unchanged. -->
+          </div>
+          <a class="pr-ip-link" href="work-with-us.html">Learn more</a>
+        </div>
+
+        <div class="pr-ip-row reveal">
+          <span class="pr-ip-num">2</span>
+          <h3>Truth Latency™</h3>
+          <div>
+            <h4>The delay between knowing and saying.</h4>
             <p>In most companies someone knew the truth weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
-          </article>
-          <article>
-            <span class="fw-mark" aria-hidden="true">03</span>
-            <h3>DRMT™</h3>
-            <p class="fw-line">The decision engine.</p>
+          </div>
+          <a class="pr-ip-link" href="work-with-us.html">Learn more</a>
+        </div>
+
+        <div class="pr-ip-row reveal">
+          <span class="pr-ip-num">3</span>
+          <h3>DRMT™</h3>
+          <div>
+            <h4>The decision engine.</h4>
             <p>Who decides, who is consulted, and what happens when nobody does. DRMT closes the ownership vacuum that leaves decisions queued on the founder's desk.</p>
-          </article>
-        </div>
-
-        <!-- Placeholder copy. Remove this notice with the real descriptions. -->
-        <p class="fw-draft"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording, please correct them. DRMT™ is shown as “the decision engine” because that is how about.html describes it; send the full name if you want it spelled out. Confirm also whether <b>See – Strip – Choose™</b> replaces <b>The CORE method™</b>, which is still named in the current copy but absent from your updated list.</p>
-
-      </div>
-    </section>
-
-    <section id="results" class="outcomes">
-      <div class="container reveal">
-        <h2>OPS DETOX OUTCOMES:</h2>
-        <p class="outcome-intro">Fewer meetings, fewer reports, faster decisions</p>
-        <div class="stat-grid">
-          <article><strong>20-35%</strong><p>less non-essential meeting time. Up to €8K reclaimed per employee</p></article>
-          <article><strong>25-40%</strong><p>faster decision cycles<br>Less escalation, faster execution</p></article>
-          <article><strong>30-60%</strong><p>less reporting overhead<br>€50K+ reclaimed capacity per team/year</p></article>
-          <article><strong>10-30%</strong><p>tooling &amp; SaaS cost optimization. €150K-300K on a €1M spend</p></article>
+          </div>
+          <a class="pr-ip-link" href="work-with-us.html">Learn more</a>
         </div>
       </div>
-    </section>
 
-    <section class="about container section-grid section-rule reveal" aria-labelledby="about-heading">
-      <div class="about-copy">
-        <span class="eyebrow">About Oscar de Grauw</span>
-        <h2 id="about-heading">Why work with me</h2>
-        <p>I spent 17 years inside complex, international organizations, working across borders, departments and leadership levels. I've seen strategies succeed and fail because day-to-day operations couldn't keep up.</p>
-        <p>I don't approach your organization as an outsider with a framework. I work from the inside out, focusing on how work really flows.</p>
-        <!-- Was a six-item list of every framework. The three that matter now
-             have their own section above, so this paragraph stops competing
-             with it and simply points at it. -->
-        <p>My work is built on frameworks I developed myself: See – Strip – Choose™, Truth Latency™ and DRMT™, not someone else's playbook. You get a repeatable, structured approach that scales.</p>
-        <a class="button about-cta" href="about.html">More about Oscar</a>
+      <div class="pr-wrap">
+        <p class="pr-ip-note"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording. DRMT™ is shown as "the decision engine" because that is the only description that exists. The three framework pages do not exist yet, so Learn more points at Work With Us.</p>
       </div>
-      <figure>
-        <img src="assets/img/oscar-about.jpg" width="1201" height="1800"
-             alt="Oscar de Grauw holding a laptop" loading="lazy" decoding="async">
-        <!-- The values moved in here from the full-bleed lime band that used
-             to sit between About and Keynotes (client, 28 Oct: it broke the
-             flow of the page). They belong to About — "How I work" is About's
-             tail, which is why §24 kept the band attached to this section when
-             the running order changed — so putting them under the photo keeps
-             the content and removes the interruption.
-
-             As a figcaption they are semantically part of the figure, and the
-             panel reads as a caption to the portrait rather than as a section
-             of its own. -->
-        <figcaption class="about-values">
-          <h3 id="values-heading">How I work</h3>
-          <ul aria-label="How Oscar works">
-            <li>Uncomfortable honesty</li>
-            <li>Clarity</li>
-            <li>Ownership</li>
-            <li>Substance</li>
-            <li>Courage</li>
-            <li>Depth</li>
-          </ul>
-        </figcaption>
-      </figure>
     </section>
 
-    <!-- The .values-strip band that used to sit here has moved into the About
-         figure above (client, 28 Oct). Its CSS is still in site.css, unused by
-         this page but still reachable if the band is ever wanted back. -->
+    <section class="pr-outcomes" aria-labelledby="pr-outcomes-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h pr-outcomes-h" id="pr-outcomes-heading">
+          <span>OPS Detox</span>
+          <span>outcomes:</span>
+        </h2>
 
+        <div class="pr-stats">
+          <article class="reveal"><strong>20-35%</strong><p>less non-essential meeting time. Up to €8K reclaimed per employee</p></article>
+          <article class="reveal"><strong>25-40%</strong><p>faster decision cycles. Less escalation, faster execution</p></article>
+          <article class="reveal"><strong>30-60%</strong><p>less reporting overhead. €50K+ reclaimed capacity per team/year</p></article>
+          <article class="reveal"><strong>10-30%</strong><p>tooling &amp; SaaS cost optimization. €150K-300K on a €1M spend</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pr-about" aria-labelledby="pr-about-heading">
+      <div class="pr-wrap pr-about-grid reveal">
+        <figure>
+          <div class="pr-about-arch">
+            <img src="assets/img/oscar-cutout.png" width="504" height="860" alt="Oscar de Grauw holding a laptop" loading="lazy">
+          </div>
+        </figure>
+
+        <div>
+          <div class="pr-about-head">
+            <span class="pr-kicker">About Oscar de Grauw</span>
+            <h2 class="pr-h pr-about-h" id="pr-about-heading">
+              <span>Why work</span>
+              <span>with me</span>
+            </h2>
+          </div>
+
+          <div class="pr-about-copy">
+            <p class="pr-copy">I spent 17 years inside complex, international organizations, working across borders, departments and leadership levels. I've seen strategies succeed and fail because day-to-day operations couldn't keep up.</p>
+            <p class="pr-copy">I don't approach your organization as an outsider with a framework. I work from the inside out, focusing on how work really flows.</p>
+            <p class="pr-copy">My work is built on frameworks I developed myself: See – Strip – Choose™, Truth Latency™ and DRMT™, not someone else's playbook. You get a repeatable, structured approach that scales.</p>
+            <p class="pr-about-cta"><a class="button" href="about.html">More about Oscar</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The shared closing switch. aria-pressed="true" is the resting state
+         and js/site.js snaps it back to it: Clarity rests lit. Only the
+         typography around it is restyled. -->
     <section class="choice">
       <div class="container">
-        <span class="eyebrow">The choice</span>
-        <h2>What will you choose?</h2>
+        <h2 class="pr-choice-h">
+          <span>What will you</span>
+          <span>choose?</span>
+        </h2>
         <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
 
         <div class="toggle-rows">
@@ -983,87 +1216,10 @@
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
-
       </div>
     </section>
 
-
-    <!-- The switcher-pattern divider, rebuilt in CSS to match the strip under
-         the hero (§26). Was a single stretched copy of section-break.png,
-         which could not be scaled down without tiling and the artwork is not
-         seamless horizontally. Bars only, no words. Two rows running opposite
-         ways. Decorative, so it is hidden from assistive tech. -->
-    <div class="pb" aria-hidden="true">
-      <div class="pb-row">
-        <div class="pb-track">
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-        </div>
-      </div>
-      <div class="pb-row pb-row--b">
-        <div class="pb-track">
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-          <span class="pb-bar"></span>
-        </div>
-      </div>
-    </div>
-
   </main>
-
-  <!-- The seven-module popup was removed on 7 Nov at the user's request.
-       On this page it had been DEAD MARKUP since the module section moved
-       out (§18/§25): there are no .module buttons here, so it could never
-       open. js/site.js section 2 went with it. -->
 
   <footer id="contact-footer">
     <div class="container">
@@ -1110,6 +1266,90 @@
     </div>
   </footer>
 
+  <!-- The moving switcher lines now finish the page below the footer,
+       instead of interrupting the transition into the footer. Four
+       identical six-bar sets keep both marquee seams continuous. -->
+  <div class="pb" aria-hidden="true">
+    <div class="pb-row">
+      <div class="pb-track">
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      </div>
+    </div>
+    <div class="pb-row pb-row--b">
+      <div class="pb-track">
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      </div>
+    </div>
+  </div>
+
   <script src="js/site.js"></script>
+  <script>
+  (() => {
+    const viewport = document.querySelector('.pr-logo-viewport');
+    const track = document.getElementById('featured-logo-track');
+    if (!viewport || !track) return;
+
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const originals = Array.from(track.children);
+    const originalCount = originals.length;
+    let index = 0;
+    let timer = 0;
+
+    originals.forEach(item => {
+      const clone = item.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.querySelector('img')?.setAttribute('alt', '');
+      track.append(clone);
+    });
+
+    const distance = () => {
+      const items = track.children;
+      return items.length > 1 ? items[1].offsetLeft - items[0].offsetLeft : 0;
+    };
+    const place = () => {
+      track.style.transform = `translate3d(${-index * distance()}px,0,0)`;
+    };
+    const reset = () => {
+      track.classList.add('is-jumping');
+      index = 0;
+      place();
+      requestAnimationFrame(() => requestAnimationFrame(() => track.classList.remove('is-jumping')));
+    };
+    const advance = () => {
+      if (document.hidden || reducedMotion.matches) return;
+      index += 1;
+      place();
+    };
+    const stop = () => {
+      clearInterval(timer);
+      timer = 0;
+    };
+    const start = () => {
+      stop();
+      if (!reducedMotion.matches) timer = setInterval(advance, 2000);
+    };
+
+    track.addEventListener('transitionend', event => {
+      if (event.propertyName === 'transform' && index >= originalCount) reset();
+    });
+    viewport.addEventListener('pointerenter', stop);
+    viewport.addEventListener('pointerleave', start);
+    viewport.addEventListener('focusin', stop);
+    viewport.addEventListener('focusout', start);
+    addEventListener('resize', reset);
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+    reducedMotion.addEventListener('change', () => {
+      reset();
+      start();
+    });
+    start();
+  })();
+  </script>
 </body>
 </html>
