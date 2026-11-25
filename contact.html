@@ -8,216 +8,256 @@
   <meta name="description" content="Book a conversation with Oscar de Grauw, or send a message about your operation.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/premium.css">
+
   <!-- ==========================================================
-       Brought onto the current design system, 1 Nov 2026 (§33).
-       This page was still the 14 Oct interior build: Soft Ivory
-       header, a small .hero--narrow, no switcher pattern, and a
-       column of inline styles doing the layout.
+       ON THE SHARED PREMIUM SYSTEM, 25 Nov 2026.
 
-       Same scope rule as index.html, about.html and
-       work-with-us.html: every rule this page needs lives in the
-       <style> block below, scoped to this document. css/site.css
-       and js/site.js are NOT touched — they are shared by all
-       seven pages.
+       Until now this page only LOOKED like the premium direction.
+       It did not load css/premium.css, and its own <style> block
+       re-derived the system by hand on top of the dead 14 Oct
+       ivory layer: a 1600px/96px channel instead of .pr-wrap, a
+       .ct-title instead of .pr-h, .eyebrow and .body-copy instead
+       of .pr-kicker and .pr-copy, and forty lines of bespoke
+       .contact-motion CSS plus its own inline script instead of
+       .hm/js/premium-motion.js. Roughly 130 of those rules existed
+       only to be overridden one screen later.
 
-       THE COPY IS UNCHANGED. Every string on this page was
-       already here; the eyebrow, the headline, both column
-       subheads, the form labels, the booking note and the closing
-       section are verbatim. Nothing was written to fill the new
-       layout — the hero's h1 and eyebrow simply swapped rank.
+       All of it now comes from the system:
+         css/site.css -> css/premium.css -> this block
+       and this block carries PAGE COMPOSITION ONLY — the ink hero
+       field, the two-route grid, the lime contact band. css/site.css,
+       css/premium.css and js/site.js are untouched; they are shared.
+
+       THE COPY IS STILL UNCHANGED. Every string is verbatim,
+       including "The choice", which the homepage drops and this
+       page keeps — it is now a .pr-kicker rather than an .eyebrow.
        ========================================================== -->
+
   <!-- Decide before first paint: reduced-motion visitors and anyone who has
-       already seen the preloader this session go straight to the page. -->
-  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+       already seen the preloader this session go straight to the page.
+       .premium-motion is the shared opt-in js/premium-motion.js reads. -->
+  <script>try{var reduceContactMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;if(sessionStorage.getItem('ops-preloaded')||reduceContactMotion){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}if(!reduceContactMotion){document.documentElement.className+=' premium-motion';}}catch(e){}</script>
 
   <style>
-  /* ---------- 1. Page shell ----------
-     The hairline rules between sections are off site-wide now (§24). */
-  .section-rule{border-bottom:0}
+  /* ==============================================================
+     CONTACT — PAGE COMPOSITION
 
-  /* The wider desktop channel index.html took on 28 Oct (§22.2) and
-     work-with-us.html copied. Gated to desktop; the narrow layout is the
-     approved one. */
-  @media(min-width:1001px){ .container{width:min(1320px,calc(100% - 80px))} }
+     Everything shared now arrives from css/premium.css:
+       .pr-wrap     the 1600px / 96px editorial channel and its
+                    56px and 36px gutters
+       .pr-h        the display headline, sized per instance with
+                    --fs and --lh, with block-level offset spans
+                    that flatten themselves below 760px
+       .pr-kicker   the small uppercase label
+       .pr-copy     the justified body setting
+       .hm + .hm-*  the reveal states, driven by js/premium-motion.js
+       --gap        the shared section rhythm
 
-  /* ---------- 3. The hero ----------
-     Was .hero--narrow: a 20ch copy block in the top-left corner of an
-     otherwise empty ivory screen, with the h1 at site.css's default scale.
-     It read as a page that had not been designed.
+     Nothing below re-states any of that. What is left is the three
+     things only this page has: a typographic ink hero, the two-route
+     grid, and the lime contact band.
+     ============================================================== */
 
-     Centred, not two-column. work-with-us.html's hero splits because it has
-     a photograph to put in the right half; this page has none, and there is
-     no contact photography in the project. A half-empty grid is what the old
-     layout already was. */
-  .ct-hero{
-    background:var(--paper);
-    padding:clamp(48px,6vw,72px) 0 clamp(56px,6vw,84px);
-    text-align:center;
+  /* ---------- 1. The hero ----------
+     Contact stays typographic on purpose. The other premium pages open
+     on a duotone photograph; there is no contact photography in the
+     project, so the Deep Green field and the offset title carry the
+     first fold on their own. */
+  .premium-contact .ct-hero{
+    min-height:calc(100svh - var(--header-h));
+    padding:clamp(76px,9vw,150px) 0;
+    display:flex;align-items:center;
+    background:var(--ink);color:var(--paper);
+  }
+  /* .pr-kicker and .pr-h both hard-set Deep Green, which is right on
+     the cream body and wrong inside an ink band. Same fix the homepage
+     hero makes: let the type take the field's colour.
+
+     SCOPED TO THE DARK GROUNDS ONLY. A blanket lime .pr-kicker also
+     caught "Send a message" on the ivory card, where lime on cream is
+     barely legible — and lime type is sanctioned on Deep Green, not on
+     Soft Ivory (V1.0 p.21). */
+  .premium-contact .ct-hero .pr-kicker,
+  .premium-contact .ct-card--dark .pr-kicker{color:var(--lime)}
+  .premium-contact .ct-title{
+    --fs:clamp(100px,15vw,270px);--lh:.7;
+    margin:54px 0 clamp(42px,6vw,86px);
+    letter-spacing:-.02em;color:inherit;
+  }
+  .premium-contact .ct-title span:last-child{margin-left:26%}
+  /* Pushed to the right edge, under the indented second line. */
+  .premium-contact .ct-hero-copy{
+    margin-left:auto;max-width:48ch;
+    font-size:clamp(17px,1.3vw,21px);color:rgba(254,253,242,.82);
   }
 
-  .ct-dots{position:relative;overflow:hidden}
-  /* The dot field was removed on 7 Nov. Designer: it is not in the
-     guideline — V1.0 names only the logo pattern (merch, p.36) and the
-     switcher pattern (p.38). These sections are plain Soft Ivory now. */
-  .ct-dots>*{position:relative;z-index:1}
+  /* ---------- 2. The two routes in ----------
+     One bordered frame split down the middle, not two floating cards:
+     the hairline grid the system uses everywhere else. The right half
+     inverts to Deep Green so "send a message" and "book a call" read as
+     two ways in rather than one long column.
 
-  /* The page title, on work-with-us.html's .ws-title scale so the two
-     interior pages open at the same size.
-
-     "Let's talk" was the h1 already and still is — it has simply been given
-     the page-title treatment, and "Contact" moved up into the eyebrow slot
-     above it. Both strings were on the page before; neither is new. */
-  .ct-hero .eyebrow{display:block;font-size:19px;letter-spacing:.06em}
-  .ct-title{
-    margin:14px auto clamp(22px,2.6vw,30px);
-    max-width:none;
-    font-size:clamp(44px,7.4vw,112px);line-height:.9;
-    letter-spacing:.02em;color:var(--ink);
-  }
-  /* Wide O and D are wrapped by hand in the markup, not set with ss01 —
-     see §9 and the note on the markup below. */
-
-  .ct-hero .body-copy{
-    max-width:58ch;margin:0 auto;
-    font-size:19px;line-height:1.5;
-  }
-
-  /* ---------- 5. The two routes in ----------
-     Was `.section-grid--halves` with two bare columns: an eyebrow, a
-     .section-subhead and then either the form or a grey box doing its
-     layout with four inline styles.
-
-     Now two round-rect cards on the ivory ground, which is the device the
-     homepage already uses for a pair of equal choices (§30 made the same
-     call on the offer tracks). The card gives each route a visible edge and
-     an ivory gutter, so "send a message" and "book a call" read as two ways
-     in rather than as one column of form fields with something adrift
-     beside it.
-
-     There is deliberately NO section title. Each card already opens with
-     its own eyebrow and subhead — both existing copy — and inventing a
-     title above them would have meant writing copy the client has not
-     seen. */
-  .ct-routes{
-    background:var(--paper);
-    padding:var(--section-y) 0;
-  }
-  .ct-grid{
+     There is deliberately NO section title. Each half opens with its own
+     kicker and headline — both existing copy — and inventing a title
+     above them would mean writing copy the client has not seen. */
+  .premium-contact .ct-routes{padding-block:var(--gap)}
+  .premium-contact .ct-grid{
     display:grid;grid-template-columns:1fr 1fr;
-    gap:clamp(24px,2.6vw,36px);
-    align-items:start;
+    align-items:stretch;border:1px solid var(--ink);
   }
-
-  /* The card. --panel white on the ivory ground, the brand's 36px radius
-     and site.css's own --shadow, so it is the same object as the
-     testimonial and cleanse cards rather than a new one. */
-  .ct-card{
-    background:var(--panel);
-    border-radius:var(--r-card);
-    box-shadow:var(--shadow);
-    padding:clamp(28px,3vw,44px);
+  .premium-contact .ct-card{
     display:flex;flex-direction:column;
-    /* Equal height, so the two cards' top edges and bottom edges line up
-       whichever of them is taller. align-items:start on the grid would let
-       them size independently and the row would read as two mismatched
-       panels. */
-    height:100%;
+    padding:clamp(36px,4.5vw,72px);background:var(--paper);
   }
-  .ct-grid>*{height:100%}
-
-  .ct-card .eyebrow{display:block}
-  /* One step below §27's clamp(42px,4.7vw,70px) section scale, on purpose
-     and for the reason §30 records on work-with-us.html's section 3: that
-     scale is for titles owning the full container width, and these two sit
-     in ~600px columns. At 70px "Start here" would be larger than the page
-     title's own optical weight in a half-width card. */
-  .ct-card h2{
-    margin:10px 0 24px;max-width:none;
-    font-size:clamp(30px,3vw,44px);line-height:1.04;
-    letter-spacing:.02em;color:var(--ink);
+  .premium-contact .ct-card--dark{
+    background:var(--ink);color:var(--paper);
+    border-left:1px solid var(--ink);
   }
+  .premium-contact .ct-card-h{
+    --fs:clamp(48px,5.5vw,92px);--lh:.84;
+    margin:clamp(18px,2vw,30px) 0 clamp(26px,3vw,44px);
+  }
+  .premium-contact .ct-card--dark .ct-embed-label{color:var(--lime)}
+  .premium-contact .ct-card--dark .ct-card-h{color:var(--paper)}
+  .premium-contact .ct-card--dark .pr-copy{color:rgba(254,253,242,.78)}
 
-  /* The form card IS the .ct-card now, so site.css's .form-card panel
-     (white, 42px padding, its own shadow and radius) would be a second
-     card inside the first. Stripped back to a plain block; the fields and
-     their validation styling are untouched. */
-  .ct-card .form-card{
+  /* The card IS the panel now, so site.css's .form-card (white, 42px,
+     its own radius and shadow) would be a second panel inside the
+     first. Stripped back to a plain block; the fields and their
+     validation styling are untouched. */
+  .premium-contact .ct-card .form-card{
     background:none;padding:0;border-radius:0;box-shadow:none;
   }
-  /* Push the submit button and the demo note to the card's foot so both
-     cards' CTAs sit on one line. */
-  .ct-form{flex:1;display:flex;flex-direction:column}
-  .ct-form .field:last-of-type{margin-bottom:auto}
-  .ct-form .button{margin-top:26px;align-self:flex-start}
+  /* Push the submit button and the demo note to the foot, so both
+     halves' calls to action sit on one line. */
+  .premium-contact .ct-form{flex:1;display:flex;flex-direction:column}
+  .premium-contact .ct-form .field:last-of-type{margin-bottom:auto}
+  .premium-contact .ct-form .button{margin-top:26px;align-self:flex-start}
+  /* Square corners, like every other edge on the premium pages. */
+  .premium-contact .field input,
+  .premium-contact .field textarea,
+  .premium-contact .field select{border-radius:0}
 
-  /* The booking slot. Was a 420px grey box centred with inline styles. Now
-     a dashed Deep Green well — dashed because it is explicitly an empty
-     slot waiting for a platform, and a solid panel would read as finished
+  /* The booking slot. Dashed because it is explicitly an empty slot
+     waiting for a platform — a solid panel would read as finished
      design. Delete the rule with the element when the embed lands. */
-  .ct-embed{
+  .premium-contact .ct-embed{
     flex:1;display:grid;place-items:center;text-align:center;
     min-height:300px;padding:32px 24px;
-    border:2px dashed rgba(20,51,24,.3);
-    border-radius:24px;
-    background:rgba(20,51,24,.03);
+    border:1px dashed rgba(204,254,6,.42);
+    background:rgba(204,254,6,.04);
   }
-  .ct-embed-label{
+  .premium-contact .ct-embed-label{
     margin:0 0 12px;
-    font:clamp(22px,2.2vw,28px)/1 var(--display);
-    letter-spacing:.04em;text-transform:uppercase;color:var(--ink);
+    font:clamp(22px,2.2vw,28px)/1 var(--display);font-weight:400;
+    letter-spacing:.04em;text-transform:uppercase;
   }
-  .ct-embed .body-copy{max-width:38ch;margin:0 auto}
+  /* .pr-copy justifies, which fights a centred well. */
+  .premium-contact .ct-embed .pr-copy{
+    max-width:40ch;text-align:center;hyphens:none;
+  }
 
-  /* ---------- 6. The direct details ----------
-     Was three .values paragraphs stacked under the booking box with inline
-     margin overrides, which put the only real contact information on the
-     page in its quietest corner.
+  /* ---------- 3. The direct details ----------
+     Detox Green band with Deep Green type, so the page alternates
+     green / cream / green / cream down to the footer instead of running
+     as one field. Lime as a GROUND, not as type on ink — which keeps
+     the one legal lime-type pairing (V1.0 p.21) for the hero above.
 
-     Deep Green band, three columns, lime labels — the one ground where lime
-     type is legal (V1.0 p.21). It also breaks the ivory, so the page
-     alternates ivory / green / ivory instead of running as one field down
-     to the footer.
-
-     THE VALUES ARE STILL CANVA PLACEHOLDERS. The note under the row says so
-     on the page; §6 lists real contact details as outstanding from the
-     client. */
-  .ct-direct{
-    background:var(--ink);
-    padding:clamp(54px,6vw,84px) 0;
+     EVERY VALUE IS STILL A CANVA PLACEHOLDER. The note under the row
+     says so on the page; §6 lists real contact details as outstanding
+     from the client. */
+  /* Two thirds of --gap, not the full section rhythm. This band is one
+     three-cell row; at the full gap it is mostly empty lime. */
+  .premium-contact .ct-direct{
+    padding-block:calc(var(--gap) * .66);
+    background:var(--lime);
   }
-  .ct-direct-grid{
-    display:grid;grid-template-columns:repeat(3,1fr);
-    gap:clamp(24px,3vw,48px);
+  .premium-contact .ct-direct-grid{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    border-top:1px solid var(--ink);
   }
-  .ct-item{
-    padding-top:18px;
-    border-top:1px solid rgba(204,254,6,.3);
+  .premium-contact .ct-item{
+    padding:34px clamp(20px,3vw,48px);
+    border-right:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
   }
-  .ct-item h2{
-    margin:0 0 10px;max-width:none;
-    font:17px/1 var(--display);
-    letter-spacing:.08em;text-transform:uppercase;
-    color:var(--lime);
+  .premium-contact .ct-item:last-child{border-right:0}
+  /* The label is a .pr-kicker; site.css's h2 margin and max-width are
+     all that need clearing. */
+  .premium-contact .ct-item h2{margin:0 0 14px;max-width:none}
+  .premium-contact .ct-item a,
+  .premium-contact .ct-item p{
+    margin:0;font-size:clamp(18px,1.5vw,24px);line-height:1.35;color:var(--ink);
   }
-  .ct-item a,.ct-item p{
-    margin:0;font-size:19px;line-height:1.4;
-    color:var(--paper);
+  /* The system's link hairline is currentColor at 35%. An email address
+     is not display type, so it keeps the sans face rather than becoming
+     a .pr-text-link. */
+  .premium-contact .ct-item a{
+    text-decoration:none;
+    border-bottom:1px solid color-mix(in srgb,currentColor 35%,transparent);
   }
-  .ct-item a{text-decoration:none;border-bottom:1px solid rgba(254,253,242,.3)}
-  .ct-item a:hover{border-bottom-color:var(--paper)}
-  .ct-pending{
+  .premium-contact .ct-item a:hover{border-bottom-color:currentColor}
+  .premium-contact .ct-pending{
     margin:clamp(28px,3vw,42px) 0 0;
-    font-size:13px;color:rgba(254,253,242,.6);
+    font-size:13px;color:rgba(20,51,24,.72);
   }
 
+  /* ---------- 4. The closing switch ----------
+     The shared block at the homepage's scale. aria-pressed="true" is the
+     RESTING state and js/site.js snaps it back to it — the attribute is
+     not touched here, only the type around it.
+
+     The heading is a real .pr-h, so the margin, the face, the uppercasing,
+     the block spans and the sub-760px flattening all come from the system;
+     only the scale and the two offsets are authored. */
+  .premium-contact .choice{
+    padding-block:calc(var(--gap) / 2) var(--gap);
+    text-align:left;background:var(--paper);
+  }
+  .premium-contact .choice .container{width:min(1600px,calc(100% - 96px))}
+  /* .pr-h is margin:0, so the kicker above it sets the gap. The homepage
+     drops this label; this page keeps it, so the rule lives here. */
+  .premium-contact .choice .pr-kicker{margin-bottom:clamp(18px,2vw,30px)}
+  .premium-contact .ct-choice-h{--fs:clamp(44px,7.8vw,146px)}
+  .premium-contact .ct-choice-h span:nth-child(1){margin-left:24%}
+  .premium-contact .ct-choice-h span:nth-child(2){margin-left:47%}
+  .premium-contact .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-contact .choice .toggle-rows{max-width:980px;margin-top:40px}
+  .premium-contact .choice .toggle-row{
+    padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
+    gap:clamp(20px,3vw,46px);
+  }
+  .premium-contact .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
+
+  /* ---------- 5. Responsive ----------
+     The channel widths come from premium.css. These are the three
+     compositions that have to change shape. */
+  @media(max-width:1100px){
+    .premium-contact .choice .container{width:min(100%,calc(100% - 56px))}
+  }
   @media(max-width:850px){
-    .ct-grid{grid-template-columns:1fr}
-    .ct-direct-grid{grid-template-columns:1fr;gap:26px}
+    .premium-contact .ct-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-contact .ct-card--dark{border-left:0;border-top:1px solid var(--ink)}
+    .premium-contact .ct-direct-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-contact .ct-item{border-right:0}
   }
-
+  @media(max-width:760px){
+    .premium-contact .choice .container{width:min(100%,calc(100% - 36px))}
+    /* premium.css relaxes .pr-h to --lh:.88 and -.01em below 760px, but
+       it loads first, so the authored desktop values above would still
+       win. Restated rather than inherited. */
+    .premium-contact .ct-title{--fs:clamp(86px,27vw,160px);--lh:.82;letter-spacing:-.01em}
+    .premium-contact .ct-hero-copy{margin-left:0}
+    .premium-contact .choice-note{margin-inline:0;text-align:left}
+  }
+  @media(max-width:700px){
+    .premium-contact .choice .toggle-row{padding:18px 20px 15px;gap:14px}
+    .premium-contact .choice .choice-toggle .t-switch{width:100px;height:60px}
+  }
   </style>
 </head>
-<body>
+<body class="premium-page premium-contact">
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
     <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -253,7 +293,9 @@
         <a href="about.html">About</a>
         <a href="contact.html" aria-current="page">Contact</a>
       </nav>
-      <a class="button button--small button--line header-cta" href="#book">Let’s talk <span>→</span></a>
+      <!-- On every other page this points at contact.html. Here it points
+           at the form, which is the same promise one scroll down. -->
+      <a class="button button--small button--line header-cta" href="#book">Let’s talk</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
     </div>
   </header>
@@ -261,21 +303,24 @@
   <main id="main">
 
     <!-- ===== The hero =====
-         Both strings were already on this page. "Contact" was the eyebrow
-         and is still the eyebrow; "Let's talk" was the h1 and is still the
-         h1 — it has only been given the page-title scale. -->
-    <section class="ct-hero ct-dots">
-      <div class="container">
-        <span class="eyebrow">Contact</span>
+         Both strings were already on this page: "Contact" was the label and
+         "Let's talk" the h1. They are now a .pr-kicker and a .pr-h, which
+         is where the scale, the face and the staircase come from.
 
-<!-- "Let's talk" has neither an O nor a D, so there was never
-             anything here for the brand's wide letterforms to apply to.
-             Since 7 Nov it would not matter either way: the licensed font
-             carries the wide B C D G O Q as its defaults, so no wrapping is
-             needed anywhere. See css/site.css §9a. -->
-        <h1 class="ct-title">Let’s talk</h1>
+         The licensed font carries the wide B C D G O Q as its defaults, so
+         nothing needs hand-wrapping for the brand letterforms — and
+         "Let's talk" has neither an O nor a D in any case.
+         See css/site.css §9a. -->
+    <section class="ct-hero" aria-labelledby="ct-hero-heading">
+      <div class="pr-wrap">
+        <span class="pr-kicker hm hm-copy">Contact</span>
 
-        <p class="body-copy">Tell me where the week goes, and we will look at it together. A first conversation costs you thirty minutes and commits you to nothing.</p>
+        <h1 class="pr-h ct-title hm hm-lines" id="ct-hero-heading">
+          <span>Let’s</span>
+          <span>talk</span>
+        </h1>
+
+        <p class="pr-copy ct-hero-copy hm hm-copy">Tell me where the week goes, and we will look at it together. A first conversation costs you thirty minutes and commits you to nothing.</p>
       </div>
     </section>
 
@@ -321,13 +366,13 @@
          #book stays on this section: every "Book a call" and "Let's talk"
          CTA on the site already points at contact.html#book, and the header
          CTA on this page does too. Moving the id would break all of them. -->
-    <section id="book" class="ct-routes ct-dots reveal">
-      <div class="container">
-        <div class="ct-grid">
+    <section id="book" class="ct-routes">
+      <div class="pr-wrap">
+        <div class="ct-grid hm hm-panel">
 
           <div class="ct-card">
-            <span class="eyebrow">Send a message</span>
-            <h2>Start here</h2>
+            <span class="pr-kicker">Send a message</span>
+            <h2 class="pr-h ct-card-h">Start here</h2>
 
             <form class="form-card ct-form" data-demo-form data-success-message="Message received. Demo only. Connect a form backend (or the booking tool) to make this live.">
               <div class="field">
@@ -367,9 +412,9 @@
             </form>
           </div>
 
-          <div class="ct-card">
-            <span class="eyebrow">Book directly</span>
-            <h2>Pick a slot</h2>
+          <div class="ct-card ct-card--dark">
+            <span class="pr-kicker">Book directly</span>
+            <h2 class="pr-h ct-card-h">Pick a slot</h2>
 
             <!-- PLACEHOLDER. Drop the Calendly or meetergo embed snippet in
                  place of this whole block once the platform is confirmed,
@@ -377,7 +422,7 @@
             <div class="ct-embed">
               <div>
                 <p class="ct-embed-label">Booking embed</p>
-                <p class="body-copy">Calendly or meetergo goes here. Drop the embed snippet into this panel once the platform is confirmed. Every “Book the free diagnostic” and “Let’s talk” CTA on the site already points at it.</p>
+                <p class="pr-copy">Calendly or meetergo goes here. Drop the embed snippet into this panel once the platform is confirmed. Every “Book the free diagnostic” and “Let’s talk” CTA on the site already points at it.</p>
               </div>
             </div>
           </div>
@@ -387,27 +432,27 @@
     </section>
 
     <!-- ===== The direct details =====
-         Deep Green, so the lime labels are on their only legal ground
-         (V1.0 p.21) and the page alternates ivory / green / ivory.
+         Detox Green ground with Deep Green type, so the page alternates
+         green / cream / green / cream down to the footer.
          EVERY VALUE BELOW IS A CANVA PLACEHOLDER — real address, email and
          phone are outstanding from the client (§6). -->
-    <section class="ct-direct reveal">
-      <div class="container">
+    <section class="ct-direct">
+      <div class="pr-wrap">
         <div class="ct-direct-grid">
-          <div class="ct-item">
-            <h2>Email</h2>
+          <div class="ct-item hm hm-row">
+            <h2 class="pr-kicker">Email</h2>
             <a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a>
           </div>
-          <div class="ct-item">
-            <h2>Phone</h2>
+          <div class="ct-item hm hm-row">
+            <h2 class="pr-kicker">Phone</h2>
             <a href="tel:+1234567890">(123) 456 7890</a>
           </div>
-          <div class="ct-item">
-            <h2>Address</h2>
+          <div class="ct-item hm hm-row">
+            <h2 class="pr-kicker">Address</h2>
             <p>123 Anywhere St., Any City 1234</p>
           </div>
         </div>
-        <p class="ct-pending">Placeholder contact details, pending client input.</p>
+        <p class="ct-pending hm hm-copy">Placeholder contact details, pending client input.</p>
       </div>
     </section>
 
@@ -417,11 +462,14 @@
          why the aria-pressed attribute is NOT flipped. -->
     <section class="choice">
       <div class="container">
-        <span class="eyebrow">The choice</span>
-        <h2>What will you choose?</h2>
-        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+        <span class="pr-kicker hm hm-copy">The choice</span>
+        <h2 class="pr-h ct-choice-h hm hm-lines">
+          <span>What will you</span>
+          <span>choose?</span>
+        </h2>
+        <p class="choice-note hm hm-copy">Clarity is the default. Switch back to see the noise.</p>
 
-        <div class="toggle-rows">
+        <div class="toggle-rows hm hm-panel">
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
                   aria-label="Switch between Operational Clarity and Operational Noise">
             <span class="t-before">Operational Clarity</span>
@@ -430,48 +478,12 @@
           </button>
         </div>
 
-        <div class="actions">
-          <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
+        <div class="actions hm hm-copy">
+          <a class="button" href="diagnostic.html">Book the free diagnostic</a>
         </div>
       </div>
     </section>
 
-    <!-- The switcher-pattern divider, closing the page into the Deep Green
-         footer the way it does on the homepage (§24). Bars only, no words,
-         two rows running opposite ways. Decorative, so hidden from
-         assistive tech. -->
-    <div class="pb" aria-hidden="true">
-      <div class="pb-row">
-        <div class="pb-track">
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-        </div>
-      </div>
-      <div class="pb-row pb-row--b">
-        <div class="pb-track">
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-        </div>
-      </div>
-    </div>
   </main>
 
   <footer>
@@ -519,6 +531,26 @@
     </div>
   </footer>
 
+  <div class="pb" aria-hidden="true">
+    <div class="pb-row"><div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div></div>
+    <div class="pb-row pb-row--b"><div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div></div>
+  </div>
+
   <script src="js/site.js"></script>
+  <!-- The shared reveal controller. It replaces the inline script this page
+       used to carry: same preloader handshake, same reduced-motion bail-out,
+       but it also observes each .hm element so sections arrive as they are
+       scrolled to rather than all at once on load. -->
+  <script src="js/premium-motion.js"></script>
 </body>
 </html>

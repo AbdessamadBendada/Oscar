@@ -8,6 +8,7 @@
   <meta name="description" content="OPS Detox™. Operational detox for scale-ups. Cleanse your business systems and win your time back.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/premium.css">
 
   <!-- ==========================================================
        LIVE HOMEPAGE. Promoted from the approved Anzhelika premium
@@ -18,55 +19,9 @@
 
   <!-- Decide before first paint: reduced-motion visitors and anyone who has
        already seen the preloader this session go straight to the page. -->
-  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <script>try{var reduceHomeMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;if(sessionStorage.getItem('ops-preloaded')||reduceHomeMotion){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}if(!reduceHomeMotion){document.documentElement.className+=' premium-motion';}}catch(e){}</script>
 
   <style>
-  /* ---------- Ground ----------
-     The PDF runs on three flat fields and nothing else: a Detox Green
-     hero, a cream body and one Deep Green band for the testimonials.
-     No gradients, no cards floating on shadows, no rounded corners
-     anywhere except the buttons. */
-  .premium-page{background:var(--paper);color:var(--ink)}
-  .premium-page main{background:var(--paper);overflow-x:clip}
-  /* css/site.css sets `img{max-width:100%}` and nothing else, so the HTML
-     height attribute still applies as a used height and a CSS aspect-ratio
-     is ignored. Without this the 1800px-tall portraits render at 1800px.
-     The rules that want a filled box set height:100% after this one. */
-  .premium-page main img{height:auto}
-  .premium-page .pr-wrap{width:min(1600px,calc(100% - 96px));margin-inline:auto}
-  .premium-page .pr-bleed{width:min(1600px,calc(100% - 96px));margin-inline:auto}
-
-  /* ---------- The headline system ----------
-     The one device the whole page is built on. Three things make it:
-     a line-height under 1 so the lines overlap rather than stack, a
-     per-line horizontal offset, and lines of deliberately different
-     length. The offsets are measured off the PDF as a percentage of
-     the content width, so they hold as the page scales.
-
-     Every offset is a margin-left on a max-content block. They are
-     all zeroed below 760px — forcing them onto a phone is what turns
-     an editorial headline into a clipped one. */
-  .premium-page .pr-h{
-    margin:0;max-width:none;
-    font-family:var(--display);font-weight:400;
-    font-size:var(--fs);line-height:var(--lh,.79);
-    letter-spacing:-.018em;text-transform:uppercase;
-    color:var(--ink);
-  }
-  .premium-page .pr-h span{display:block;width:max-content;max-width:100%}
-
-  .premium-page .pr-kicker{
-    display:block;font:clamp(15px,1.15vw,21px)/1 var(--display);
-    letter-spacing:.07em;text-transform:uppercase;color:var(--ink);
-  }
-  /* Body copy is justified throughout the PDF, in a narrow measure
-     set against very large display type. */
-  .premium-page .pr-copy{
-    margin:0;font-size:clamp(15px,1.05vw,18px);line-height:1.55;
-    text-align:justify;hyphens:auto;
-  }
-  .premium-page .pr-copy+.pr-copy{margin-top:1.1em}
-
   /* ---------- Hero ----------
      Full-bleed photograph under a flat brand field, so it reads as one
      branded surface with depth rather than a stock photo with a panel on
@@ -325,12 +280,6 @@
     letter-spacing:.1em;text-transform:uppercase;opacity:.72;
   }
   .premium-page .pr-card .pr-copy{font-size:clamp(14px,.98vw,17px)}
-  .premium-page .pr-card-link{
-    display:inline-block;margin-top:22px;
-    font:14px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;
-    text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:5px;
-  }
-  .premium-page .pr-card-link:hover{opacity:.65}
   .premium-page .pr-card-title{margin-top:auto;padding:clamp(26px,2.4vw,42px);padding-top:0}
 
   .premium-page .pr-card--outline{border:1px solid var(--ink);background:transparent}
@@ -390,52 +339,17 @@
      Three things the shared component assumes, all load-bearing:
 
        - FOUR quotes per set, repeated FOUR times. The keyframe slides by
-         `-4 * (--tcard + --tgap)`, i.e. exactly one set, and it lives in
-         the shared file because this composition is homepage-specific. Three
-         quotes would desynchronise the loop. Copies 2 to 4 are
+         `-4 * (--tcard + --tgap)`, i.e. exactly one set. The track behavior
+         lives in site.css section 14a; the premium surface now lives in
+         premium.css. Three quotes would desynchronise the loop. Copies 2 to 4 are
          aria-hidden and the mobile branch display:none's them.
        - The end fades are painted gradients in the GROUND colour, and
          the shared ones are Soft Ivory. On this Deep Green band they
          have to be repainted or two cream smears appear at the edges.
        - .testimonial-grid sets a white rounded card with a shadow, so
          the outlined square treatment is an override, not the default. */
-  .premium-page .pr-voices{
-    background:var(--ink);color:var(--paper);overflow:hidden;
-    padding:clamp(60px,7vw,110px) 0 clamp(70px,8vw,120px);
-  }
-  .premium-page .pr-voices-h{--fs:clamp(44px,7.4vw,138px);color:var(--lime)}
   .premium-page .pr-voices-h span:nth-child(1){margin-left:28%}
   .premium-page .pr-voices-h span:nth-child(2){margin-left:45%}
-  .premium-page .pr-voices .testimonial-slider{margin-top:clamp(20px,2.4vw,40px)}
-  .premium-page .pr-voices .testimonial-slider::before{
-    background:linear-gradient(90deg,var(--ink),rgba(20,51,24,0));
-  }
-  .premium-page .pr-voices .testimonial-slider::after{
-    background:linear-gradient(270deg,var(--ink),rgba(20,51,24,0));
-  }
-  .premium-page .pr-voices .testimonial-track article{
-    background:transparent;border:1px solid var(--paper);border-radius:0;
-    box-shadow:none;min-height:0;padding:clamp(24px,2.2vw,40px);
-  }
-  .premium-page .pr-voices .testimonial-track article:hover{box-shadow:none;transform:none}
-  /* The shared card opens with a big lime quote glyph. The PDF's cards
-     carry no such mark, so it is suppressed here only. */
-  .premium-page .pr-voices .testimonial-grid article::before{content:none}
-  .premium-page .pr-voices .testimonial-label{
-    margin:0 0 14px;padding:4px 10px 3px;border:0;border-radius:0;
-    background:var(--lime);color:var(--ink);
-    font:12px/1.2 var(--display);letter-spacing:.09em;
-  }
-  .premium-page .pr-voices .testimonial-grid blockquote{
-    color:var(--paper);font-size:clamp(14px,.98vw,17px);line-height:1.55;text-align:justify;
-  }
-  .premium-page .pr-voices .testimonial-grid footer{color:var(--paper);padding-top:clamp(20px,2vw,34px)}
-  .premium-page .pr-voices .testimonial-grid footer strong{
-    font:clamp(18px,1.5vw,27px)/1 var(--display);letter-spacing:.02em;text-transform:uppercase;
-  }
-  .premium-page .pr-voices .testimonial-grid footer span{
-    margin-top:8px;color:var(--paper);opacity:.7;font-size:12px;letter-spacing:.08em;
-  }
 
   /* ---------- The IP ----------
      A table, not cards. Full-bleed rules, a very large figure in the
@@ -462,12 +376,6 @@
     letter-spacing:.01em;text-transform:uppercase;
   }
   .premium-page .pr-ip-row p{margin:0;font-size:clamp(14px,.98vw,17px);line-height:1.5}
-  .premium-page .pr-ip-link{
-    align-self:center;justify-self:end;white-space:nowrap;
-    font:14px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;
-    text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:5px;
-  }
-  .premium-page .pr-ip-link:hover{opacity:.65}
   .premium-page .pr-ip-note{margin:clamp(24px,2.5vw,40px) 0 0;max-width:72ch;font-size:14px;line-height:1.55;color:var(--muted)}
 
   /* ---------- Outcomes ----------
@@ -526,7 +434,7 @@
      is flush left at a readable line-height, the three-column rows
      become one column, and the IP table drops to a stacked list. */
   @media(max-width:1100px){
-    .premium-page .pr-wrap,.premium-page .pr-bleed,.premium-page .choice .container{width:min(100%,calc(100% - 56px))}
+    .premium-page .choice .container{width:min(100%,calc(100% - 56px))}
     .premium-page .pr-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
     .premium-page .pr-cards .pr-card--lime{grid-column:span 2;min-height:360px}
     .premium-page .pr-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -544,10 +452,12 @@
     .premium-page .pr-logo-slider{width:100%}
   }
   @media(max-width:760px){
-    .premium-page .pr-wrap,.premium-page .pr-bleed,.premium-page .choice .container{width:min(100%,calc(100% - 36px))}
-    .premium-page .pr-h span,
+    .premium-page .choice .container{width:min(100%,calc(100% - 36px))}
+    /* The shared mobile reset loads before this page's hero recipe.
+       Reassert the mobile headline leading after that local recipe. */
+    .premium-page .pr-h{--lh:.88;letter-spacing:-.01em;text-align:left}
     .premium-page .choice h2 span{margin-left:0!important;padding-right:0!important;width:auto}
-    .premium-page .pr-h,.premium-page .choice h2{--lh:.88;letter-spacing:-.01em;text-align:left}
+    .premium-page .choice h2{--lh:.88;letter-spacing:-.01em;text-align:left}
     .premium-page .pr-programs-head,.premium-page .pr-about-head{text-align:left}
     .premium-page .pr-hero-h{--fs:clamp(38px,12.6vw,74px)}
     .premium-page .pr-problem-h,.premium-page .pr-programs-h,
@@ -571,7 +481,6 @@
        headline. Same principle as zeroing the headline offsets: the
        device survives, the collision does not. */
     .premium-page .pr-cutout{height:112%;left:10%}
-    .premium-page .pr-copy,
     .premium-page .pr-voices .testimonial-grid blockquote{text-align:left;hyphens:none}
     .premium-page .pr-hero{min-height:0;padding-top:52px}
     .premium-page .pr-featured ul{grid-auto-columns:calc((100% - var(--logo-gap)) / 2)}
@@ -604,7 +513,6 @@
      bottom padding happened to add to. Every section now contributes
      half the gap, so the interval between any two is exactly --gap
      and the page keeps one pace all the way down. */
-  .premium-page{--gap:clamp(104px,10.5vw,184px)}
   .premium-page .pr-problem,
   .premium-page .pr-programs,
   .premium-page .pr-voices,
@@ -619,17 +527,13 @@
      gives them the tooth of printed stock. It is one inline data
      URI, no request, and it sits under the content: the hero's and
      the band's children are lifted to z-index 2 for exactly that. */
-  .premium-page .pr-voices{position:relative}
-  .premium-page .pr-hero::after,
-  .premium-page .pr-voices::after{
+  .premium-page .pr-hero::after{
     content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
     opacity:.05;mix-blend-mode:overlay;background-size:170px 170px;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .premium-page .pr-hero-inner,
-  .premium-page .pr-featured,
-  .premium-page .pr-voices > .pr-wrap,
-  .premium-page .pr-voices .testimonial-slider{position:relative;z-index:2}
+  .premium-page .pr-featured{position:relative;z-index:2}
 
   /* ---- 3. CTA HIERARCHY --------------------------------------
      v1 had it backwards: the three programmes carried the quietest
@@ -643,32 +547,6 @@
   }
   .premium-page .pr-card--dark .pr-card-btn{background:var(--lime);color:var(--ink)}
   .premium-page .pr-card--dark .pr-card-btn:hover{background:var(--paper);color:var(--ink)}
-  .premium-page .pr-text-link{
-    display:inline-block;font:15px/1 var(--display);letter-spacing:.06em;
-    text-transform:uppercase;text-decoration:none;padding-bottom:7px;
-  }
-  /* A wiped underline rather than a hover colour change. The resting
-     rule is held at 35% so the link still reads as a link. */
-  .premium-page .pr-card-link,
-  .premium-page .pr-ip-link,
-  .premium-page .pr-text-link{
-    position:relative;border-bottom:1px solid color-mix(in srgb,currentColor 35%,transparent);
-  }
-  .premium-page .pr-card-link::after,
-  .premium-page .pr-ip-link::after,
-  .premium-page .pr-text-link::after{
-    content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
-    background:currentColor;transform:scaleX(0);transform-origin:left;
-    transition:transform .45s cubic-bezier(.22,1,.36,1);
-  }
-  .premium-page .pr-card-link:hover::after,
-  .premium-page .pr-ip-link:hover::after,
-  .premium-page .pr-text-link:hover::after{transform:scaleX(1)}
-  .premium-page .pr-card-link:hover,
-  .premium-page .pr-ip-link:hover,
-  .premium-page .pr-text-link:hover{opacity:1}
-  .premium-page .pr-card-link,.premium-page .pr-ip-link{font-size:15px;letter-spacing:.07em}
-
   /* ---- 4. THE HOLLOW FIRST CARD ------------------------------
      Measured in v1: content ended 381px into a 659px card, so 42% of
      the free entry point was empty while the two beside it filled.
@@ -712,15 +590,7 @@
     aspect-ratio:3/4.15;object-position:50% 38%;filter:saturate(.92) contrast(1.05);
   }
 
-  /* ---- 7. SCROLL REVEALS -------------------------------------
-     The shared .reveal from css/site.css §22, nothing new: opacity
-     and an 18px rise, driven by the IntersectionObserver already in
-     js/site.js, and already switched off under prefers-reduced-motion.
-     Applied per card and per table row rather than per section, so
-     the stagger comes from the scroll position itself. */
-  .premium-page .reveal{transition-duration:.75s}
-
-  /* ---- 8. HOVER, HELD BACK ----------------------------------- */
+  /* ---- 7. HOVER, HELD BACK ----------------------------------- */
   .premium-page .pr-card{transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s ease}
   .premium-page .pr-card:hover{transform:translateY(-6px)}
   .premium-page .pr-card--outline:hover{box-shadow:0 26px 60px rgba(20,51,24,.10)}
@@ -729,7 +599,7 @@
   .premium-page .pr-ip-row{transition:background .35s ease}
   .premium-page .pr-ip-row:hover{background:rgba(20,51,24,.035)}
 
-  /* ---- 9. LABEL TRACKING -------------------------------------
+  /* ---- 8. LABEL TRACKING -------------------------------------
      Wide tracking on small uppercase is the cheapest signal of an
      editorial hand, and v1 was a little tight. */
   .premium-page .pr-card-meta{letter-spacing:.145em;font-size:11px}
@@ -796,6 +666,87 @@
     .premium-page .choice .choice-toggle .t-switch{width:100px;height:60px}
   }
 
+  /* ============================================================
+     HOMEPAGE MOTION LANGUAGE, 23 NOVEMBER
+     Editorial reveals built for this composition: type uncovers by
+     line, photographs open like printed panels, cards arrive as a
+     sequence and framework rows draw across the page. Hidden states
+     only exist when the head script adds .premium-motion, so the page
+     remains fully visible if JavaScript is unavailable. Lower-page
+     motion is armed by IntersectionObserver only in the viewport.
+     ============================================================ */
+  /* OPACITY ONLY — the translateY is deliberately gone.
+     A transform on an element makes it the containing block for every
+     position:fixed descendant, and the closed mobile nav drawer is
+     exactly that: fixed, and parked off-screen at translateX(320px).
+     Contained by the header instead of the viewport, that parked
+     drawer counted as real page width, so this page — and only this
+     page, the last one still animating its header — scrolled sideways
+     by 320px on a phone. The fade alone reads the same. */
+  .premium-motion .premium-page .site-header{
+    opacity:0;
+    transition:opacity .65s ease;
+  }
+  .premium-motion .premium-page.premium-ready .site-header{opacity:1}
+
+  .premium-motion .premium-page .pr-hero-bg img{
+    transform:scale(1.055);filter:saturate(.88) contrast(1.04);
+    transition:transform 1.8s cubic-bezier(.16,1,.3,1),filter 1.4s ease;
+  }
+  .premium-motion .premium-page.premium-ready .pr-hero-bg img{
+    transform:scale(1);filter:saturate(1) contrast(1);
+  }
+  .premium-motion .premium-page .pr-hero-h span{
+    opacity:1;clip-path:inset(-55% -100vw 155% -100vw);transform:none;
+    transition:clip-path 1.05s cubic-bezier(.16,1,.3,1);
+  }
+  .premium-motion .premium-page.premium-ready .pr-hero-h span{
+    clip-path:inset(-55% -100vw -55% -100vw);
+  }
+  .premium-motion .premium-page.premium-ready .pr-hero-h span:nth-child(1){transition-delay:.12s}
+  .premium-motion .premium-page.premium-ready .pr-hero-h span:nth-child(2){transition-delay:.24s}
+  .premium-motion .premium-page.premium-ready .pr-hero-h span:nth-child(3){transition-delay:.36s}
+  .premium-motion .premium-page .pr-hero-foot{
+    opacity:0;transform:translateY(24px);
+    transition:opacity .75s ease,transform .95s cubic-bezier(.16,1,.3,1);
+  }
+  .premium-motion .premium-page.premium-ready .pr-hero-foot{
+    opacity:1;transform:none;transition-delay:.7s;
+  }
+  .premium-motion .premium-page .pr-hero-foot .pr-actions a{
+    opacity:0;transform:translateY(12px);
+    transition:opacity .55s ease,transform .7s cubic-bezier(.16,1,.3,1),background-color .25s ease,color .25s ease,border-color .25s ease;
+  }
+  .premium-motion .premium-page.premium-ready .pr-hero-foot .pr-actions a{opacity:1;transform:none}
+  .premium-motion .premium-page.premium-ready .pr-hero-foot .pr-actions a:nth-child(1){transition-delay:.88s}
+  .premium-motion .premium-page.premium-ready .pr-hero-foot .pr-actions a:nth-child(2){transition-delay:.98s}
+
+  /* Staggers are composition-specific and therefore stay with this page. */
+  .premium-motion .premium-page .pr-cards .hm-card:nth-child(2){--hm-delay:.12s}
+  .premium-motion .premium-page .pr-cards .hm-card:nth-child(3){--hm-delay:.24s}
+  .premium-motion .premium-page .pr-ip-row.hm-row:nth-child(2){--hm-delay:.1s}
+  .premium-motion .premium-page .pr-ip-row.hm-row:nth-child(3){--hm-delay:.2s}
+  .premium-motion .premium-page .pr-stats .hm-stat:nth-child(2){--hm-delay:.09s}
+  .premium-motion .premium-page .pr-stats .hm-stat:nth-child(3){--hm-delay:.18s}
+  .premium-motion .premium-page .pr-stats .hm-stat:nth-child(4){--hm-delay:.27s}
+
+  @media(max-width:760px){
+    .premium-motion .premium-page .pr-cards .hm-card:nth-child(n),
+    .premium-motion .premium-page .pr-ip-row.hm-row:nth-child(n),
+    .premium-motion .premium-page .pr-stats .hm-stat:nth-child(n){--hm-delay:0s}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .premium-page .site-header,
+    .premium-page .pr-hero-bg img,
+    .premium-page .pr-hero-h span,
+    .premium-page .pr-hero-foot,
+    .premium-page .pr-hero-foot .pr-actions a{
+      opacity:1!important;transform:none!important;clip-path:none!important;
+      transition:none!important;animation:none!important;
+    }
+  }
+
   </style>
 </head>
 <body class="premium-page">
@@ -852,7 +803,7 @@
          enters the page as a complete band instead of being cut by the
          first fold on shorter desktop screens. -->
     <section class="pr-featured-band" aria-labelledby="pr-featured-heading">
-      <div class="pr-wrap pr-featured">
+      <div class="pr-wrap pr-featured hm hm-panel">
         <h2 id="pr-featured-heading">Featured in:</h2>
         <div class="pr-logo-slider" role="region" aria-label="Featured appearances, rotating automatically">
           <div class="pr-logo-viewport" tabindex="0" aria-live="off">
@@ -877,13 +828,13 @@
     <!-- The client's copy, verbatim from index.html, typos included. -->
     <section class="pr-problem" aria-labelledby="pr-problem-heading">
       <div class="pr-wrap">
-        <h2 class="pr-h pr-problem-h" id="pr-problem-heading">
+        <h2 class="pr-h pr-problem-h hm hm-lines" id="pr-problem-heading">
           <span>Fewer meetings</span>
           <span>Fewer reports</span>
           <span>More decisions</span>
         </h2>
 
-        <div class="pr-problem-body reveal">
+        <div class="pr-problem-body">
           <!-- The break-out composite. The box is a blurred room, the
                cutout stands in it and grows out of the top.
 
@@ -901,7 +852,7 @@
                screenshot, with headline pixels baked into one corner.
 
                Still worth a human eye on the edge before this ships. -->
-          <figure class="pr-problem-fig">
+          <figure class="pr-problem-fig hm hm-media">
             <!-- The room behind him. This is the hero photograph again,
                  blurred past recognition: it is a real meeting room, it
                  carries no second Oscar to smudge (speaking.jpg and both
@@ -914,7 +865,7 @@
                  alt="Oscar de Grauw" loading="lazy">
           </figure>
 
-          <div class="pr-problem-copy">
+          <div class="pr-problem-copy hm hm-copy">
             <p class="pr-copy">Most scale-ups don't have a strategy problem. They have a company full of work that piled up as they grew, meetings that outlived their purpose, reports nobody reads, decisions that wait on founder’s desk, all kept alive by one sentence: "that's how we've always done it."</p>
             <p class="pr-copy">OPS Detox clears out what growth left behind. Together with your team, we strip away the meetings, reports and approval layers that no longer serve the business, and rebuild a structure your people can run on their own, long after we have left.</p>
 
@@ -934,15 +885,15 @@
     <section class="pr-programs" id="programs" aria-labelledby="pr-programs-heading">
       <div class="pr-wrap">
         <div class="pr-programs-head">
-          <span class="pr-kicker">Programs</span>
-          <h2 class="pr-h pr-programs-h" id="pr-programs-heading">
+          <span class="pr-kicker hm hm-copy">Programs</span>
+          <h2 class="pr-h pr-programs-h hm hm-lines" id="pr-programs-heading">
             <span>Three ways to</span>
             <span>work together</span>
           </h2>
         </div>
 
         <div class="pr-cards">
-          <article class="pr-card pr-card--outline reveal">
+          <article class="pr-card pr-card--outline hm hm-card">
             <div class="pr-card-body">
               <p class="pr-card-meta">Free · 8 minutes</p>
               <p class="pr-copy">Before anything is stripped, we measure where the time and the decisions actually go. You, your key people and your team answer the same questions, where the answers differ, the clutter sits.</p>
@@ -951,7 +902,7 @@
             <h3 class="pr-card-title">OPS Detox<br>Diagnostic™</h3>
           </article>
 
-          <article class="pr-card pr-card--dark reveal">
+          <article class="pr-card pr-card--dark hm hm-card">
             <div class="pr-card-body">
               <p class="pr-card-meta">Speak Up Gym · Out Loud</p>
               <p class="pr-copy">A few intensive hours with your leadership team. In the Speak Up Gym and over the Out Loud card game, people practise saying the uncomfortable thing out loud and the clutter starts to show.</p>
@@ -976,7 +927,7 @@
                so Oscar's existing keynote paragraph is used instead. No
                meta chips are added because no approved short summary
                exists and inventing one is not ours to do. -->
-          <article class="pr-card pr-card--lime reveal">
+          <article class="pr-card pr-card--lime hm hm-card">
             <div class="pr-card-bg">
               <img src="assets/img/speaking-keynote.jpg" width="1600" height="1067" alt="" loading="lazy">
             </div>
@@ -997,12 +948,12 @@
          rather than dressed as real endorsements. -->
     <section class="pr-voices" aria-labelledby="pr-voices-heading">
       <div class="pr-wrap">
-        <h2 class="pr-h pr-voices-h" id="pr-voices-heading">
+        <h2 class="pr-h pr-voices-h hm hm-lines" id="pr-voices-heading">
           <span>What leaders</span>
           <span>say</span>
         </h2>
 
-        <div class="testimonial-slider">
+        <div class="testimonial-slider hm hm-panel">
           <div class="testimonial-grid testimonial-track" role="list">
           <article role="listitem">
             <span class="testimonial-label">Placeholder testimonial</span>
@@ -1111,14 +1062,14 @@
          framework pages exist. -->
     <section class="pr-ip" aria-labelledby="pr-ip-heading">
       <div class="pr-wrap">
-        <h2 class="pr-h pr-ip-h" id="pr-ip-heading">
+        <h2 class="pr-h pr-ip-h hm hm-lines" id="pr-ip-heading">
           <span>The IP the detox</span>
           <span>runs on</span>
         </h2>
       </div>
 
       <div class="pr-bleed pr-ip-rows">
-        <div class="pr-ip-row reveal">
+        <div class="pr-ip-row hm hm-row">
           <span class="pr-ip-num">1</span>
           <h3>See – Strip – Choose™</h3>
           <div>
@@ -1128,7 +1079,7 @@
           <a class="pr-ip-link" href="work-with-us.html">Learn more</a>
         </div>
 
-        <div class="pr-ip-row reveal">
+        <div class="pr-ip-row hm hm-row">
           <span class="pr-ip-num">2</span>
           <h3>Truth Latency™</h3>
           <div>
@@ -1138,7 +1089,7 @@
           <a class="pr-ip-link" href="work-with-us.html">Learn more</a>
         </div>
 
-        <div class="pr-ip-row reveal">
+        <div class="pr-ip-row hm hm-row">
           <span class="pr-ip-num">3</span>
           <h3>DRMT™</h3>
           <div>
@@ -1156,32 +1107,32 @@
 
     <section class="pr-outcomes" aria-labelledby="pr-outcomes-heading">
       <div class="pr-wrap">
-        <h2 class="pr-h pr-outcomes-h" id="pr-outcomes-heading">
+        <h2 class="pr-h pr-outcomes-h hm hm-lines" id="pr-outcomes-heading">
           <span>OPS Detox</span>
           <span>outcomes:</span>
         </h2>
 
         <div class="pr-stats">
-          <article class="reveal"><strong>20-35%</strong><p>less non-essential meeting time. Up to €8K reclaimed per employee</p></article>
-          <article class="reveal"><strong>25-40%</strong><p>faster decision cycles. Less escalation, faster execution</p></article>
-          <article class="reveal"><strong>30-60%</strong><p>less reporting overhead. €50K+ reclaimed capacity per team/year</p></article>
-          <article class="reveal"><strong>10-30%</strong><p>tooling &amp; SaaS cost optimization. €150K-300K on a €1M spend</p></article>
+          <article class="hm hm-stat"><strong>20-35%</strong><p>less non-essential meeting time. Up to €8K reclaimed per employee</p></article>
+          <article class="hm hm-stat"><strong>25-40%</strong><p>faster decision cycles. Less escalation, faster execution</p></article>
+          <article class="hm hm-stat"><strong>30-60%</strong><p>less reporting overhead. €50K+ reclaimed capacity per team/year</p></article>
+          <article class="hm hm-stat"><strong>10-30%</strong><p>tooling &amp; SaaS cost optimization. €150K-300K on a €1M spend</p></article>
         </div>
       </div>
     </section>
 
     <section class="pr-about" aria-labelledby="pr-about-heading">
-      <div class="pr-wrap pr-about-grid reveal">
-        <figure>
+      <div class="pr-wrap pr-about-grid">
+        <figure class="hm hm-media">
           <div class="pr-about-arch">
             <img src="assets/img/oscar-cutout.png" width="504" height="860" alt="Oscar de Grauw holding a laptop" loading="lazy">
           </div>
         </figure>
 
-        <div>
+        <div class="hm hm-copy">
           <div class="pr-about-head">
             <span class="pr-kicker">About Oscar de Grauw</span>
-            <h2 class="pr-h pr-about-h" id="pr-about-heading">
+            <h2 class="pr-h pr-about-h hm hm-lines" id="pr-about-heading">
               <span>Why work</span>
               <span>with me</span>
             </h2>
@@ -1202,13 +1153,13 @@
          typography around it is restyled. -->
     <section class="choice">
       <div class="container">
-        <h2 class="pr-choice-h">
+        <h2 class="pr-choice-h hm hm-lines">
           <span>What will you</span>
           <span>choose?</span>
         </h2>
-        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+        <p class="choice-note hm hm-copy">Clarity is the default. Switch back to see the noise.</p>
 
-        <div class="toggle-rows">
+        <div class="toggle-rows hm hm-panel">
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
                   aria-label="Switch between Operational Clarity and Operational Noise">
             <span class="t-before">Operational Clarity</span>
@@ -1289,6 +1240,7 @@
   </div>
 
   <script src="js/site.js"></script>
+  <script src="js/premium-motion.js"></script>
   <script>
   (() => {
     const viewport = document.querySelector('.pr-logo-viewport');

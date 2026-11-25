@@ -9,6 +9,7 @@
   <meta name="robots" content="noindex">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/premium.css">
   <!-- ==========================================================
        WORK WITH US — a NEW page, created 30 October 2026.
 
@@ -30,713 +31,613 @@
        ========================================================== -->
   <!-- Decide before first paint: reduced-motion visitors and anyone who has
        already seen the preloader this session go straight to the page. -->
-  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <script>try{var reduceWorkMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;if(sessionStorage.getItem('ops-preloaded')||reduceWorkMotion){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}if(!reduceWorkMotion){document.documentElement.className+=' premium-motion';}}catch(e){}</script>
 
   <style>
-  /* ---------- 1. Page shell ----------
-     The hairline rules between sections are off site-wide now (§24), so
-     they are off here too rather than being added and removed later. */
-  .section-rule{border-bottom:0}
+  /* ==============================================================
+     WORK WITH US — PAGE COMPOSITION
 
-  /* The mockup's copy column sits in a wider channel than site.css's 1180px
-     cap, the same widening index.html made on 28 Oct (§22.2). Gated to
-     desktop, because the narrow layout is the approved one. */
-  @media(min-width:1001px){ .container{width:min(1320px,calc(100% - 80px))} }
+     Everything shared arrives from css/premium.css:
+       .pr-wrap     the 1600px / 96px editorial channel and its
+                    56px and 36px gutters
+       .pr-h        the display headline, sized per instance with
+                    --fs and --lh
+       .pr-kicker   the small uppercase label
+       .pr-copy     the justified body setting
+       .hm + .hm-*  the reveal states, driven by js/premium-motion.js
+       --gap        the shared section rhythm
+       .pr-voices   the dark testimonial band
+       .pr-outcomes the stats band
 
-  /* ---------- 3. Section 1 — the hero ----------
-     Soft Ivory ground, page title centred above a two-column split: copy
-     left, photograph right.
+     REBUILT 25 Nov 2026. Before this the page ran three channels at
+     once: nine sections on the 14 Oct .container at a widened
+     1320px/60px, the outcomes and testimonials on .pr-wrap at
+     1344px/48px, and the hero on a bespoke .ww-wrap. Only 2 of its
+     15 headings were real .pr-h and none of its body copy was
+     .pr-copy, so the page carried seventeen different paragraph
+     settings between 13px and 43px.
 
-     THE DOT FIELD WAS REMOVED on 7 Nov — the designer confirmed it is
-     not a guideline device. These sections are plain Soft Ivory.
+     Also removed: the dead .ws-hero block (that hero's markup was
+     replaced on 23 Nov and nothing references .ws-hero, .ws-copy,
+     .ws-head, .ws-br or .ws-shot), the no-op .ws-dots wrapper, and
+     the .work-motion layer, which hand-wrote 120 lines of staggered
+     reveals that .hm already provides.
 
-  /* RESTORED 11 Nov. This rule was deleted by accident on 7 Nov along with
-     the dot field — the ::before that drew the dots sat directly beneath it
-     and the whole block went. Without it the hero had no padding at all, so
-     the page title ran straight into the header and the photograph sat flush
-     on the section's bottom edge. Keep the padding and the ground together;
-     they are not decoration. */
-  .ws-hero{
-    background:var(--paper);
-    padding:56px 0 var(--section-y);
-  }
+     NO COPY WAS CHANGED. Every string is the client's, word for
+     word — including "travelling" with two Ls, "add on" unhyphenated,
+     "Tool Stack Module" rather than "Detox" in the add-on's last
+     sentence, the ™ on the sign-off but not on "OPS Detox exists",
+     and the "teams"/"companies" one-word divergence flagged in the
+     markup. The fw-draft placeholder notice stays on the page.
+     ============================================================== */
 
-  .ws-dots{position:relative;overflow:hidden}
-  /* The dot field was removed on 7 Nov. Designer: it is not in the
-     guideline — V1.0 names only the logo pattern (merch, p.36) and the
-     switcher pattern (p.38). These sections are plain Soft Ivory now. */
-  .ws-dots>*{position:relative;z-index:1}
-
-  .ws-hero-grid{
-    display:grid;grid-template-columns:1fr 1.04fr;
-    gap:clamp(32px,5vw,78px);align-items:center;
-  }
-
-  .ws-copy{max-width:640px}
-  .ws-copy .eyebrow{font-size:19px;letter-spacing:.06em}
-
-  /* Sized against the LEFT COLUMN, not the page. The ceiling is set by the
-     longest line, "GIVE YOUR LEADERSHIP TEAM", which carries the wide O and
-     the wide D — measure the ceiling again if either the copy or the wrapped
-     letters change, because a 2x alternate is worth roughly two characters. */
-  /* Size reduced 7 Nov, from clamp(34px,3.7vw,54px). The licensed font's
-     default letterforms are about 28% wider than the trial's, which pushed
-     this heading from three lines to four in its ~610px column. Measured
-     back to three at 46px. */
-  .ws-head{
-    margin:16px 0 26px;max-width:none;
-    font-size:clamp(30px,3.15vw,46px);line-height:1.02;
-    letter-spacing:.02em;color:var(--ink);
-  }
-  /* The mockup breaks after "team". Forced, so the two lines are the
-     designer's and not the browser's. */
-  .ws-br{display:block}
-
-  .ws-copy .body-copy{max-width:46ch;font-size:19px;line-height:1.5}
-  .ws-copy .actions{margin-top:38px;gap:18px}
-
-  /* The photograph, landed 2 Nov.
-
-     ROUNDED TO THE BRAND'S 36px ROUND-RECT (--r-card), at the user's
-     request, so the pictures match the cards and the rest of the site's
-     picture treatments. The earlier build had square corners because the
-     mockup framed it hard; the brand's own radius wins.
-
-     THE RATIO IS 6:5, NOT 4:3, AND THAT IS MEASURED. The source is
-     1370x1148 = 1.193, and 4:3 is 1.333 — forcing it would crop ~10% off
-     the height of a photograph whose whole point is the writing on the
-     whiteboard. 6:5 is 1.2, so object-fit:cover takes almost nothing.
-     If the photograph is ever re-supplied, re-measure this.
-
-     1370px wide covers this column (~640px on a 1512 screen) at 2x, so it
-     is sharp on a retina display. A first, lower-resolution pair at 802px
-     and 524px was replaced the same day. */
-  .ws-shot{
-    margin:0;overflow:hidden;background:var(--ink);
-    aspect-ratio:6/5;
-    border-radius:var(--r-card);
-  }
-  .ws-shot picture{display:block;width:100%;height:100%}
-  .ws-shot img{width:100%;height:100%;object-fit:cover;display:block}
-
-  /* ---------- 4. Section 2 — "Nobody designed it this way" ----------
-     Deep Green, which does three things at once: it breaks the ivory of
-     section 1 so the page has a rhythm rather than one long field, it is
-     the only ground the lime accents below are legal on (V1.0 p.21), and
-     it suits the content — this is the section that names the mess.
-
-     The mockup centres everything. The heading stays centred; the six
-     statements do NOT. Centred body copy means every line starts in a
-     different place, so the eye re-finds the left edge on each one — the
-     same call §29.3 made on the About page's principles. */
-  .ws-mess{
+  /* ---------- 1. The hero ----------
+     Full-bleed photograph under a Deep Green field, washed in from the
+     left so the headline has clean ground. The picture is greyscale
+     rather than a luminosity duotone here: it sits behind a heavy
+     two-stop scrim, and blending it as well crushes the room to a
+     flat field. */
+  .premium-work .ww-hero{
+    position:relative;isolation:isolate;min-height:100svh;overflow:hidden;
+    display:flex;align-items:flex-end;
+    padding:calc(var(--header-h) + 58px) 0 clamp(54px,6vw,96px);
     background:var(--ink);color:var(--paper);
-    padding:var(--section-y) 0;
   }
-  .ws-mess h2{
-    /* No measure cap. site.css caps h2 at 21ch, which broke this into four
-       lines; the two lines are forced below instead, and the longer of them
-       needs about 825px at the 70px ceiling against a 1320px container, so
-       it fits with room to spare. */
-    max-width:none;margin:0 auto;text-align:center;
-    color:var(--paper);
-    /* The one section scale set on 28 Oct (§27). */
-    font-size:clamp(42px,4.7vw,70px);
+  .premium-work .ww-hero-bg{position:absolute;z-index:-2;inset:0}
+  .premium-work .ww-hero-bg img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 48%;
+    filter:grayscale(1) contrast(1.08);
   }
-  /* The mockup's two lines, forced, so the break is the designer's. */
-  .ws-mess-br{display:block}
+  .premium-work .ww-hero::after{
+    content:"";position:absolute;z-index:-1;inset:0;
+    background:
+      linear-gradient(90deg,rgba(20,51,24,.95) 0%,rgba(20,51,24,.72) 44%,rgba(20,51,24,.28) 76%),
+      linear-gradient(0deg,rgba(20,51,24,.9) 0%,rgba(20,51,24,0) 58%);
+  }
+  /* .pr-kicker and .pr-h hard-set Deep Green, which is right on the
+     cream body and wrong on an ink field. Scoped to the dark sections
+     only — lime type is sanctioned on Deep Green, not on Soft Ivory
+     (V1.0 p.21). */
+  .premium-work .ww-hero .pr-kicker,
+  .premium-work .ws-mess .pr-kicker,
+  .premium-work .ws-about .pr-kicker{color:var(--lime)}
+  /* .pr-h runs at leadings well below 1, so its caps rise above their
+     own line box. Every kicker needs clearance for that overshoot or the
+     heading below touches it — it did on the frameworks, the feeling and
+     the why-leaders sections. One rule, all of them. */
+  .premium-work .pr-kicker{margin-bottom:clamp(26px,2.8vw,46px)}
+  .premium-work .ws-addon .pr-kicker,
+  .premium-work .ws-offer-tag{margin-bottom:0}
+  .premium-work .ww-title{
+    --fs:clamp(62px,9.4vw,176px);--lh:.78;
+    max-width:1460px;color:var(--paper);
+  }
+  .premium-work .ww-title span:nth-child(2){margin-left:6%}
+  .premium-work .ww-title span:nth-child(3){margin-left:31%}
+  .premium-work .ww-foot{
+    display:grid;grid-template-columns:minmax(0,560px) auto;gap:36px;
+    align-items:end;margin-top:clamp(38px,5vw,78px);
+  }
+  .premium-work .ww-foot .pr-copy{
+    color:rgba(254,253,242,.82);font-size:clamp(16px,1.25vw,20px);
+  }
+  .premium-work .ww-actions{display:flex;flex-wrap:wrap;gap:12px;justify-self:end}
+  .premium-work .ww-actions .button{white-space:nowrap}
+  .premium-work .ww-actions .button--line{
+    background:transparent;color:var(--paper);border-color:var(--paper);
+  }
+  .premium-work .ww-actions .button--line:hover{background:var(--paper);color:var(--ink)}
+  /* The slow settle, hung off premium-motion.js's own body class
+     rather than a second ready-flag of this page's own. */
+  .premium-motion .premium-work .ww-hero-bg img{
+    transform:scale(1.055);
+    transition:transform 1.8s cubic-bezier(.16,1,.3,1);
+  }
+  .premium-motion .premium-work.premium-ready .ww-hero-bg img{transform:none}
 
-  /* Two columns of three. The statements are uneven in length, so they are
-     separated by hairlines rather than boxed — six cards would turn a list
-     of symptoms into six equal claims. */
-  .ws-mess-list{
-    list-style:none;margin:clamp(40px,5vw,64px) 0 0;padding:0;
+  /* ---------- 2. The problem, named ----------
+     Deep Green: it breaks the ivory so the page has a rhythm, it is
+     the only ground the lime accents are legal on (V1.0 p.21), and it
+     suits the section that names the mess.
+
+     The six statements are hairline-separated, not boxed. Six cards
+     would turn a list of symptoms into six equal claims. */
+  .premium-work .ws-mess{padding:var(--gap) 0;background:var(--ink)}
+  .premium-work .ws-mess-h{
+    --fs:clamp(56px,7.4vw,138px);--lh:.79;
+    color:var(--paper);letter-spacing:-.018em;
+  }
+  .premium-work .ws-mess-h span:nth-child(2){margin-left:18%}
+  .premium-work .ws-mess-list{
+    list-style:none;margin:clamp(56px,6vw,92px) 0 0;padding:0;
     display:grid;grid-template-columns:1fr 1fr;
     column-gap:clamp(28px,4vw,64px);
   }
-  .ws-mess-list li{
+  .premium-work .ws-mess-list li{
     display:grid;grid-template-columns:auto minmax(0,1fr);
     gap:16px;align-items:start;
-    padding:22px 0;
-    border-top:1px solid rgba(204,254,6,.22);
+    padding:26px 0;border-top:1px solid rgba(204,254,6,.24);
   }
-  /* The numeral, not a bullet. Formula Condensed in lime — the same device
-     as .cleanse-num on the homepage, minus the disc: six discs on one
-     screen reads as a control panel. */
-  .ws-mess-n{
-    color:var(--lime);font:16px/1.4 var(--display);
+  /* The numeral, not a bullet — .cleanse-num's device minus the disc.
+     Six discs on one screen reads as a control panel. */
+  .premium-work .ws-mess-n{
+    color:var(--lime);font:18px/1.4 var(--display);font-weight:400;
     letter-spacing:.06em;
   }
-  .ws-mess-list p{
-    margin:0;color:rgba(254,253,242,.84);
-    font-size:17px;line-height:1.5;
-  }
-
-  /* The payoff line. Set in display type, not body, because it is the
-     section's conclusion and the number in it is the same promise the hero
-     makes — "a third of its week back" there, "a third of every week" lost
-     here. That phrase carries the lime; the rest stays ivory so the lime
-     lands on one idea. */
-  .ws-mess-out{
-    margin:clamp(40px,5vw,60px) auto 0;max-width:min(100%,40ch);
-    text-align:center;color:var(--paper);
-    font:clamp(21px,2.3vw,32px)/1.25 var(--display);
+  .premium-work .ws-mess-list .pr-copy{color:rgba(254,253,242,.84)}
+  /* The payoff. Display type, not body: it is the section's
+     conclusion, and the figure in it is the same promise the hero
+     makes. The lime lands on that one phrase. */
+  .premium-work .ws-mess-out{
+    margin:clamp(54px,6vw,86px) 0 0 auto;max-width:34ch;
+    text-align:left;color:var(--paper);
+    font:clamp(26px,3vw,48px)/1.05 var(--display);font-weight:400;
     letter-spacing:.02em;text-transform:uppercase;
   }
-  .ws-mess-out b{font-weight:400;color:var(--lime)}
+  .premium-work .ws-mess-out b{font-weight:400;color:var(--lime)}
 
-  @media(max-width:760px){
-    .ws-mess-list{grid-template-columns:1fr}
-    .ws-mess-out{max-width:none}
+  /* ---------- 3. The system, introduced ----------
+     Back to Soft Ivory, so the page alternates rather than stacking
+     two dark bands.
+
+     The kicker is typed in LITERAL capitals ("OPS Detox™"), the one
+     case where js/site.js §3a widens both letters by itself: it
+     splits on uppercase /([OD])/, so the O of OPS and the D of Detox
+     both match. Retype it in sentence case and the wide letters
+     silently disappear. */
+  .premium-work .ws-clean{padding:var(--gap) 0;background:var(--paper)}
+  .premium-work .ws-clean-grid{
+    display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
+    gap:clamp(48px,7vw,118px);align-items:center;
   }
-
-  /* ---------- 5. Section 3 — "There is a cleaner way" ----------
-     Back to Soft Ivory, so the page alternates ivory / green / ivory rather
-     than stacking two dark bands. Copy left, photograph right, as drawn. */
-  .ws-clean{background:var(--paper);padding:var(--section-y) 0}
-  .ws-clean-grid{
-    display:grid;grid-template-columns:1fr 1.05fr;
-    gap:clamp(32px,5vw,78px);align-items:center;
+  .premium-work .ws-clean-h{
+    --fs:clamp(48px,5.5vw,92px);--lh:.9;
+    margin:0 0 32px;letter-spacing:-.012em;
   }
-  .ws-clean-copy{max-width:600px}
-  .ws-clean-copy .eyebrow{font-size:19px;letter-spacing:.06em}
-
-  /* Deliberately BELOW the one section scale (§27's clamp(42px,4.7vw,70px)).
-     That scale is for titles that own the full container width; this one
-     sits in a ~600px column beside a photograph, where 70px turns a
-     48-character sentence into five lines. §27 already keeps two titles off
-     the scale for the same kind of reason. If the client wants it matched to
-     the others, the heading has to come out of the column and sit full width
-     above both. */
-  .ws-clean-copy h2{
-    margin:16px 0 26px;max-width:none;
-    font-size:clamp(30px,3.3vw,48px);line-height:1.05;
-    color:var(--ink);
-  }
-  .ws-clean-copy p{
-    margin:0 0 18px;color:var(--muted);
-    font-size:18px;line-height:1.55;max-width:48ch;
-  }
-  .ws-clean-copy p:last-child{margin-bottom:0}
-
-  /* Same 36px round-rect as the hero shot, so the page has one picture
-     treatment rather than two.
-
-     7:5 RATHER THAN THE EARLIER 16:10, for the same reason .ws-shot moved
-     to 6:5: the source is 1254x890 = 1.409, and 16:10 is 1.6 — forcing it
-     would crop ~12% off a frame where the left whiteboard's tangle and the
-     right one's single line are the entire argument. 7:5 is 1.4, so almost
-     nothing is lost.
-
-     THE SOURCE WAS CROPPED BEFORE IT WENT IN, and that was not a sizing
-     decision. The supplied file is a SOCIAL POST, 1254x1254, with graphics
-     baked across the top third: the OPS DETOX logo, "TURN OFF THE NOISE.
-     WIN YOUR TIME BACK." and a headline reading "COMPLEXITY OR CLARITY? /
-     SAME PROBLEM. DIFFERENT APPROACH."
-
-     Dropped in whole it would have put a second headline inside the
-     picture, directly beside this section's own h2, and a second logo on a
-     page whose header already carries one. The top 364px were cut with
-     ffmpeg, leaving Oscar, both whiteboards and the mug. THE UNCROPPED FILE
-     IS IN ~/Downloads AS Oscar.jpeg if the banner is ever wanted. */
-  .ws-clean-shot{
+  .premium-work .ws-clean-copy .pr-copy{font-size:clamp(16px,1.1vw,19px)}
+  /* 7:5, measured. The source is 1254x890 = 1.409; forcing 16/10
+     would crop ~12% off a frame where the left whiteboard's tangle
+     and the right one's single line are the entire argument. */
+  .premium-work .ws-clean-shot{
     margin:0;overflow:hidden;background:var(--ink);
-    aspect-ratio:7/5;
-    border-radius:var(--r-card);
+    aspect-ratio:7/5;border-radius:0;
   }
-  .ws-clean-shot picture{display:block;width:100%;height:100%}
-  .ws-clean-shot img{width:100%;height:100%;object-fit:cover;display:block}
+  .premium-work .ws-clean-shot picture{display:block;width:100%;height:100%}
+  .premium-work .ws-clean-shot img{width:100%;height:100%;object-fit:cover;display:block}
 
-  @media(max-width:900px){
-    .ws-clean-grid{grid-template-columns:1fr;gap:34px}
-    .ws-clean-copy{order:1;max-width:none}
-    .ws-clean-shot{order:2}
-    .ws-clean-copy p{max-width:none}
-  }
-
-  @media(max-width:900px){
-    .ws-hero-grid{grid-template-columns:1fr;gap:34px}
-    /* Copy first, photograph second — the same stacking order the rest of
-       the site uses (§15). */
-    .ws-copy{order:1;max-width:none}
-    .ws-shot{order:2}
-    .ws-br{display:inline}
-    .ws-copy .body-copy{max-width:none}
-  }
-
-  /* ---------- 5b. The offer blocks ----------
-     Built as a REUSABLE block, not a one-off. The client named two tracks by
-     email on 29 Oct — "Operational flow, The Execution package (Founder
-     Bottleneck)" and "Organisational flow, The Leadership package (Team
-     Bottleneck)" — so the second one is a markup copy of the first with its
-     own heading, paragraph and three module names. Nothing here is specific
-     to Operational flow.
-
-     Deep Green ground: it is the only legal ground for the lime heading and
-     the lime pill (V1.0 p.21), and it sets the offers apart from the ivory
-     sections that explain things. */
-  /* The two offers now sit as two CARDS on one Soft Ivory section, rather
-     than as two consecutive full-bleed Deep Green bands. Stacked that way
-     they read as one long dark stretch with a gap in it — the client's note
-     on 31 Oct was that they "look identical", which they did: same ground,
-     same width, nothing between them but air.
-
-     As cards they get a visible edge, an ivory gutter between them, and the
-     brand's own 36px round-rect (V1.0) — the same device the homepage uses
-     for exactly this pair. The client has now named Operational Flow as the
-     most-booked track, so a compact badge identifies it without changing
-     the two cards' underlying structure. */
-  .ws-offers{background:var(--paper);padding:var(--section-y) 0}
-  .ws-offers-grid{
+  /* ---------- 4. The two tracks ----------
+     One bordered frame split down the middle. The recommended track
+     takes the Deep Green ground, the comparison stays restrained, and
+     the add-on is a lime rail beneath both — so the three do not read
+     as three equal products. */
+  .premium-work .ws-offers{padding:var(--gap) 0;background:var(--paper)}
+  .premium-work .ws-offers-grid{
     display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:clamp(24px,3vw,40px);align-items:stretch;
+    gap:0;border:1px solid var(--ink);align-items:stretch;
   }
-
-  .ws-offer{
-    background:var(--ink);color:var(--paper);
-    border-radius:var(--r-card);
-    padding:clamp(28px,3.6vw,56px);
+  .premium-work .ws-offer{padding:clamp(34px,4vw,66px);border:0}
+  .premium-work .ws-offer:first-child{background:var(--ink);color:var(--paper)}
+  .premium-work .ws-offer:nth-child(2){
+    background:var(--paper);color:var(--ink);border-left:1px solid var(--ink);
   }
-  .ws-offer h2{
-    max-width:none;color:var(--lime);
-    font-size:clamp(30px,3.4vw,50px);
-  }
-  /* Names the bottleneck each track fixes. Same copy and same device as the
-     homepage's offer cards (§27) — it is what tells the two cards apart at a
-     glance, which the headings alone were not doing. */
-  .ws-offer-tag{
-    display:block;margin:0 0 10px;color:var(--lime);
-    font:clamp(14px,1.15vw,17px)/1.2 var(--display);
+  .premium-work .ws-offer-h{--fs:clamp(44px,4.8vw,78px);--lh:.9}
+  .premium-work .ws-offer:first-child .ws-offer-h,
+  .premium-work .ws-offer:first-child .ws-offer-tag,
+  .premium-work .ws-offer:first-child .ws-mods h3{color:var(--lime)}
+  .premium-work .ws-offer:first-child .ws-offer-lead,
+  .premium-work .ws-offer:first-child .ws-mods p{color:rgba(254,253,242,.8)}
+  .premium-work .ws-offer:nth-child(2) .ws-offer-h,
+  .premium-work .ws-offer:nth-child(2) .ws-offer-tag,
+  .premium-work .ws-offer:nth-child(2) .ws-mods h3{color:var(--ink)}
+  .premium-work .ws-offer:nth-child(2) .ws-offer-lead,
+  .premium-work .ws-offer:nth-child(2) .ws-mods p{color:var(--muted)}
+  /* Names the bottleneck each track fixes — what tells the two cards
+     apart at a glance, which the headings alone were not doing. */
+  .premium-work .ws-offer-tag{
+    display:block;margin:0 0 10px;
+    font:clamp(14px,1.15vw,17px)/1.2 var(--display);font-weight:400;
     letter-spacing:.12em;text-transform:uppercase;
   }
-  .ws-offer-labels{
+  .premium-work .ws-offer-labels{
     display:flex;align-items:center;justify-content:space-between;
     gap:14px;margin:0 0 10px;
   }
-  .ws-offer-labels .ws-offer-tag{margin:0}
-  .ws-booked{
+  .premium-work .ws-offer-labels .ws-offer-tag{margin:0}
+  .premium-work .ws-booked{
     flex:none;padding:7px 13px 6px;border-radius:var(--r-pill);
     background:var(--lime);color:var(--ink);
-    font:13px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;
+    font:13px/1 var(--display);font-weight:400;
+    letter-spacing:.08em;text-transform:uppercase;
   }
-  .ws-offer-lead{
-    margin:22px 0 0;max-width:60ch;
-    color:rgba(254,253,242,.86);
-    font-size:18px;line-height:1.55;
+  .premium-work .ws-offer-lead{margin:22px 0 0;max-width:60ch;font-size:clamp(16px,1.15vw,19px)}
+  .premium-work .ws-mods{
+    list-style:none;margin:42px 0 0;padding:0;
+    display:grid;grid-template-columns:minmax(0,1fr);gap:0;
+  }
+  .premium-work .ws-mods li{padding:20px 0;border-top:1px solid rgba(204,254,6,.42);border-radius:0}
+  .premium-work .ws-mods li:last-child{border-bottom:1px solid rgba(204,254,6,.42)}
+  .premium-work .ws-offer:nth-child(2) .ws-mods li,
+  .premium-work .ws-offer:nth-child(2) .ws-mods li:last-child{border-color:rgba(20,51,24,.3)}
+  .premium-work .ws-mods h3{
+    margin:0 0 8px;
+    font:22px/1.1 var(--display);font-weight:400;
+    letter-spacing:.015em;text-transform:uppercase;
+  }
+  .premium-work .ws-mods p{margin:0;font-size:15px;line-height:1.45}
+  .premium-work .ws-offer .actions{margin-top:clamp(30px,3.4vw,42px)}
+
+  /* The add-on. Tool Stack Detox is the seventh module and fits
+     neither bottleneck, which is exactly why the client proposed it
+     as an add-on — so it is a rail across the foot of both tracks,
+     not a third equal card. */
+  .premium-work .ws-addon{
+    grid-column:1/-1;width:100%;
+    padding:clamp(30px,3.5vw,52px) clamp(34px,4vw,66px);
+    border:0;border-top:1px solid var(--ink);border-radius:0;
+    background:var(--lime);color:var(--ink);text-align:left;
+    display:grid;grid-template-columns:.42fr .68fr 1fr;
+    gap:clamp(24px,4vw,68px);align-items:center;
+  }
+  .premium-work .ws-addon .pr-kicker{margin:0;letter-spacing:.14em}
+  .premium-work .ws-addon-h{--fs:clamp(38px,4vw,66px);--lh:.9;margin:0}
+  .premium-work .ws-addon .pr-copy{margin:0;max-width:54ch;color:var(--ink)}
+
+  /* ---------- 5. The outcomes ----------
+     premium.css's .pr-outcomes and .pr-stats. Only the authored
+     offsets are page-specific. */
+  .premium-work .pr-outcomes{padding-block:calc(var(--gap) * .62)}
+  .premium-work .pr-outcomes-h span:nth-child(1){margin-left:8%}
+  .premium-work .pr-outcomes-h span:nth-child(2){margin-left:35%}
+
+  /* ---------- 6. Why work with me ----------
+     Italic throughout, signing off with a name line rather than a
+     CTA: it reads as Oscar speaking rather than as the site
+     describing him. The page's ask is below, and the two tracks above
+     already carry one each — a fourth button here would compete. */
+  .premium-work .ws-about{padding:var(--gap) 0;background:var(--ink);color:var(--paper)}
+  .premium-work .ws-about-grid{
+    display:grid;
+    grid-template-columns:minmax(320px,.78fr) minmax(0,1.22fr);
+    grid-template-areas:"portrait copy";
+    gap:clamp(48px,7vw,112px);align-items:end;
+  }
+  .premium-work .ws-about-copy{
+    grid-area:copy;max-width:72ch;padding-bottom:clamp(20px,4vw,60px);
+  }
+  .premium-work .ws-about-h{
+    --fs:clamp(58px,7vw,128px);--lh:.8;
+    margin:0 0 38px;color:var(--paper);letter-spacing:-.018em;
+  }
+  /* Italic is the whole point of the block, which is why it is set on
+     the paragraphs and not the section — the kicker, the heading and
+     the sign-off stay upright. */
+  .premium-work .ws-about-copy .pr-copy{
+    font-style:italic;color:rgba(254,253,242,.84);
+    font-size:clamp(16px,1.1vw,19px);
+  }
+  /* An attribution, like the name under a testimonial, not a third
+     paragraph. The gap above does the separating. */
+  .premium-work .ws-about-sign{
+    display:block;margin-top:clamp(34px,4vw,52px);color:var(--lime);
+    font-size:12px;line-height:1.4;letter-spacing:.02em;
+  }
+  .premium-work .ws-about-shot{
+    grid-area:portrait;position:relative;margin:0;padding:0;
+    overflow:visible;border-radius:0;
+    /* An explicit ink backdrop for the blend below to mix against,
+       the same way the homepage's arch gives its cutout one. */
+    background:var(--ink);
+  }
+  /* Duotone, matching the homepage's own cutout-on-ink treatment. A flat
+     greyscale cutout on Deep Green reads as a photograph pasted on, and
+     the white shirt blows out against the field. */
+  .premium-work .ws-about-shot img{
+    /* NO z-index. It was holding the picture above a ::before overlay
+       that no longer exists, and the stacking context it opened was
+       what kept mix-blend-mode from ever reaching the field behind. */
+    display:block;width:100%;height:auto;max-height:760px;
+    object-fit:contain;object-position:50% 100%;
+    filter:grayscale(1) brightness(.92) contrast(1.06);
+    mix-blend-mode:luminosity;
   }
 
-  /* The three modules. Outlined boxes, as drawn — not the site's 36px
-     round-rect cards, which would read as three separate offers rather than
-     as what is inside one. The radius is pulled back to 18px so they still
-     belong to the brand's rounded family without competing with the cards on
-     the homepage. */
-  .ws-mods{
-    list-style:none;margin:clamp(32px,4vw,46px) 0 0;padding:0;
-    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:clamp(14px,1.6vw,22px);
+  /* ---------- 7. The frameworks ----------
+     *** SECOND COPY. *** index.html carries the other one. The three
+     descriptions are PLACEHOLDER and have to be corrected in both
+     files at once; the on-page notice says so. */
+  .premium-work .frameworks{padding:var(--gap) 0;background:var(--paper)}
+  .premium-work .frameworks-head{max-width:none}
+  .premium-work .frameworks-h{
+    --fs:clamp(58px,7vw,128px);--lh:.8;
+    margin:0 0 24px;letter-spacing:-.018em;
   }
-  .ws-mods li{
-    border:1px solid rgba(204,254,6,.42);
-    border-radius:18px;padding:20px 22px;
+  .premium-work .frameworks-head .pr-copy{max-width:66ch}
+  .premium-work .frameworks-grid{
+    display:block;margin-top:clamp(54px,6vw,90px);
+    border-bottom:1px solid var(--ink);
   }
-  .ws-mods h3{
-    margin:0 0 8px;color:var(--paper);
-    font:22px/1.1 var(--display);letter-spacing:.015em;
-    text-transform:uppercase;
+  .premium-work .frameworks-grid article{
+    display:grid;grid-template-columns:70px minmax(220px,.75fr) minmax(0,1.25fr);
+    /* ROW gap 0. Both paragraphs sit in column 3, on rows 1 and 2, so a
+       row gap pushes the description a full gap below a row whose height
+       is already set by the heading — it opened a 65px hole between the
+       one-liner and the sentence it introduces. */
+    gap:0 clamp(22px,3vw,54px);align-items:start;
+    padding:clamp(28px,3vw,46px) 0;
+    background:transparent;border:0;border-top:1px solid var(--ink);border-radius:0;
   }
-  .ws-mods p{
-    margin:0;color:rgba(254,253,242,.72);
-    font-size:15px;line-height:1.45;
+  /* site.css gives .fw-mark a filled lime disc via the shared
+     numbered-card pattern, and INVERTS it on the first row
+     (.frameworks-grid article:first-child .fw-mark). That selector is
+     specificity 0,3,1, so a plain .premium-work .fw-mark loses to it and
+     row 01 kept its disc while 02 and 03 went flat. Both are matched
+     here. Flattened to a plain numeral, as the homepage's IP rows do. */
+  .premium-work .fw-mark,
+  .premium-work .frameworks-grid article:first-child .fw-mark{
+    width:auto;height:auto;border-radius:0;background:transparent;color:var(--ink);
+    font:clamp(30px,3.2vw,52px)/.8 var(--display);font-weight:400;letter-spacing:-.02em;
   }
-
-  .ws-offer .actions{margin-top:clamp(30px,3.4vw,42px)}
-
-  /* The add-on. It sits in the same grid as the two tracks, but it is
-     DELIBERATELY NOT a third Deep Green card: Tool Stack Detox is the
-     seventh module and fits neither bottleneck, which is exactly why the
-     client proposed it as an add-on. Three identical cards would read as
-     three equal choices and undo that.
-
-     So it is the lighter weight of the same family — ivory ground, Deep
-     Green hairline, same 36px radius, centred and narrower. Deep Green type
-     on Soft Ivory; no lime anywhere, which p.22 would not allow here. */
-  .ws-addon{
-    /* Solid, so the section's dot field stops at the card edge instead of
-       running through the copy. Same ivory as the ground, so the card still
-       reads as quiet — it is the border and the clean interior that define
-       it, not a contrasting fill. */
-    background:var(--paper);
-    border:1px solid rgba(20,51,24,.28);
-    border-radius:var(--r-card);
-    padding:clamp(28px,3.4vw,46px) clamp(24px,3vw,40px);
-    text-align:center;
-    grid-column:1/-1;width:min(900px,100%);justify-self:center;
+  .premium-work .frameworks-grid h3{
+    margin:0;color:var(--ink);
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(28px,3vw,48px);line-height:.95;
+    letter-spacing:.03em;text-transform:uppercase;
   }
-  .ws-addon .eyebrow{color:var(--ink);font-size:16px;letter-spacing:.14em}
-  .ws-addon h2{
-    margin:10px 0 0;max-width:none;color:var(--ink);
-    font-size:clamp(28px,3vw,44px);
+  .premium-work .frameworks-grid article>.pr-copy{grid-column:3}
+  .premium-work .frameworks-grid .fw-line{
+    margin:0 0 10px;color:var(--ink);font-weight:700;text-align:left;hyphens:none;
   }
-  @media(max-width:1050px){
-    .ws-offers-grid{grid-template-columns:minmax(0,1fr)}
-    .ws-addon{grid-column:auto}
+  .premium-work .frameworks-grid article>.pr-copy:last-of-type{color:var(--muted)}
+  .premium-work .frameworks-note{
+    margin:clamp(28px,3vw,38px) 0 0;max-width:72ch;
+    color:var(--muted);font-size:14px;line-height:1.6;
   }
-  .ws-addon p{
-    margin:16px auto 0;max-width:56ch;
-    color:var(--muted);font-size:17px;line-height:1.55;
-  }
-
-  @media(max-width:980px){
-    .ws-mods{grid-template-columns:1fr}
+  .premium-work .frameworks-note b{color:var(--ink)}
+  /* Copy placeholder marker. Delete the element and this rule
+     together once Oscar has supplied the real descriptions. */
+  .premium-work .fw-draft{
+    margin:22px 0 0;padding:14px 18px;max-width:72ch;
+    border:1px dashed rgba(20,51,24,.4);border-radius:0;
+    color:var(--muted);font-size:13px;line-height:1.5;
   }
 
-  /* ---------- 5c. Section 6 — "Why work with me" ----------
-     The client's own About block, drawn with the copy left and a portrait
-     right. It is NOT site.css's `.about` (.section-grid), and it should not
-     be forced into it: that block sets its copy in roman body type, caps the
-     figure at the grid's second column and ends on a button. This one is set
-     ITALIC throughout, signs off with a name line instead of a CTA, and the
-     portrait is a narrow standing frame rather than a half-width photograph.
-
-     No CTA on purpose. The page's ask is 400px below this, in .choice, and
-     the two offer cards above already carry one each. A fourth button here
-     would compete with all three.
-
-     Ivory with the dot field, like .ws-clean, so the page keeps alternating
-     ivory / green rather than stacking this under the stats band. */
-  .ws-about{background:var(--paper);padding:var(--section-y) 0}
-  .ws-about-grid{
-    display:grid;grid-template-columns:minmax(0,1fr) clamp(260px,30vw,380px);
-    gap:clamp(32px,4vw,64px);align-items:start;
-  }
-
-  /* The copy column is capped in CHARACTERS, not percent. Italic at 17px
-     runs long, and the drawing breaks both paragraphs at about 54
-     characters; without the cap the first line would stretch to ~90 on a
-     wide screen and the block would stop reading as the aside it is. */
-  .ws-about-copy{max-width:62ch}
-  .ws-about-copy .eyebrow{font-size:16px;letter-spacing:.06em}
-
-  /* Below the section scale, for the §5 reason: this title sits in a column
-     beside a picture, not across the container. */
-  .ws-about-copy h2{
-    margin:14px 0 30px;max-width:none;color:var(--ink);
-    font-size:clamp(28px,3vw,44px);line-height:1.05;
-  }
-
-  /* Italic is the whole point of the block — it reads as Oscar speaking
-     rather than as the site describing him, which is what lets it sit
-     without a heading rule or a frame. Set on the paragraphs, not the
-     section, so the eyebrow, the h2 and the sign-off stay upright. */
-  .ws-about-copy p{
-    margin:0 0 22px;font-style:italic;
-    color:var(--ink);font-size:17px;line-height:1.6;
-  }
-  .ws-about-copy p:last-of-type{margin-bottom:0}
-
-  /* The sign-off. Deliberately tiny and muted: it is an attribution, like
-     the name under a testimonial, not a third paragraph. The gap above it
-     does the separating, so there is no rule and no italic. */
-  .ws-about-sign{
-    display:block;margin-top:clamp(34px,4vw,52px);
-    color:var(--muted);font-size:12px;line-height:1.4;
-    letter-spacing:.02em;
-  }
-
-  /* Same 36px round-rect as every other picture on this page. 5:7 standing
-     frame, which is the proportion drawn and close to the source's own
-     1178x1700 (0.693), so the crop takes almost nothing. */
-  .ws-about-shot{
-    margin:0;overflow:hidden;background:var(--ink);
-    aspect-ratio:5/7;border-radius:var(--r-card);
-  }
-  .ws-about-shot picture{display:block;width:100%;height:100%}
-  .ws-about-shot img{width:100%;height:100%;object-fit:cover;display:block}
-
-  @media(max-width:900px){
-    /* Copy first, picture second, as everywhere else on the site (§15). The
-       frame stops being a narrow standing rectangle here and is capped
-       instead, so it does not become a full-width tower on a phone. */
-    .ws-about-grid{grid-template-columns:1fr;gap:34px}
-    .ws-about-copy{order:1;max-width:none}
-    .ws-about-shot{order:2;max-width:320px;align-self:center}
-  }
-
-  /* ---------- 5e. Section 8 — who it is for, and who it is not ----------
-     The drawing is two plain lists side by side on white. Built as two
-     CARDS instead, and deliberately UNEQUAL ones, because the two columns
-     are not doing the same job: the left is the one a qualified reader
-     should recognise themselves in, the right only has to let the wrong
-     reader leave early. Giving them matching weight makes the page argue
-     with itself at the exact point it should be closing.
-
-     So: the "for" card takes the Deep Green ground, lime heading and ticked
-     items, and the "not for" card stays a quiet outlined panel on the ivory.
-     Lime on Deep Green is the one legal pairing for it (V1.0 p.21), which is
-     also why the ticks can be lime here and could not be on ivory. */
-  .ws-fit{padding:var(--section-y) 0;background:var(--paper)}
-  .ws-fit-grid{
+  /* ---------- 8. Who it is for, and who it is not ----------
+     Deliberately UNEQUAL. The left is the card a qualified reader
+     should recognise themselves in; the right only has to let the
+     wrong reader leave early. Matching weight makes the page argue
+     with itself at the point it should be closing. */
+  .premium-work .ws-fit{padding:var(--gap) 0;background:var(--paper)}
+  .premium-work .ws-fit-grid{
     display:grid;grid-template-columns:1.12fr 1fr;
-    gap:clamp(18px,2vw,26px);align-items:start;
+    gap:0;border:1px solid var(--ink);align-items:stretch;
   }
-  .ws-fit-card{
-    border-radius:var(--r-card);
-    padding:clamp(30px,3.2vw,46px);
-    transition:transform .2s ease,box-shadow .2s ease;
-  }
-  /* No measure cap: at 18ch both titles broke after "is" and left "for" /
-     "not for" stranded on a line of their own. */
-  .ws-fit-card h2{
-    margin:0 0 clamp(22px,2.4vw,30px);max-width:none;
-    font-size:clamp(24px,2.1vw,34px);line-height:1.06;
-  }
+  .premium-work .ws-fit-card{padding:clamp(36px,4vw,66px);border-radius:0}
+  .premium-work .ws-fit-h{--fs:clamp(38px,4vw,66px);--lh:.92;margin:0 0 clamp(22px,2.4vw,30px)}
+  .premium-work .ws-fit--yes{background:var(--ink);color:var(--paper)}
+  .premium-work .ws-fit--yes .ws-fit-h{color:var(--lime)}
+  .premium-work .ws-fit--no{border:0;border-left:1px solid var(--ink);background:var(--paper)}
+  .premium-work .ws-fit--no .ws-fit-h{color:var(--ink)}
+  .premium-work .ws-fit--no .pr-copy{margin:0;max-width:42ch;color:var(--muted)}
 
-  /* The YES card. */
-  .ws-fit--yes{background:var(--ink);color:var(--paper)}
-  .ws-fit--yes:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-  .ws-fit--yes h2{color:var(--lime)}
-
-  /* --- The ticked list, shared by §5e and §5f ---
-     A lime disc with an ink tick, which is .fw-mark inverted. Drawn in CSS
-     rather than set as a ✓ character so it keeps its size and weight when
-     the type scales, and so it cannot pick up an emoji font.
-
-     The disc is positioned against the FIRST LINE of the item, not centred
-     on the item, so it stays put whether the line wraps once or three
-     times. --ws-tick-top is how the two users nudge that one value instead
-     of redeclaring the pseudo-elements. */
-  .ws-ticks{margin:0;padding:0;list-style:none;--ws-tick-top:2px}
-  .ws-ticks li{
+  /* The ticked list, shared by sections 8 and 9. A lime disc with an
+     ink tick, drawn in CSS rather than set as a ✓ character so it
+     keeps its weight when the type scales and cannot pick up an emoji
+     font. The disc is positioned against the FIRST LINE of the item,
+     so it stays put whether the line wraps once or three times. */
+  .premium-work .ws-ticks{margin:0;padding:0;list-style:none;--ws-tick-top:2px}
+  .premium-work .ws-ticks li{
     position:relative;padding:0 0 0 38px;
     font-size:16px;line-height:1.5;
   }
-  .ws-ticks li::before{
+  .premium-work .ws-ticks li::before{
     content:'';position:absolute;left:0;top:var(--ws-tick-top);
-    width:22px;height:22px;border-radius:50%;
-    background:var(--lime);
+    width:22px;height:22px;border-radius:50%;background:var(--lime);
   }
-  .ws-ticks li::after{
+  .premium-work .ws-ticks li::after{
     content:'';position:absolute;left:8px;
     top:calc(var(--ws-tick-top) + 6px);
     width:5px;height:9px;
     border:solid var(--ink);border-width:0 2px 2px 0;
     transform:rotate(43deg);
   }
-
-  /* Inside the YES card: ivory text and lime hairlines, on the dark ground.
-     Every item after the first carries its own top padding, so its tick
-     moves down by that much. */
-  .ws-fit--yes .ws-ticks li{color:rgba(254,253,242,.88)}
-  .ws-fit--yes .ws-ticks li+li{
+  .premium-work .ws-fit--yes .ws-ticks li{color:rgba(254,253,242,.88)}
+  .premium-work .ws-fit--yes .ws-ticks li+li{
     margin-top:18px;padding-top:18px;
     border-top:1px solid rgba(204,254,6,.22);
     --ws-tick-top:20px;
   }
 
-  /* The NO card. Outlined, not filled: it has to be legible and findable,
-     not sold. One paragraph rather than a second ticked list, as drawn —
-     four bullets here would read as four reasons to leave. */
-  /* --panel, not transparent: left transparent the dot field showed
-     THROUGH the card, which made the quiet one look like a hole in the
-     section rather than a panel on it. */
-  .ws-fit--no{background:var(--panel);border:1px solid var(--rule)}
-  .ws-fit--no h2{color:var(--ink)}
-  .ws-fit--no p{
-    margin:0;color:var(--muted);
-    font-size:16px;line-height:1.6;max-width:42ch;
+  /* ---------- 9. What a clean operation feels like ----------
+     The lightest section on the page on purpose: the two above are
+     both grids, and a third set of boxes would turn the end of the
+     page into a stack of containers. */
+  .premium-work .ws-feel{padding:var(--gap) 0;background:var(--paper)}
+  .premium-work .ws-feel .pr-wrap{
+    display:grid;grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);
+    grid-template-rows:auto 1fr;
+    column-gap:clamp(54px,8vw,132px);align-items:start;
   }
-
-  @media(max-width:860px){
-    .ws-fit-grid{grid-template-columns:1fr;gap:16px}
-    .ws-fit-card h2{max-width:none}
-    .ws-fit--no p{max-width:none}
+  .premium-work .ws-feel .pr-kicker{grid-column:1;grid-row:1}
+  .premium-work .ws-feel-h{
+    --fs:clamp(54px,6.3vw,112px);--lh:.82;
+    grid-column:1;grid-row:2;margin:0;max-width:11ch;
+    letter-spacing:-.016em;
   }
-
-  /* ---------- 5f. Section 9 — what a clean operation feels like ----------
-     The drawing is one long six-item bullet list. Six items in a single
-     column directly before the ask is a wall, so they run as a RULED TWO
-     COLUMN list instead: same six lines, same order, read left to right.
-
-     No cards. The two sections above this one are both card grids, and a
-     third set of boxes would turn the end of the page into a stack of
-     containers. This is the lightest section on the page on purpose — it is
-     the payoff, and it sits one scroll from the CTA.
-
-     The ticks are §5e's, not a second pair of pseudo-elements. */
-  .ws-feel{padding:var(--section-y) 0;background:var(--paper)}
-  .ws-feel .eyebrow{font-size:16px;letter-spacing:.06em}
-  /* Two lines, as drawn. The cap is what breaks it after "feels like,"
-     rather than leaving "within weeks" alone on line three. */
-  .ws-feel h2{
-    margin:14px 0 clamp(34px,4vw,52px);max-width:22ch;
-    font-size:clamp(30px,3.4vw,50px);line-height:1.06;color:var(--ink);
+  .premium-work .ws-feel .ws-ticks{
+    grid-column:2;grid-row:1/3;
+    display:block;border-bottom:1px solid var(--rule);
   }
-  /* COLUMN-major, not row-major. Row-major would have forced the markup
-     into 1,4,2,5,3,6 to get three items per column, which hands a screen
-     reader a scrambled list. Flowing down the columns instead keeps the
-     markup in the drawing's own 1-6 order — and that order already splits
-     3/3 exactly as detox.html's two lists do. */
-  .ws-feel .ws-ticks{
-    display:grid;grid-auto-flow:column;
-    grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,auto);
-    column-gap:clamp(28px,4vw,64px);
+  /* The six lines carry the brand's own icon files, the lime-disc
+     colourway from 5_ICONS, at the same 52px as the numbered circles
+     elsewhere — the icon set and the numbers are drawn as one system.
+     The disc is part of the SVG, so the generic tick is switched off
+     here; section 8's lists still use it. */
+  .premium-work .ws-feel .ws-ticks li::before,
+  .premium-work .ws-feel .ws-ticks li::after{content:none}
+  .premium-work .ws-feel .ws-ticks li{
+    min-height:92px;padding:20px 0 20px 76px;
+    border-top:1px solid var(--rule);color:var(--ink);
   }
-  /* A rule above EVERY item, including the first two, so the two columns
-     read as one ruled field rather than as two separate lists that happen
-     to sit next to each other. */
-  /* ---------- The six lines carry real brand icons ----------
-     Designer, 7 Nov: "the icons bigger, same size as the circle numbers."
-     They were 22px lime tick discs against 52px numbered circles elsewhere
-     on the site, so the two read as different objects.
-
-     These are the brand's own icon files, the lime-disc colourway from
-     5_ICONS, at the same 52px as the numbered circles — which is the point:
-     the icon set and the numbers are drawn as one system, a Deep Green
-     glyph in a lime disc, and they should match.
-
-     The disc is part of the SVG, so there is no wrapper and no CSS circle.
-     The generic ::before/::after tick is switched off here; §8's two
-     for/not-for lists still use it.
-
-     MAPPING. Four lines have an obvious module icon. "Growth without new
-     headcount" takes Ownership, and "two weeks away" REPEATS Decision —
-     there is no icon for a company running without its founder, and
-     inventing a meaning for one of the other module icons would quietly
-     break what that icon means on detox.html. The repeat is placed on the
-     sixth line, not the fifth, so the two Decision icons are not adjacent
-     in the stacked right-hand column. If the designer ever draws two more,
-     they drop straight in here. */
-  .ws-feel .ws-ticks li::before,
-  .ws-feel .ws-ticks li::after{content:none}
-  .ws-feel .ws-ticks li{
-    padding:20px 0 20px 76px;
-    border-top:1px solid var(--rule);
-    color:var(--ink);
-  }
-  .ws-feel .ws-ticks li img{
+  .premium-work .ws-feel .ws-ticks li img{
     position:absolute;left:0;top:18px;
     width:52px;height:52px;display:block;
   }
 
-  @media(max-width:860px){
-    .ws-feel h2{max-width:none}
-    .ws-feel .ws-ticks{grid-auto-flow:row;grid-template-columns:1fr;grid-template-rows:none}
-  }
-
-  /* ---------- 5g. Section 11 — why leaders choose ----------
-     Six cards, 3x2, as drawn. The card is detox.html's `.reason-grid`
-     treatment rather than site.css's: site.css's version sets the card
-     number in Detox Green ON WHITE, which §8 recorded as a live V1.0
-     violation (p.22's third watchout) and §41 closed on detox.html by
-     putting the lime on a Deep Green pill. Reusing the shared class here
-     would have inherited the violation and needed overriding, so the block
-     is scoped — and since the drawing has no numerals on these cards, the
-     pill does not appear at all.
-
-     NO NUMBERS is also what keeps these six from reading as the same object
-     as the three framework cards two sections up, which DO carry numbered
-     discs. Same page, two card grids: they have to be told apart.
-
-     The heading is centred, which no other section on this page is. It is
-     the handoff into the closing CTA, which is also centred. */
-  .ws-why{padding:var(--section-y) 0;background:var(--paper)}
-  .ws-why-head{text-align:center;margin-bottom:clamp(38px,4.4vw,60px)}
-  .ws-why-head .eyebrow{font-size:15px;letter-spacing:.14em;color:var(--muted)}
-  .ws-why-head h2{
-    margin:12px auto 0;max-width:none;
-    font-size:clamp(38px,4.6vw,70px);line-height:1;color:var(--ink);
-  }
-  .ws-why-grid{
+  /* ---------- 10. Why leaders choose ----------
+     Six ruled cells, numbered by CSS counters in the stylesheet
+     rather than in the markup — the numerals are decoration and a
+     screen reader should not read them. */
+  .premium-work .ws-why{padding:var(--gap) 0;background:var(--paper)}
+  .premium-work .ws-why-head{text-align:left;margin-bottom:clamp(38px,4.4vw,60px)}
+  .premium-work .ws-why-h{--fs:clamp(58px,7vw,128px);--lh:.8;margin:0}
+  .premium-work .ws-why-grid{
     display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:clamp(16px,1.8vw,24px);
+    gap:0;border-top:1px solid var(--ink);
   }
-  .ws-why-grid article{
-    background:#fff;border:1px solid var(--rule);
-    border-radius:var(--r-card);padding:clamp(24px,2.4vw,34px);
-    transition:transform .18s ease,box-shadow .18s ease;
+  .premium-work .ws-why-grid article{
+    position:relative;
+    padding:clamp(34px,4vw,62px) clamp(26px,3vw,48px);
+    background:transparent;border:0;border-radius:0;
+    border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
+    transition:background-color .3s ease;
   }
-  .ws-why-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-  /* Body type, not display: these are six short claims read as sentences,
-     and in condensed caps at this size they would each break to three lines
-     and start competing with the section title above them. */
-  .ws-why-grid h3{
-    margin:0 0 10px;max-width:none;text-transform:none;
+  .premium-work .ws-why-grid article:nth-child(3n){border-right:0}
+  .premium-work .ws-why-grid article:hover{background:rgba(20,51,24,.035)}
+  .premium-work .ws-why-grid article::before{
+    display:block;margin-bottom:clamp(28px,3vw,48px);color:var(--ink);
+    font:18px/1 var(--display);font-weight:400;letter-spacing:.08em;
+  }
+  .premium-work .ws-why-grid article:nth-child(1)::before{content:"01"}
+  .premium-work .ws-why-grid article:nth-child(2)::before{content:"02"}
+  .premium-work .ws-why-grid article:nth-child(3)::before{content:"03"}
+  .premium-work .ws-why-grid article:nth-child(4)::before{content:"04"}
+  .premium-work .ws-why-grid article:nth-child(5)::before{content:"05"}
+  .premium-work .ws-why-grid article:nth-child(6)::before{content:"06"}
+  /* Body type, not display: six short claims read as sentences, and
+     in condensed caps at this size each would break to three lines
+     and compete with the section title. */
+  .premium-work .ws-why-grid h3{
+    margin:0 0 10px;max-width:none;color:var(--ink);
     font-family:var(--sans);font-weight:700;
-    font-size:17px;line-height:1.3;color:var(--ink);
+    font-size:17px;line-height:1.3;text-transform:none;
   }
-  .ws-why-grid p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
+  .premium-work .ws-why-grid .pr-copy{color:var(--muted)}
 
-  @media(max-width:1000px){
-    .ws-why-grid{grid-template-columns:1fr 1fr}
+  /* ---------- 11. Testimonials and the closing switch ----------
+     premium.css's .pr-voices carries the band. The switch rests on
+     Clarity: aria-pressed="true" is the resting state js/site.js
+     snaps back to, so the attribute must not be flipped to change
+     which side lights. */
+  .premium-work .pr-voices{padding-block:calc(var(--gap) * .5)}
+  /* --lh:.92 rather than the usual .79: these two lines sit much
+     closer to each other than the staircases elsewhere, and the
+     padding keeps the clip-path reveal from shaving the caps. */
+  .premium-work .pr-voices-h{--fs:clamp(58px,8.4vw,152px);--lh:.92}
+  .premium-work .pr-voices-h span{padding-block:.035em .055em}
+  .premium-work .pr-voices-h span:nth-child(1){margin-left:4%}
+  .premium-work .pr-voices-h span:nth-child(2){margin-left:54%}
+  .premium-work .choice{
+    padding-block:calc(var(--gap) * .5) var(--gap);
+    text-align:left;background:var(--paper);
   }
-  @media(max-width:620px){
-    .ws-why-grid{grid-template-columns:1fr}
+  .premium-work .choice .container{width:min(1600px,calc(100% - 96px))}
+  .premium-work .ww-choice-h{--fs:clamp(60px,7.8vw,146px)}
+  .premium-work .ww-choice-h span:nth-child(1){margin-left:24%}
+  .premium-work .ww-choice-h span:nth-child(2){margin-left:47%}
+  .premium-work .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-work .choice .toggle-rows{max-width:980px;margin-top:22px}
+  .premium-work .choice .toggle-row{
+    padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
+    gap:clamp(20px,3vw,46px);
   }
+  .premium-work .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
 
-  /* ---------- 5d. Section 7 — the frameworks, COPIED FROM index.html ----------
-     *** THIS IS THE SECOND COPY OF THIS BLOCK. *** index.html §3 has the
-     other one. They were byte-identical when copied, 2 Nov.
-     CHANGE ONE AND THE TWO PAGES DRIFT APART SILENTLY — including the three
-     framework descriptions, which are still PLACEHOLDER COPY awaiting
-     Oscar's own wording, so they are the likeliest thing here to be edited.
-     This belongs in css/site.css with the testimonials; see §42's count. */
-  .frameworks{padding:var(--section-y) 0;background:var(--paper)}
-  .frameworks-head{max-width:66ch}
-  .frameworks-head h2{margin:14px 0 18px;font-size:clamp(36px,3.9vw,58px);max-width:none}
-  .frameworks-head p{color:var(--muted);font-size:clamp(15px,1.25vw,17px);line-height:1.6}
-  .frameworks-grid{
-    margin-top:clamp(40px,4.5vw,60px);
-    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;
+  /* ---------- 12. Reveal stagger ----------
+     Delays only. The states themselves are premium.css's .hm-*. */
+  .premium-work .ws-mess-list li:nth-child(2),
+  .premium-work .ws-why-grid article:nth-child(2),
+  .premium-work .pr-stats article:nth-child(2),
+  .premium-work .frameworks-grid article:nth-child(2),
+  .premium-work .ws-feel .ws-ticks li:nth-child(2){--hm-delay:.1s}
+  .premium-work .ws-mess-list li:nth-child(3),
+  .premium-work .ws-why-grid article:nth-child(3),
+  .premium-work .pr-stats article:nth-child(3),
+  .premium-work .frameworks-grid article:nth-child(3),
+  .premium-work .ws-feel .ws-ticks li:nth-child(3){--hm-delay:.2s}
+  .premium-work .ws-mess-list li:nth-child(4),
+  .premium-work .ws-why-grid article:nth-child(4),
+  .premium-work .pr-stats article:nth-child(4),
+  .premium-work .ws-feel .ws-ticks li:nth-child(4){--hm-delay:.3s}
+  .premium-work .ws-mess-list li:nth-child(5),
+  .premium-work .ws-why-grid article:nth-child(5),
+  .premium-work .ws-feel .ws-ticks li:nth-child(5){--hm-delay:.4s}
+  .premium-work .ws-mess-list li:nth-child(6),
+  .premium-work .ws-why-grid article:nth-child(6),
+  .premium-work .ws-feel .ws-ticks li:nth-child(6){--hm-delay:.5s}
+  .premium-work .ws-offer:nth-child(2){--hm-delay:.1s}
+  .premium-work .ws-addon{--hm-delay:.2s}
+
+  /* ---------- 13. Responsive ----------
+     The channel widths come from premium.css. These are the
+     compositions that have to change shape. */
+  @media(max-width:1050px){
+    .premium-work .ws-offers-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-work .ws-offer:nth-child(2){border-left:0;border-top:1px solid var(--ink)}
+    .premium-work .ws-addon{grid-template-columns:minmax(0,1fr);grid-column:auto}
+    .premium-work .ws-why-grid{grid-template-columns:1fr 1fr}
+    .premium-work .ws-why-grid article:nth-child(3n){border-right:1px solid var(--ink)}
+    .premium-work .ws-why-grid article:nth-child(2n){border-right:0}
+    .premium-work .choice .container{width:min(100%,calc(100% - 56px))}
   }
-  .frameworks-grid article{
-    display:flex;flex-direction:column;
-    background:var(--panel);border:1px solid var(--rule);
-    border-radius:var(--r-card);padding:34px 32px 32px;
-    transition:transform .2s ease,box-shadow .2s ease;
+  @media(max-width:850px){
+    .premium-work .ww-hero{padding-bottom:46px}
+    .premium-work .ww-hero::after{
+      background:linear-gradient(0deg,rgba(20,51,24,.96) 0%,rgba(20,51,24,.62) 70%,rgba(20,51,24,.34) 100%);
+    }
+    .premium-work .ww-title{--fs:clamp(34px,10.4vw,72px);--lh:.84}
+    .premium-work .ww-foot{grid-template-columns:minmax(0,1fr);gap:26px;margin-top:34px}
+    .premium-work .ww-actions{justify-self:start}
+    .premium-work .ws-mess-list{grid-template-columns:minmax(0,1fr)}
+    .premium-work .ws-mess-out{margin-left:0;max-width:none}
+    .premium-work .ws-clean-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-work .ws-about-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "portrait"}
+    .premium-work .ws-about-shot{max-width:520px}
+    .premium-work .ws-feel .pr-wrap{grid-template-columns:minmax(0,1fr);grid-template-rows:auto}
+    .premium-work .ws-feel .pr-kicker,
+    .premium-work .ws-feel-h,
+    .premium-work .ws-feel .ws-ticks{grid-column:1;grid-row:auto}
+    .premium-work .ws-feel-h{max-width:none;margin-bottom:clamp(40px,7vw,68px)}
+    .premium-work .frameworks-grid article{grid-template-columns:54px minmax(0,1fr)}
+    .premium-work .frameworks-grid article>.pr-copy{grid-column:2}
+    .premium-work .ws-fit-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-work .ws-fit--no{border-left:0;border-top:1px solid var(--ink)}
   }
-  .frameworks-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-  /* The lead framework is the one he named first and the one the method is
-     built on, so it takes the Detox Green ground the diagnostic card uses. */
-  .frameworks-grid article:first-child{background:var(--lime);border-color:var(--lime)}
-  /* .fw-mark takes the shared numbered-circle treatment from css/site.css
-     (lime disc, Deep Green numeral, inverting on the lime first card). It
-     used to be a 44px INVERTED disc declared here, which made it the odd
-     one out among the site's five numbering styles. 7 Nov. */
-  .frameworks-grid h3{
-    margin:24px 0 14px;color:var(--ink);
-    font:clamp(23px,2vw,31px)/1.05 var(--display);
-    letter-spacing:.03em;text-transform:uppercase;
-  }
-  .fw-line{margin:0 0 14px;color:var(--ink);font-size:17px;font-weight:700;line-height:1.35}
-  .frameworks-grid article>p:last-of-type{
-    margin:0;color:var(--muted);font-size:15px;line-height:1.55;
-  }
-  .frameworks-grid article:first-child .fw-line,
-  .frameworks-grid article:first-child>p:last-of-type{color:var(--ink)}
-  .frameworks-note{
-    margin:clamp(28px,3vw,38px) 0 0;color:var(--muted);
-    font-size:14px;line-height:1.6;max-width:72ch;
-  }
-  .frameworks-note b{color:var(--ink)}
-  /* Copy placeholder marker. Delete the element and this rule together once
-     Oscar has supplied the real framework descriptions. */
-  .fw-draft{
-    margin:22px 0 0;padding:14px 18px;
-    border:1.5px dashed rgba(20,51,24,.4);border-radius:var(--r-card);
-    color:var(--muted);font-size:13px;line-height:1.5;max-width:72ch;
-  }
-  @media(max-width:1000px){
-    .frameworks-grid{grid-template-columns:1fr 1fr}
-    .frameworks-grid article:first-child{grid-column:span 2}
+  @media(max-width:760px){
+    /* premium.css relaxes .pr-h to --lh:.88 below 760px, but it loads
+       first, so the authored desktop values above would still win.
+       Restated rather than inherited. */
+    .premium-work .ww-title{--lh:.86}
+    .premium-work .ws-mess-h{--lh:.86}
+    .premium-work .ws-clean-h,
+    .premium-work .ws-offer-h,
+    .premium-work .ws-addon-h,
+    .premium-work .ws-about-h,
+    .premium-work .frameworks-h,
+    .premium-work .ws-fit-h,
+    .premium-work .ws-feel-h,
+    .premium-work .ws-why-h{--lh:.9}
+    .premium-work .choice .container{width:min(100%,calc(100% - 36px))}
+    .premium-work .choice-note{margin-inline:0;text-align:left}
   }
   @media(max-width:700px){
-    .frameworks-grid{grid-template-columns:1fr}
-    .frameworks-grid article:first-child{grid-column:span 1}
+    .premium-work .ws-why-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-work .ws-why-grid article:nth-child(n){border-right:0}
+    .premium-work .choice .toggle-row{padding:18px 20px 15px;gap:14px}
+    .premium-work .choice .choice-toggle .t-switch{width:100px;height:60px}
   }
-
   </style>
 </head>
-<body>
+<body class="premium-page premium-work">
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
     <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -770,59 +671,33 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </nav>
-      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk <span>→</span></a>
+      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
     </div>
   </header>
 
   <main id="main">
 
-    <!-- ===== SECTION 1 — the hero =====
-         Built from the client's supplied design. The two coral labels in
-         that design are ANNOTATIONS, not copy: "Leads to contact" and
-         "Leads to page with Calendly integration" describe where each
-         button goes, and both are wired accordingly. -->
-    <section class="ws-hero ws-dots">
-      <div class="container">
-        <div class="ws-hero-grid">
-          <div class="ws-copy">
-            <!-- The D is wrapped BY HAND, exactly as on index.html. site.js
-                 §3a splits on UPPERCASE /([OD])/ and this line is typed in
-                 sentence case and uppercased by CSS, so the script matches
-                 only the literal capital O and the D would stay narrow.
-
-                 Client rule, 28 Oct: "Operational Detox" always carries a
-                 wide O and a wide D. One letter each — never ss01 on the
-                 whole word, which swaps every alternate and destroys the
-                 condensed face (§9). -->
-            <span class="eyebrow">Operational detox for scale-ups</span>
-
-            <!-- Wide letters wrapped by hand, same reason. If this copy
-                 changes, re-wrap by hand and re-measure the size ceiling. -->
-            <h2 class="ws-head">Give your leadership team <span class="ws-br"></span>a third of its week back.</h2>
-
-            <p class="body-copy">We help scale-up founders run a faster, leaner company by cleansing its operations of everything growth left behind, together with their team.</p>
-
-            <!-- Order, labels and styling all follow index.html's hero, so
-                 the two pages offer the same pair in the same way. -->
-            <div class="actions">
-              <a class="button" href="contact.html">Let’s talk</a>
-              <a class="button button--line" href="diagnostic.html">Book the free diagnostic</a>
-            </div>
+    <!-- ===== SECTION 1 — premium image-led hero =====
+         The copy is unchanged. The composition is the approved Work With
+         Us hero review, promoted into the real page. -->
+    <section class="ww-hero" aria-labelledby="ww-title">
+      <div class="ww-hero-bg">
+        <img src="assets/img/premium-office-pexels.jpg" width="2400" height="1600" alt="" fetchpriority="high">
+      </div>
+      <div class="pr-wrap">
+        <span class="pr-kicker ww-kicker hm hm-copy">Operational detox for scale-ups</span>
+        <h1 class="pr-h ww-title hm hm-lines" id="ww-title">
+          <span>Give your leadership</span>
+          <span>team a third of its</span>
+          <span>week back.</span>
+        </h1>
+        <div class="ww-foot hm hm-copy">
+          <p class="pr-copy">We help scale-up founders run a faster, leaner company by cleansing its operations of everything growth left behind, together with their team.</p>
+          <div class="ww-actions">
+            <a class="button" href="contact.html">Let’s talk</a>
+            <a class="button button--line" href="diagnostic.html">Book the free diagnostic</a>
           </div>
-
-          <!-- The supplied photograph, landed 2 Nov. AVIF, then WebP, then
-               JPEG — the §31 order. No decoding="async": it screenshots
-               blank headless and looks exactly like a broken layout (§29).
-
-               1370x1148. Covers this column at 2x — sharp on retina. -->
-          <figure class="ws-shot">
-            <picture>
-              <source srcset="assets/img/work-whiteboard.avif" type="image/avif">
-              <source srcset="assets/img/work-whiteboard.webp" type="image/webp">
-              <img src="assets/img/work-whiteboard.jpg" alt="Oscar de Grauw at a whiteboard with a colleague, mapping a leadership team's recurring meetings from overload to clarity" width="1370" height="1148" loading="lazy">
-            </picture>
-          </figure>
         </div>
       </div>
     </section>
@@ -835,20 +710,29 @@
          The six bullets became a numbered two-column list; the closing
          sentence became the section's payoff line rather than a seventh
          paragraph, because it is the consequence, not another symptom. -->
-    <section class="ws-mess reveal">
-      <div class="container">
-        <h2>Nobody designed it this way. <span class="ws-mess-br"></span>It simply accumulated.</h2>
+    <section class="ws-mess">
+      <div class="pr-wrap">
+        <!-- Two spans rather than an empty <span class="ws-mess-br">.
+             That span was a line break with a margin-left on it, and the
+             margin did nothing — the text after a block-level break
+             starts a new anonymous box at x=0, so the intended 18%
+             indent never appeared. Real spans give the staircase and let
+             .pr-h own the line break. Not one word changed. -->
+        <h2 class="pr-h ws-mess-h hm hm-lines">
+          <span>Nobody designed it this way.</span>
+          <span>It simply accumulated.</span>
+        </h2>
 
         <ol class="ws-mess-list">
-          <li><span class="ws-mess-n">01</span><p>Every decision queues on one desk. An €800 approval waits four days because the founder is travelling.</p></li>
-          <li><span class="ws-mess-n">02</span><p>The calendar is full and the week produces little. Meetings end in another meeting, rarely in a decision.</p></li>
-          <li><span class="ws-mess-n">03</span><p>Your best people spend their evenings formatting reports nobody opens.</p></li>
-          <li><span class="ws-mess-n">04</span><p>Nine tools, and none of them speak to each other.</p></li>
-          <li><span class="ws-mess-n">05</span><p>The truth reaches you late and polished. What people really thought, you hear in the exit interview.</p></li>
-          <li><span class="ws-mess-n">06</span><p>You hired to relieve the pressure. Within a month, the new people sat in the same meetings.</p></li>
+          <li class="hm hm-row"><span class="ws-mess-n">01</span><p class="pr-copy">Every decision queues on one desk. An €800 approval waits four days because the founder is travelling.</p></li>
+          <li class="hm hm-row"><span class="ws-mess-n">02</span><p class="pr-copy">The calendar is full and the week produces little. Meetings end in another meeting, rarely in a decision.</p></li>
+          <li class="hm hm-row"><span class="ws-mess-n">03</span><p class="pr-copy">Your best people spend their evenings formatting reports nobody opens.</p></li>
+          <li class="hm hm-row"><span class="ws-mess-n">04</span><p class="pr-copy">Nine tools, and none of them speak to each other.</p></li>
+          <li class="hm hm-row"><span class="ws-mess-n">05</span><p class="pr-copy">The truth reaches you late and polished. What people really thought, you hear in the exit interview.</p></li>
+          <li class="hm hm-row"><span class="ws-mess-n">06</span><p class="pr-copy">You hired to relieve the pressure. Within a month, the new people sat in the same meetings.</p></li>
         </ol>
 
-        <p class="ws-mess-out">Left as it is, it costs your leadership <b>a third of every week</b>, and your company the speed that made it successful.</p>
+        <p class="ws-mess-out hm hm-copy">Left as it is, it costs your leadership <b>a third of every week</b>, and your company the speed that made it successful.</p>
       </div>
     </section>
 
@@ -861,14 +745,14 @@
          it splits on uppercase /([OD])/, so the O of OPS and the D of Detox
          both match without hand-wrapping. Retype it in sentence case and
          the wide letters silently disappear. -->
-    <section class="ws-clean ws-dots reveal">
-      <div class="container">
+    <section class="ws-clean">
+      <div class="pr-wrap">
         <div class="ws-clean-grid">
-          <div class="ws-clean-copy">
-            <span class="eyebrow">OPS Detox™</span>
-            <h2>There is a cleaner way to run a growing company.</h2>
-            <p>OPS Detox™ is a modular system for the real bottlenecks in how work flows. Each module stands alone; together, they reset how the company runs.</p>
-            <p>We measure where your time, decisions and truth actually go. Then we strip out what no longer serves the business and rebuild the structure together with your team, so it holds long after we have left.</p>
+          <div class="ws-clean-copy hm hm-copy">
+            <span class="pr-kicker">OPS Detox™</span>
+            <h2 class="pr-h ws-clean-h">There is a cleaner way to run a growing company.</h2>
+            <p class="pr-copy">OPS Detox™ is a modular system for the real bottlenecks in how work flows. Each module stands alone; together, they reset how the company runs.</p>
+            <p class="pr-copy">We measure where your time, decisions and truth actually go. Then we strip out what no longer serves the business and rebuild the structure together with your team, so it holds long after we have left.</p>
           </div>
 
           <!-- The supplied photograph, landed 2 Nov.
@@ -876,7 +760,7 @@
                CROPPED from the supplied 1254x1254 social post, whose top third
                carries a logo and a headline that would fight this section's
                own. See the note on .ws-clean-shot. -->
-          <figure class="ws-clean-shot">
+          <figure class="ws-clean-shot hm hm-media">
             <picture>
               <source srcset="assets/img/work-two-ways.avif" type="image/avif">
               <source srcset="assets/img/work-two-ways.webp" type="image/webp">
@@ -901,11 +785,11 @@
          "The Execution package (Founder Bottleneck)" and "The Leadership
          package (Team Bottleneck)". The mockup uses the short names, so the
          short names are what is built. See the handoff's open items. -->
-    <section class="ws-offers ws-dots reveal" aria-label="The two tracks">
-      <div class="container">
+    <section class="ws-offers" aria-label="The two tracks">
+      <div class="pr-wrap">
       <div class="ws-offers-grid">
 
-      <article class="ws-offer" aria-labelledby="offer-operational">
+      <article class="ws-offer hm hm-card" aria-labelledby="offer-operational">
         <div class="ws-offer-labels">
           <span class="ws-offer-tag">Founder bottleneck</span>
           <span class="ws-booked">Most booked</span>
@@ -916,7 +800,7 @@
              times in one heading at two widths. index.html's H1 wraps all of
              them for exactly this reason ("…systems of operational"), so the
              rest are wrapped by hand here too. -->
-        <h2 id="offer-operational">Operational flow</h2>
+        <h2 class="pr-h ws-offer-h" id="offer-operational">Operational flow</h2>
         <p class="ws-offer-lead">For founders whose company has become meeting-heavy, buried in reports and dependent on their approval. We strip the operating rhythm back to what earns its place, so work and decisions no longer route through one desk.</p>
 
         <ul class="ws-mods">
@@ -942,11 +826,11 @@
          here would silently undo a client edit and leave the two pages
          disagreeing, so "teams" is used and flagged. One word to revert if
          the mockup is the newer source. -->
-      <article class="ws-offer" aria-labelledby="offer-organisational">
+      <article class="ws-offer hm hm-card" aria-labelledby="offer-organisational">
         <span class="ws-offer-tag">Team bottleneck</span>
         <!-- Same hand-wrapping as section 4: every o wide, not just the
              capital one site.js catches. -->
-        <h2 id="offer-organisational">Organisational flow</h2>
+        <h2 class="pr-h ws-offer-h" id="offer-organisational">Organisational flow</h2>
         <p class="ws-offer-lead">For teams where delegation, accountability and information no longer keep pace with growth. We rebuild how information moves, who owns what and how early the truth is spoken, so the company holds its shape when you step back.</p>
 
         <ul class="ws-mods">
@@ -972,10 +856,10 @@
            called it — an add-on.
 
            Lowercase o's wrapped by hand, as on the two headings above. -->
-      <article class="ws-addon" aria-labelledby="offer-toolstack">
-        <span class="eyebrow">OPS Detox add on</span>
-        <h2 id="offer-toolstack">Tool Stack Detox</h2>
-        <p>If you have too many tools doing the same thing, used in different ways, with no clear ownership. The OPS Detox Tool Stack Module removes tool overload and restores clarity.</p>
+      <article class="ws-addon hm hm-card" aria-labelledby="offer-toolstack">
+        <span class="pr-kicker">OPS Detox add on</span>
+        <h2 class="pr-h ws-addon-h" id="offer-toolstack">Tool Stack Detox</h2>
+        <p class="pr-copy">If you have too many tools doing the same thing, used in different ways, with no clear ownership. The OPS Detox Tool Stack Module removes tool overload and restores clarity.</p>
       </article>
 
       </div>
@@ -992,15 +876,14 @@
          answers "what do I get" with numbers before it asks. Both
          neighbours are ivory, so the dark band also breaks up a long
          stretch of paper, as it does on the homepage. -->
-    <section id="results" class="outcomes">
-      <div class="container reveal">
-        <h2>OPS DETOX OUTCOMES:</h2>
-        <p class="outcome-intro">Fewer meetings, fewer reports, faster decisions</p>
-        <div class="stat-grid">
-          <article><strong>20-35%</strong><p>less non-essential meeting time. Up to €8K reclaimed per employee</p></article>
-          <article><strong>25-40%</strong><p>faster decision cycles<br>Less escalation, faster execution</p></article>
-          <article><strong>30-60%</strong><p>less reporting overhead<br>€50K+ reclaimed capacity per team/year</p></article>
-          <article><strong>10-30%</strong><p>tooling &amp; SaaS cost optimization. €150K-300K on a €1M spend</p></article>
+    <section id="results" class="pr-outcomes" aria-labelledby="work-outcomes-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h pr-outcomes-h hm hm-lines" id="work-outcomes-heading"><span>OPS Detox</span><span>outcomes:</span></h2>
+        <div class="pr-stats">
+          <article class="hm hm-stat"><strong>20-35%</strong><p>less non-essential meeting time. Up to €8K reclaimed per employee</p></article>
+          <article class="hm hm-stat"><strong>25-40%</strong><p>faster decision cycles<br>Less escalation, faster execution</p></article>
+          <article class="hm hm-stat"><strong>30-60%</strong><p>less reporting overhead<br>€50K+ reclaimed capacity per team/year</p></article>
+          <article class="hm hm-stat"><strong>10-30%</strong><p>tooling &amp; SaaS cost optimization. €150K-300K on a €1M spend</p></article>
         </div>
       </div>
     </section>
@@ -1019,22 +902,19 @@
          Portrait: oscar-portrait.jpg, which until now was only on
          about.html. Not oscar-about.jpg, which is the homepage's About
          picture and is already on four pages. -->
-    <section class="ws-about ws-dots reveal" aria-labelledby="ws-about-heading">
-      <div class="container">
+    <section class="ws-about" aria-labelledby="ws-about-heading">
+      <div class="pr-wrap">
         <div class="ws-about-grid">
-          <div class="ws-about-copy">
-            <span class="eyebrow">About Oscar de Grauw</span>
-            <h2 id="ws-about-heading">Why work with me</h2>
-            <p>For seventeen years I worked inside Sony Europe, across sales, marketing, procurement, business planning, operational excellence, reporting and transformation. What I saw, I now see in every growing company: good people, working hard, inside systems that piled up as the company grew. The truth was always in the building. It simply could not reach the people who could act on it.</p>
-            <p>Every hour a good person spends in a meeting without a decision, on a report nobody reads, or waiting for permission they should already have, is an hour of a life. OPS Detox exists to clear that clutter and give those hours back.</p>
+          <div class="ws-about-copy hm hm-copy">
+            <span class="pr-kicker">About Oscar de Grauw</span>
+            <h2 class="pr-h ws-about-h" id="ws-about-heading">Why work with me</h2>
+            <p class="pr-copy">For seventeen years I worked inside Sony Europe, across sales, marketing, procurement, business planning, operational excellence, reporting and transformation. What I saw, I now see in every growing company: good people, working hard, inside systems that piled up as the company grew. The truth was always in the building. It simply could not reach the people who could act on it.</p>
+            <p class="pr-copy">Every hour a good person spends in a meeting without a decision, on a report nobody reads, or waiting for permission they should already have, is an hour of a life. OPS Detox exists to clear that clutter and give those hours back.</p>
             <span class="ws-about-sign">Oscar de Grauw, Founder of OPS Detox™</span>
           </div>
 
-          <figure class="ws-about-shot">
-            <picture>
-              <source srcset="assets/img/oscar-portrait.webp" type="image/webp">
-              <img src="assets/img/oscar-portrait.jpg" alt="Oscar de Grauw, in a blue suit and open white shirt, leaning against a stool against a grey studio backdrop" width="1178" height="1700" loading="lazy">
-            </picture>
+          <figure class="ws-about-shot hm hm-media">
+            <img src="assets/img/oscar-cutout.png" alt="Oscar de Grauw holding a laptop" width="504" height="860" loading="lazy">
           </figure>
         </div>
       </div>
@@ -1050,44 +930,40 @@
          *** SECOND COPY. *** The CSS is duplicated too, see §5d above; the
          three descriptions are PLACEHOLDER and have to be corrected in both
          files at once. -->
-    <!-- .ws-dots is the one addition to the copied markup: every other ivory
-         section on this page carries the dot field, and without it this one
-         reads as a gap between two textured neighbours. The homepage has no
-         dot field at all, which is why its copy does not carry the class. -->
-    <section class="frameworks ws-dots reveal" aria-labelledby="frameworks-heading">
-      <div class="container">
-        <div class="frameworks-head">
-          <span class="eyebrow">Proprietary frameworks</span>
-          <h2 id="frameworks-heading">The IP the detox runs on</h2>
-          <p>The cleanse is not improvisation. Three frameworks, developed over 17 years inside complex international organizations, decide what gets seen, what gets stripped and who decides what.</p>
+    <section class="frameworks" aria-labelledby="frameworks-heading">
+      <div class="pr-wrap">
+        <div class="frameworks-head hm hm-copy">
+          <span class="pr-kicker">Proprietary frameworks</span>
+          <h2 class="pr-h frameworks-h" id="frameworks-heading">The IP the detox runs on</h2>
+          <p class="pr-copy">The cleanse is not improvisation. Three frameworks, developed over 17 years inside complex international organizations, decide what gets seen, what gets stripped and who decides what.</p>
         </div>
 
         <div class="frameworks-grid">
-          <article>
+          <article class="hm hm-row">
             <span class="fw-mark" aria-hidden="true">01</span>
             <h3>See – Strip – Choose™</h3>
-            <p class="fw-line">The core method. Three moves, in order.</p>
-            <p>Make the clutter visible before touching it, remove what no longer earns its place, then decide deliberately what the company keeps. Every engagement runs through these three moves.</p>
+            <p class="pr-copy fw-line">The core method. Three moves, in order.</p>
+            <p class="pr-copy">Make the clutter visible before touching it, remove what no longer earns its place, then decide deliberately what the company keeps. Every engagement runs through these three moves.</p>
           </article>
-          <article>
+          <article class="hm hm-row">
             <span class="fw-mark" aria-hidden="true">02</span>
             <h3>Truth Latency™</h3>
-            <p class="fw-line">The delay between knowing and saying.</p>
-            <p>In most companies someone knew the truth weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
+            <p class="pr-copy fw-line">The delay between knowing and saying.</p>
+            <p class="pr-copy">In most companies someone knew the truth weeks before it was said out loud. That lag is measurable, it compounds, and shortening it is the fastest route to faster decisions.</p>
           </article>
-          <article>
+          <article class="hm hm-row">
             <span class="fw-mark" aria-hidden="true">03</span>
             <h3>DRMT™</h3>
-            <p class="fw-line">The decision engine.</p>
-            <p>Who decides, who is consulted, and what happens when nobody does. DRMT closes the ownership vacuum that leaves decisions queued on the founder's desk.</p>
+            <p class="pr-copy fw-line">The decision engine.</p>
+            <p class="pr-copy">Who decides, who is consulted, and what happens when nobody does. DRMT closes the ownership vacuum that leaves decisions queued on the founder's desk.</p>
           </article>
         </div>
 
         <!-- Placeholder copy. Remove this notice with the real descriptions,
              HERE AND ON index.html. -->
-        <p class="fw-draft"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording, please correct them. DRMT™ is shown as “the decision engine” because that is how about.html describes it; send the full name if you want it spelled out. Confirm also whether <b>See – Strip – Choose™</b> replaces <b>The CORE method™</b>, which is still named in the current copy but absent from your updated list.</p>
+        <p class="fw-draft hm hm-copy"><b>For Oscar:</b> the three one-liners and descriptions above are drafted from the existing site copy, not from your own wording, please correct them. DRMT™ is shown as “the decision engine” because that is how about.html describes it; send the full name if you want it spelled out. Confirm also whether <b>See – Strip – Choose™</b> replaces <b>The CORE method™</b>, which is still named in the current copy but absent from your updated list.</p>
 
-        <p class="frameworks-note">Also part of the toolkit, and used mainly inside workshops rather than on this page: <b>Async Mastery™</b>, <b>Speak Up Gym™</b> and the <b>Seven Contextual Gaps™</b>.</p>
+        <p class="frameworks-note hm hm-copy">Also part of the toolkit, and used mainly inside workshops rather than on this page: <b>Async Mastery™</b>, <b>Speak Up Gym™</b> and the <b>Seven Contextual Gaps™</b>.</p>
       </div>
     </section>
 
@@ -1104,11 +980,11 @@
 
          No eyebrow on either card. The drawing has none, and two eyebrows
          over two headings this size reads as four stacked labels. -->
-    <section class="ws-fit ws-dots reveal" aria-labelledby="ws-fit-heading">
-      <div class="container">
+    <section class="ws-fit" aria-labelledby="ws-fit-heading">
+      <div class="pr-wrap">
         <div class="ws-fit-grid">
-          <div class="ws-fit-card ws-fit--yes">
-            <h2 id="ws-fit-heading">Who OPS Detox is for</h2>
+          <div class="ws-fit-card ws-fit--yes hm hm-panel">
+            <h2 class="pr-h ws-fit-h" id="ws-fit-heading">Who OPS Detox is for</h2>
             <ul class="ws-ticks">
               <li>You founded a scale-up of 20 to 2,000 people, and it still runs on your judgment, your approvals and your presence in the room.</li>
               <li>You lead hands-on and suspect the company runs differently from how you believe it does.</li>
@@ -1117,9 +993,9 @@
             </ul>
           </div>
 
-          <div class="ws-fit-card ws-fit--no">
-            <h2>Who OPS Detox is not for</h2>
-            <p>It is not for you if you are an early-stage startup with no inherited processes to cleanse yet, you are looking for a report rather than implementation, the decision-maker will not be involved hands-on, or price is the deciding factor.</p>
+          <div class="ws-fit-card ws-fit--no hm hm-panel">
+            <h2 class="pr-h ws-fit-h">Who OPS Detox is not for</h2>
+            <p class="pr-copy">It is not for you if you are an early-stage startup with no inherited processes to cleanse yet, you are looking for a report rather than implementation, the decision-maker will not be involved hands-on, or price is the deciding factor.</p>
           </div>
         </div>
       </div>
@@ -1134,17 +1010,17 @@
          offer, the numbers, the man and the IP, and qualified the reader;
          this is what they are actually buying, in their own week. See §5f
          for why it is the lightest-weight section on the page. -->
-    <section class="ws-feel ws-dots reveal" aria-labelledby="ws-feel-heading">
-      <div class="container">
-        <span class="eyebrow">The feeling</span>
-        <h2 id="ws-feel-heading">What a clean operation feels like, within weeks</h2>
+    <section class="ws-feel" aria-labelledby="ws-feel-heading">
+      <div class="pr-wrap">
+        <span class="pr-kicker hm hm-copy">The feeling</span>
+        <h2 class="pr-h ws-feel-h hm hm-copy" id="ws-feel-heading">What a clean operation feels like, within weeks</h2>
         <ul class="ws-ticks">
-          <li><img src="assets/icons/meetings-lime.svg" alt="" width="52" height="52">Meetings that end in a decision, with a clear owner and a date.</li>
-          <li><img src="assets/icons/decision-lime.svg" alt="" width="52" height="52">Decisions in days, made at the level where the work happens.</li>
-          <li><img src="assets/icons/reporting-lime.svg" alt="" width="52" height="52">Half the reporting, so your best people can think instead of format.</li>
-          <li><img src="assets/icons/psychological-safety-lime.svg" alt="" width="52" height="52">Honest information, early, while problems are still inexpensive to solve.</li>
-          <li><img src="assets/icons/ownership-lime.svg" alt="" width="52" height="52">Growth without new headcount, because the time you win back absorbs the work you would otherwise hire for.</li>
-          <li><img src="assets/icons/decision-lime.svg" alt="" width="52" height="52">Two weeks away with the laptop closed, and a company that kept moving in your absence.</li>
+          <li class="hm hm-row"><img src="assets/icons/meetings-lime.svg" alt="" width="52" height="52">Meetings that end in a decision, with a clear owner and a date.</li>
+          <li class="hm hm-row"><img src="assets/icons/decision-lime.svg" alt="" width="52" height="52">Decisions in days, made at the level where the work happens.</li>
+          <li class="hm hm-row"><img src="assets/icons/reporting-lime.svg" alt="" width="52" height="52">Half the reporting, so your best people can think instead of format.</li>
+          <li class="hm hm-row"><img src="assets/icons/psychological-safety-lime.svg" alt="" width="52" height="52">Honest information, early, while problems are still inexpensive to solve.</li>
+          <li class="hm hm-row"><img src="assets/icons/ownership-lime.svg" alt="" width="52" height="52">Growth without new headcount, because the time you win back absorbs the work you would otherwise hire for.</li>
+          <li class="hm hm-row"><img src="assets/icons/decision-lime.svg" alt="" width="52" height="52">Two weeks away with the laptop closed, and a company that kept moving in your absence.</li>
         </ul>
       </div>
     </section>
@@ -1162,14 +1038,11 @@
          on the card — and they are repeated FOUR TIMES to fill the marquee.
          If a quote is added, removed or replaced, it must change in all four
          copies here AND in index.html AND in about.html. -->
-    <section class="testimonials section-rule reveal" aria-labelledby="testimonials-heading">
-      <div class="container">
-        <div class="testimonials-head">
-          <span class="eyebrow">Testimonials</span>
-          <h2 id="testimonials-heading">What leaders say</h2>
-        </div>
+    <section class="pr-voices testimonials" aria-labelledby="testimonials-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h pr-voices-h hm hm-lines" id="testimonials-heading"><span>What leaders</span><span>say</span></h2>
       </div>
-      <div class="testimonial-slider">
+      <div class="testimonial-slider hm hm-media">
         <div class="testimonial-grid testimonial-track" role="list">
           <article role="listitem">
             <span class="testimonial-label">Placeholder testimonial</span>
@@ -1281,37 +1154,37 @@
          See – Strip – Choose™ REPLACES The CORE method™. Until Oscar
          answers, this page names both. Left as his words rather than
          quietly reconciled; the answer changes one of the two. -->
-    <section class="ws-why ws-dots reveal" aria-label="Why leaders choose OPS Detox">
-      <div class="container">
-        <div class="ws-why-head">
-          <span class="eyebrow">Why leaders choose</span>
-          <h2>OPS Detox</h2>
+    <section class="ws-why" aria-label="Why leaders choose OPS Detox">
+      <div class="pr-wrap">
+        <div class="ws-why-head hm hm-copy">
+          <span class="pr-kicker">Why leaders choose</span>
+          <h2 class="pr-h ws-why-h">OPS Detox</h2>
         </div>
 
         <div class="ws-why-grid">
-          <article>
+          <article class="hm hm-row">
             <h3>Built from inside real organizations</h3>
-            <p>17 years inside complex, global enterprises. Not theory. Lived experience.</p>
+            <p class="pr-copy">17 years inside complex, global enterprises. Not theory. Lived experience.</p>
           </article>
-          <article>
+          <article class="hm hm-row">
             <h3>Focused on how work actually flows</h3>
-            <p>Meetings. Decisions. Tools. Reporting. The real bottlenecks.</p>
+            <p class="pr-copy">Meetings. Decisions. Tools. Reporting. The real bottlenecks.</p>
           </article>
-          <article>
+          <article class="hm hm-row">
             <h3>A system, not opinions</h3>
-            <p>CORE method™. OPS Detox. Repeatable. Scalable. Proven.</p>
+            <p class="pr-copy">CORE method™. OPS Detox. Repeatable. Scalable. Proven.</p>
           </article>
-          <article>
+          <article class="hm hm-row">
             <h3>Remove operational noise before adding complexity</h3>
-            <p>We remove what’s unnecessary first. Only then do we redesign.</p>
+            <p class="pr-copy">We remove what’s unnecessary first. Only then do we redesign.</p>
           </article>
-          <article>
+          <article class="hm hm-row">
             <h3>Designed for hybrid &amp; AI reality</h3>
-            <p>Async work. Tool overload. AI usage. Handled deliberately.</p>
+            <p class="pr-copy">Async work. Tool overload. AI usage. Handled deliberately.</p>
           </article>
-          <article>
+          <article class="hm hm-row">
             <h3>Results leaders can defend</h3>
-            <p>Time saved. Costs avoided. Speed gained. CFO-proof.</p>
+            <p class="pr-copy">Time saved. Costs avoided. Speed gained. CFO-proof.</p>
           </article>
         </div>
       </div>
@@ -1328,11 +1201,13 @@
          be flipped to change which side lights. -->
     <section class="choice">
       <div class="container">
-        <span class="eyebrow">The choice</span>
-        <h2>What will you choose?</h2>
-        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+        <h2 class="pr-h ww-choice-h hm hm-lines">
+          <span>What will you</span>
+          <span>choose?</span>
+        </h2>
+        <p class="choice-note hm hm-copy">Clarity is the default. Switch back to see the noise.</p>
 
-        <div class="toggle-rows">
+        <div class="toggle-rows hm hm-panel">
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
                   aria-label="Switch between Operational Clarity and Operational Noise">
             <span class="t-before">Operational Clarity</span>
@@ -1341,51 +1216,8 @@
           </button>
         </div>
 
-        <div class="actions">
-          <!-- The same pair, in the same order, as this page's own hero
-               (§30) — so the page opens and closes with one ask. -->
-          <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
-          <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
-        </div>
       </div>
     </section>
-
-    <!-- The switcher-pattern divider, closing the page into the Deep Green
-         footer the way it does on the homepage (§24). Bars only, no words,
-         two rows running opposite ways. Decorative, so hidden from
-         assistive tech. -->
-    <div class="pb" aria-hidden="true">
-      <div class="pb-row">
-        <div class="pb-track">
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-        </div>
-      </div>
-      <div class="pb-row pb-row--b">
-        <div class="pb-track">
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-        </div>
-      </div>
-    </div>
 
   </main>
 
@@ -1433,6 +1265,33 @@
       <p class="footer-legal">© 2026 OPS Detox™. Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
     </div>
   </footer>
+
+  <!-- The switcher-pattern now finishes the page below the footer, matching
+       the selected homepage direction. Four identical six-bar sets keep
+       both marquee seams continuous. -->
+  <div class="pb" aria-hidden="true">
+    <div class="pb-row">
+      <div class="pb-track">
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      </div>
+    </div>
+    <div class="pb-row pb-row--b">
+      <div class="pb-track">
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+        <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      </div>
+    </div>
+  </div>
   <script src="js/site.js"></script>
+  <!-- The shared reveal controller. It replaces this page's own work-ready
+       script: same preloader handshake, same reduced-motion bail-out, and it
+       already sets .premium-ready on <body>, which is what the hero
+       photograph's settle now hangs off. -->
+  <script src="js/premium-motion.js"></script>
 </body>
 </html>

@@ -11,437 +11,214 @@
   <meta name="description" content="Seventeen years inside Sony Europe. OPS Detox exists to clear operational clutter and give those hours back.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/premium.css">
   <!-- Decide before first paint: reduced-motion visitors and anyone who has
        already seen the preloader this session go straight to the page. -->
-  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <script>try{var reduceAboutMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;if(sessionStorage.getItem('ops-preloaded')||reduceAboutMotion){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}if(!reduceAboutMotion){document.documentElement.className+=' premium-motion';}}catch(e){}</script>
 
   <style>
-  /* ==========================================================
-     About hero — framed picture opening to full bleed (29 Oct)
-     Promoted from about-hero.html. Everything here is scoped to this
-     document; css/site.css is untouched. Lift it into site.css if the
-     same treatment is ever wanted on another page.
-     ========================================================== */
+  /* ==============================================================
+     ABOUT — PAGE COMPOSITION
 
-  /* ---------- The hero ----------
-     The page opens on the framed picture, holds, then the frame grows to
-     full width and full height while the lime border and the corner
-     radius resolve away.
+     Everything shared arrives from css/premium.css:
+       .pr-wrap     the 1600px / 96px editorial channel and its
+                    56px and 36px gutters
+       .pr-h        the display headline, sized per instance with
+                    --fs and --lh
+       .pr-kicker   the small uppercase label
+       .pr-copy     the justified body setting
+       .hm + .hm-*  the reveal states, driven by js/premium-motion.js
+       --gap        the shared section rhythm
 
-     The animation is on the BOX, not on a transform. transform:scale is
-     cheaper to composite but it scales the name and the caption with the
-     picture, so the type would arrive at the wrong size and read soft on
-     the way. Growing width/height keeps the type fixed while the picture
-     opens around it. It costs a layout pass per frame on one element with
-     no siblings in flow, which is affordable for a one-shot hero. */
-  .ah{
-    display:grid;place-items:center;
+     REBUILT 25 Nov 2026. Before this the page ran three layouts at
+     once: the hero on a bespoke .ab-wrap, the journey and the
+     testimonials on .pr-wrap, and Speaker/Operations/Principles/The
+     choice still on the 14 Oct .container. Three different left
+     edges — 48px, 48px and 130px — so the page zigzagged as you
+     scrolled it. Everything now sits in one channel.
+
+     Also removed: 246 lines of the .ah animated hero (its markup was
+     replaced on 23 Nov and nothing has referenced .ah, .ah-box,
+     .ah-frame, .ah-pic, .ah-plate or .hero-go since), and the
+     .about-motion layer, which duplicated what .hm already does.
+
+     NO COPY WAS CHANGED. Every string is the client's, word for
+     word, including the missing full stop at the end of the first
+     Operations paragraph ("…finding them and taking them out"),
+     which stays flagged and unfixed.
+     ============================================================== */
+
+  /* ---------- 1. The hero ----------
+     Full-bleed portrait under a Deep Green field, washed left so the
+     name has clean ground to sit on. Same duotone recipe as the
+     homepage hero: luminosity, not multiply, so the picture keeps its
+     light and takes its hue from the field. */
+  .premium-about .ab-hero{
+    position:relative;isolation:isolate;
+    min-height:calc(100svh - var(--header-h));
+    display:flex;padding:0;
+    background:var(--ink);color:var(--paper);overflow:hidden;
+  }
+  .premium-about .ab-hero::after{
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    opacity:.05;mix-blend-mode:overlay;background-size:170px 170px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .premium-about .ab-hero-grid{
+    position:relative;z-index:2;
+    min-height:calc(100svh - var(--header-h));
+    display:flex;align-items:center;justify-content:flex-start;
+  }
+  .premium-about .ab-hero-copy{
+    width:min(760px,52%);margin-right:auto;
+    padding-block:clamp(78px,8vw,132px);
+  }
+  /* .pr-kicker and .pr-h hard-set Deep Green, which is right on the
+     cream body and wrong on an ink field. Scoped to the dark grounds
+     only — lime type is sanctioned on Deep Green, not on Soft Ivory
+     (V1.0 p.21). */
+  .premium-about .ab-hero .pr-kicker,
+  .premium-about .ops .pr-kicker,
+  .premium-about .prin .pr-kicker{color:var(--lime)}
+  .premium-about .ab-title{
+    --fs:clamp(80px,9.2vw,172px);--lh:.76;
+    margin:24px 0 0;color:var(--paper);
+  }
+  .premium-about .ab-title span:last-child{margin-left:10%}
+  /* The three credentials, set as one line of small display type.
+     Not .pr-copy: it is a label row, not a paragraph. */
+  .premium-about .ab-cap{
+    display:flex;flex-wrap:wrap;gap:10px 28px;
+    margin:clamp(38px,5vw,72px) 0 0;
+    color:rgba(254,253,242,.76);
+    font:14px/1.25 var(--display);letter-spacing:.09em;text-transform:uppercase;
+  }
+  .premium-about .ab-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+  .premium-about .ab-actions .button{--btn-size:17px;padding:9px 20px 7px}
+  /* On Deep Green the primary has to be the lime pill or it vanishes. */
+  .premium-about .ab-actions .button--line{
+    background:var(--lime);color:var(--ink);border-color:var(--lime);
+  }
+  .premium-about .ab-actions .button--line:hover{background:transparent;color:var(--lime)}
+  .premium-about .ab-btn-ghost{background:transparent;color:var(--paper);border-color:var(--paper)}
+  .premium-about .ab-btn-ghost:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+  .premium-about .ab-portrait{position:absolute;inset:0;z-index:0;margin:0;padding:0;overflow:hidden}
+  /* The legibility floor: the field washes back in over the left half
+     so the name and the caption sit on clean ground. Not a decorative
+     scrim — the right of the scene is untouched. */
+  .premium-about .ab-portrait::before{
+    content:"";display:block;position:absolute;inset:0;z-index:2;
+    background:
+      linear-gradient(90deg,rgba(20,51,24,.98) 0%,rgba(20,51,24,.9) 46%,rgba(20,51,24,.48) 72%,rgba(20,51,24,.16) 100%),
+      linear-gradient(to bottom,rgba(20,51,24,.08) 30%,rgba(20,51,24,.58) 100%);
+  }
+  .premium-about .ab-portrait img{
+    position:relative;z-index:1;display:block;
+    width:100%;height:100%;max-height:none;
+    object-fit:cover;object-position:50% 10%;
+    filter:grayscale(1) brightness(.78) contrast(1.06);mix-blend-mode:luminosity;
+  }
+  /* The slow settle on the portrait, hung off premium-motion.js's own
+     body class rather than a second ready-flag of its own. */
+  .premium-motion .premium-about .ab-portrait img{
+    transform:scale(1.055);
+    transition:transform 1.8s cubic-bezier(.16,1,.3,1);
+  }
+  .premium-motion .premium-about.premium-ready .ab-portrait img{transform:none}
+
+  /* ---------- 2. Speaker / Leader / Visionary ----------
+     The three words are the whole idea, so they are set as a staircase
+     with the leading closed right up. Soft Ivory ground: V1.0 p.22
+     makes lime on Soft Ivory a watchout, so there is no lime here. */
+  .premium-about .lis{
+    position:relative;padding:var(--gap) 0;background:var(--paper);overflow:hidden;
+  }
+  .premium-about .lis-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.16fr) minmax(360px,.84fr);
+    gap:clamp(50px,6vw,96px);align-items:center;
+  }
+  .premium-about .lis-head{
+    --fs:clamp(66px,7.2vw,128px);--lh:.78;
+    letter-spacing:-.015em;
+  }
+  .premium-about .lis-head span:nth-child(2){margin-left:10%}
+  .premium-about .lis-head span:nth-child(3){margin-left:20%}
+  .premium-about .lis-copy{margin-top:46px;max-width:58ch;font-size:clamp(16px,1.1vw,19px)}
+  .premium-about .lis .actions{margin-top:30px}
+  .premium-about .lis-figure{position:relative;margin:0;justify-self:end;width:100%;align-self:center}
+  .premium-about .lis-figure img{
+    display:block;width:100%;
+    aspect-ratio:4/3;object-fit:cover;object-position:50% 50%;
+    border-radius:0;filter:grayscale(1) contrast(1.06);
+  }
+
+  /* ---------- 3. Operations leader + credentials ----------
+     Two blocks sharing one Deep Green ground so there is no seam
+     between the statement and the credentials. Deep Green is what
+     makes the lime lead-ins legal (V1.0 p.21). */
+  .premium-about .ops{background:var(--ink);color:var(--paper);padding:var(--gap) 0 0;overflow:hidden}
+  .premium-about .ops-lead{
+    display:grid;
+    grid-template-columns:minmax(0,1.08fr) minmax(340px,.72fr);
+    gap:clamp(54px,7vw,112px);align-items:start;
+  }
+  .premium-about .ops-h{
+    --fs:clamp(40px,3.4vw,64px);--lh:.9;
+    max-width:15ch;color:var(--paper);
+    letter-spacing:-.01em;overflow-wrap:normal;
+  }
+  /* The one highlighted phrase. Styling, not a copy change — the
+     sentence is unaltered. */
+  .premium-about .ops-h em{font-style:normal;color:var(--lime)}
+  .premium-about .ops-lead>div{min-width:0;max-width:44ch;justify-self:end}
+  .premium-about .ops-lead .pr-copy{color:rgba(254,253,242,.82)}
+
+  /* The credentials. The photograph fills its column edge to edge so
+     it reads as part of the field rather than as a picture in a box. */
+  .premium-about .ops-cred{
+    position:relative;display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(50px,7vw,120px);
+    padding:clamp(70px,8vw,130px) 0 0;
+  }
+  .premium-about .ops-figure{
+    position:relative;grid-column:1;margin:0;
+    align-self:stretch;overflow:hidden;
+    /* The ground the duotone blends against. Without it the luminosity
+       blend has nothing but the page behind it. */
     background:var(--ink);
-    /* The section's own padding is what insets the frame at rest, so it
-       animates to zero in step with the frame reaching 100vw — otherwise
-       the frame hits full width and the padding holds it off the edge. */
-    padding:var(--ah-pad);
-    --ah-pad:clamp(28px,5vw,70px);
-    overflow:hidden;
-    animation:ahPad 1.15s .45s cubic-bezier(.65,0,.2,1) both;
   }
-
-  /* ---------- Held until the preloader lifts ----------
-     The animation used to run off a fixed delay measured from page load,
-     which meant it played out BEHIND the Deep Green preloader overlay and
-     was already finished by the time anyone saw the page.
-
-     A longer delay would not fix it. The preloader does not end at a fixed
-     time: js/site.js lifts it at 1450ms normally, IMMEDIATELY on the first
-     click, keypress, wheel or touch, and at 3000ms on its safety net. Any
-     constant is wrong for two of those three.
-
-     So the four animations start paused and are released by .hero-go. With
-     fill-mode both, a paused animation holds its from-state, so the page
-     sits on the framed picture until the overlay is gone. The delay is now
-     .45s rather than .85s, measured from the lift instead of from load —
-     the overlay's own lift runs .52s, and the hold reads from the moment
-     the picture is actually visible.
-
-     The paused/running pair is declared AFTER all three rules below, not
-     here. animation-play-state is part of the `animation` shorthand, so a
-     later `animation:` declaration resets it to running — put this block
-     first and .ah-frame and .ah-pic silently un-pause themselves, which is
-     exactly what happened: only .ah held, and the picture grew behind the
-     overlay anyway. Keep it last. */
-  /* ---------- ONE ANIMATION PER ELEMENT ----------
-     The size and the edge are on TWO elements now, .ah-box and .ah-frame,
-     and .ah-box exists for no other reason. The full history is on ahOpen
-     below; the short version is that Safari ignored the edge animation
-     whenever it shared an element with the size animation, however the two
-     were packaged, and Chrome refused to interpolate them whenever they
-     shared a keyframes block. Splitting the ELEMENT satisfies both: each
-     one now carries exactly one animation, so there is no list for Safari
-     to drop from, and no block mixing custom properties with ordinary ones
-     for Chrome to choke on.
-
-     .ah-box owns the size. Registered custom properties, which is the one
-     mechanism proven to animate on this hero in both engines. */
-  .ah-box{
-    width:var(--ah-w);height:var(--ah-h);
-    --ah-w:min(1180px,100%);
-    --ah-h:min(664px,calc((100vw - var(--ah-pad) * 2) * .5625));
-    animation:ahOpen 1.15s .45s cubic-bezier(.65,0,.2,1) both;
+  /* DUOTONE, not a grey photo pasted on green. This picture sits on the
+     Deep Green field, so it takes the same luminosity treatment as the
+     hero portrait and the homepage hero. It was the one photograph on
+     the page still blending `normal`. */
+  .premium-about .ops-figure img{
+    position:relative;z-index:1;display:block;
+    width:100%;max-width:none;height:100%;min-height:620px;
+    object-fit:cover;object-position:50% 35%;
+    filter:grayscale(1) brightness(.86) contrast(1.06);
+    mix-blend-mode:luminosity;
   }
-
-  /* .ah-frame owns the edge, and nothing else animates on it. Plain
-     border-width and border-radius — no var(), no registered properties,
-     no second animation. It still does the clipping, so the photograph's
-     corners round with the border rather than behind it. */
-  .ah-frame{
-    position:relative;
-    width:100%;height:100%;
-    /* The row MUST be definite. Left as the implicit auto row it sizes to
-       the photograph's intrinsic height — a tall portrait — so the row
-       grows far past the frame and the bottom-aligned plate goes with it,
-       clipped by the overflow:hidden below. */
-    display:grid;grid-template-areas:"stack";grid-template-rows:minmax(0,1fr);
-    border:6px solid var(--lime);
-    border-radius:36px;    /* --r-card's value, written out */
-    overflow:hidden;
-    animation:ahEdge 1.15s .45s cubic-bezier(.65,0,.2,1) both;
-  }
-  .ah-frame>*{grid-area:stack}
-  /* The <picture> wrapper. It is an inline box by default, which would not
-     fill the frame and would leave a baseline gap under the photograph. */
-  .ah-shot{display:block;min-height:0;height:100%}
-  .ah-pic{
-    width:100%;height:100%;object-fit:cover;display:block;
-    /* The crop is animated, not fixed. The frame does not just grow, it
-       grows WIDER relative to its height, so a single object-position that
-       frames him at rest crops into his head once the picture is
-       full-bleed. 46% suits the small frame, 34% the full-bleed one.
-       Re-measure both ends if either ratio changes. */
-    object-position:50% var(--ah-crop);
-    --ah-crop:46%;
-    animation:ahCrop 1.15s .45s cubic-bezier(.65,0,.2,1) both;
-  }
-
-  /* Must stay BELOW every rule that sets the `animation` shorthand — see
-     the note above. */
-  .ah,.ah-box,.ah-frame,.ah-pic{animation-play-state:paused}
-  .hero-go .ah,
-  .hero-go .ah-box,
-  .hero-go .ah-frame,
-  .hero-go .ah-pic{animation-play-state:running}
-
-  /* Name and caption share one scrim so they read as a single plate
-     rather than as two things that happen to be over a photograph. */
-  .ah-plate{
-    align-self:end;justify-self:stretch;
-    /* The side inset is a PERCENTAGE, so it grows with the frame instead of
-       staying at a flat 24px. Left-aligning the name moved it hard against
-       that 24px, which reads fine in the small frame and tight against the
-       viewport edge at full bleed. A percentage resolves against the plate,
-       which is the frame's inner width, so the inset opens as the picture
-       opens — about 38px framed, 45px at 1400, 61px at 1920 — and the type
-       keeps the same optical margin throughout. max() holds a sane floor on
-       a phone. No extra animation involved, which matters: Safari would not
-       have run one (see animateEdge). */
-    padding:14vh max(24px,3.2%) 26px;
-    background:linear-gradient(to top,
-      rgba(20,51,24,.94) 0%,rgba(20,51,24,.86) 42%,rgba(20,51,24,0) 100%);
-    /* LEFT, not centred. The name is a block whose box is capped by
-       site.css's h1{max-width:19ch}, so it sits against the plate's left
-       padding and ends well short of the right edge — measured 24 to 912
-       in a 1400 frame. A centred caption therefore drifted out from under
-       it and kept drifting as the picture opened, because the caption
-       re-centres on the growing frame while the name does not move. Both
-       now share the one left edge at every size. */
-    text-align:left;
-  }
-  .ah-name{
-    margin:0;color:var(--lime);
-    font-family:var(--display);font-weight:400;
-    font-size:clamp(34px,9.4vw,118px);line-height:.92;
-    letter-spacing:.015em;text-transform:uppercase;
-  }
-  .ah-cap{
-    display:flex;flex-wrap:wrap;gap:8px 22px;
-    /* flex-start, not center — see the note on .ah-plate. The flex box is
-       full width, so centring put the caption in the middle of the frame
-       while the name stayed on the left. */
-    align-items:baseline;justify-content:flex-start;
-    margin:16px 0 0;color:rgba(204,254,6,.78);
-    font:13px/1.3 var(--display);letter-spacing:.1em;text-transform:uppercase;
-  }
-
-  /* The frame opens to the viewport MINUS the header, not to 100vh: the
-     header is sticky and occupies its space at the top of the document,
-     so a 100vh frame would push its own bottom edge — and the caption —
-     off the screen. --header-h is the token site.css keeps for this.
-
-     svh, not vh, so mobile browser chrome collapsing mid-animation does
-     not retarget the end state halfway through. */
-  /* THE SIZE ONLY. The edge is ahEdge, on .ah-frame, on its own element.
-
-     Four builds, because the obvious fix in one engine kept breaking the
-     other. Do not collapse these back together:
-
-     1. Border and radius sat in THIS block as ordinary properties
-        alongside --ah-w / --ah-h. Chrome did not interpolate them — the
-        frame reached full width still carrying its 6px lime edge and its
-        36px corners, then dropped both at the end.
-     2. (29 Oct) Split into their own `ahEdge` keyframes, second in
-        .ah-frame's animation shorthand list. Fixed Chrome. **Silently did
-        nothing in Safari**: the picture grew to full bleed and kept the
-        border and the rounded corners throughout. Shipped broken, because
-        §29's "verified mid-flight" measurement was Chrome-only.
-     3. (31 Oct) Edge re-expressed as registered custom properties and
-        merged back into this block, on the theory that Safari had dropped
-        the second entry in the animation list. **Still broken in Safari.**
-        So the cause is not the list and not the property type: Safari
-        ignores the edge animation whenever it shares an element with the
-        size animation.
-     4. (31 Oct, current) The two were split onto two ELEMENTS. .ah-box
-        carries this animation and nothing else; .ah-frame carries ahEdge
-        and nothing else. One animation each, and ahEdge is back to plain
-        border-width / border-radius, which removes @property from the edge
-        path entirely.
-
-     Registered custom properties stay here for the size because they are
-     proven to animate in Safari on this hero — --ah-w interpolated
-     correctly even in build 2, which is why the picture grew at all. */
-  @keyframes ahOpen{
-    from{
-      --ah-w:min(1180px,100%);
-      --ah-h:min(664px,calc((100vw - var(--ah-pad) * 2) * .5625));
-    }
-    to{
-      --ah-w:100vw;
-      --ah-h:calc(100svh - var(--header-h));
-    }
-  }
-  /* 36px is --r-card's value, written out. Literal values, no var() — this
-     keyframes block must stay free of custom properties. */
-  @keyframes ahEdge{
-    from{border-width:6px;border-radius:36px}
-    to{border-width:0px;border-radius:0px}
-  }
-  /* Phone variants. Same curve and timing, different start values: a taller
-     5:4 frame, and a 4px edge, because 6px on a 390pt screen is a heavier
-     band relative to the picture. Swapped in by animation-name at 700px —
-     see the note there for why these cannot simply be declared. */
-  @keyframes ahOpenSm{
-    from{
-      --ah-w:min(1180px,100%);
-      --ah-h:min(520px,calc((100vw - var(--ah-pad) * 2) * 1.25));
-    }
-    to{
-      --ah-w:100vw;
-      --ah-h:calc(100svh - var(--header-h));
-    }
-  }
-  @keyframes ahEdgeSm{
-    from{border-width:4px;border-radius:28px}
-    to{border-width:0px;border-radius:0px}
-  }
-  @keyframes ahCrop{from{--ah-crop:46%}to{--ah-crop:34%}}
-  @keyframes ahPad{from{--ah-pad:clamp(28px,5vw,70px)}to{--ah-pad:0px}}
-
-  /* Custom properties only animate once registered with a type — without
-     these the values snap at the halfway point instead of interpolating. */
-  @property --ah-w{syntax:"<length-percentage>";inherits:false;initial-value:0px}
-  @property --ah-h{syntax:"<length-percentage>";inherits:false;initial-value:0px}
-  @property --ah-crop{syntax:"<percentage>";inherits:false;initial-value:50%}
-  @property --ah-pad{syntax:"<length>";inherits:true;initial-value:0px}
-
-  /* Reduced motion: no growth, just the end state. The full-bleed picture
-     is the destination, so landing there immediately is the honest
-     fallback — holding the small framed version would show a different
-     design, not a calmer one. */
-  @media(prefers-reduced-motion:reduce){
-    .ah,.ah-box,.ah-frame,.ah-pic{animation:none}
-    .ah{--ah-pad:0px}
-    .ah-box{--ah-w:100vw;--ah-h:calc(100svh - var(--header-h))}
-    .ah-frame{border-width:0;border-radius:0}
-    .ah-pic{--ah-crop:34%}
-  }
-
-  /* ---------- The copy the old hero carried ----------
-     The previous hero held the eyebrow, "Why work with me", the intro
-     paragraph and both CTAs. The new hero carries only his name, so that
-     copy moves here, directly beneath it, rather than being lost. It is
-     locked client copy and is reproduced word for word; only the heading
-     level changed, since the page's h1 is now the name. */
-  /* ---------- Speaker / Leader / Visionary ----------
-     Built from the client's own section-2 mockup. Copy is reproduced word
-     for word; everything else is translated out of the mockup's black and
-     grey into V1.0.
-
-     What changed from the mockup, and why:
-
-     - The three words are the whole idea, so they are set as a stack with
-       the type as large as the column allows and the leading closed right
-       up (.86). In the mockup they sit at body-headline size with normal
-       leading and read as a list of job titles rather than as a statement.
-       The hairline rules this build briefly put under each word are gone
-       (30 Oct, by request): at this size they read as underlines rather
-       than as structure. The words carry it on weight alone.
-     - The picture gets a Deep Green arch offset behind it. The mockup's
-       arch is a plain cut-out on a dotted field and reads flat. The offset
-       gives it depth and is the one place a brand colour can carry weight
-       on this ground — V1.0 p.21 allows Deep Green on Soft Ivory, and the
-       arch is the guideline's own picture-frame device (p.38).
-     - The dotted field becomes the logo pattern at 6% rather than the
-       mockup's hard grey dots, which were competing with the photograph.
-
-     No lime anywhere in this section. The ground is Soft Ivory and V1.0
-     p.22 names Detox Green on Soft Ivory as a watchout, so the accent has
-     to be Deep Green. The lime arrives in the ticker directly below. */
-  .lis{
-    position:relative;
-    padding:clamp(64px,7vw,104px) 0 clamp(60px,6.5vw,96px);
-    background:var(--paper);
-    overflow:hidden;
-  }
-  /* The pattern is on a pseudo-element, not the section, so its opacity
-     can be dropped without taking the content down with it. */
-  .lis::before{
-    content:"";position:absolute;inset:0;
-    background:url("assets/patterns/logo-pattern.png") 0 0/240px auto;
-    opacity:.06;pointer-events:none;
-  }
-  .lis .container{position:relative}
-  .lis-grid{
-    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.86fr);
-    gap:clamp(32px,5vw,72px);align-items:center;
-  }
-  .lis-head{margin:0}
-  .lis-head span{
-    display:block;
-    font-family:var(--display);font-weight:400;color:var(--ink);
-    /* 10.2vw is the ceiling set by the LONGEST word, "INNOVATOR", against
-       this column. Above it the word breaks and the stack becomes four
-       lines. Re-measure if the copy ever changes. */
-    font-size:clamp(40px,10.2vw,104px);line-height:.86;
-    letter-spacing:.01em;text-transform:uppercase;
-  }
-  .lis-copy{margin:26px 0 0;max-width:46ch;font-size:17px;line-height:1.6}
-  .lis .actions{margin-top:30px}
-
-  /* The arch: V1.0's picture frame. The radius is a PERCENTAGE pair so the
-     curve stays a true arch at any width — a fixed px radius flattens
-     into a stadium shape on a wide column. */
-  .lis-figure{position:relative;margin:0;justify-self:end;width:100%}
-  .lis-figure img{
-    position:relative;display:block;width:100%;
-    aspect-ratio:3/4;object-fit:cover;object-position:50% 22%;
-    border-radius:50% 50% 14px 14px / 42% 42% 14px 14px;
-  }
-  /* Offset arch behind. Inset 0 then nudged, so it tracks the picture's
-     size instead of needing its own measurements. */
-  .lis-figure::before{
-    content:"";position:absolute;inset:0;
-    transform:translate(16px,16px);
-    background:var(--ink);
-    border-radius:50% 50% 14px 14px / 42% 42% 14px 14px;
-  }
-
-  /* ---------- Operations leader + credentials ----------
-     Modelled on stevenbartlett.com/about, which is what the client asked
-     for. Two things were learned from reading that page's source and both
-     are reproduced here with the project's own machinery rather than his:
-
-     1. It is TWO blocks, not one. A plain two-column statement
-        (.about-sect-2), then a separate block where the cut-out occupies
-        an empty left half and the credentials sit in the right
-        (.intro-section-about, `offset-md-6`). Our mockup fused them, which
-        is what made it feel crowded. Split here, sharing one ground so
-        there is no seam between them.
-     2. The credentials arrive one at a time. He uses AOS with
-        data-aos="fade-left" and delays of 0 / 500 / 1000ms. We already
-        have an IntersectionObserver reveal in js/site.js, so this is three
-        transition-delays on .reveal and NO new library.
-
-     Ground is Deep Green, which is both the direct translation of his
-     black and the thing that makes the lime lead-ins legal — lime on Deep
-     Green is the one sanctioned pairing (V1.0 p.21). On the mockup's ivory
-     it would have been a watchout (p.22), and the lead-ins would have had
-     to stay bold-black as in the mockup.
-
-     Both blocks sit inside one .ops wrapper so the cut-out can bleed past
-     the first block's baseline without a background seam showing. */
-  .ops{background:var(--ink);color:#fff;padding:clamp(72px,8vw,120px) 0 0}
-  .ops-lead{
-    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    gap:clamp(28px,4.5vw,64px);align-items:start;
-  }
-  /* No 15ch cap. The cap was forcing the sentence into six short lines,
-     which made a statement headline read as a narrow column of small type
-     — the opposite of the reference, where it is three big lines. The
-     column itself is the only limit it needs.
-
-     Size reduced 7 Nov, from clamp(30px,4vw,56px). The licensed font's
-     default letterforms run about 28% wider than the trial's and this is
-     an 86-character sentence in a 558px column, so 56px ran to five lines.
-     Stepped and measured in the browser: 42-52px all give four lines, 40px
-     is the first that comes back to the three the block is designed around.
-     RE-MEASURE if the copy or the column changes. */
-  .ops-lead h2{
-    margin:0;color:#fff;max-width:none;
-    font-size:clamp(26px,2.85vw,40px);line-height:1.02;
-    letter-spacing:.015em;text-transform:uppercase;
-  }
-  /* The one highlighted phrase, exactly as his headline does it. This is
-     styling, not a copy change — the sentence is unaltered. */
-  .ops-lead h2 em{font-style:normal;color:var(--lime)}
-  .ops-lead p{margin:0 0 18px;color:rgba(255,255,255,.82);font-size:17px;line-height:1.6}
-  .ops-lead p:last-child{margin-bottom:0}
-
-  /* The credentials block. The left column is empty in the flow and the
-     cut-out is absolutely placed into it, so the photograph can run off
-     the bottom edge without adding height to the section — the same trick
-     his page uses, and the reason the portrait reads as part of the page
-     instead of as a picture in a box. */
-  .ops-cred{
-    position:relative;
-    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    gap:clamp(28px,4.5vw,64px);
-    padding:clamp(56px,6vw,90px) 0 0;
-  }
-  /* align-self:end puts his feet on the row's baseline. The figure is a
-     normal grid item, so the row — and the section — size to the
-     photograph, and the ground ends exactly at his feet with the ticker
-     starting there. That is the effect his page gets by bleeding the
-     cut-out; this gets it without anything overflowing. */
-  .ops-figure{
-    grid-column:1;margin:0;align-self:end;
-    display:flex;align-items:flex-end;justify-content:center;
-  }
-  .ops-figure img{display:block;width:100%;max-width:440px;height:auto}
-  .ops-list{
+  .premium-about .ops-list{
     grid-column:2;list-style:none;margin:0;padding:0;
     display:flex;flex-direction:column;gap:0;
   }
-  .ops-list li{padding:26px 0;border-top:1px solid rgba(255,255,255,.16)}
-  .ops-list li:first-child{border-top:0;padding-top:0}
-  .ops-list p{margin:0;color:rgba(255,255,255,.82);font-size:17px;line-height:1.6}
-  /* The lead-in. His is a <span> in lime; ours is a <b>, which keeps the
-     emphasis the mockup's bold already carried for anyone who cannot see
-     the colour. */
-  .ops-list b{color:var(--lime);font-weight:600}
+  .premium-about .ops-list li{padding:34px 0;border-top:1px solid rgba(204,254,6,.28)}
+  .premium-about .ops-list .pr-copy{color:rgba(254,253,242,.82)}
+  /* The lead-in is a <b>, so the emphasis the mockup's bold carried
+     survives for anyone who cannot see the colour. */
+  .premium-about .ops-list b{color:var(--lime);font-weight:600}
+  .premium-about .ops-list li:nth-child(2){--hm-delay:.14s}
+  .premium-about .ops-list li:nth-child(3){--hm-delay:.28s}
 
-  /* The stagger. Delays only — the opacity/transform transition is the
-     one site.css already defines on .reveal, so this adds no new motion
-     code and inherits the reduced-motion opt-out with it. */
-  .ops-list .reveal:nth-child(2){transition-delay:.14s}
-  .ops-list .reveal:nth-child(3){transition-delay:.28s}
-
-  /* Parallax drift on the cut-out, done with a scroll-driven animation
-     rather than a library and a scroll listener. Zero JS, runs off the
-     compositor, and simply does nothing in browsers without it — which is
-     the right failure, since the photograph is in the correct place
-     already and the drift is a refinement. simple-parallax-js, which his
-     page loads for this, is ~6KB plus a scroll handler on the main thread. */
+  /* Parallax drift, done with a scroll-driven animation rather than a
+     library and a scroll listener. Does nothing in browsers without
+     it, which is the right failure — the photograph is already in the
+     correct place and the drift is a refinement. */
   @supports(animation-timeline:view()){
     @media(prefers-reduced-motion:no-preference){
-      .ops-figure img{
+      .premium-about .ops-figure img{
         animation:opsDrift linear both;
         animation-timeline:view();
         animation-range:entry 0% exit 100%;
@@ -450,253 +227,199 @@
     }
   }
 
-  /* ---------- Three principles ----------
-     The mockup is three columns of centred body copy on a dotted field,
-     in black, with no brand colour anywhere and no hierarchy between the
-     three. What is kept: the copy, and the fact that there are three.
+  /* ---------- 4. Oscar's journey (timeline) ----------
+     Hairline rows rather than a centre spine: the same table rhythm
+     the homepage uses for its IP rows. The era label takes the year's
+     place, since the client's copy gives phases rather than dates. */
+  .premium-about .path{position:relative;padding:var(--gap) 0;background:var(--paper)}
+  .premium-about .path-head{--fs:clamp(70px,9vw,160px);--lh:.78;margin:0;text-align:left}
+  .premium-about .path-head span:nth-child(2){margin-left:18%}
+  .premium-about .path-list{
+    position:relative;list-style:none;margin:clamp(54px,6vw,92px) 0 0;padding:0;
+    display:flex;flex-direction:column;gap:0;
+    border-bottom:1px solid var(--ink);
+  }
+  .premium-about .tl-block{
+    position:relative;display:grid;
+    grid-template-columns:clamp(58px,6vw,100px) minmax(130px,.38fr) minmax(0,1.05fr) minmax(300px,1.05fr);
+    gap:clamp(22px,3.2vw,54px);
+    padding:clamp(30px,3.4vw,54px) 0;
+    border-top:1px solid var(--ink);
+    align-items:center;
+  }
+  .premium-about .tl-num{
+    display:block;color:var(--ink);
+    font:clamp(46px,5vw,84px)/.78 var(--display);font-weight:400;
+    letter-spacing:-.02em;
+  }
+  .premium-about .tl-era{
+    margin:3px 0 0;color:rgba(20,51,24,.68);
+    font:13px/1.15 var(--display);letter-spacing:.14em;text-transform:uppercase;
+  }
+  .premium-about .tl-text{text-align:left}
+  .premium-about .tl-text h3{
+    margin:0;max-width:18ch;color:var(--ink);
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(28px,3vw,48px);line-height:.96;
+    letter-spacing:.01em;text-transform:uppercase;
+  }
+  .premium-about .tl-text .pr-copy{max-width:56ch;margin-top:16px}
+  .premium-about .tl-figure{margin:0;align-self:center;overflow:hidden;background:var(--ink)}
+  /* Colour, unlike every other photograph on the page. These are
+     Oscar's own archive and the colour is the point of them. */
+  .premium-about .tl-figure img{
+    display:block;width:100%;height:100%;min-height:180px;
+    aspect-ratio:4/3;object-fit:cover;object-position:50% 50%;
+    border-radius:0;filter:saturate(.88) contrast(1.03);
+  }
+  .premium-about .tl-block:nth-child(4) .tl-figure img{object-position:50% 26%}
+  .premium-about .tl-block:nth-child(6) .tl-figure img{object-position:50% 30%}
+  .premium-about .tl-block:nth-child(2){--hm-delay:.06s}
+  .premium-about .tl-block:nth-child(3){--hm-delay:.12s}
+  .premium-about .tl-block:nth-child(4){--hm-delay:.18s}
+  .premium-about .tl-block:nth-child(5){--hm-delay:.24s}
+  .premium-about .tl-block:nth-child(6){--hm-delay:.3s}
 
-     Rather than invent a card, this reuses the site's OWN numbered-card
-     pattern from .cleanse-card (site.css): a circular numeral, the name in
-     Formula, body beneath, and the FIRST card taking the lime ground while
-     the others do not. Reusing it costs no new vocabulary and ties the
-     About page to the homepage, where readers have already met it.
+  /* ---------- 5. Three principles ----------
+     Deep Green, so the page alternates ivory / green / ivory / green
+     down its length, and so the lime numerals and names are on their
+     sanctioned ground.
 
-     Grounds, all legal under V1.0 p.21:
-       section  Deep Green      (alternates with the ivory timeline above)
-       card 01  Detox Green     Deep Green type
-       card 02  Soft Ivory      Deep Green type
-       card 03  Soft Ivory      Deep Green type
-     The numeral circle inverts per card, exactly as .cleanse-num does:
-     lime disc with Deep Green figure on the ivory cards, Deep Green disc
-     with a lime figure on the lime one.
-
-     Left-aligned, not centred. Centred body copy at this measure is the
-     mockup's main readability problem — every line starts in a different
-     place, so the eye has to re-find the left edge three times per card. */
-  .prin{
-    background:var(--ink);color:#fff;
-    padding:clamp(72px,8vw,112px) 0;
+     Left-aligned, not centred as in the mockup: centred body copy at
+     this measure makes the eye re-find the left edge on every row. */
+  .premium-about .prin{background:var(--ink);color:var(--paper);padding:var(--gap) 0}
+  .premium-about .prin-head{margin:0 0 clamp(36px,4.5vw,64px)}
+  /* .pr-h runs at --lh:.78, so its glyphs rise above their own line box.
+     The gap has to clear that overshoot or the kicker is touched by the
+     caps below it. */
+  .premium-about .prin-head .pr-kicker{display:block;margin-bottom:clamp(30px,3.2vw,52px)}
+  .premium-about .prin-h{
+    --fs:clamp(62px,7.4vw,138px);--lh:.78;
+    color:var(--paper);letter-spacing:-.015em;
   }
-  .prin-head{margin:0 0 clamp(36px,4.5vw,64px)}
-  .prin-head .eyebrow{color:var(--lime);display:block;margin-bottom:14px}
-  .prin-head h2{
-    margin:0;max-width:none;color:#fff;
-    font-size:clamp(28px,4vw,54px);line-height:1.02;letter-spacing:.02em;
+  .premium-about .prin-h span:nth-child(2){margin-left:14%}
+  .premium-about .prin-grid{
+    display:grid;grid-template-columns:minmax(0,1fr);gap:0;
+    border-top:1px solid rgba(204,254,6,.4);
   }
-  .prin-grid{
-    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:clamp(16px,1.8vw,24px);align-items:stretch;
+  .premium-about .prin-card{
+    min-width:0;display:grid;
+    grid-template-columns:clamp(64px,7vw,110px) minmax(220px,.72fr) minmax(0,1fr);
+    gap:clamp(24px,4vw,68px);align-items:start;
+    padding:clamp(32px,3.8vw,58px) 0;
+    border-bottom:1px solid rgba(204,254,6,.4);
+    background:transparent;color:var(--paper);
   }
-  .prin-card{
-    display:flex;flex-direction:column;align-items:flex-start;
-    padding:34px 32px 32px;border-radius:var(--r-card);
-    background:var(--paper);color:var(--ink);
-    transition:transform .2s ease;
+  /* site.css gives .prin-num a filled circle via the shared
+     numbered-card pattern. Flattened to a plain numeral here, as the
+     homepage does with its IP rows. */
+  .premium-about .prin-num{
+    width:auto;height:auto;border-radius:0;background:transparent;color:var(--lime);
+    font:clamp(38px,4.5vw,72px)/.8 var(--display);font-weight:400;
   }
-  .prin-card:first-child{background:var(--lime)}
-  /* .prin-num takes the shared numbered-circle treatment from
-     css/site.css, including the invert on the lime first card. 7 Nov. */
-  .prin-card h3{
-    margin:24px 0 14px;color:var(--ink);
-    font:clamp(21px,1.9vw,28px)/1.05 var(--display);
+  .premium-about .prin-card h3{
+    margin:0;color:var(--lime);
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(28px,3vw,48px);line-height:1.05;
     letter-spacing:.03em;text-transform:uppercase;
   }
-  .prin-card p{
-    margin:0;color:rgba(20,51,24,.78);
-    font-size:clamp(15px,1.25vw,17px);line-height:1.55;
+  .premium-about .prin-card .pr-copy{
+    min-width:0;margin:0;max-width:48ch;color:rgba(254,253,242,.82);
   }
-  .prin-grid .reveal:nth-child(2){transition-delay:.1s}
-  .prin-grid .reveal:nth-child(3){transition-delay:.2s}
-  @media(hover:hover){
-    .prin-card:hover{transform:translateY(-4px)}
+  .premium-about .prin-grid .prin-card:nth-child(2){--hm-delay:.1s}
+  .premium-about .prin-grid .prin-card:nth-child(3){--hm-delay:.2s}
+
+  /* ---------- 6. What leaders say ----------
+     The band itself is premium.css's .pr-voices. Only the authored
+     offsets are page-specific. */
+  .premium-about .pr-voices-h span:nth-child(1){margin-left:28%}
+  .premium-about .pr-voices-h span:nth-child(2){margin-left:45%}
+
+  /* ---------- 7. The closing switch ----------
+     aria-pressed="true" is the RESTING state and js/site.js snaps it
+     back to it — the attribute is not touched here, only the type.
+
+     The kicker used to be a centred .eyebrow sitting over a
+     left-offset headline, so "The choice" landed on top of "YOU". It
+     is a flush-left .pr-kicker now. */
+  .premium-about .choice{
+    padding-block:calc(var(--gap) / 2) var(--gap);
+    text-align:left;background:var(--paper);
   }
-  @media(prefers-reduced-motion:reduce){
-    .prin-card{transition:none}
+  .premium-about .choice .container{width:min(1600px,calc(100% - 96px))}
+  .premium-about .choice .pr-kicker{margin-bottom:clamp(26px,2.8vw,44px)}
+  .premium-about .ab-choice-h{--fs:clamp(44px,7.8vw,146px)}
+  .premium-about .ab-choice-h span:nth-child(1){margin-left:24%}
+  .premium-about .ab-choice-h span:nth-child(2){margin-left:47%}
+  .premium-about .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-about .choice .toggle-rows{max-width:980px;margin-top:40px}
+  .premium-about .choice .toggle-row{
+    padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
+    gap:clamp(20px,3vw,46px);
+  }
+  .premium-about .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
+
+  /* ---------- 8. Responsive ----------
+     The channel widths come from premium.css. These are the
+     compositions that have to change shape. */
+  @media(max-width:1100px){
+    .premium-about .tl-block{
+      grid-template-columns:clamp(58px,6vw,100px) minmax(120px,.4fr) minmax(0,1.1fr) minmax(240px,.75fr);
+    }
+    .premium-about .choice .container{width:min(100%,calc(100% - 56px))}
   }
   @media(max-width:900px){
-    .prin-grid{grid-template-columns:minmax(0,1fr)}
-    .prin-card{padding:28px 26px}
+    .premium-about .ab-hero-grid{align-items:flex-end}
+    .premium-about .ab-hero-copy{width:100%;margin:0;padding:clamp(170px,44vw,320px) 0 clamp(54px,10vw,82px)}
+    .premium-about .ab-title{--fs:clamp(64px,18vw,102px)}
+    .premium-about .ab-portrait img{height:100%;object-position:34% 50%}
+    .premium-about .ab-portrait::before{
+      background:linear-gradient(to bottom,rgba(20,51,24,.12) 10%,rgba(20,51,24,.48) 43%,rgba(20,51,24,.97) 76%,var(--ink) 100%);
+    }
+    .premium-about .lis-grid,
+    .premium-about .ops-lead{grid-template-columns:minmax(0,1fr);gap:34px}
+    .premium-about .lis-head{--fs:clamp(58px,17vw,112px)}
+    .premium-about .ops-h{max-width:none}
+    .premium-about .ops-lead>div{max-width:60ch;justify-self:start}
+    .premium-about .ops-cred{grid-template-columns:minmax(0,1fr);gap:34px}
+    /* The list first, so the credentials are not pushed below a tall
+       photograph on a phone. */
+    .premium-about .ops-list{grid-column:1;order:1}
+    .premium-about .ops-figure{grid-column:1;order:2}
+    .premium-about .ops-figure img{min-height:0;max-height:760px;aspect-ratio:4/5}
+    .premium-about .tl-block{
+      grid-template-columns:52px minmax(0,1fr);
+      gap:14px 20px;padding-left:0;align-items:start;
+    }
+    .premium-about .tl-num{grid-column:1;grid-row:1/4}
+    .premium-about .tl-era{grid-column:2;grid-row:1;margin-top:0}
+    .premium-about .tl-text{grid-column:2;grid-row:2}
+    .premium-about .tl-figure{grid-column:2;grid-row:3;margin-top:8px;align-self:start}
+    .premium-about .prin-card{grid-template-columns:58px minmax(0,1fr);gap:18px 22px}
+    .premium-about .prin-card .pr-copy{grid-column:2}
   }
-
-  /* ---------- Oscar's path (timeline) ----------
-     Built to the structure of the timeline on stevenbartlett.com/about,
-     read from that page's source. His .tl-block is a big year plus two
-     halves — one photograph, one text — alternating left/right across a
-     centre spine, with AOS fades on each block.
-
-     Three deliberate differences:
-
-     1. HIS TIMELINE IS DESKTOP ONLY. The whole .timeline-wrap carries
-        `d-none d-md-block`, so phones never see it. Not copied: this one
-        collapses to a single left-hand spine instead of disappearing.
-     2. No years. His spine is driven by 1992 / 1994 / 2010, which is what
-        makes it scan as a timeline. The client's copy gives phases instead
-        ("EARLY YEARS", "NOW"), so the era label takes the year's place and
-        is set in Formula to hold the same weight. If approximate years ever
-        arrive they drop straight into .tl-era with no structural change.
-     3. No blurred duplicate image behind the text. That is his signature
-        touch and it depends on photographs chosen for it; with placeholder
-        images it would only draw attention to them.
-
-     The reveal is the project's own .reveal observer with nth-child delays
-     — same as .ops-list, no new library.
-
-     Soft Ivory ground, so the page alternates ivory / Deep Green / ivory
-     down its length. No lime anywhere here: V1.0 p.22 makes lime on Soft
-     Ivory a watchout, so the spine, the dots and the era labels are all
-     Deep Green. */
-  .path{
-    position:relative;
-    padding:clamp(72px,8vw,110px) 0 clamp(64px,7vw,100px);
-    background:var(--paper);overflow:hidden;
+  @media(max-width:760px){
+    .premium-about .choice .container{width:min(100%,calc(100% - 36px))}
+    /* premium.css relaxes .pr-h to --lh:.88 below 760px, but it loads
+       first, so the authored desktop values above would still win.
+       Restated rather than inherited. */
+    .premium-about .ab-title{--lh:.86}
+    .premium-about .lis-head{--lh:.86}
+    .premium-about .path-head{--lh:.86}
+    .premium-about .prin-h{--lh:.86}
+    .premium-about .choice-note{margin-inline:0;text-align:left}
   }
-  .path::before{
-    content:"";position:absolute;inset:0;
-    background:url("assets/patterns/logo-pattern.png") 0 0/240px auto;
-    opacity:.05;pointer-events:none;
-  }
-  .path .container{position:relative}
-  /* max-width:none — site.css caps every h2 at 21ch, so without this the
-     heading centres inside a narrow box and reads as left-aligned. */
-  .path-head{
-    margin:0 0 clamp(40px,5vw,72px);text-align:center;color:var(--ink);
-    max-width:none;
-    font-size:clamp(28px,4.2vw,56px);line-height:1;
-    letter-spacing:.02em;text-transform:uppercase;
-  }
-
-  /* The spine is a pseudo-element on the list, not a separate div as in
-     his markup — one less empty element, and it cannot drift out of step
-     with the blocks because it is the same box. */
-  .path-list{
-    position:relative;list-style:none;margin:0;padding:0;
-    display:flex;flex-direction:column;gap:clamp(44px,5vw,78px);
-  }
-  .path-list::before{
-    content:"";position:absolute;top:0;bottom:0;left:50%;
-    width:1px;margin-left:-.5px;background:rgba(20,51,24,.22);
-  }
-
-  .tl-block{
-    position:relative;
-    display:grid;grid-template-columns:1fr 1fr;
-    gap:clamp(28px,4vw,64px);align-items:center;
-  }
-  /* The dot. Ringed in the ground colour so the spine appears to pass
-     behind it rather than through it. */
-  .tl-block::before{
-    content:"";position:absolute;left:50%;top:50%;
-    width:13px;height:13px;margin:-6.5px 0 0 -6.5px;
-    border-radius:50%;background:var(--ink);
-    box-shadow:0 0 0 5px var(--paper);
-    z-index:1;
-  }
-  /* Alternate. Explicit grid-column on both halves rather than
-     direction:rtl, which would also flip the text inside them.
-
-     grid-row:1 is REQUIRED, not tidiness. Setting only the column leaves
-     auto-placement to pick the row, and it never moves backwards: on the
-     even blocks the figure is placed first (DOM order) into row 1 column 2,
-     so the text — asking for column 1, which is already behind the cursor —
-     gets pushed down into row 2. That is why the even blocks had their copy
-     sitting below the photograph instead of beside it, out of line with the
-     dot. Pinning both to row 1 puts them back on one line, and
-     align-items:center then lines the copy up with the dot. */
-  .tl-block>*{grid-row:1}
-  .tl-block:nth-child(odd) .tl-figure{grid-column:1}
-  .tl-block:nth-child(odd) .tl-text{grid-column:2}
-  .tl-block:nth-child(even) .tl-text{grid-column:1}
-  .tl-block:nth-child(even) .tl-figure{grid-column:2}
-  /* The text always sits away from the spine, so it reads outward from the
-     line on both sides instead of both columns running left-aligned. */
-  .tl-block:nth-child(even) .tl-text{text-align:right}
-
-  .tl-figure{margin:0}
-  .tl-figure img{
-    display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
-    object-position:50% 30%;border-radius:var(--r-card);
-  }
-  .tl-era{
-    margin:0 0 10px;color:rgba(20,51,24,.62);
-    font:13px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;
-  }
-  .tl-text h3{
-    margin:0;color:var(--ink);
-    font-size:clamp(19px,2.1vw,28px);line-height:1.18;letter-spacing:.01em;
-  }
-  .tl-text p{margin:12px 0 0;color:rgba(20,51,24,.76);font-size:16px;line-height:1.6}
-
-  /* Stagger, as on .ops-list. Six blocks, so the cycle is stated six
-     times; a 7th entry needs a 7th line here. */
-  .path-list .reveal:nth-child(2){transition-delay:.08s}
-  .path-list .reveal:nth-child(3){transition-delay:.16s}
-  .path-list .reveal:nth-child(4){transition-delay:.08s}
-  .path-list .reveal:nth-child(5){transition-delay:.16s}
-  .path-list .reveal:nth-child(6){transition-delay:.08s}
-
-  @media(max-width:860px){
-    /* Single column with the spine moved to the left edge. The dots sit on
-       it and every block reads the same way down — no alternating, which
-       needs two columns to mean anything. */
-    .path-list::before{left:7px;margin-left:0}
-    .path-list{gap:38px}
-    /* grid-row back to auto. One column plus the pinned row:1 above would
-       stack both halves into the same cell, on top of each other. */
-    .tl-block>*{grid-row:auto}
-    .tl-block{grid-template-columns:minmax(0,1fr);gap:16px;padding-left:36px}
-    .tl-block::before{left:7px;top:8px;margin:0 0 0 -6px}
-    .tl-block:nth-child(odd) .tl-figure,
-    .tl-block:nth-child(even) .tl-figure{grid-column:1;order:2}
-    .tl-block:nth-child(odd) .tl-text,
-    .tl-block:nth-child(even) .tl-text{grid-column:1;order:1;text-align:left}
-    .tl-figure img{aspect-ratio:16/10}
-    .tl-text p{font-size:15px}
-  }
-
-  @media(max-width:860px){
-    .ops-lead{grid-template-columns:minmax(0,1fr);gap:22px}
-    .ops-lead h2{max-width:20ch}
-    /* One column: the list comes first so the credentials are not pushed
-       below a tall photograph on a phone, and the cut-out follows it. */
-    .ops-cred{grid-template-columns:minmax(0,1fr);gap:34px}
-    .ops-list{grid-column:1;order:1}
-    .ops-figure{grid-column:1;order:2;justify-content:flex-start}
-    .ops-figure img{max-width:300px}
-  }
-
-  @media(max-width:860px){
-    /* minmax(0,1fr), NOT 1fr. A bare 1fr is minmax(auto,1fr), so the
-       column refuses to shrink below its widest item — the headline — and
-       at 390px that pushed the column past the container and clipped the
-       paragraph's right-hand edge against .lis's overflow:hidden. */
-    .lis-grid{grid-template-columns:minmax(0,1fr);gap:34px}
-    /* On one column the headline is no longer capped by a narrow column,
-       so the vw term has to come down or "INNOVATOR" overflows. */
-    .lis-head span{font-size:clamp(38px,13vw,78px)}
-    .lis-copy{max-width:60ch;font-size:16px}
-    /* The offset arch is pushed 16px right of the picture, so the picture
-       has to stop 16px short of the column or the offset is what clips. */
-    .lis-figure{max-width:min(420px,100%);justify-self:start;padding-right:16px}
-  }
-
   @media(max-width:700px){
-    /* --ah-h moved with the size animation onto .ah-box.
-
-       Both of these have to be swapped at the KEYFRAMES, not declared: the
-       animation is paused on its from-state from first paint, and an
-       animation's value beats a declaration. Declaring --ah-h or a 4px
-       border-width here does nothing at all — which is what the 4px line
-       was doing before 31 Oct, silently. */
-    .ah-box{animation-name:ahOpenSm}
-    .ah-frame{animation-name:ahEdgeSm}
-    .ah-plate{padding:18vh 16px 20px}
-    .ah-name{font-size:clamp(28px,11.5vw,54px)}
-    .ah-cap{font-size:11px;gap:6px 14px}
+    .premium-about .ab-title{--fs:clamp(58px,18.5vw,80px)}
+    .premium-about .ab-cap{font-size:12px}
+    .premium-about .lis-figure img{aspect-ratio:16/11}
+    .premium-about .tl-block:nth-child(n){--hm-delay:0s}
+    .premium-about .choice .toggle-row{padding:18px 20px 15px;gap:14px}
+    .premium-about .choice .choice-toggle .t-switch{width:100px;height:60px}
   }
-  
   </style>
 </head>
-<body>
+<body class="premium-page premium-about">
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
     <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -731,44 +454,26 @@
         <a href="about.html" aria-current="page">About</a>
         <a href="contact.html">Contact</a>
       </nav>
-      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk <span>→</span></a>
+      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
     </div>
   </header>
 
   <main id="main">
-    <section class="ah">
-      <!-- .ah-box is a pure animation wrapper and carries no styling of its
-           own. It exists because Safari ignores the edge animation whenever
-           it shares an element with the size animation — see the ahOpen
-           note. One animation per element: .ah-box grows, .ah-frame sheds
-           its border. Do not merge them back. -->
-      <div class="ah-box">
-      <div class="ah-frame">
-        <!-- 31 Oct: this was a 15.1 MB, 3448x5168 camera original — the
-             first thing the page loaded, and eight times the 1.8 MB hero the
-             client had already complained about. Resized to 2048 wide (what
-             a full-bleed hero needs at 1920: object-fit:cover scales a 2:3
-             portrait by WIDTH here, so the whole frame is used) and served
-             AVIF first, WebP second, JPEG as the fallback. 15.1 MB -> 262 KB
-             for almost everyone, a 98% cut, with no layout or crop change.
-
-             The <picture> is the grid item now, not the <img>; .ah-shot
-             below gives it the height the img used to take directly. The
-             ahCrop animation stays on .ah-pic, which is still the <img>. -->
-        <picture class="ah-shot">
-          <source srcset="assets/img/oscar-steps.avif" type="image/avif">
-          <source srcset="assets/img/oscar-steps.webp" type="image/webp">
-          <img class="ah-pic" src="assets/img/oscar-steps.jpg" alt="Oscar de Grauw sitting on steps" width="2048" height="3069">
-        </picture>
-        <div class="ah-plate">
-          <!-- Wide O and D wrapped by hand: js/site.js splits on uppercase
-               /([OD])/ and this is sentence case uppercased by CSS, so the
-               script would never match it. -->
-          <h1 class="ah-name">Oscar de Grauw</h1>
-          <p class="ah-cap"><span>Founder, OPS Detox™</span><span>TEDx speaker</span><span>17 years inside complex international organizations</span></p>
+    <section class="ab-hero" aria-labelledby="ab-title">
+      <figure class="ab-portrait">
+        <img src="assets/img/oscar-about.jpg" alt="Oscar de Grauw working with a laptop" width="1201" height="1800" fetchpriority="high">
+      </figure>
+      <div class="pr-wrap ab-hero-grid">
+        <div class="ab-hero-copy">
+          <span class="pr-kicker hm hm-copy">About Oscar de Grauw</span>
+          <h1 class="pr-h ab-title hm hm-lines" id="ab-title"><span>Oscar</span><span>de Grauw</span></h1>
+          <p class="ab-cap hm hm-copy"><span>Founder, OPS Detox™</span><span>TEDx speaker</span><span>17 years inside complex international organizations</span></p>
+          <div class="ab-actions hm hm-copy">
+            <a class="button button--line" href="contact.html">Let’s talk</a>
+            <a class="button ab-btn-ghost" href="diagnostic.html">Book the free diagnostic</a>
+          </div>
         </div>
-      </div>
       </div>
     </section>
 
@@ -782,25 +487,25 @@
          this page — it is in git if it should come back lower down. The
          two CTAs from it are kept here so no booking route was lost.
 
-         The photograph is a STAND-IN. The mockup uses a studio shot of
-         Oscar on a stool which is not in the project; oscar-about.jpg is
-         from the same shoot and sits correctly in the arch. Swap the src
-         when the real file arrives — nothing else needs to change. -->
-    <section class="lis reveal" aria-labelledby="lis-heading">
-      <div class="container">
+         The photograph is Oscar speaking to a real audience, selected for
+         this section because it supports the Speaker / Leader / Visionary
+         statement instead of repeating another studio portrait. -->
+    <section class="lis" aria-labelledby="lis-heading">
+      <div class="pr-wrap">
         <div class="lis-grid">
           <div>
-            <!-- Three spans rather than <br>: each word takes the rule
-                 under it, and a screen reader still reads one heading. -->
-            <h2 class="lis-head" id="lis-heading"><span>Speaker</span><span>Leader</span><span>Visionary</span></h2>
-            <p class="lis-copy">Founder of OPS Detox™ and TEDx speaker. At Sony Europe Oscar worked across seven functions and 29 countries, leading the work that halved the reporting, removed close to a third of the meeting time and moved decisions closer to the people doing the work. Today he brings that experience to scale-up founders.</p>
-            <div class="actions">
-              <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
-              <a class="button button--line" href="contact.html">Let’s talk <span>→</span></a>
+            <!-- Three spans rather than <br>: each word gets its own line
+                 in the staircase, and a screen reader still reads one
+                 heading. .pr-h makes the spans blocks. -->
+            <h2 class="pr-h lis-head hm hm-lines" id="lis-heading"><span>Speaker</span><span>Leader</span><span>Visionary</span></h2>
+            <p class="pr-copy lis-copy hm hm-copy">Founder of OPS Detox™ and TEDx speaker. At Sony Europe Oscar worked across seven functions and 29 countries, leading the work that halved the reporting, removed close to a third of the meeting time and moved decisions closer to the people doing the work. Today he brings that experience to scale-up founders.</p>
+            <div class="actions hm hm-copy">
+              <a class="button" href="diagnostic.html">Book the free diagnostic</a>
+              <a class="button button--line" href="contact.html">Let’s talk</a>
             </div>
           </div>
-          <figure class="lis-figure">
-            <img src="assets/img/oscar-chair.jpg" alt="Oscar de Grauw">
+          <figure class="lis-figure hm hm-media">
+            <img src="assets/img/speaking.jpg" alt="Oscar de Grauw speaking to an audience" width="1086" height="724" loading="lazy">
           </figure>
         </div>
       </div>
@@ -811,105 +516,138 @@
          paragraph ("…finding them and taking them out") — flagged, not
          fixed, per the copy rules.
 
-         The portrait is a real cut-out now: assets/img/oscar-cutout.avif,
-         lifted from assets/img/oscar-about.jpg with the macOS Vision foreground mask. AVIF
-         is 48KB and carries the alpha; the PNG fallback is 516KB and is
-         only fetched by browsers without AVIF. This partly answers §20 —
-         a cut-out of Oscar now exists in the project. -->
+         This real working-session photograph keeps the operational
+         credentials distinct from the office portrait used in the hero. -->
     <section class="ops" aria-labelledby="ops-heading">
-      <div class="container">
-        <div class="ops-lead reveal">
-          <h2 id="ops-heading">Oscar is an operations leader helping scale-ups <em>run faster and leaner as they grow.</em></h2>
-          <div>
-            <p>Oscar de Grauw spent seventeen years at Sony Europe, across sales, marketing, procurement, business planning, operational excellence, reporting and transformation. In a global organisation, meetings, reports and approval layers often outlive the reason they were created. Much of his work was finding them and taking them out</p>
-            <p>Before Sony, an expat childhood in the United States, Germany and the Netherlands and two years as a flight attendant taught him to notice what people feel but do not say. After Sony, a sabbatical across Asia and the Pacific turned seventeen years of hands-on work into a method.</p>
+      <div class="pr-wrap">
+        <div class="ops-lead">
+          <h2 class="pr-h ops-h hm hm-copy" id="ops-heading">Oscar is an operations leader helping scale-ups <em>run faster and leaner as they grow.</em></h2>
+          <div class="hm hm-copy">
+            <p class="pr-copy">Oscar de Grauw spent seventeen years at Sony Europe, across sales, marketing, procurement, business planning, operational excellence, reporting and transformation. In a global organisation, meetings, reports and approval layers often outlive the reason they were created. Much of his work was finding them and taking them out</p>
+            <p class="pr-copy">Before Sony, an expat childhood in the United States, Germany and the Netherlands and two years as a flight attendant taught him to notice what people feel but do not say. After Sony, a sabbatical across Asia and the Pacific turned seventeen years of hands-on work into a method.</p>
           </div>
         </div>
 
         <div class="ops-cred">
-          <figure class="ops-figure">
-            <picture>
-              <source srcset="assets/img/oscar-cutout.avif" type="image/avif">
-              <img src="assets/img/oscar-cutout.png" alt="Oscar de Grauw" width="860" height="1468" loading="lazy" decoding="async">
-            </picture>
+          <figure class="ops-figure hm hm-media">
+            <img src="assets/img/work-whiteboard.jpg" alt="Oscar de Grauw leading an operations session at a whiteboard" width="1370" height="1148" loading="lazy">
           </figure>
           <ul class="ops-list">
-            <li class="reveal"><p><b>Led the operational detox at Sony Europe</b>: reporting reduced from 167 reports to 78, close to a third of the meeting time removed across 29 countries and decision authority raised from €500 to €10,000.</p></li>
-            <li class="reveal"><p><b>Founded OPS Detox™</b>: a consultancy that helps scale-up founders strip operational clutter together with their team, through Operational Flow and Organisational Flow.</p></li>
-            <li class="reveal"><p><b>TEDx speaker and workshop facilitator</b>: keynotes and leadership workshops, including the Speak Up Gym and the Out Loud card game, where teams practise saying the uncomfortable thing out loud.</p></li>
+            <li class="hm hm-row"><p class="pr-copy"><b>Led the operational detox at Sony Europe</b>: reporting reduced from 167 reports to 78, close to a third of the meeting time removed across 29 countries and decision authority raised from €500 to €10,000.</p></li>
+            <li class="hm hm-row"><p class="pr-copy"><b>Founded OPS Detox™</b>: a consultancy that helps scale-up founders strip operational clutter together with their team, through Operational Flow and Organisational Flow.</p></li>
+            <li class="hm hm-row"><p class="pr-copy"><b>TEDx speaker and workshop facilitator</b>: keynotes and leadership workshops, including the Speak Up Gym and the Out Loud card game, where teams practise saying the uncomfortable thing out loud.</p></li>
           </ul>
         </div>
       </div>
     </section>
 
-    <div class="ticker" aria-label="OPS Detox principles">
-      <div>Flush the pipelines <span>•</span> UNCOMPLICATE the decision <span>•</span> CLEAN THE SYSTEMS <span>•</span> Unclog the approval queue <span>•</span> Strip the NOISE <span>•</span> Drain the decision backlog <span>•</span></div>
+    <!-- The switcher-pattern strip, as it runs on contact.html. Replaces
+         the legacy .ticker, which was the only marquee of its kind left
+         on the site. THE SIX PHRASES ARE IDENTICAL AND IN THE SAME
+         ORDER — only the bullet separators go, since the pills do that
+         job now. FOUR copies and a 6n cycle: see the .pt rules in
+         css/site.css before changing a word. -->
+    <div class="pt-strip" aria-label="OPS Detox principles">
+      <div class="pt-row">
+        <div class="pt-track">
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
+        </div>
+      </div>
     </div>
 
     <!-- Oscar's journey. Copy is the client's, word for word, including the
          US spelling of "organization" in the FIRST CHAPTER and NOW entries,
          which the rest of the site also uses.
 
-         EVERY PHOTOGRAPH HERE IS A PLACEHOLDER. The six images are the only
-         real photographs of Oscar in the project, rotated so no two blocks
-         repeat; none of them depicts the moment its entry describes — there
-         is no childhood, flight-attendant or Kilimanjaro photography in the
-         project at all. Swap the six src attributes when the real images
-         arrive; nothing else needs to change.
-
-         The AI keynote image (speaking-keynote.jpg) is deliberately NOT
-         used: §27 flags it as showing an audience that never existed. -->
-    <section class="path reveal" aria-labelledby="path-heading">
-      <div class="container">
-        <h2 class="path-head" id="path-heading">Oscar’s journey</h2>
+         Childhood, aviation and Kilimanjaro now use Oscar's own archive.
+         The consulting and Sony entries use editorial portrait stand-ins;
+         the final entry uses a current portrait. -->
+    <section class="path" aria-labelledby="path-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h path-head hm hm-lines" id="path-heading">
+          <span>Oscar’s</span>
+          <span>journey</span>
+        </h2>
         <ol class="path-list">
-          <li class="tl-block reveal">
-            <figure class="tl-figure"><img src="assets/img/oscar-steps.jpg" alt="" loading="lazy" decoding="async"></figure>
+          <li class="tl-block hm hm-row">
+            <span class="tl-num" aria-hidden="true">01</span>
+            <p class="tl-era">Early years</p>
             <div class="tl-text">
-              <p class="tl-era">Early years</p>
               <h3>An expat childhood across three countries</h3>
-              <p>USA, Germany, Netherlands. Multiple schools, cultures and languages. Learning to adapt before it was a skill anyone was talking about.</p>
+              <p class="pr-copy">USA, Germany, Netherlands. Multiple schools, cultures and languages. Learning to adapt before it was a skill anyone was talking about.</p>
             </div>
+            <figure class="tl-figure"><img src="assets/img/about-journey-childhood.jpg" alt="Oscar de Grauw as a child, seated at a piano" width="796" height="596" loading="lazy"></figure>
           </li>
-          <li class="tl-block reveal">
-            <figure class="tl-figure"><img src="assets/img/oscar-problem.jpg" alt="" loading="lazy" decoding="async"></figure>
+          <li class="tl-block hm hm-row">
+            <span class="tl-num" aria-hidden="true">02</span>
+            <p class="tl-era">Pre-corporate</p>
             <div class="tl-text">
-              <p class="tl-era">Pre-corporate</p>
               <h3>Flight attendant: two years at altitude</h3>
-              <p>Service, safety, cultural intelligence, non-verbal communication. The ability to read a room without anyone saying a word.</p>
+              <p class="pr-copy">Service, safety, cultural intelligence, non-verbal communication. The ability to read a room without anyone saying a word.</p>
             </div>
+            <figure class="tl-figure"><img src="assets/img/about-journey-flight.jpg" alt="Oscar de Grauw leaning from an aircraft cockpit" width="1600" height="1200" loading="lazy"></figure>
           </li>
-          <li class="tl-block reveal">
-            <figure class="tl-figure"><img src="assets/img/oscar-portrait.jpg" alt="" loading="lazy" decoding="async"></figure>
+          <li class="tl-block hm hm-row">
+            <span class="tl-num" aria-hidden="true">03</span>
+            <p class="tl-era">First chapter</p>
             <div class="tl-text">
-              <p class="tl-era">First chapter</p>
               <h3>Time management consulting: the first seed</h3>
-              <p>An early role that planted the question he would spend the next two decades answering: where does time actually go inside an organization?</p>
+              <p class="pr-copy">An early role that planted the question he would spend the next two decades answering: where does time actually go inside an organization?</p>
             </div>
+            <figure class="tl-figure"><img src="assets/img/about-journey-consulting.jpg" alt="A young Oscar de Grauw in a suit" width="1200" height="900" loading="lazy"></figure>
           </li>
-          <li class="tl-block reveal">
-            <figure class="tl-figure"><img src="assets/img/oscar-about.jpg" alt="" loading="lazy" decoding="async"></figure>
+          <li class="tl-block hm hm-row">
+            <span class="tl-num" aria-hidden="true">04</span>
+            <p class="tl-era">17 years</p>
             <div class="tl-text">
-              <p class="tl-era">17 years</p>
               <h3>Sony Europe: the real education</h3>
-              <p>Sales, deployment, procurement, business planning, marketing, process design and strategic operational excellence. Seven functions. One recurring pattern.</p>
+              <p class="pr-copy">Sales, deployment, procurement, business planning, marketing, process design and strategic operational excellence. Seven functions. One recurring pattern.</p>
             </div>
+            <figure class="tl-figure"><img src="assets/img/oscar-office-portrait.jpg" alt="Oscar de Grauw in a business suit" width="1044" height="1506" loading="lazy"></figure>
           </li>
-          <li class="tl-block reveal">
-            <figure class="tl-figure"><img src="assets/img/speaking.jpg" alt="" loading="lazy" decoding="async"></figure>
+          <li class="tl-block hm hm-row">
+            <span class="tl-num" aria-hidden="true">05</span>
+            <p class="tl-era">The turning point</p>
             <div class="tl-text">
-              <p class="tl-era">The turning point</p>
               <h3>Sabbatical, Kilimanjaro, and a new perspective</h3>
-              <p>A deliberate pause. Travel. Two ebooks. A mountain summit. A relationship that changed the lens. A coaching trajectory that turned insight into clarity.</p>
+              <p class="pr-copy">A deliberate pause. Travel. Two ebooks. A mountain summit. A relationship that changed the lens. A coaching trajectory that turned insight into clarity.</p>
             </div>
+            <figure class="tl-figure"><img src="assets/img/about-journey-kilimanjaro.jpg" alt="Oscar de Grauw at the summit of Mount Kilimanjaro" width="1600" height="1200" loading="lazy"></figure>
           </li>
-          <li class="tl-block reveal">
-            <figure class="tl-figure"><img src="assets/img/oscar-chair.jpg" alt="" loading="lazy" decoding="async"></figure>
+          <li class="tl-block hm hm-row">
+            <span class="tl-num" aria-hidden="true">06</span>
+            <p class="tl-era">Now</p>
             <div class="tl-text">
-              <p class="tl-era">Now</p>
               <h3>OPS Detox: the practice built on everything before it</h3>
-              <p>Senior IP-driven consultant. Seven modules. Proprietary frameworks. A clear mission: help growing organizations remove the friction that keeps them stuck.</p>
+              <p class="pr-copy">Senior IP-driven consultant. Seven modules. Proprietary frameworks. A clear mission: help growing organizations remove the friction that keeps them stuck.</p>
             </div>
+            <figure class="tl-figure"><img src="assets/img/oscar-chair.jpg" alt="Oscar de Grauw smiling, seated on a chair" width="1024" height="1536" loading="lazy"></figure>
           </li>
         </ol>
       </div>
@@ -923,40 +661,47 @@
          The overlapping "Six values, no exceptions" section was removed
          after the 11 Nov client review. These three principles are the one
          retained statement of how Oscar works. -->
-    <section class="prin reveal" aria-labelledby="prin-heading">
-      <div class="container">
+    <section class="prin" aria-labelledby="prin-heading">
+      <div class="pr-wrap">
         <div class="prin-head">
-          <span class="eyebrow">How Oscar works</span>
-          <h2 id="prin-heading">Three principles behind every detox</h2>
+          <span class="pr-kicker hm hm-copy">How Oscar works</span>
+          <!-- Spans, not a <br>: they set where the line turns so the
+               headline staircases like every other .pr-h instead of
+               wrapping wherever the channel happens to run out. The
+               sentence is unchanged and a screen reader still reads one
+               heading. -->
+          <h2 class="pr-h prin-h hm hm-lines" id="prin-heading">
+            <span>Three principles</span>
+            <span>behind every detox</span>
+          </h2>
         </div>
         <div class="prin-grid">
-          <article class="prin-card reveal">
+          <article class="prin-card hm hm-row">
             <span class="prin-num" aria-hidden="true">01</span>
             <h3>Uncomfortable honesty</h3>
-            <p>You hear what is really happening early, while it is still cheap to fix. Polite advice costs you a year; an honest conversation costs you an hour.</p>
+            <p class="pr-copy">You hear what is really happening early, while it is still cheap to fix. Polite advice costs you a year; an honest conversation costs you an hour.</p>
           </article>
-          <article class="prin-card reveal">
+          <article class="prin-card hm hm-row">
             <span class="prin-num" aria-hidden="true">02</span>
             <h3>Ownership</h3>
-            <p>Every decision and every process leaves the engagement with a named owner. The new structure belongs to your team, not to OPS Detox.</p>
+            <p class="pr-copy">Every decision and every process leaves the engagement with a named owner. The new structure belongs to your team, not to OPS Detox.</p>
           </article>
-          <article class="prin-card reveal">
+          <article class="prin-card hm hm-row">
             <span class="prin-num" aria-hidden="true">03</span>
             <h3>Courage</h3>
-            <p>Adding a meeting is easy. Stripping one out takes nerve. OPS Detox helps you make the deliberate choices that habit has been making for you.</p>
+            <p class="pr-copy">Adding a meeting is easy. Stripping one out takes nerve. OPS Detox helps you make the deliberate choices that habit has been making for you.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="testimonials reveal" aria-labelledby="testimonials-heading">
-      <div class="container">
-        <div class="testimonials-head">
-          <span class="eyebrow">Testimonials</span>
-          <h2 id="testimonials-heading">What leaders say</h2>
-        </div>
-      </div>
-      <div class="testimonial-slider">
+    <section class="pr-voices" aria-labelledby="testimonials-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h pr-voices-h hm hm-lines" id="testimonials-heading">
+          <span>What leaders</span>
+          <span>say</span>
+        </h2>
+      <div class="testimonial-slider hm hm-panel">
         <div class="testimonial-grid testimonial-track" role="list">
           <article role="listitem">
             <span class="testimonial-label">Placeholder testimonial</span>
@@ -1055,15 +800,19 @@
           </article>
         </div>
       </div>
+      </div>
     </section>
 
     <section class="choice">
       <div class="container">
-        <span class="eyebrow">The choice</span>
-        <h2>What will you choose?</h2>
-        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+        <span class="pr-kicker hm hm-copy">The choice</span>
+        <h2 class="pr-h ab-choice-h hm hm-lines">
+          <span>What will you</span>
+          <span>choose?</span>
+        </h2>
+        <p class="choice-note hm hm-copy">Clarity is the default. Switch back to see the noise.</p>
 
-        <div class="toggle-rows">
+        <div class="toggle-rows hm hm-panel">
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
                   aria-label="Switch between Operational Clarity and Operational Noise">
             <span class="t-before">Operational Clarity</span>
@@ -1072,7 +821,7 @@
           </button>
         </div>
 
-        <div class="actions">
+        <div class="actions hm hm-copy">
           <a class="button" href="diagnostic.html">Book the free diagnostic</a>
           <a class="button button--line" href="contact.html">Let’s talk</a>
         </div>
@@ -1125,89 +874,26 @@
     </div>
   </footer>
 
+  <div class="pb" aria-hidden="true">
+    <div class="pb-row"><div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div></div>
+    <div class="pb-row pb-row--b"><div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div></div>
+  </div>
+
   <script src="js/site.js"></script>
-
-  <!-- Releases the hero animation when the preloader lifts, so it is seen
-       instead of playing out behind the overlay.
-
-       It watches for .pl-lock coming OFF <html> rather than calling into
-       the preloader, because js/site.js is shared with the five other
-       pages and must not be touched for a change that concerns one hero.
-       site.js removes that class in endPreloader() at the moment the lift
-       starts, which is exactly the cue wanted — and it fires on all three
-       of its exits: the 1450ms timer, the skip-on-interaction path and the
-       3000ms safety net.
-
-       Three ways in, so the hero can never be left stranded on the framed
-       state: the class is already gone or was never set (reduced motion
-       takes the .no-preloader branch in the <head> script); the observer
-       sees it go; or the 4s backstop fires if script or observer fails.
-       The backstop clears the 3000ms safety net plus its 560ms removal. -->
-  <script>
-  (function () {
-    var root = document.documentElement;
-
-    /* ---------- The lime edge is animated HERE, not in CSS ----------
-       Safari will not run the edge animation from a stylesheet. Four CSS
-       builds were tried — border/radius mixed into the size keyframes, split
-       into their own keyframes, re-expressed as registered custom
-       properties, and finally split onto their own element — and every one
-       of them left the picture growing to full bleed still carrying its 6px
-       lime border and 36px corners. The size animation (ahOpen on .ah-box)
-       works in Safari throughout, so this is specific to the edge.
-
-       The Web Animations API runs it correctly in both engines. Script
-       animations also sit ABOVE CSS animations in the cascade, so the
-       ahEdge keyframes are deliberately left in place below: they are the
-       no-JS fallback, and when this runs it simply wins.
-
-       The timing MUST match ahOpen's — 1150ms, 450ms delay, same curve —
-       or the border stops shrinking in step with the frame growing. Retune
-       the two together. */
-    function animateEdge() {
-      var frame = document.querySelector('.ah-frame');
-      if (!frame || !frame.animate) return;
-      /* Reduced motion gets the end state and no movement, matching the
-         @media(prefers-reduced-motion:reduce) block in the stylesheet. That
-         block cannot stop a script animation, so the guard has to be here
-         too — without it the edge would animate for exactly the users who
-         asked it not to. */
-      if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-      /* Phone start values, matching ahEdgeSm. */
-      var small = window.matchMedia('(max-width:700px)').matches;
-      try {
-        frame.animate(
-          [
-            { borderWidth: small ? '4px' : '6px', borderRadius: small ? '28px' : '36px' },
-            { borderWidth: '0px', borderRadius: '0px' }
-          ],
-          {
-            duration: 1150,
-            delay: 450,
-            easing: 'cubic-bezier(.65,0,.2,1)',
-            fill: 'both'
-          }
-        );
-      } catch (e) {}
-    }
-
-    function go() {
-      if (root.classList.contains('hero-go')) return;
-      root.classList.add('hero-go');
-      /* Started at the same moment the class lands, so the WAAPI delay and
-         the CSS animation-delay are measured from the same instant. */
-      animateEdge();
-    }
-    if (!root.classList.contains('pl-lock')) {
-      go();
-    } else if (window.MutationObserver) {
-      var mo = new MutationObserver(function () {
-        if (!root.classList.contains('pl-lock')) { mo.disconnect(); go(); }
-      });
-      mo.observe(root, { attributes: true, attributeFilter: ['class'] });
-    }
-    window.setTimeout(go, 4000);
-  })();
-  </script>
+  <!-- The shared reveal controller. It replaces the page's own
+       about-ready script: same preloader handshake, same reduced-motion
+       bail-out, and it already sets .premium-ready on <body>, which is
+       what the hero portrait's settle now hangs off. -->
+  <script src="js/premium-motion.js"></script>
 </body>
 </html>

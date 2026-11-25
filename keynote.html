@@ -5,22 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#143318">
   <title>Keynote | OPS DETOX™</title>
-  <meta name="description" content="Tracks of Time. A keynote by Oscar de Grauw. Most people aren’t living their lives. They’re surviving them.">
+  <meta name="description" content="Stop running the company. Start leading it. Practical keynotes by Oscar de Grauw for founders and leadership teams.">
   <link rel="icon" href="assets/logo/favicon.png">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/premium.css">
   <!-- ==========================================================
-       KEYNOTE PAGE — IN PROGRESS. Section 1 of a structure the
-       client set by reference to clemensdoppler.com. The
-       STRUCTURE is being followed; the design is ours. See §34.
+       KEYNOTE PAGE — PREMIUM REVIEW BUILD. The client's supplied
+       section order and wording are translated into the approved
+       homepage design language. See HANDOFF §64.
 
        Same scope rule as index.html, about.html, contact.html
        and work-with-us.html: every rule lives in the <style>
-       block below, scoped to this document. css/site.css and
-       js/site.js are NOT touched — they are shared by all pages.
+       block below, scoped to this document. The reusable premium
+       primitives come from css/premium.css and
+       js/premium-motion.js; css/site.css and js/site.js remain the
+       shared live-site foundation.
        ========================================================== -->
   <!-- Decide before first paint: reduced-motion visitors and anyone who has
        already seen the preloader this session go straight to the page. -->
-  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <script>try{var reduceKeynoteMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;if(sessionStorage.getItem('ops-preloaded')||reduceKeynoteMotion){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}if(!reduceKeynoteMotion){document.documentElement.className+=' premium-motion';}}catch(e){}</script>
 
   <style>
   /* ---------- 1. Page shell ---------- */
@@ -198,29 +201,14 @@
      V1.0 p.26 sets short statements in uppercase with open tracking and
      LONGER SENTENCES in standard letterforms with tighter spacing. So
      site.css's blanket text-transform:uppercase on h1 is turned off. */
-  .kh-head{
-    margin:0;max-width:none;
-    color:var(--paper);
-    font-size:clamp(26px,2.75vw,44px);
-    /* 1.18, down from the 1.52 the slabs needed to stop them overlapping.
-       With the boxes gone that leading read as a loose, airy block rather
-       than as a statement. */
-    line-height:1.18;
-    letter-spacing:.005em;
-    text-transform:none;
-  }
+
 
   /* Inter, not Formula Condensed — V1.0 p.27 puts body copy in Inter, and a
      long condensed line at this size is the hardest thing on the screen to
      read (§23 made the same correction to the homepage hero's proof line).
      Held back from full ivory so it sits under the headline rather than
      competing with it. */
-  .kh-sub{
-    margin:20px 0 0;max-width:46ch;
-    color:rgba(254,253,242,.82);
-    font-size:clamp(15px,1.15vw,18px);
-    line-height:1.6;
-  }
+
 
   /* The CTA is the solid lime pill — V1.0 p.29's primary. It sits on the
      Deep Green scrim, so it is legal, and the pill's full radius is what
@@ -294,536 +282,13 @@
     .kh-pic{--kh-crop:42%}
   }
 
-  /* ==========================================================
-     4. SECTIONS 2 + 3 — "As seen in" and the pull quote
-     ==========================================================
-     Both sit on ONE Soft Ivory field, as drawn.
-
-     They share a single .kn-paper wrapper rather than carrying a dot field
-     each, and that is structural, not tidiness: the dots are a 26px
-     background-size on a pseudo-element anchored to its own element's
-     inset. Two adjacent dotted sections therefore restart the grid at the
-     join, and unless both heights happen to be exact multiples of 26px the
-     pattern visibly jumps there. One wrapper, one continuous grid.
-
-     (On work-with-us.html the dotted sections are always separated by a
-     Deep Green band, which is why the problem never showed up there.) */
-  .kn-paper{
-    position:relative;overflow:hidden;
-    background:var(--paper);
-    padding:clamp(56px,6vw,90px) 0 clamp(64px,7vw,104px);
-  }
-  /* The dot field was removed on 7 Nov. Designer: it is not in the
-     guideline — V1.0 names only the logo pattern (merch, p.36) and the
-     switcher pattern (p.38). These sections are plain Soft Ivory now. */
-  .kn-paper>*{position:relative;z-index:1}
-
-  /* ---------- "As seen in:" ----------
-     Deliberately a step BELOW index.html's trust row, which §27 raised to
-     clamp(20px,2.5vw,38px) as a real section title. That one introduces the
-     page's client proof; this is a small caption over a press row inside a
-     longer page, and at 38px it would outweigh the quote beneath it. */
-  .kn-seen{text-align:center}
-  .kn-seen h2{
-    max-width:none;margin:0 0 clamp(22px,2.4vw,32px);
-    font-size:clamp(17px,1.8vw,24px);line-height:1.2;
-    letter-spacing:.07em;color:var(--ink);
-  }
-  /* Reuses site.css's .trust-logos grid and its grey placeholder type, so
-     this row and the homepage's are the same object. The real logos will
-     drop into both the same way. */
-  /* Capped and centred rather than filling the 1320px container. Spread
-     across the full width the four placeholders read as four separate
-     things rather than as one row of proof. */
-  .kn-logos{
-    display:grid;grid-template-columns:repeat(4,1fr);
-    align-items:center;gap:28px;
-    max-width:min(900px,100%);margin:0 auto;
-  }
-  .kn-logos span{font:clamp(26px,3.2vw,40px) var(--display);color:#aab2aa}
-
-  /* ---------- The pull quote ---------- */
-  .kn-quote{
-    text-align:center;
-    margin-top:clamp(56px,6.5vw,96px);
-  }
-
-  /* The ornament is the brand's OWN MARK, not the mockup's sparkle.
-     A four-point sparkle is a generic editorial dingbat and belongs to no
-     part of this identity. The O+D monogram does, and the two paths are
-     lifted straight out of assets/logo/primary-detoxgreen.svg — the same
-     geometry the preloader uses (§21) — so it is exact rather than redrawn.
-     Deep Green on Soft Ivory, which p.21 allows; lime here would be p.22's
-     first watchout. */
-  .kn-mark{
-    display:block;margin:0 auto clamp(26px,3vw,40px);
-    width:clamp(54px,5.4vw,76px);height:auto;
-  }
-  .kn-mark path{fill:var(--ink)}
-
-  /* UPRIGHT, NOT ITALIC, and that is a hard constraint rather than a
-     preference. The mockup sets this in an italic serif. The site self-hosts
-     exactly two faces and NEITHER HAS AN ITALIC: Formula Condensed is a
-     single Bold cut (§9), and Inter-Variable carries only `opsz` and `wght`
-     axes — measured, no `ital` and no `slnt`. Asking for font-style:italic
-     would make the browser synthesise a faux oblique by shearing the
-     glyphs, which is the same objection §27 raised to synthesising a
-     lighter weight. A real italic needs a licensed file.
-
-     Formula Condensed rather than Inter because a pull quote is a
-     statement, and the display face is what carries statements here. Set in
-     SENTENCE CASE per V1.0 p.26 — longer sentences take standard
-     letterforms, not the tracked uppercase treatment short statements get.
-     Same call as the hero headline on this page. */
-  .kn-quote blockquote{
-    margin:0 auto;max-width:min(940px,94%);
-    font-family:var(--display);
-    font-size:clamp(26px,3.15vw,46px);line-height:1.22;
-    letter-spacing:.01em;color:var(--ink);
-    text-wrap:balance;
-  }
-  /* THE MEASURE IS IN PIXELS, NOT ch, AND THAT IS THE WHOLE POINT.
-     The first build capped this at 17ch and it came out eleven lines deep
-     and about a fifth of the page wide — the exact word-ladder failure §4
-     records ("a tight ch cap on display type turns a sentence into a word
-     ladder; keep the measure generous and let the type scale down").
-
-     A `ch` is the width of the ZERO GLYPH, and in a condensed face that is
-     very narrow, so 17ch buys far fewer characters here than the same
-     number would in Inter. Sized from the text instead: ~213 characters
-     over the 4 lines the mockup draws is ~53 per line, and at 46px in this
-     face that needs roughly 930px. 940 with a 94% floor so it never
-     outruns the container on a laptop. */
-
-  /* The attribution. NO EM DASHES, deliberately, and this is the one place
-     the mockup has to be overruled on copy: it draws "— OSCAR DE GRAUW —",
-     and §29.4 records em dashes being stripped from every piece of visible
-     copy on the client's own instruction (30 Oct). Reintroducing a pair
-     here to decorate a name would walk that straight back.
-
-     It carries .eyebrow so js/site.js wraps the wide O and D, and is typed
-     in literal uppercase so the script's /([OD])/ actually matches — the
-     mistake the hero eyebrow made first time round. */
-  .kn-cite{
-    display:block;margin:clamp(26px,3vw,40px) 0 0;
-    font:14px/1.2 var(--display);
-    letter-spacing:.22em;text-transform:uppercase;
-    color:var(--muted);font-style:normal;
-  }
-
-  @media(max-width:850px){
-    .kn-logos{grid-template-columns:1fr 1fr;gap:26px 20px}
-    .kn-quote blockquote{max-width:100%}
-  }
-
-  /* ==========================================================
-     5. SECTION 4 — "Surviving is not the same as living"
-     ==========================================================
-     THE MOCKUP'S TWO YELLOW BOXES ARE ANNOTATION, NOT COPY.
-     "Maybe visual…" sits over the top right and "Blurb" labels the list.
-     They are sticky notes on a screenshot, the same as the coral labels on
-     work-with-us.html (§30) and the yellow slabs this page's own hero got
-     wrong first time (§34). Neither is rendered.
-
-     THE COPY IS SET ON A DARKENED PHOTOGRAPH, NOT ON THE RAW ONE.
-     The mockup lays black type straight over a lit audience frame, and in
-     its own render the third bullet runs across a woman's head and the
-     first line sits on a bright screen. That is roughly 900 characters
-     including a three-item list — far more than the hero's two lines — so
-     the picture has to drop back to being a ground. It is held at .22 over
-     flat --ink and the copy is Soft Ivory, which is the same arrangement
-     the hero already uses, one step further back. Black is also not in the
-     palette (V1.0 p.19-21).
-
-     PLACEHOLDER PHOTOGRAPH, by the user's instruction: assets/img/speaking.jpg
-     (1086x724, §13), the homepage's stage frame. Deliberately NOT
-     speaking-keynote.jpg, which is this page's own hero — the same picture
-     twice on one page would read as a mistake. Swap the two background-image
-     lines when the real audience frame arrives; nothing else here depends
-     on it. The §27 credibility note applies to this frame too: it is AI
-     work showing an audience that did not exist. */
-  .kc{
-    position:relative;overflow:hidden;
-    background:var(--ink);
-    padding:clamp(64px,7.5vw,118px) 0;
-  }
-  /* image-set() prefers the WebP, as §13 does for this same asset. The
-     photograph is purely decorative here — it carries no information the
-     copy does not — so it is a background rather than an <img> with alt
-     text. */
-  .kc::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background-image:image-set(url("assets/img/speaking.webp") type("image/webp"),
-                               url("assets/img/speaking.jpg") type("image/jpeg"));
-    background-size:cover;background-position:center 42%;
-    opacity:.22;
-  }
-  /* A second, one-sided wash on top of the picture. The frame is brightest
-     at the top left, which is exactly where the headline sits, so a flat
-     opacity alone still left the first two lines fighting the stage lights.
-     This pulls the left half toward the palette and lets the right side
-     keep more of the picture — §20's rule, tint the backdrop. */
-  .kc::after{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(100deg,
-      rgba(20,51,24,.82) 0%,
-      rgba(20,51,24,.62) 46%,
-      rgba(20,51,24,.30) 100%);
-  }
-  .kc>*{position:relative;z-index:1}
-
-  /* SENTENCE CASE, not the mockup's uppercase, and it is the same call the
-     hero headline and the pull quote already made on this page. V1.0 p.26
-     puts SHORT statements in tracked uppercase and LONGER SENTENCES in
-     standard letterforms — this is 97 characters across two sentences.
-     site.css's blanket text-transform:uppercase on h2 is turned off.
-     One-line revert if the client wants the mockup's caps.
-
-     Below §27's clamp(42px,4.7vw,70px) section scale on purpose, for the
-     reason §30 records on work-with-us.html's section 3 and §33 on
-     contact.html: that scale is for titles owning the full container width.
-     At 70px this sentence is six lines deep. */
-  .kc-head{
-    max-width:min(880px,100%);margin:0 0 clamp(24px,2.8vw,38px);
-    font-size:clamp(30px,3.7vw,54px);line-height:1.1;
-    letter-spacing:.01em;text-transform:none;
-    color:var(--paper);
-    text-wrap:balance;
-  }
-  /* The lede is Inter, not the display face. It is explanation leading into
-     the list, not a statement — and setting two consecutive display blocks
-     would leave the headline nothing to be louder than. */
-  .kc-lede{
-    max-width:62ch;margin:0;
-    font-size:clamp(17px,1.35vw,20px);line-height:1.6;
-    color:rgba(254,253,242,.88);
-  }
-
-  /* NUMERALS, NOT THE MOCKUP'S BULLETS, AND THE COPY ASKS FOR THEM.
-     The lede ends "Three things cause that drift", so the list is a counted
-     set rather than an open one. The device is work-with-us.html §2's — a
-     lime numeral with no disc, hairline rules between — which §30 chose for
-     exactly this shape of content. Six discs there read as a control panel;
-     three here would read as three equal products.
-
-     Single column, against §2's two: these items run to three lines each,
-     and a two-column split at that depth puts the second item's tail below
-     the first's and breaks the reading order. */
-  .kc-list{
-    list-style:none;margin:clamp(34px,4vw,56px) 0 0;padding:0;
-    max-width:min(960px,100%);
-    border-top:1px solid rgba(254,253,242,.16);
-  }
-  .kc-list li{
-    display:grid;grid-template-columns:auto 1fr;
-    gap:0 clamp(18px,2vw,30px);
-    padding:clamp(20px,2.2vw,30px) 0;
-    border-bottom:1px solid rgba(254,253,242,.16);
-  }
-  .kc-list li::before{
-    content:counter(kc-n,decimal-leading-zero);
-    counter-increment:kc-n;
-    font:clamp(20px,2vw,28px)/1 var(--display);
-    letter-spacing:.04em;color:var(--lime);
-    padding-top:.18em;
-  }
-  .kc-list{counter-reset:kc-n}
-  .kc-list p{
-    margin:0;max-width:66ch;
-    font-size:clamp(16px,1.25vw,18px);line-height:1.58;
-    color:rgba(254,253,242,.86);
-  }
-  /* Each item opens with a naming sentence — "Autopilot living.", "The
-     patterns we never question." — which is the client's own structure, not
-     an edit. Setting it bold is hierarchy inside his sentence; no word was
-     moved, added or cut. */
-  .kc-list b{color:var(--paper);font-weight:700}
-
-  @media(max-width:700px){
-    .kc::after{
-      background:linear-gradient(to bottom,
-        rgba(20,51,24,.86) 0%,
-        rgba(20,51,24,.70) 55%,
-        rgba(20,51,24,.55) 100%);
-    }
-    .kc-list li{grid-template-columns:1fr;gap:8px}
-    .kc-list li::before{padding-top:0}
-  }
-
-  /* ==========================================================
-     6. SECTION 5 — "Keynotes that give people a new perspective"
-     ==========================================================
-     Copy left, portrait right, on a Soft Ivory dot field — the structure
-     work-with-us.html §3 already uses ("There is a cleaner way"), at the
-     user's request that the two match. The class names and every measure
-     below are that section's, so the two pages are the same object rather
-     than a near-copy. If one is retuned, retune both.
-
-     THE VIOLET RECTANGLE IN THE MOCKUP IS A SELECTION OUTLINE, NOT A
-     DEVICE. It crosses the body copy mid-sentence, which no drawn frame
-     would, and it is the third coloured box in these supplied mockups to be
-     editing furniture rather than design — see §30's coral labels and §34's
-     yellow slabs. Not rendered.
-
-     .kp IS A WRAPPER, NOT A SECTION. It carries sections 5 and 6 on ONE
-     dot field for the §34 reason: the dots are a 26px background-size on a
-     pseudo-element anchored to its own element's inset, so two adjacent
-     dotted sections restart the grid at the join and the pattern visibly
-     jumps unless both heights are exact multiples of 26px. It does not need
-     to join .kn-paper higher up, because the Deep Green .kc sits between
-     them and the grid is already interrupted there. */
-  .kp{background:var(--paper);padding:var(--section-y) 0;position:relative;overflow:hidden}
-  /* Same values as .kn-paper above, work-with-us.html §3 and contact.html,
-     so every ivory section on the site carries the identical texture. */
-  /* The dot field was removed on 7 Nov. Designer: it is not in the
-     guideline — V1.0 names only the logo pattern (merch, p.36) and the
-     switcher pattern (p.38). These sections are plain Soft Ivory now. */
-  .kp>*{position:relative;z-index:1}
-
-  .kp-grid{
-    display:grid;grid-template-columns:1fr 1.05fr;
-    gap:clamp(32px,5vw,78px);align-items:center;
-  }
-  .kp-copy{max-width:600px}
-
-  /* BELOW §27's clamp(42px,4.7vw,70px) section scale, for the reason
-     work-with-us.html §3 records and contact.html repeats: that scale is
-     for titles owning the full container width, and this one sits in a
-     ~600px column beside a photograph.
-
-     UPPERCASE HERE, unlike the two headings above it on this page, and that
-     is V1.0 p.26 rather than an inconsistency. The guideline splits on
-     LENGTH, not on position: short statements take tracked uppercase,
-     longer sentences take standard letterforms. The hero headline is two
-     sentences and §4's is 97 characters; this is a single 68-character
-     noun phrase with no verb of its own — the shape the tracked treatment
-     is for, and it is what the mockup draws. site.css's blanket uppercase
-     on h2 therefore stands, and the tracking is opened to match. */
-  /* Size reduced 7 Nov, from clamp(30px,3.3vw,48px). The licensed font's
-     default letterforms are about 28% wider than the trial's, which pushed
-     this 81-character heading from three lines to four in its ~600px
-     column. Measured back to three at 40px. */
-  .kp-head{
-    margin:0 0 26px;max-width:none;
-    font-size:clamp(26px,2.75vw,40px);line-height:1.02;
-    letter-spacing:.03em;color:var(--ink);
-  }
-  .kp-copy p{
-    margin:0;color:var(--muted);
-    font-size:18px;line-height:1.55;max-width:48ch;
-  }
-
-  /* THE ARCH FRAME, which is the brand's own picture device (V1.0 p.35,
-     derived from the logo) and what every text-left / portrait-right
-     section on this site already uses — index.html's About block, via
-     site.css §15's `.about figure`. The radius and the 3/4 ratio below are
-     that rule's values written out, so this portrait and the homepage's are
-     the same object.
-
-     work-with-us.html's square-cornered .ws-shot is NOT the model here: its
-     two pictures are landscape documentary frames (a whiteboard, a team),
-     and the mockup frames those hard. A portrait on ivory takes the arch. */
-  .kp-shot{
-    margin:0;overflow:hidden;background:var(--panel);
-    width:100%;max-width:460px;justify-self:end;
-    aspect-ratio:3/4;
-    border-radius:260px 260px var(--r-card) var(--r-card);
-  }
-  /* The crop is anchored, not centred. A 2:3 source in a 3:4 frame scales
-     by width and crops the HEIGHT, and at the default 50% the cut comes off
-     the top and bottom evenly — which trims his hair. He sits at roughly
-     14-38% of the frame, so the window starts high. Same treatment as
-     site.css §15's `object-position:center 38%` on the homepage portrait,
-     measured for this frame rather than copied. */
-  .kp-shot img{
-    width:100%;height:100%;object-fit:cover;display:block;
-    object-position:50% 22%;
-  }
-
-  /* The grid follows site.css §15's `.about` proportions rather than
-     work-with-us.html's, since the arch frame caps at 460px and a 1.05fr
-     column would leave it stranded in white space. */
-  @media(min-width:901px){
-    .kp-grid{grid-template-columns:minmax(0,1.08fr) minmax(340px,.82fr)}
-  }
-  @media(max-width:900px){
-    .kp-grid{grid-template-columns:1fr;gap:34px}
-    /* Copy first, portrait second, which is the order index.html's About
-       section and work-with-us.html §3 both stack in. */
-    .kp-copy{order:1;max-width:none}
-    .kp-shot{order:2;justify-self:center}
-    .kp-copy p{max-width:none}
-  }
-
-  /* ---------- Section 6 — "What audiences take away" ----------
-     Second section inside the .kp wrapper, so it shares the dot grid rather
-     than restarting it. Heading full width above a list, as drawn.
-
-     UPPERCASE, like section 5's heading and for the same V1.0 p.26 reason:
-     a 24-character noun phrase is a short statement, which is the shape the
-     tracked uppercase treatment is for. It owns the full container width
-     here rather than sitting in a column, so unlike section 5 it DOES take
-     §27's clamp(42px,4.7vw,70px) section scale. */
-  .kt-take{margin-top:clamp(64px,7vw,110px)}
-  .kt-take h2{
-    margin:0 0 clamp(30px,3.4vw,46px);max-width:none;
-    font-size:clamp(42px,4.7vw,70px);line-height:.98;
-    letter-spacing:.03em;color:var(--ink);
-  }
-  /* The five items are a plain list, not cards and not numerals. Section 4's
-     list is numbered because its own copy counts it ("Three things cause
-     that drift"); nothing counts these, and five cards would turn five
-     short takeaways into five equal claims — §30's objection to six boxes.
-     The lime disc is not available on ivory (p.22 watchout 1), so the
-     marker is the Deep Green rule the rest of the ivory pages use. */
-  .kt-list{list-style:none;margin:0;padding:0;max-width:min(820px,100%)}
-  .kt-list li{
-    position:relative;padding:14px 0 14px 34px;
-    border-bottom:1px solid var(--rule);
-    font-size:clamp(17px,1.5vw,21px);line-height:1.45;color:var(--ink);
-  }
-  .kt-list li:first-child{border-top:1px solid var(--rule)}
-  /* The rule is centred on the FIRST LINE's optical middle, not on the
-     item: top has to carry the item's own 14px padding, or the dash floats
-     above the text it marks. Retune it with the padding. */
-  .kt-list li::before{
-    content:"";position:absolute;left:4px;top:calc(14px + .72em);
-    width:12px;height:2px;background:var(--ink);
-  }
-
-  /* ==========================================================
-     7. SECTION 7 — the keynote topics
-     ==========================================================
-     THIS SECTION IS A PLACEHOLDER, at the user's instruction. The reference
-     page sells FIVE named keynotes; we have exactly one title, "Tracks of
-     Time", inferred from the hero's eyebrow. The copy below is written to
-     hold the shape and is marked as draft on the page itself, the way
-     §22.5's .fw-draft notice marks the frameworks cards. DELETE .kt-draft
-     and its rule together when the real keynotes arrive.
-
-     THE MOCKUP'S YELLOW "Kee…" BOX IS ANNOTATION — fourth coloured box in
-     these supplied designs to be a sticky note (§30, §34). Not rendered.
-
-     NO CARDS, and that is the reference's own arrangement rather than a
-     departure from it: the three columns sit directly on the dark ground
-     with nothing drawn around them. It is also what makes the palette work.
-     A card here would have to be Soft Ivory, which would make the lime
-     titles illegal on it (p.22 watchout 1); on Deep Green they are the
-     sanctioned pairing (p.21). The reference's navy and turquoise do not
-     come across — his structure, our colour. */
-  .kt{background:var(--ink);padding:var(--section-y) 0}
-  .kt-head{text-align:center;margin:0 auto clamp(40px,4.6vw,66px);max-width:900px}
-  .kt-head h2{
-    margin:0;max-width:none;
-    font-size:clamp(42px,4.7vw,70px);line-height:.98;
-    letter-spacing:.03em;color:var(--paper);
-  }
-  .kt-grid{
-    display:grid;grid-template-columns:repeat(3,1fr);
-    gap:clamp(26px,3.2vw,46px);align-items:start;
-  }
-  /* Square corners, as the reference draws them, and the same hard frame
-     work-with-us.html's documentary photographs use. The arch is kept for
-     portraits of Oscar alone (sections 5 and 10). */
-  .kt-shot{
-    margin:0 0 22px;overflow:hidden;background:var(--panel);
-    aspect-ratio:4/3;
-  }
-  .kt-shot img{width:100%;height:100%;object-fit:cover;display:block}
-  .kt-item h3{
-    margin:0 0 8px;max-width:none;
-    font-size:clamp(21px,1.9vw,27px);line-height:1.1;
-    letter-spacing:.02em;color:var(--lime);
-  }
-  /* Inter bold, not the display face — the reference sets this line in its
-     body type, and two condensed lines stacked would fight each other. */
-  .kt-sub{
-    margin:0 0 14px;font-family:var(--body);
-    font-size:15px;font-weight:700;line-height:1.35;color:var(--paper);
-  }
-  .kt-item>p{margin:0 0 14px;font-size:16px;line-height:1.55;color:rgba(254,253,242,.82)}
-  .kt-points{margin:0;padding-left:20px;font-size:15px;line-height:1.5;color:rgba(254,253,242,.82)}
-  .kt-points li{margin-bottom:7px}
-  .kt-points li::marker{color:var(--lime)}
-
-  /* The draft notice. Deliberately plain and deliberately ugly — it is
-     review furniture, like §18's .removed frame, and must not read as part
-     of the design. Delete it with the element. */
-  .kt-draft{
-    margin:clamp(34px,4vw,52px) auto 0;max-width:720px;
-    border:2px dashed var(--lime);padding:16px 20px;
-    font-size:14px;line-height:1.5;color:var(--lime);text-align:center;
-  }
-
-  @media(max-width:980px){
-    .kt-grid{grid-template-columns:1fr;gap:40px}
-    .kt-shot{aspect-ratio:16/9}
-  }
-
-  /* ==========================================================
-     9. SECTION 9 — "Built for rooms where leaders are honest…"
-     ==========================================================
-     The same photographic ground as section 4, reusing .kc so the page has
-     ONE treatment for copy-on-a-photograph rather than two near-copies.
-     Only the picture and the list style differ.
-
-     THE VIOLET RECTANGLE IS A SELECTION OUTLINE AGAIN — it crosses the
-     closing sentence and encloses dead space below it, which no drawn frame
-     would. Fifth coloured box in these mockups to be editing furniture. */
-  .kc--rooms::before{
-    background-image:image-set(url("assets/img/speaking-keynote.webp") type("image/webp"),
-                               url("assets/img/speaking-keynote.jpg") type("image/jpeg"));
-    background-position:center 38%;
-  }
-  /* PLAIN BULLETS, not section 4's numerals, and the difference is in the
-     copy. Section 4's lede counts its list ("Three things cause that
-     drift"); this one does not count anything — it is a set of audiences,
-     where numbering would imply a ranking. */
-  .kc-who{list-style:none;margin:clamp(30px,3.4vw,46px) 0 0;padding:0;max-width:min(860px,100%)}
-  .kc-who li{
-    position:relative;padding:11px 0 11px 30px;
-    font-size:clamp(16px,1.35vw,19px);line-height:1.5;
-    color:rgba(254,253,242,.9);
-  }
-  /* Same alignment rule as .kt-list — the 11px padding has to be in the
-     offset or the dash rides above its line. */
-  .kc-who li::before{
-    content:"";position:absolute;left:2px;top:calc(11px + .74em);
-    width:12px;height:2px;background:var(--lime);
-  }
-  /* The closing line is the section's practical answer, not a sixth
-     audience, so it sits outside the list and takes the display face — the
-     same move §30 made with work-with-us.html's "a third of every week". */
-  .kc-where{
-    margin:clamp(28px,3.2vw,42px) 0 0;max-width:46ch;
-    font:clamp(19px,1.8vw,26px)/1.25 var(--display);
-    letter-spacing:.015em;color:var(--paper);
-  }
-  .kc-where b{color:var(--lime);font-weight:inherit}
-
-  /* ==========================================================
-     10. SECTIONS 10 + 11 — the bio, and the closing statement
-     ==========================================================
-     One ivory field again, same wrapper reason as .kp. Section 10 reuses
-     .kp-grid wholesale — text left, arch portrait right — so this page has
-     one such layout repeated rather than two that drift. */
-  .kb-shot img{object-position:50% 30%}
-
-  /* Section 11. A centred statement band, as drawn: no body copy, no CTA of
-     its own, because the site's own CTA follows immediately below it. It is
-     the page's last word before the ask.
-
-     UPPERCASE and on the full section scale — a 33-character statement is
-     exactly V1.0 p.26's tracked-uppercase case. */
-  .kb-say{
-    margin-top:clamp(72px,8vw,124px);
-    text-align:center;
-  }
-  .kb-say h2{
-    margin:0 auto;max-width:min(860px,100%);
-    font-size:clamp(42px,5.6vw,86px);line-height:.98;
-    letter-spacing:.03em;color:var(--ink);
-  }
+/* ==========================================================
+   The styling for the superseded Keynote sections was removed
+   with their markup on 25 Nov 2026: nine sections that had been
+   hidden behind `.key-legacy[hidden]` since the V2 rebuild, so
+   nothing on this page rendered them. 531 lines of CSS and 281
+   of markup. They are in git if any of that copy is wanted back.
+   ========================================================== */
 
   /* ---------- The hero on a phone ----------
      The plate goes full width at the BOTTOM and the scrim turns to face up,
@@ -866,13 +331,349 @@
         rgba(20,51,24,.86) 40%,
         rgba(20,51,24,0) 82%);
     }
-    .kh-head{font-size:clamp(21px,5.4vw,30px);line-height:1.46}
-    .kh-sub{font-size:14px}
     .kh-cta{margin-top:22px}
+  }
+
+  /* ============================================================
+     PREMIUM KEYNOTE HERO, 24 NOVEMBER
+     The old framed hero is superseded by the same image-led editorial
+     language as the approved homepage: one full-bleed image, a restrained
+     Deep Green treatment, oversized offset type and a single primary CTA.
+     These rules sit last while the rest of the Keynote page is converted
+     section by section from the supplied review screenshots. */
+  .premium-keynote .kh{
+    position:relative;isolation:isolate;
+    min-height:calc(100svh - var(--header-h));
+    display:block;padding:0;overflow:hidden;
+    background:var(--ink);color:#fff;animation:none;
+  }
+  .premium-keynote .kh-bg{position:absolute;inset:0;z-index:-2;background:var(--ink)}
+  .premium-keynote .kh-bg picture,
+  .premium-keynote .kh-bg img{display:block;width:100%;height:100%}
+  .premium-keynote .kh-bg img{
+    object-fit:cover;object-position:52% 42%;
+    filter:grayscale(1) brightness(.9) contrast(1.04);
+    mix-blend-mode:luminosity;opacity:.72;
+  }
+  .premium-keynote .kh-bg::after{
+    content:"";position:absolute;inset:0;
+    background:
+      linear-gradient(90deg,rgba(20,51,24,.82) 0%,rgba(20,51,24,.68) 48%,rgba(20,51,24,.42) 100%),
+      linear-gradient(0deg,rgba(20,51,24,.82) 0%,rgba(20,51,24,0) 52%);
+  }
+  .premium-keynote .kh-inner{
+    width:min(1600px,calc(100% - 96px));
+    min-height:calc(100svh - var(--header-h));
+    margin-inline:auto;padding:clamp(42px,5vw,84px) 0 clamp(54px,6vw,96px);
+    display:flex;flex-direction:column;justify-content:space-between;
+    gap:clamp(58px,8vh,112px);
+  }
+  /* .pr-h supplies the face, the weight, the uppercasing, the margin and
+     the block-level spans; only the scale and the two offsets are this
+     page's. The old .kh-head block re-derived all of it. */
+  /* .84, not .76. Three long lines at the tighter leading left about
+     five pixels between a 140px cap height and the next line's, so the
+     G of RUNNING and the C of COMPANY interlocked. The third line's
+     1.5% step also read as flush rather than as a stair. */
+  .premium-keynote .kh-head{
+    --fs:clamp(48px,9.2vw,172px);--lh:.84;
+    color:var(--paper);
+  }
+  .premium-keynote .kh-head span:nth-child(2){margin-left:6%}
+  .premium-keynote .kh-head span:nth-child(3){margin-left:14%}
+  .premium-keynote .kh-foot{max-width:61ch}
+  .premium-keynote .kh-sub{
+    color:var(--paper);font-size:clamp(15px,1.16vw,19px);
+  }
+  .premium-keynote .kh-cta{margin-top:clamp(24px,2.3vw,38px)}
+  .premium-keynote .kh-cta .button{--btn-size:17px;padding:10px 20px 8px}
+
+  .premium-motion .premium-keynote .kh-bg img{
+    transform:scale(1.055);
+    transition:transform 1.8s cubic-bezier(.16,1,.3,1),filter 1.4s ease;
+  }
+  .premium-motion .premium-keynote.premium-ready .kh-bg img{transform:scale(1)}
+  .premium-motion .premium-keynote .kh-head span{
+    clip-path:inset(-55% -100vw 155% -100vw);
+    transition:clip-path 1.05s cubic-bezier(.16,1,.3,1);
+  }
+  .premium-motion .premium-keynote.premium-ready .kh-head span{clip-path:inset(-55% -100vw -55% -100vw)}
+  .premium-motion .premium-keynote.premium-ready .kh-head span:nth-child(1){transition-delay:.12s}
+  .premium-motion .premium-keynote.premium-ready .kh-head span:nth-child(2){transition-delay:.24s}
+  .premium-motion .premium-keynote.premium-ready .kh-head span:nth-child(3){transition-delay:.36s}
+  .premium-motion .premium-keynote .kh-foot{
+    opacity:0;transform:translateY(24px);
+    transition:opacity .75s ease,transform .95s cubic-bezier(.16,1,.3,1);
+  }
+  .premium-motion .premium-keynote.premium-ready .kh-foot{
+    opacity:1;transform:none;transition-delay:.7s;
+  }
+
+  @media(max-width:850px){
+    .premium-keynote .kh-inner{
+      width:min(100%,calc(100% - 40px));
+      padding:clamp(38px,8vw,64px) 0 clamp(42px,9vw,68px);
+      gap:clamp(54px,11vh,96px);
+    }
+    .premium-keynote .kh-head{font-size:clamp(46px,13vw,104px);line-height:.79}
+    .premium-keynote .kh-head span:nth-child(2){margin-left:3%}
+    .premium-keynote .kh-head span:nth-child(3){margin-left:0}
+    .premium-keynote .kh-bg img{object-position:38% 50%}
+    .premium-keynote .kh-bg::after{
+      background:linear-gradient(0deg,rgba(20,51,24,.94) 0%,rgba(20,51,24,.68) 52%,rgba(20,51,24,.42) 100%);
+    }
+    .premium-keynote .kh-sub{font-size:15px}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .premium-keynote .kh-bg img,
+    .premium-keynote .kh-head span,
+    .premium-keynote .kh-foot{
+      opacity:1!important;transform:none!important;clip-path:none!important;
+      transition:none!important;animation:none!important;
+    }
+  }
+
+  /* ============================================================
+     KEYNOTE V2 SECTIONS
+     These compositions reuse the approved homepage grammar: oversized
+     authored headlines, hard editorial edges, ruled information systems,
+     image-led dark fields and the shared premium testimonial band. */
+  .premium-keynote{--key-space:clamp(104px,10vw,176px)}
+  .premium-keynote .key-section{padding:var(--key-space) 0}
+  /* .key-wrap is gone: it was a verbatim copy of premium.css's .pr-wrap
+     at desktop, but its mobile step was 40px where the system goes
+     96 -> 56 -> 36, so these five sections sat on a different gutter
+     from this page's own header, footer and testimonial band. */
+
+  /* 2. Why growing companies slow down. */
+  .premium-keynote .key-problem{background:var(--paper);color:var(--ink)}
+  .premium-keynote .key-problem-grid{
+    display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.62fr);
+    gap:clamp(52px,7vw,116px);align-items:center;
+  }
+  .premium-keynote .key-problem-h{--fs:clamp(64px,7.5vw,136px);--lh:.84}
+  .premium-keynote .key-problem-h span:nth-child(2){margin-left:18%}
+  .premium-keynote .key-problem-h span:nth-child(3){margin-left:31%}
+  .premium-keynote .key-problem-list{
+    max-width:61ch;margin:clamp(42px,5vw,72px) 0 0;padding:0;list-style:none;
+    border-top:1px solid var(--ink);counter-reset:key-problem;
+  }
+  .premium-keynote .key-problem-list li{
+    display:grid;grid-template-columns:32px minmax(0,1fr);gap:18px;
+    padding:20px 0;border-bottom:1px solid rgba(20,51,24,.42);
+    font-size:clamp(15px,1.05vw,18px);line-height:1.5;counter-increment:key-problem;
+  }
+  .premium-keynote .key-problem-list li::before{
+    content:counter(key-problem,decimal-leading-zero);
+    font:20px/1 var(--display);color:var(--ink);padding-top:3px;
+  }
+  .premium-keynote .key-problem-list strong{font-weight:750}
+  .premium-keynote .key-problem-figure{
+    position:relative;margin:0;overflow:hidden;aspect-ratio:4/5;
+    border-radius:50% 50% 0 0 / 30% 30% 0 0;background:var(--ink);
+  }
+  .premium-keynote .key-problem-figure::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to top,rgba(20,51,24,.4),transparent 54%);
+  }
+  .premium-keynote .key-problem-figure img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 42%;
+    filter:saturate(.86) contrast(1.04);
+  }
+
+  /* 3. What is missing. */
+  .premium-keynote .key-missing{
+    position:relative;isolation:isolate;overflow:hidden;
+    background:var(--ink);color:var(--paper);
+  }
+  .premium-keynote .key-missing-bg{position:absolute;inset:0;z-index:-2}
+  .premium-keynote .key-missing-bg img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 52%;
+    filter:grayscale(1) contrast(1.04);mix-blend-mode:luminosity;opacity:.26;
+  }
+  .premium-keynote .key-missing::after{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(90deg,rgba(20,51,24,.96),rgba(20,51,24,.78));
+  }
+  .premium-keynote .key-missing-head{text-align:center}
+  .premium-keynote .key-missing-h{--fs:clamp(68px,8.6vw,154px);--lh:.84;color:var(--lime)}
+  .premium-keynote .key-missing-h span{margin-inline:auto}
+  .premium-keynote .key-missing-lede{
+    max-width:68ch;margin:clamp(26px,3vw,46px) auto 0;
+    font:clamp(20px,2vw,34px)/1.06 var(--display);text-align:center;text-transform:uppercase;
+  }
+  .premium-keynote .key-missing-title{
+    margin:clamp(70px,7vw,110px) 0 0;
+    font:clamp(42px,5.4vw,88px)/.84 var(--display);text-transform:uppercase;
+  }
+  .premium-keynote .key-missing-list{margin-top:clamp(34px,4vw,64px);border-top:1px solid rgba(204,254,6,.48)}
+  .premium-keynote .key-missing-list article{
+    display:grid;grid-template-columns:clamp(54px,6vw,92px) minmax(240px,.72fr) minmax(0,1.3fr);
+    gap:clamp(24px,4vw,68px);align-items:start;
+    padding:clamp(28px,3.5vw,52px) 0;border-bottom:1px solid rgba(204,254,6,.48);
+  }
+  .premium-keynote .key-missing-num{font:clamp(36px,4vw,64px)/.8 var(--display);color:var(--lime)}
+  .premium-keynote .key-missing-list h3{
+    margin:0;color:var(--lime);font:clamp(28px,3vw,48px)/.92 var(--display);text-transform:uppercase;
+  }
+  .premium-keynote .key-missing-list p{margin:0;max-width:62ch;color:rgba(254,253,242,.84);line-height:1.58}
+  .premium-keynote .key-missing-cta{margin-top:clamp(36px,4vw,64px);text-align:center}
+
+  /* 4. Four keynote programme. */
+  .premium-keynote .key-programs{background:var(--paper);color:var(--ink)}
+  /* .pr-h runs well below a 1.0 leading, so its caps rise above their
+     own line box; every kicker needs clearance for that overshoot. */
+  .premium-keynote .pr-kicker{margin-bottom:clamp(26px,2.8vw,46px)}
+  .premium-keynote .key-programs-head{margin-bottom:clamp(60px,7vw,112px)}
+  /* Lined up with the headline's first line instead of parked at 58%
+     with a 12px gap, where it read as something that had come adrift. */
+  .premium-keynote .key-programs-kicker{margin-left:16%}
+  .premium-keynote .key-programs-h{--fs:clamp(58px,7.6vw,136px);--lh:.84}
+  .premium-keynote .key-programs-h span:nth-child(1){margin-left:16%}
+  .premium-keynote .key-programs-h span:nth-child(2){margin-left:2%}
+  .premium-keynote .key-programs-h span:nth-child(3){margin-left:12%}
+  .premium-keynote .key-signature{
+    display:grid;grid-template-columns:minmax(280px,.72fr) minmax(0,1.2fr);
+    gap:clamp(46px,6vw,104px);align-items:center;padding-bottom:clamp(72px,8vw,128px);
+    border-bottom:1px solid var(--ink);
+  }
+  .premium-keynote .key-tag{
+    display:inline-block;margin-bottom:18px;padding:6px 10px 4px;
+    background:var(--lime);color:var(--ink);font:16px/1 var(--display);text-transform:uppercase;
+  }
+  .premium-keynote .key-signature h3,
+  .premium-keynote .key-program-card h3{
+    margin:0;font:clamp(34px,4vw,64px)/.88 var(--display);text-transform:uppercase;
+  }
+  .premium-keynote .key-program-sub{
+    margin:10px 0 0;font:clamp(16px,1.35vw,22px)/1 var(--display);text-transform:uppercase;
+  }
+  .premium-keynote .key-signature .pr-copy{margin-top:26px;max-width:57ch}
+  .premium-keynote .key-signature figure{margin:0;overflow:hidden;aspect-ratio:16/9;background:var(--ink)}
+  .premium-keynote .key-signature img{width:100%;height:100%;object-fit:cover;object-position:50% 48%}
+  .premium-keynote .key-program-grid{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2vw,34px);
+    margin-top:clamp(54px,6vw,92px);
+  }
+  .premium-keynote .key-program-card{
+    position:relative;isolation:isolate;min-height:clamp(500px,43vw,680px);
+    padding:clamp(26px,2.8vw,44px);overflow:hidden;
+    border:1px solid var(--ink);display:flex;flex-direction:column;
+  }
+  .premium-keynote .key-program-card .key-card-copy{margin-top:auto;position:relative;z-index:2}
+  .premium-keynote .key-program-card .pr-copy{margin-top:24px;text-align:left}
+  .premium-keynote .key-program-card--paper{background:var(--paper)}
+  .premium-keynote .key-program-card--image{color:var(--paper);border-color:var(--ink);background:var(--ink)}
+  .premium-keynote .key-card-bg{position:absolute;inset:0;z-index:-2}
+  .premium-keynote .key-card-bg img{width:100%;height:100%;object-fit:cover;filter:saturate(.78) contrast(1.04)}
+  .premium-keynote .key-card-bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(20,51,24,.98) 0%,rgba(20,51,24,.76) 58%,rgba(20,51,24,.28) 100%);
+  }
+  .premium-keynote .key-program-card--image h3,
+  .premium-keynote .key-program-card--image .key-step{color:var(--lime)}
+  .premium-keynote .key-step{font:clamp(18px,1.7vw,28px)/1 var(--display);text-transform:uppercase}
+
+  /* 5. Placeholder statistics followed by the shared proof band. */
+  .premium-keynote .key-proof{padding:calc(var(--key-space) * .68) 0;background:var(--ink);color:var(--paper)}
+  .premium-keynote .key-proof-note{color:var(--lime);margin-bottom:34px}
+  .premium-keynote .key-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(254,253,242,.38)}
+  .premium-keynote .key-stat{padding:clamp(28px,3.6vw,52px) clamp(18px,2.5vw,38px);border-right:1px solid rgba(254,253,242,.38)}
+  .premium-keynote .key-stat:last-child{border-right:0}
+  /* Left, not justified. .pr-copy justifies and hyphenates, which in a
+     four-word caption column opened rivers and broke "workshops". */
+  .premium-keynote .key-stat .pr-copy{text-align:left;hyphens:none}
+  .premium-keynote .key-stat strong{display:block;font:clamp(52px,6vw,104px)/.8 var(--display);color:var(--paper)}
+  .premium-keynote .key-stat p{margin:22px 0 0;max-width:18ch;color:rgba(254,253,242,.78);font-size:14px;line-height:1.45}
+  .premium-keynote .key-voices{padding-top:0}
+  .premium-keynote .key-voices .pr-voices-h{
+    --fs:clamp(58px,8.4vw,152px);
+    --lh:.92;
+    width:100%;
+  }
+  .premium-keynote .key-voices .pr-voices-h span{
+    padding-block:.035em .055em;
+  }
+  .premium-keynote .key-voices .pr-voices-h span:nth-child(1){margin-left:4%}
+  .premium-keynote .key-voices .pr-voices-h span:nth-child(2){
+    margin-top:.06em;
+    margin-left:54%;
+  }
+
+  /* 6. About Oscar. */
+  .premium-keynote .key-about{background:var(--paper);color:var(--ink)}
+  .premium-keynote .key-about-grid{
+    display:grid;grid-template-columns:minmax(320px,.74fr) minmax(0,1fr);
+    gap:clamp(52px,7vw,116px);align-items:center;
+  }
+  .premium-keynote .key-about figure{margin:0;overflow:hidden;aspect-ratio:4/5;background:var(--ink)}
+  .premium-keynote .key-about img{width:100%;height:100%;object-fit:cover;object-position:50% 28%;filter:saturate(.82) contrast(1.03)}
+  .premium-keynote .key-about .pr-kicker{display:block;margin-bottom:clamp(24px,3vw,44px)}
+  .premium-keynote .key-about-h{--fs:clamp(62px,7.8vw,138px);--lh:.84}
+  .premium-keynote .key-about-h span:nth-child(2){margin-left:24%}
+  .premium-keynote .key-about-h span:nth-child(3){margin-left:9%}
+  .premium-keynote .key-about-copy{max-width:64ch;margin-top:clamp(36px,4vw,62px)}
+  .premium-keynote .key-about-meta{margin:28px 0 0;font:18px/1.35 var(--display);text-transform:uppercase}
+  .premium-keynote .key-about-cta{margin-top:28px}
+
+  /* 7. Existing shared closing switch, restyled to the homepage scale. */
+  .premium-keynote .choice{padding:var(--key-space) 0;text-align:left}
+  .premium-keynote .choice .container{width:min(1600px,calc(100% - 96px))}
+  /* The closing block used to hide both its label and its two buttons.
+     The label is a .pr-kicker now and renders like every other page's,
+     so the buttons come back with it — a keynote page closing with no
+     ask was the odd one out. One line to hide them again if that was
+     deliberate: .premium-keynote .choice .actions{display:none} */
+  .premium-keynote .choice .actions{margin-top:clamp(30px,3.4vw,48px)}
+  .premium-keynote .choice h2{
+    max-width:none;margin:0;text-align:left;
+    font:clamp(64px,8.5vw,150px)/.77 var(--display);text-transform:uppercase;
+  }
+  .premium-keynote .choice h2 span{display:block;width:max-content;max-width:100%}
+  .premium-keynote .choice h2 span:nth-child(1){margin-left:10%}
+  .premium-keynote .choice h2 span:nth-child(2){margin-left:39%}
+  .premium-keynote .choice .choice-note{margin-top:28px}
+  .premium-keynote .choice .toggle-rows{max-width:980px;margin-top:40px}
+  .premium-keynote .choice .toggle-row{padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);gap:clamp(20px,3vw,46px)}
+  .premium-keynote .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
+
+  @media(max-width:900px){
+    .premium-keynote .key-problem-grid,
+    .premium-keynote .key-signature,
+    .premium-keynote .key-about-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-keynote .key-problem-figure{width:min(620px,100%);justify-self:center}
+    .premium-keynote .key-missing-list article{grid-template-columns:52px minmax(0,1fr)}
+    .premium-keynote .key-missing-list p{grid-column:2}
+    .premium-keynote .key-program-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-keynote .key-program-card{min-height:560px}
+    .premium-keynote .key-stats{grid-template-columns:1fr 1fr}
+    .premium-keynote .key-stat:nth-child(2){border-right:0}
+    .premium-keynote .key-stat:nth-child(-n+2){border-bottom:1px solid rgba(254,253,242,.38)}
+    .premium-keynote .key-about figure{width:min(620px,100%)}
+  }
+  @media(max-width:620px){
+    .premium-keynote .key-problem-h span:nth-child(n),
+    .premium-keynote .key-programs-h span:nth-child(n),
+    .premium-keynote .key-about-h span:nth-child(n){margin-left:0}
+    .premium-keynote .key-programs-kicker{margin-left:0}
+    .premium-keynote .key-missing-lede{text-align:left}
+    .premium-keynote .key-missing-head{text-align:left}
+    .premium-keynote .key-missing-h span{margin-inline:0}
+    .premium-keynote .key-program-card{min-height:520px}
+    .premium-keynote .key-voices .pr-voices-h{--fs:clamp(48px,15vw,68px);--lh:.94}
+    .premium-keynote .key-voices .pr-voices-h span:nth-child(2){margin-top:0}
+    .premium-keynote .choice h2{font-size:clamp(54px,16vw,72px);line-height:.8}
+    .premium-keynote .choice h2 span:nth-child(n){margin-left:0;width:auto;max-width:none}
+    .premium-keynote .key-stats{grid-template-columns:minmax(0,1fr)}
+    .premium-keynote .key-stat{border-right:0;border-bottom:1px solid rgba(254,253,242,.38)}
+    .premium-keynote .key-stat:last-child{border-bottom:0}
+    .premium-keynote .choice .toggle-row{padding:18px 20px 15px;gap:14px}
+    .premium-keynote .choice .choice-toggle .t-switch{width:100px;height:60px}
   }
   </style>
 </head>
-<body>
+<body class="premium-page premium-keynote">
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
     <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -906,309 +707,197 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </nav>
-      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk <span>→</span></a>
+      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
     </div>
   </header>
 
   <main id="main">
 
-    <!-- ===== SECTION 1 — the hero =====
-         The framed-to-full-bleed picture from about.html §29.1. -->
-    <section class="kh">
-      <!-- .kh-box is a pure animation wrapper with no styling of its own.
-           It exists because Safari ignores the edge animation whenever it
-           shares an element with the size animation. One animation per
-           element: .kh-box grows, .kh-frame sheds its border. Do not merge
-           them back. -->
-      <div class="kh-box">
-      <div class="kh-frame">
-        <!-- The photograph the client's mockup uses, and it was already in
-             the project: assets/img/speaking-keynote.jpg, 1600x1067. The
-             railway tracks on the screen behind him are why the keynote is
-             called Tracks of Time.
-
-             TWO THINGS CARRY OVER FROM §27 AND BOTH ARE STILL OPEN:
-             1. It is AI-generated and shows an audience that did not exist.
-                That is a credibility claim rather than a design choice, and
-                it is Oscar's call to make knowingly. It is now the hero of
-                a page about his speaking.
-             2. The slide was blanked — it originally read "Surviving ≠
-                Living / Break free from autopilot". Note the headline on
-                this page is that same idea in the client's own words, so
-                the line the slide used to carry may be wanted back.
-
-             NOT YET OPTIMISED. It is a 1600x1067 JPEG with no AVIF or WebP
-             beside it, unlike every other hero in the project (§31). Worth
-             the same sips/cwebp pass before this page is shown. -->
-        <picture class="kh-shot">
+    <!-- ===== SECTION 1 — premium image-led hero ===== -->
+    <section class="kh" aria-labelledby="keynote-hero-heading">
+      <div class="kh-bg" aria-hidden="true">
+        <picture>
           <source srcset="assets/img/speaking-keynote.webp" type="image/webp">
-          <img class="kh-pic" src="assets/img/speaking-keynote.jpg" alt="Oscar de Grauw speaking on stage in front of an audience, railway tracks projected on the screen behind him" width="1600" height="1067">
+          <img src="assets/img/speaking-keynote.jpg" alt="" width="1600" height="1067">
         </picture>
+      </div>
 
-        <div class="kh-scrim" aria-hidden="true"></div>
+      <div class="kh-inner">
+        <h1 class="pr-h kh-head hm hm-lines" id="keynote-hero-heading">
+          <span>Stop running</span>
+          <span>the company.</span>
+          <span>Start leading it</span>
+        </h1>
 
-        <div class="kh-plate">
-          <!-- It carries BOTH classes on purpose. `.eyebrow` is what puts it
-               in js/site.js's OD_SELECTOR; `.kh-eyebrow` restyles it for the
-               dark plate and wins on source order, since this block comes
-               after the stylesheet link at equal specificity.
-
-               And it is typed in LITERAL UPPERCASE, which is the other half
-               of the same requirement: site.js §3a splits on uppercase
-               /([OD])/, so a sentence-case string would never match and both
-               O's would render narrow. This is the §30 case — the one place
-               the script widens the letters by itself, with no hand-wrapping
-               needed. Retype this in sentence case and the wide O's silently
-               disappear. (Both were wrong in the first build of this page:
-               the class was `.kh-eyebrow` alone and the text was sentence
-               case, so nothing was wrapped at all.) -->
-          <p class="eyebrow kh-eyebrow">KEYNOTE · TRACKS OF TIME</p>
-
-          <!-- Sentence case by V1.0 p.26, so the only O/D here are
-               lowercase letters inside ordinary words. Since 7 Nov the
-               licensed font carries the wide B C D G O Q as its defaults
-               and applies them to whatever case the text is set in, so
-               there is nothing to wrap and nothing to decide. -->
-          <h1 class="kh-head">Most people aren’t living their lives. They’re surviving them.</h1>
-
-          <p class="kh-sub">Oscar de Grauw helps leaders and teams step off autopilot and choose, deliberately, how they live and work.</p>
-
+        <div class="kh-foot">
+          <p class="pr-copy kh-sub hm hm-copy">In his practical keynotes, Oscar de Grauw shows founders and leadership teams how to strip out the meetings, reports and approvals that eat their week, so they win back time to grow the company.</p>
           <div class="kh-cta">
-            <a class="button" href="contact.html">Book this keynote <span>→</span></a>
+            <a class="button" href="contact.html">Let’s talk</a>
           </div>
         </div>
       </div>
-      </div>
     </section>
 
-    <!-- ===== SECTIONS 2 + 3 — "As seen in", then the pull quote =====
-         One Soft Ivory field carrying both, as the mockup draws them. The
-         shared .kn-paper wrapper is what keeps the dot grid continuous
-         across the join — see the note in the style block. -->
-    <div class="kn-paper">
+    <!-- ===== SECTION 2 — why growing companies slow down ===== -->
+    <section class="key-section key-problem" aria-labelledby="key-problem-heading">
+      <div class="pr-wrap key-problem-grid">
+        <div>
+          <h2 class="pr-h key-problem-h hm hm-lines" id="key-problem-heading">
+            <span>Why growing</span>
+            <span>companies</span>
+            <span>slow down?</span>
+          </h2>
 
-      <section class="kn-seen container reveal" aria-labelledby="seen-heading">
-        <!-- PRESS logos, not client logos. These are a different set from
-             the homepage's trust row ("Trusted by ambitious leaders and
-             founders at"), which is client proof. §6 already lists real
-             client logos as outstanding; this adds a second, separate ask
-             for the publications Oscar has appeared in. -->
-        <h2 id="seen-heading">As seen in:</h2>
-        <div class="kn-logos">
-          <span>LOGO</span><span>LOGO</span><span>LOGO</span><span>LOGO</span>
+          <ol class="key-problem-list hm hm-copy">
+            <li><p class="pr-copy"><strong>The calendar runs the week.</strong> Meetings and reports that once had a purpose keep running out of habit, and the hours meant for growth disappear into them.</p></li>
+            <li><p class="pr-copy"><strong>Every decision lands on one desk.</strong> The team waits for the founder's approval, even on small things, so work stops whenever the founder is busy or away.</p></li>
+            <li><p class="pr-copy"><strong>Problems surface too late.</strong> People see what's going wrong weeks before anyone says it out loud, and by then it's expensive to fix.</p></li>
+          </ol>
         </div>
-      </section>
 
-      <section class="kn-quote container reveal">
-        <!-- The O+D monogram, lifted from assets/logo/primary-detoxgreen.svg
-             so the geometry is exact rather than redrawn. The viewBox is
-             cropped to the mark alone: the pill spans x 203.14-332.52 and
-             y 59.05-133.93 in the full lockup's coordinate space. -->
-        <svg class="kn-mark" viewBox="203.14 59.05 129.38 74.88" role="img" aria-label="OPS Detox">
-          <path d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44ZM244.41,125.25h-2.09c-15.9,0-28.8-12.87-28.8-28.75s12.9-28.78,28.8-28.78h2.09c14.94,1.06,26.77,13.58,26.77,28.78s-11.83,27.7-26.77,28.75ZM293.37,125.25h-25.62c3.24-2.87,5.99-6.28,8.11-10.07.08-.11.15-.23.22-.34h16.45c5.08,0,9.65-2.06,12.98-5.38,3.32-3.33,5.37-7.9,5.37-12.97,0-10.13-8.21-18.35-18.35-18.35h-16.45c-.1-.17-.21-.34-.31-.5-2.11-3.74-4.84-7.09-8.04-9.92h25.64c15.89,0,28.76,12.88,28.76,28.78s-12.87,28.75-28.76,28.75Z"/>
-          <path d="M243.04,78.16c-.23-.02-.46-.02-.7-.02-10.14,0-18.35,8.22-18.35,18.35s8.21,18.35,18.35,18.35h.7c9.81-.38,17.64-8.44,17.64-18.35s-7.83-17.95-17.64-18.33Z"/>
-        </svg>
-
-        <!-- Client copy, word for word. Two things left alone on purpose:
-             the comma in "actually living, is the story", which separates
-             subject from verb and is his; and the straight quote marks in
-             the mockup, set here as typographic curly quotes to match the
-             curly apostrophes the rest of the site already uses. -->
-        <blockquote>“Twenty-three years ago, I ran toward a train. Not away from it. Toward it. The story of what happened next and the long, quiet road from not dying to actually living, is the story I now share on stage.”</blockquote>
-
-        <!-- No em dashes — see the note in the style block. -->
-        <cite class="eyebrow kn-cite">OSCAR DE GRAUW</cite>
-      </section>
-
-    </div>
-
-    <!-- ===== SECTION 4 — the challenge =====
-         Copy over a photographic ground. The mockup's two yellow boxes
-         ("Maybe visual…", "Blurb") are ANNOTATION and are not rendered —
-         see the note in the style block, and §30 and §34 for the two
-         earlier times a coloured box in a supplied mockup turned out to be
-         a sticky note.
-
-         The photograph is a PLACEHOLDER by the user's instruction, set as a
-         background on .kc::before. Swap those two lines for the real frame.
-
-         NOTE FOR THE CLIENT CONVERSATION: this headline is the line that
-         used to be on the slide in the hero photograph, which §27 blanked
-         as off-brand for operational detox — "Surviving ≠ Living". He has
-         now supplied it as the spine of this section, so putting it back on
-         that slide is worth asking about. The compositing method is in §27
-         and is reusable. -->
-    <section class="kc reveal" aria-labelledby="kc-heading">
-      <div class="container">
-        <!-- Sentence case, not the mockup's uppercase. V1.0 p.26 — see the
-             style block. The only O/D here are lowercase letters inside
-             ordinary words. The licensed font supplies the wide
-             letterforms on its own (css/site.css §9a). -->
-        <h2 class="kc-head" id="kc-heading">Surviving is not the same as living. It is true for people, and it is true for organisations.</h2>
-
-        <p class="kc-lede">Most people are not unhappy. They are busy, capable and doing well on paper. What they have lost is the sense that they chose any of it. Three things cause that drift.</p>
-
-        <!-- Client copy, word for word. The bold opening of each item is his
-             own naming sentence given hierarchy; nothing was reworded. -->
-        <ol class="kc-list">
-          <li><p><b>Autopilot living.</b> Days run on routine. Calendars fill themselves, weeks blur into years, and somewhere along the way the question of what we actually want stops being asked.</p></li>
-          <li><p><b>The patterns we never question.</b> Much of how we live and work was handed to us by parents, schools and the first company that hired us. It keeps running because nobody stops to check whether it still fits.</p></li>
-          <li><p><b>The quiet gap between looking fine and being well.</b> The career works, the targets are met, the team delivers. Underneath, energy drains away, and nobody says it out loud because nothing looks broken.</p></li>
-        </ol>
+        <figure class="key-problem-figure hm hm-media">
+          <picture>
+            <source srcset="assets/img/speaking.webp" type="image/webp">
+            <img src="assets/img/speaking.jpg" width="1086" height="724" alt="Oscar de Grauw speaking to an audience" loading="lazy">
+          </picture>
+        </figure>
       </div>
     </section>
 
-    <!-- ===== SECTION 5 — "Keynotes that give people a new perspective" =====
-         Copy left, portrait right, on the ivory dot field — the same
-         structure as work-with-us.html §3, at the user's request.
+    <!-- ===== SECTION 3 — what Oscar brings to the stage ===== -->
+    <section class="key-section key-missing" aria-labelledby="key-missing-heading">
+      <div class="key-missing-bg" aria-hidden="true">
+        <img src="assets/img/premium-hero-session.jpg" width="2400" height="1600" alt="" loading="lazy">
+      </div>
 
-         The violet rectangle in the mockup is a SELECTION OUTLINE, not a
-         device: it crosses the body copy mid-sentence, which no drawn frame
-         would. Third coloured box in these mockups to be editing furniture
-         (§30, §34). Not rendered. -->
-    <div class="kp">
-    <section class="reveal" aria-labelledby="kp-heading">
-      <div class="container">
-        <div class="kp-grid">
-          <div class="kp-copy">
-            <!-- Uppercase, unlike the two headings above it, and that is
-                 V1.0 p.26 applied rather than an inconsistency — the
-                 guideline splits on sentence LENGTH. See the style block.
+      <div class="pr-wrap">
+        <div class="key-missing-head">
+          <h2 class="pr-h key-missing-h hm hm-lines" id="key-missing-heading"><span>What’s missing?</span></h2>
+          <p class="key-missing-lede hm hm-copy">A keynote that goes beyond inspiration and gives the room a practical way to change how the company works, starting on Monday.</p>
+        </div>
 
-                 The wide O's and D's come from the font itself since
-                 7 Nov, in any case — literal uppercase or sentence case
-                 makes no difference now (css/site.css §9a). -->
-            <h2 class="kp-head" id="kp-heading">KEYNOTES THAT GIVE PEOPLE A NEW PERSPECTIVE ON HOW THEY CHOOSE TO LIVE THEIR LIVES</h2>
+        <h3 class="key-missing-title hm hm-lines">What Oscar brings to your stage</h3>
+        <div class="key-missing-list">
+          <article class="hm hm-row">
+            <span class="key-missing-num" aria-hidden="true">01</span>
+            <h3>A method the room can use on Monday</h3>
+            <p class="pr-copy">Every session runs on See · Strip · Choose™, see where time and decisions really go, strip what no longer earns its place, and choose what replaces it. It's simple enough that teams can run it again without Oscar in the room.</p>
+          </article>
+          <article class="hm hm-row">
+            <span class="key-missing-num" aria-hidden="true">02</span>
+            <h3>A story that makes it personal</h3>
+            <p class="pr-copy">Every keynote opens with Oscar's own story: twenty-three years between knowing what had to change and choosing to change it.</p>
+          </article>
+          <article class="hm hm-row">
+            <span class="key-missing-num" aria-hidden="true">03</span>
+            <h3>Workshops built on your real issues</h3>
+            <p class="pr-copy">There's no lecture from the front. The group brings one real meeting, report or decision into the room, takes it apart together and designs the replacement before anyone leaves.</p>
+          </article>
+        </div>
 
-            <!-- Client copy, word for word. The straight apostrophe in
-                 "Oscar's" is set curly to match the rest of the site, the
-                 same call §34 records for the pull quote's quote marks. -->
-            <p>Oscar’s keynotes start with a story few audiences forget. Twenty-three years ago he ran toward a train and survived. What followed, from seventeen years at Sony to a sunrise on Kilimanjaro, became the question he leaves every room with: am I truly living my life, or simply surviving the one I inherited?</p>
+        <p class="key-missing-cta hm hm-copy"><a class="button" href="contact.html">Let’s talk</a></p>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 4 — four keynotes ===== -->
+    <section class="key-section key-programs" aria-labelledby="key-programs-heading">
+      <div class="pr-wrap">
+        <header class="key-programs-head">
+          <span class="pr-kicker key-programs-kicker hm hm-copy">Fours keynotes</span>
+          <h2 class="pr-h key-programs-h hm hm-lines" id="key-programs-heading">
+            <span>That will change</span>
+            <span>how your company</span>
+            <span>operates on Monday</span>
+          </h2>
+        </header>
+
+        <article class="key-signature">
+          <div class="hm hm-copy">
+            <span class="key-tag">Signature keynote</span>
+            <h3>Start Choosing™</h3>
+            <p class="key-program-sub">The full method, See · Strip · Choose</p>
+            <p class="pr-copy">Most of how a company works today was never decided. It just built up. Oscar takes the room through See, Strip and Choose on their own company, and ends with the question few leadership teams ask out loud: <strong>if you were building this company today, would you build it this way?</strong></p>
           </div>
-
-          <!-- THE REAL PHOTOGRAPH, not a placeholder. assets/img/oscar-chair.jpg
-               (1024x1536) is the exact frame the mockup uses and it was
-               already in the project, unused by any page since 30 Oct.
-
-               The 2:3 source in a 4:5 frame crops by height, so
-               object-position keeps the top: his head sits around 14-38% of
-               the frame and the chair back fills the lower third, which is
-               the part that can go. On a phone the frame turns 4:3 and the
-               same anchor holds the face.
-
-               NOT YET OPTIMISED — a 219KB JPEG with no AVIF or WebP beside
-               it. Worth the §31 sips/cwebp pass along with the hero's
-               speaking-keynote.jpg before this page is shown. -->
-          <figure class="kp-shot">
-            <img src="assets/img/oscar-chair.jpg" alt="Oscar de Grauw, smiling, seated with his arms resting over the back of a chair" width="1024" height="1536" loading="lazy">
+          <figure class="hm hm-media">
+            <img src="assets/img/premium-hero-session.jpg" width="2400" height="1600" alt="A facilitator speaking to a seated workshop audience" loading="lazy">
           </figure>
+        </article>
+
+        <div class="key-program-grid">
+          <article class="key-program-card key-program-card--paper hm hm-card">
+            <div>
+              <p class="key-step">Step 1, See:</p>
+              <h3>Truth Latency™</h3>
+              <p class="key-program-sub">When the truth arrives too late</p>
+            </div>
+            <div class="key-card-copy">
+              <p class="pr-copy">Somebody always knew weeks before anyone said it out loud. Oscar has the room measure its own delay between knowing and acting, then shows what shortens it.</p>
+            </div>
+          </article>
+
+          <article class="key-program-card key-program-card--image hm hm-card">
+            <div class="key-card-bg">
+              <img src="assets/img/work-whiteboard.jpg" width="1370" height="1148" alt="" loading="lazy">
+            </div>
+            <div>
+              <p class="key-step">Step 2, Strip:</p>
+              <h3>Turn off the noise</h3>
+              <p class="key-program-sub">What the way you work is costing you</p>
+            </div>
+            <div class="key-card-copy">
+              <p class="pr-copy">Meetings, reports and approvals pile up as a company grows. Oscar prices them room by room with The Noise Tax™, and the audience watches its own number appear.</p>
+            </div>
+          </article>
+
+          <article class="key-program-card key-program-card--image hm hm-card">
+            <div class="key-card-bg">
+              <img src="assets/img/work-two-ways.jpg" width="1254" height="890" alt="" loading="lazy">
+            </div>
+            <div>
+              <p class="key-step">Step 3, Choose:</p>
+              <h3>When everything comes back to you</h3>
+              <p class="key-program-sub">Decisions that move without the founder</p>
+            </div>
+            <div class="key-card-copy">
+              <p class="pr-copy">In a pit stop, twenty people change four tyres in two seconds without a meeting, because who does what was decided before the car arrived. Oscar uses DRMT™ to make delegation specific enough to trust: who decides, who advises, who acts.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-      <!-- ===== SECTION 6 — "What audiences take away" =====
-           Second section inside the same ivory wrapper, so the dot grid runs
-           continuously across the join rather than restarting (§34). -->
-      <section class="kt-take container reveal" aria-labelledby="take-heading">
-        <h2 id="take-heading">WHAT AUDIENCES TAKE AWAY</h2>
-        <!-- Client copy, word for word. Plain list, not numerals: nothing in
-             the copy counts these, and numbering a set of takeaways implies
-             a ranking the client did not write. -->
-        <ul class="kt-list">
-          <li>A new perspective on success</li>
-          <li>Greater appreciation for choice</li>
-          <li>A memorable framework for intentional living</li>
-          <li>A practical way to recognise autopilot</li>
-          <li>The courage to challenge inherited assumptions</li>
-        </ul>
-      </section>
-
-    </div>
-
-    <!-- ===== SECTION 7 — the keynote topics =====
-         PLACEHOLDER SECTION, at the user's instruction. The reference page
-         sells five named keynotes; we have exactly one title, "Tracks of
-         Time", inferred from the hero eyebrow. The copy below holds the
-         shape and is marked draft on the page itself.
-
-         The mockup's yellow "Kee…" box is annotation — fourth coloured box
-         in these supplied designs to be a sticky note (§30, §34).
-
-         All three photographs are PLACEHOLDERS and two are already used
-         elsewhere on this page. That is deliberate and visible: they should
-         look provisional until the real keynote photography arrives. -->
-    <section class="kt reveal" aria-labelledby="kt-heading">
-      <div class="container">
-        <div class="kt-head">
-          <h2 id="kt-heading">KEYNOTE TOPICS</h2>
+    <!-- ===== SECTION 5A — statistics awaiting client figures ===== -->
+    <section class="key-proof" aria-label="Keynote statistics">
+      <div class="pr-wrap">
+        <span class="pr-kicker key-proof-note hm hm-copy">Client figures pending</span>
+        <div class="key-stats">
+          <article class="key-stat hm hm-stat"><strong>XXXX</strong><p class="pr-copy">keynotes and workshops delivered</p></article>
+          <article class="key-stat hm hm-stat"><strong>10,000</strong><p class="pr-copy">people in the audience</p></article>
+          <article class="key-stat hm hm-stat"><strong>10,000</strong><p class="pr-copy">countries spoken in</p></article>
+          <article class="key-stat hm hm-stat"><strong>100%</strong><p class="pr-copy">of organisers who would book him again</p></article>
         </div>
-
-        <div class="kt-grid">
-          <article class="kt-item">
-            <figure class="kt-shot">
-              <img src="assets/img/speaking-keynote.jpg" alt="" width="1600" height="1067" loading="lazy">
-            </figure>
-            <!-- The one real title on this page. Typed in literal mixed case
-                 with no wide alternates: the O is lowercase inside a word. -->
-            <h3>Tracks of Time</h3>
-            <p class="kt-sub">Placeholder subheading, pending the client’s own</p>
-            <p>Placeholder description. Twenty-three years ago Oscar ran toward a train. The talk follows the long road from not dying to actually living, and the question it leaves every room with.</p>
-            <ul class="kt-points">
-              <li>Placeholder takeaway</li>
-              <li>Placeholder takeaway</li>
-              <li>Placeholder takeaway</li>
-            </ul>
-          </article>
-
-          <article class="kt-item">
-            <figure class="kt-shot">
-              <img src="assets/img/speaking.jpg" alt="" width="1086" height="724" loading="lazy">
-            </figure>
-            <h3>Keynote title pending</h3>
-            <p class="kt-sub">Placeholder subheading, pending the client’s own</p>
-            <p>Placeholder description. This column exists to hold the three-across layout the reference uses. Replace the whole article when the second keynote is named.</p>
-            <ul class="kt-points">
-              <li>Placeholder takeaway</li>
-              <li>Placeholder takeaway</li>
-              <li>Placeholder takeaway</li>
-            </ul>
-          </article>
-
-          <article class="kt-item">
-            <figure class="kt-shot">
-              <img src="assets/img/oscar-steps.jpg" alt="" width="2048" height="3069" loading="lazy">
-            </figure>
-            <h3>Keynote title pending</h3>
-            <p class="kt-sub">Placeholder subheading, pending the client’s own</p>
-            <p>Placeholder description. This column exists to hold the three-across layout the reference uses. Replace the whole article when the third keynote is named.</p>
-            <ul class="kt-points">
-              <li>Placeholder takeaway</li>
-              <li>Placeholder takeaway</li>
-              <li>Placeholder takeaway</li>
-            </ul>
-          </article>
-        </div>
-
-        <!-- REVIEW FURNITURE. Delete this element and .kt-draft together. -->
-        <p class="kt-draft">Placeholder section. The reference page sells five named keynotes; only <b>Tracks of Time</b> is known. Copy, photographs and the number of columns all pending. Ask how many keynotes exist before this is designed properly.</p>
       </div>
     </section>
 
-    <!-- ===== SECTION 8 — testimonials =====
+    <!-- The superseded Keynote sections remain in the file only as a
+         temporary recovery layer while this page is reviewed section by
+         section. Hidden means they do not render or enter accessibility. -->
+
+    <!-- ===== SECTION 5B — homepage testimonial language =====
          Copied verbatim from index.html. FOURTH COPY of this block, and the
          quotes are repeated FOUR TIMES inside it so the marquee never runs
          dry. Replacing one quote is sixteen edits across four files — see
          the note in the style block, and lift this into css/site.css before
          the real testimonials arrive. -->
-    <section class="testimonials reveal" aria-labelledby="testimonials-heading">
-      <div class="container">
-        <div class="testimonials-head">
-          <span class="eyebrow">Testimonials</span>
-          <h2 id="testimonials-heading">What leaders say</h2>
-        </div>
+    <section class="pr-voices key-voices" aria-labelledby="testimonials-heading">
+      <div class="pr-wrap">
+        <h2 class="pr-h pr-voices-h hm hm-lines" id="testimonials-heading">
+          <span>What leaders</span>
+          <span>say</span>
+        </h2>
       </div>
-      <div class="testimonial-slider">
+      <div class="testimonial-slider hm hm-panel">
         <div class="testimonial-grid testimonial-track" role="list">
           <article role="listitem">
             <span class="testimonial-label">Placeholder testimonial</span>
@@ -1303,80 +992,48 @@
       </div>
     </section>
 
-    <!-- ===== SECTION 9 — "Built for rooms where leaders are honest…" =====
-         Reuses .kc, section 4's photographic ground, with a different
-         picture and a plain bulleted list. The violet rectangle in the
-         mockup is a selection outline again — it crosses the closing
-         sentence and encloses dead space beneath it. Not rendered. -->
-    <section class="kc kc--rooms reveal" aria-labelledby="rooms-heading">
-      <div class="container">
-        <h2 class="kc-head" id="rooms-heading">Built for rooms where leaders are honest enough to listen.</h2>
+    <!-- ===== SECTION 6 — about Oscar ===== -->
+    <section class="key-section key-about" aria-labelledby="key-about-heading">
+      <div class="pr-wrap key-about-grid">
+        <figure class="hm hm-media">
+          <img src="assets/img/oscar-about.jpg" width="1201" height="1800" alt="Oscar de Grauw holding a laptop" loading="lazy">
+        </figure>
 
-        <!-- Client copy, word for word, including the full stops he ends
-             each item with. -->
-        <ul class="kc-who">
-          <li>Senior leaders who rarely stop to ask what the pace is costing them.</li>
-          <li>Founders and CEOs whose company has become their whole life.</li>
-          <li>High performers on a track they never consciously chose.</li>
-          <li>Teams in growth or change, going through the motions.</li>
-          <li>HR and people leaders facing burnout and good people leaving.</li>
-        </ul>
+        <div>
+          <span class="pr-kicker hm hm-copy">About Oscar de Grauw</span>
+          <h2 class="pr-h key-about-h hm hm-lines" id="key-about-heading">
+            <span>Why choose</span>
+            <span>me for</span>
+            <span>your event?</span>
+          </h2>
 
-        <p class="kc-where">Where it lands: <b>conferences, summits, offsites and people events.</b> Live, in English.</p>
+          <div class="key-about-copy hm hm-copy">
+            <p class="pr-copy">I spent 17 years inside complex, international organizations, working across borders, departments and leadership levels. I've seen strategies succeed and fail because day-to-day operations couldn't keep up.</p>
+            <p class="pr-copy">I don't approach your organization as an outsider with a framework. I work from the inside out, focusing on how work really flows.</p>
+            <p class="pr-copy">My work is built on frameworks I developed myself: See – Strip – Choose™, Truth Latency™ and DRMT™, not someone else's playbook. You get a repeatable, structured approach that scales.</p>
+            <p class="key-about-meta">Oscar de Grauw<br>Founder | Speaker | Visionair</p>
+            <p class="key-about-cta"><a class="button" href="about.html">More about Oscar</a></p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ===== SECTIONS 10 + 11 — the bio, and the closing statement =====
-         One ivory field, same wrapper reason as sections 5 + 6. -->
-    <div class="kp">
 
-      <section class="reveal" aria-labelledby="kb-heading">
-        <div class="container">
-          <div class="kp-grid">
-            <div class="kp-copy">
-              <!-- Literal uppercase, so js/site.js §3a's /([OD])/ wraps the
-                   wide O and D by itself. -->
-              <h2 class="kp-head" id="kb-heading">FROM A RAILWAY TRACK TO THE STAGE</h2>
-
-              <!-- Client copy, word for word. "OPS Detox™" is typed in the
-                   mixed case he uses; the script widens its O and D on its
-                   own because both are capitals. -->
-              <p>Oscar de Grauw is a TEDx speaker and the founder of OPS Detox™. He spent seventeen years at Sony Europe across seven functions and 29 countries, leading the work that halved the reporting and moved decisions closer to the people doing the work. On stage, he brings the human side of the same conviction: surviving is not the same as living.</p>
-            </div>
-
-            <!-- PLACEHOLDER PORTRAIT. The mockup uses a studio frame of Oscar
-                 on a stool in a grey sweater, which is not in the project.
-                 This is assets/img/oscar-about.jpg, the homepage's About
-                 portrait — the same arch frame and the closest existing
-                 match. Swap the <img> when the stool frame arrives. -->
-            <figure class="kp-shot kb-shot">
-              <img src="assets/img/oscar-about.jpg" alt="Oscar de Grauw holding a laptop" width="1201" height="1800" loading="lazy">
-            </figure>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== SECTION 11 — the closing statement =====
-           A centred statement band, as drawn. No body copy and no CTA of its
-           own, because the site's own CTA follows immediately below it. -->
-      <section class="kb-say container reveal">
-        <h2>BRING TRACKS OF TIME TO YOUR STAGE</h2>
-      </section>
-
-    </div>
-
-    <!-- ===== SECTION 12 — the site's closing CTA =====
+    <!-- ===== SECTION 7 — the site's closing CTA =====
          index.html's .choice, by way of contact.html §33. The switch rests
          on Clarity, which is the §29.5 state — aria-pressed="true" is the
          resting state js/site.js snaps back to, so the attribute must not be
          flipped to change which side lights. -->
     <section class="choice">
       <div class="container">
-        <span class="eyebrow">The choice</span>
-        <h2>What will you choose?</h2>
-        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
+        <span class="pr-kicker">The choice</span>
+        <h2 class="pr-h kn-choice-h hm hm-lines">
+          <span>What will you</span>
+          <span>choose?</span>
+        </h2>
+        <p class="choice-note hm hm-copy">Clarity is the default. Switch back to see the noise.</p>
 
-        <div class="toggle-rows">
+        <div class="toggle-rows hm hm-panel">
           <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
                   aria-label="Switch between Operational Clarity and Operational Noise">
             <span class="t-before">Operational Clarity</span>
@@ -1386,7 +1043,7 @@
         </div>
 
         <div class="actions">
-          <a class="button" href="contact.html">Book this keynote <span>→</span></a>
+          <a class="button" href="contact.html">Book this keynote</a>
           <a class="button button--line" href="diagnostic.html">Book the free diagnostic</a>
         </div>
       </div>
@@ -1477,70 +1134,6 @@
   </footer>
 
   <script src="js/site.js"></script>
-
-  <!-- Releases the hero animation when the preloader lifts, so it is seen
-       instead of playing out behind the overlay. Copied from about.html
-       §29.1 and pointed at .kh-frame. -->
-  <script>
-  (function () {
-    var root = document.documentElement;
-
-    /* ---------- The lime edge is animated HERE, not in CSS ----------
-       SAFARI WILL NOT RUN THE EDGE ANIMATION FROM A STYLESHEET. Four CSS
-       packagings were tried on the About page and every one left the
-       picture growing to full bleed still carrying its border and its
-       rounded corners, while the size animation on the same element worked
-       throughout. Do not spend another round on a CSS fix.
-
-       The Web Animations API runs it correctly in both engines, and script
-       animations sit ABOVE CSS animations in the cascade — so the khEdge
-       keyframes are deliberately left in the stylesheet as the no-JS
-       fallback, and this simply wins when it runs.
-
-       The timing MUST match khOpen's — 1150ms, 450ms delay, same curve — or
-       the border stops shrinking in step with the frame growing. */
-    function animateEdge() {
-      var frame = document.querySelector('.kh-frame');
-      if (!frame || !frame.animate) return;
-      /* The stylesheet's reduced-motion block cannot stop a script
-         animation, so the guard has to be here too — without it the edge
-         would animate for exactly the users who asked it not to. */
-      if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-      /* Phone start values, matching khEdgeSm. The breakpoint is 850px here,
-         not the About page's 700 — this hero's plate needs to stack sooner
-         because it sits beside the picture rather than under it. */
-      var small = window.matchMedia('(max-width:850px)').matches;
-      try {
-        frame.animate(
-          [
-            { borderWidth: small ? '4px' : '6px', borderRadius: small ? '28px' : '36px' },
-            { borderWidth: '0px', borderRadius: '0px' }
-          ],
-          { duration: 1150, delay: 450, easing: 'cubic-bezier(.65,0,.2,1)', fill: 'both' }
-        );
-      } catch (e) {}
-    }
-
-    function go() {
-      if (root.classList.contains('hero-go')) return;
-      root.classList.add('hero-go');
-      /* Started at the same moment the class lands, so the WAAPI delay and
-         the CSS animation-delay are measured from the same instant. */
-      animateEdge();
-    }
-    /* Three ways in, so the hero can never be stranded on the framed state:
-       the class is already gone (reduced motion took the .no-preloader
-       branch), the observer sees it go, or the 4s backstop fires. */
-    if (!root.classList.contains('pl-lock')) {
-      go();
-    } else if (window.MutationObserver) {
-      var mo = new MutationObserver(function () {
-        if (!root.classList.contains('pl-lock')) { mo.disconnect(); go(); }
-      });
-      mo.observe(root, { attributes: true, attributeFilter: ['class'] });
-    }
-    window.setTimeout(go, 4000);
-  })();
-  </script>
+  <script src="js/premium-motion.js"></script>
 </body>
 </html>
