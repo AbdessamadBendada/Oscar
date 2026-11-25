@@ -24,7 +24,7 @@
        ========================================================== -->
   <!-- Decide before first paint: reduced-motion visitors and anyone who has
        already seen the preloader this session go straight to the page. -->
-  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
+  <script>try{var reduceFreebieMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;if(sessionStorage.getItem('ops-preloaded')||reduceFreebieMotion){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}if(!reduceFreebieMotion){document.documentElement.className+=' freebie-motion';}}catch(e){}</script>
 
   <style>
   /* ---------- 1. Page shell ---------- */
@@ -118,9 +118,85 @@
     .fb-shot{order:2}
   }
 
+  /* Premium homepage direction. Copy, form names and validation hooks stay
+     unchanged; this layer changes only composition and motion. */
+  .premium-freebie{--fb-space:clamp(94px,9vw,164px);background:var(--paper)}
+  .premium-freebie main{overflow-x:clip;background:var(--paper)}
+  .premium-freebie .fb{
+    min-height:calc(100svh - var(--header-h));padding:clamp(72px,7vw,126px) 0;
+    display:flex;align-items:center;background:var(--ink);color:var(--paper);
+  }
+  .premium-freebie .fb .container{width:min(1600px,calc(100% - 96px))}
+  .premium-freebie .fb-hero{max-width:none;text-align:left}
+  .premium-freebie .fb-hero .eyebrow{color:var(--lime);font-size:16px}
+  .premium-freebie .fb-hero h1{
+    margin:32px 0 clamp(46px,6vw,84px);color:var(--paper);
+    font-size:clamp(78px,10.5vw,184px);line-height:.72;letter-spacing:-.018em;
+  }
+  .premium-freebie .fb-hero h1 span{display:block;width:max-content;max-width:100%}
+  .premium-freebie .fb-hero h1 span:nth-child(2){margin-left:8%}
+  .premium-freebie .fb-hero h1 span:nth-child(3){margin-left:31%}
+  .premium-freebie .fb-hero p{margin:0 0 0 auto;max-width:48ch;color:rgba(254,253,242,.82);font-size:clamp(17px,1.3vw,21px)}
+
+  .premium-freebie .fb-get{padding:var(--fb-space) 0;background:var(--paper)}
+  .premium-freebie .fb-grid{grid-template-columns:1.05fr .95fr;gap:0;padding:0;border:1px solid var(--ink)}
+  .premium-freebie .fb-card{padding:clamp(36px,5vw,76px);border:0;border-radius:0;background:var(--paper)}
+  .premium-freebie .fb-card h2{margin:18px 0 16px;font-family:var(--display);font-weight:400;font-size:clamp(52px,6vw,104px);line-height:.82;text-transform:uppercase}
+  .premium-freebie .fb-card>p{max-width:40ch;font-size:17px}
+  .premium-freebie .fb-card .form-card{margin-top:clamp(42px,5vw,72px)}
+  .premium-freebie .fb-card .field input{border-radius:0;background:transparent;border-width:0 0 1px;padding-left:0;padding-right:0}
+  .premium-freebie .fb-card .button{white-space:nowrap}
+  .premium-freebie .fb-shot{padding:clamp(28px,4vw,64px);border-radius:0;background:var(--ink)}
+  .premium-freebie .fb-shot img{max-width:560px}
+  .premium-freebie .fb-shot figcaption{font-size:14px;color:var(--lime)}
+
+  .premium-freebie .choice{padding:var(--fb-space) 0}
+  .premium-freebie .choice h2{max-width:none;text-align:left;font-size:clamp(64px,8vw,146px);line-height:.78}
+  .premium-freebie .choice .toggle-rows{max-width:980px;margin-top:40px}
+  .premium-freebie .choice .toggle-row{padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);gap:clamp(20px,3vw,46px)}
+  .premium-freebie .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
+
+  .freebie-motion .premium-freebie .site-header,
+  .freebie-motion .premium-freebie .fb-hero .eyebrow,
+  .freebie-motion .premium-freebie .fb-hero>p{
+    opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .95s cubic-bezier(.16,1,.3,1);
+  }
+  .freebie-motion .premium-freebie.freebie-ready .site-header,
+  .freebie-motion .premium-freebie.freebie-ready .fb-hero .eyebrow,
+  .freebie-motion .premium-freebie.freebie-ready .fb-hero>p{opacity:1;transform:none}
+  .freebie-motion .premium-freebie .fb-hero h1 span{clip-path:inset(-55% -100vw 155% -100vw);transition:clip-path 1.05s cubic-bezier(.16,1,.3,1)}
+  .freebie-motion .premium-freebie.freebie-ready .fb-hero h1 span{clip-path:inset(-55% -100vw -55% -100vw)}
+  .freebie-motion .premium-freebie.freebie-ready .fb-hero h1 span:nth-child(1){transition-delay:.12s}
+  .freebie-motion .premium-freebie.freebie-ready .fb-hero h1 span:nth-child(2){transition-delay:.22s}
+  .freebie-motion .premium-freebie.freebie-ready .fb-hero h1 span:nth-child(3){transition-delay:.32s}
+  .freebie-motion .premium-freebie.freebie-ready .fb-hero>p{transition-delay:.58s}
+  .freebie-motion .premium-freebie .fb-get.reveal .fb-card,
+  .freebie-motion .premium-freebie .fb-get.reveal .fb-shot{opacity:0;transform:translateY(42px);transition:opacity .75s ease,transform 1.05s cubic-bezier(.16,1,.3,1)}
+  .freebie-motion .premium-freebie .fb-get.reveal.is-in .fb-card,
+  .freebie-motion .premium-freebie .fb-get.reveal.is-in .fb-shot{opacity:1;transform:none}
+  .freebie-motion .premium-freebie .fb-get.reveal.is-in .fb-shot{transition-delay:.12s}
+
+  @media(max-width:900px){
+    .premium-freebie .fb .container{width:min(100%,calc(100% - 36px))}
+    .premium-freebie .fb-hero h1{font-size:clamp(54px,15vw,112px)}
+    .premium-freebie .fb-hero h1 span:nth-child(2),
+    .premium-freebie .fb-hero h1 span:nth-child(3){margin-left:0}
+    .premium-freebie .fb-grid{grid-template-columns:minmax(0,1fr)}
+    .premium-freebie .fb-shot{min-height:420px}
+  }
+  @media(max-width:700px){
+    .premium-freebie .choice .toggle-row{padding:18px 20px 15px;gap:14px}
+    .premium-freebie .choice .choice-toggle .t-switch{width:100px;height:60px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .premium-freebie .site-header,.premium-freebie .fb-hero .eyebrow,
+    .premium-freebie .fb-hero h1 span,.premium-freebie .fb-hero>p,
+    .premium-freebie .fb-get .fb-card,.premium-freebie .fb-get .fb-shot{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important}
+  }
+
   </style>
 </head>
-<body>
+<body class="premium-freebie">
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
     <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -168,7 +244,7 @@
           <span class="eyebrow">Free download</span>
           <!-- Literal uppercase so js/site.js §3a's /([OD])/ wraps the wide
                O and D by itself. Retype in sentence case and they vanish. -->
-          <h1>THE STARTUP FINANCIAL MODEL TEMPLATE</h1>
+          <h1><span>THE STARTUP</span><span>FINANCIAL MODEL</span><span>TEMPLATE</span></h1>
           <p>Leave your name and email, and the template lands in your inbox.</p>
         </div>
       </div>
@@ -283,42 +359,6 @@
       </div>
     </section>
 
-    <!-- The switcher-pattern divider, closing the page into the Deep Green
-         footer the way it does on the homepage (§24). Bars only, no words,
-         two rows running opposite ways. Decorative, so hidden from
-         assistive tech. -->
-    <div class="pb" aria-hidden="true">
-      <div class="pb-row">
-        <div class="pb-track">
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-        </div>
-      </div>
-      <div class="pb-row pb-row--b">
-        <div class="pb-track">
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-        </div>
-      </div>
-    </div>
   </main>
 
   <footer>
@@ -366,6 +406,32 @@
     </div>
   </footer>
 
+  <div class="pb" aria-hidden="true">
+    <div class="pb-row"><div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div></div>
+    <div class="pb-row pb-row--b"><div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div></div>
+  </div>
+
   <script src="js/site.js"></script>
+  <script>
+  (() => {
+    const root=document.documentElement,body=document.body;
+    const begin=()=>body.classList.add('freebie-ready');
+    if(!root.classList.contains('freebie-motion')){begin();return;}
+    const preloader=document.getElementById('preloader');
+    if(root.classList.contains('no-preloader')||!preloader||!preloader.isConnected){requestAnimationFrame(()=>requestAnimationFrame(begin));return;}
+    const observer=new MutationObserver(()=>{if(preloader.isConnected)return;observer.disconnect();requestAnimationFrame(begin);});
+    observer.observe(body,{childList:true});setTimeout(begin,3600);
+  })();
+  </script>
 </body>
 </html>

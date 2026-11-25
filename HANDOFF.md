@@ -1,6 +1,80 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 23 November 2026_
+_Last updated: 25 November 2026_
+
+> **25 Nov — the two supplied OPS Detox tools now have premium review builds.**
+> The Noise Tax Calculator and Diagnostic keep their supplied engines and copy,
+> but now use the approved homepage's type, colour, editorial rules and report
+> language. They live only in `playground/`; no live page or production integration
+> was changed. See §65.
+
+> **25 Nov — the Keynote premium conversion now covers the full supplied page
+> sequence.** The new image-led hero is followed by the problem, stage value,
+> keynote programme, proof, About and closing-switch sections in the exact order
+> supplied by the client. The mockup's generic boxes were translated into the
+> approved homepage's ruled editorial fields and Deep Green proof language. See §64.
+
+> **24 Nov — the Keynote conversion began with a new premium hero.** The page already
+> existed, so no duplicate was created. Its legacy framed opener is replaced by a
+> full-bleed, image-led hero using the homepage's oversized offset type, restrained
+> Deep Green photographic treatment, white headline and single lime CTA. See §63.
+
+> **24 Nov — the About journey now uses Oscar's real archive where it exists.**
+> Childhood, aviation and Kilimanjaro are documentary photographs supplied in
+> `/Users/mac/Downloads/Photos`; the early-career and Sony chapters use controlled
+> portrait stand-ins, and the current chapter keeps the present-day chair portrait.
+> The photographs now use one natural-colour 4:3 treatment with wider desktop plates,
+> deliberate focal crops and no green blend. The six-row structure, motion and all
+> visible copy are unchanged. See §62.
+
+> **24 Nov — the About follow-up replaced the actual hero photograph and fixed
+> three compositions that were visibly colliding.** The hero is now a hard-edged
+> homepage-style image field using Oscar's real laptop portrait, the Speaker section
+> uses the real stage photograph, and the operations credentials use the separate whiteboard image.
+> Decorative image circles are gone; the operations statement is restrained to its
+> column, and the principles are ruled rows rather than an overflowing rail. See §61.
+
+> **24 Nov — About's journey and testimonial sections were refined against the
+> approved homepage, then checked at exact desktop and mobile widths.** The six
+> journey entries are now one controlled ruled editorial system, and About uses
+> the homepage testimonial band rather than a visual approximation. The premium
+> testimonial surface is shared in `css/premium.css`; heading offsets remain local.
+> See §60.
+
+> **24 Nov — the approved homepage premium foundations and viewport observer were
+> extracted without changing the homepage composition.** `css/premium.css` now holds
+> the opt-in canvas, width, typography, editorial links and reveal primitives;
+> `js/premium-motion.js` owns the shared viewport controller. Homepage offsets,
+> section layouts, hero choreography, staggers and logo slider stay local. The
+> unapproved inner-page pass in §53-58 was not used or altered. See §59.
+
+> **23 Nov — Diagnostic, Freebie and The Detox now complete the premium
+> marketing-page conversion.** All three keep their existing copy and working form
+> hooks, use the selected hard-edged editorial language, carry viewport-bound motion
+> and place the moving pattern below the footer. Keynote remains deliberately
+> untouched. See §56-58.
+
+> **23 Nov — Contact now follows the premium homepage direction.** It uses a
+> Deep Green typographic hero, hard-edged split form / booking routes, a lime direct
+> contact band and the enlarged closing switch, with the moving pattern relocated
+> below the footer. See §55.
+
+> **23 Nov — About now follows the premium homepage direction.** The previous
+> framed-photo opener was replaced by a Deep Green cutout portrait hero, and the
+> biography, credentials, journey and principles were recast as editorial fields and
+> ruled rows without changing their copy. See §54.
+
+> **23 Nov — Work With Us is the first inner page rebuilt from the selected
+> premium homepage language.** Its existing twelve-section copy and order remain
+> intact, while the page now uses an image-led hero, asymmetric display scale,
+> differentiated offer fields, a Deep Green Oscar cutout, ruled framework and proof
+> sections, hard corners and viewport-bound motion. See §53.
+
+> **23 Nov — the live homepage now carries the motion prototype for the premium
+> direction.** Hero type opens line by line after the preloader; lower sections use
+> viewport-bound type, image, card, row and number reveals. Nothing was put into the
+> shared stylesheet or script yet, because the homepage is the approved lead and the
+> system should be lifted only when the remaining pages adopt its direction. See §52.
 
 > **23 Nov — the approved Anzhelika direction is now the live homepage.**
 > `index.html` is the promoted premium composition, with live paths, metadata,
@@ -4633,3 +4707,490 @@ opens and closes with the correct state, and the closing switch returns to
 were visually inspected. The initially reported broken images were below-fold lazy
 images before scrolling; each loaded when its section entered the viewport. Safari
 remains untested.
+
+---
+
+## 52. Homepage entrance-motion prototype (23 November 2026)
+
+The premium homepage is now the motion reference for the remaining pages. Its old
+generic `.reveal` rise was removed from the live homepage and replaced by a scoped
+system in `index.html`; `css/site.css` and `js/site.js` are unchanged. This keeps the
+new direction isolated until the other pages are deliberately rebuilt to follow it.
+
+The hero sequence waits for the once-per-session preloader to leave, then brings in
+the header, settles the background photograph, uncovers the three headline lines and
+finally introduces the copy and two CTAs. Below the fold, five treatments match the
+composition instead of applying one effect everywhere:
+
+- display headings uncover one line at a time;
+- photographs and the founder cutout open as masked panels;
+- the three offer cards arrive in a restrained desktop sequence;
+- framework rows draw from left to right; and
+- outcomes rise and settle as a numbered group.
+
+The display-line reveal does **not** translate or tightly clip individual lines. Formula
+Condensed deliberately extends outside its compressed line boxes so the words overlap;
+moving each line inside that box briefly opened large gaps and cropped the letterforms.
+The final implementation leaves every line in its designed position and animates only
+an expanded reveal edge around it. Its horizontal bounds extend past the viewport so
+offset lines cannot be truncated. Photographs, cards and both Oscar compositions use
+opacity and movement without masks: those elements deliberately overflow their own
+boxes, and a mask cuts the founder portrait and hover shadows apart.
+
+All lower-page targets are controlled by one homepage IntersectionObserver and fire
+only near the viewport. A passive fast-jump guard reveals anything skipped by a hash
+link or a large trackpad jump, preventing content from remaining hidden above the
+current scroll position. On phones, long desktop staggers are removed so stacked
+content does not feel slow. Hidden states exist only when the head script adds
+`.home-motion`, so a JavaScript failure leaves the content visible. Reduced-motion
+visitors receive no preloader or transitions and all targets are exposed immediately.
+
+Chrome verification covered the hero and program row at 1512 × 982, plus a true
+390 × 844 device viewport. At load, the future Programs and IP targets remained
+dormant; after a direct jump to the offer cards, the passed heading and visible cards
+were exposed while IP stayed dormant. The mobile viewport measured exactly 390px with
+zero document overflow. The reduced-motion emulation had no `.home-motion` class,
+all targets visible and a zero-second hero transition. Hero and offer compositions
+were visually inspected. Safari remains untested.
+
+---
+
+## 53. Work With Us premium conversion (23 November 2026)
+
+`work-with-us.html` is the first non-Keynote inner page deliberately converted to the
+selected homepage direction. The page's existing twelve-section order and all client
+copy are unchanged. The work is a page-scoped visual and motion layer, not a rewrite,
+and `css/site.css` and `js/site.js` remain untouched.
+
+The standalone approved Work With Us hero was promoted into the real page with its
+office photograph, Deep Green overlays, white offset display type and existing CTA
+pair. The authored three-line heading is protected at mobile sizes so it does not
+collapse into six accidental lines. The rest of the page now follows the homepage's
+visual grammar:
+
+- the problem is a full Deep Green editorial field with a numbered symptom rail;
+- the solution is a clean image-and-copy spread;
+- Operational Flow is the dark primary field, Organisational Flow the restrained
+  comparison, and Tool Stack Detox a lime horizontal add-on rail;
+- outcomes use centred numbers on hard-edged translucent fields;
+- Oscar is shown as a monochrome cutout on Deep Green, without the old grey studio
+  background;
+- the three frameworks are ruled rows rather than floating cards;
+- qualification, proof and six reasons use flat bordered fields with no rounded
+  corners; and
+- the shared moving pattern sits below the footer, as it does on the selected
+  homepage.
+
+Motion is scoped by `.work-motion` and waits for the once-per-session preloader. The
+hero opens line by line, while lower sections are released only when the shared
+`.reveal` IntersectionObserver marks their parent in the viewport. Copy, media,
+offer fields, outcome numbers and ruled framework rows each use a restrained sequence
+suited to their composition. Reduced-motion visitors receive all content immediately
+with no transition.
+
+Chrome verification covered the full-width hero, problem field, offer comparison,
+outcomes, Oscar cutout and framework rows. A true 390 × 844 device viewport measured
+390px of document width with no overflow, one direct footer and twelve main sections.
+The mobile hero retains exactly the three authored lines, the offer fields stack, and
+the page has one active body-level footer. The first lower section was observed both
+before and after its viewport reveal to confirm the motion does not fire on initial
+page load. Safari remains untested.
+
+---
+
+## 54. About premium conversion (23 November 2026)
+
+`about.html` now follows the selected homepage direction while retaining every piece
+of its existing biography, credential, journey and principles copy. Its old animated
+framed-photo hero was replaced by a simpler Deep Green editorial hero: Oscar's real
+transparent cutout, a lime orbital ring, white offset name typography and the existing
+Founder / TEDx / 17 years credibility line.
+
+The identity section keeps Speaker / Leader / Visionary but now uses the homepage's
+offset display rhythm beside a hard-edged monochrome portrait. The operations section
+uses a full Deep Green statement field with the existing biography, cutout and three
+credential rows. The journey is no longer a rounded alternating timeline: its six
+entries are numbered, ruled editorial rows with hard-edged photographs. The three
+principles are three flat bordered fields on Deep Green, and testimonials and the
+closing switch use the enlarged homepage scale. A two-row pattern divider was added
+after the footer.
+
+Hero motion waits for the shared preloader, then releases the kicker, two title lines,
+portrait and credibility line in sequence. The Speaker / Leader / Visionary title,
+copy, CTAs and portrait remain bound to the shared viewport observer, as do the
+journey entries. Reduced-motion visitors see the finished composition immediately.
+
+Chrome verification covered the hero, identity spread and operations statement at
+desktop width. A true 390 × 844 device viewport measured 390px of document width with
+no overflow, eight main children and one direct footer. The mobile hero retains two
+authored name lines, keeps the portrait fully visible and collapses the editorial rows
+to a single readable column. Safari remains untested.
+
+---
+
+## 55. Contact premium conversion (23 November 2026)
+
+`contact.html` now uses a full-height Deep Green typographic hero rather than a small
+centred title on ivory. The existing Contact / Let's talk / introduction copy is
+unchanged; the title is authored as two offset display lines and animates only after
+the shared preloader lifts.
+
+The message form and booking placeholder remain the page's two routes, but they now
+form one hard-edged split field: the form on ivory and the booking route on Deep Green.
+All form controls use square edges, without changing field names, validation or the
+existing enquiry dropdown. The placeholder direct contact details are presented as a
+three-part lime rail, making their unfinished status visible without treating them as
+finished live data. The closing switch uses the larger homepage scale, and the moving
+pattern was moved from above the footer to below it.
+
+Chrome verification covered the hero, split route field and direct-contact rail at
+desktop width. A true 390 × 844 device viewport measured 390px of document width with
+no overflow, five main children and one direct footer. The mobile hero retains its two
+authored title lines and the split routes collapse to one column. Reduced-motion
+emulation exposes the complete hero with no transition. Safari remains untested.
+
+---
+
+## 56. Diagnostic premium conversion (23 November 2026)
+
+`diagnostic.html` now uses the selected premium direction without changing any class
+or id consumed by `js/diagnostic.js`. The Deep Green hero uses two authored display
+lines; the previously mixed “Why complete it” content is a hard-edged process / result
+field; the share section is a full Deep Green statement; and the diagnostic itself is
+a square-edged editorial panel. The closing switch is enlarged and the pattern divider
+now follows the footer.
+
+The first mobile render exposed the long `DIAGNOSTIC™` line clipping at the right
+edge. Its phone scale is now measured independently from the desktop title and fits a
+true 390px viewport without hiding the trademark. Motion waits for the preloader and
+reduced-motion visitors receive the finished state immediately.
+
+Chrome verification drove all seven placeholder questions at 390 × 844. The result
+reported a 100% score, seven module bars and the two expected friction points; restart
+returned to question 1. The viewport measured 390px with no overflow, six main
+children, one direct footer and no failed images.
+
+---
+
+## 57. Freebie premium conversion (23 November 2026)
+
+`freebie.html` is now a focused premium download page. Its existing Startup Financial
+Model copy is unchanged and hand-broken into three display lines in the Deep Green
+hero. The form and tote artwork now make one hard-edged split field, with the actual
+form leading and the campaign image held on Deep Green. Rounded card nesting was
+removed, the closing switch was enlarged and the moving pattern was placed below the
+footer.
+
+The hero waits for the shared preloader. The form / image field enters only when its
+section reaches the viewport; reduced-motion exposes both immediately. Chrome checks
+at 1512 × 982 and a true 390 × 844 viewport found no horizontal overflow, four main
+children, one direct footer and no failed images. Submitting the empty download form
+produced its two required-field errors; a valid local demo submission displayed the
+existing success message.
+
+---
+
+## 58. The Detox premium conversion (23 November 2026)
+
+`detox.html` now completes the non-Keynote marketing-page pass. Every existing section,
+including the client-controlled seven-module material, stays in its current order and
+keeps its copy. The hero sentence is hand-broken into four lines so its offset display
+composition fits without clipping. The problem is a ruled Deep Green symptom field;
+outcomes and modules are hard-edged dark grids; the three-step method and six reasons
+are editorial fields; and Oscar’s old grey-background photograph is replaced by the
+existing transparent cutout in a two-column Deep Green composition.
+
+The four placeholder testimonials remain visibly placeholders, as before; this pass
+does not invent quotes. The closing switch is enlarged and the moving pattern now sits
+after the footer. Hero motion waits for the preloader, while the lower section
+compositions remain hidden only when JavaScript is available and reveal through the
+existing viewport observer.
+
+Chrome verification covered the hero, outcomes, modules and Oscar composition at
+1512 × 982 plus the hero at a true 390 × 844 viewport. Both widths matched their
+document width with no overflow, thirteen main children, one direct footer and no
+failed images. The problem section was dormant at initial load and acquired `is-in`
+only after being scrolled into view. On the mobile control check, the navigation opened,
+Escape closed it and restored focus, and the closing switch returned to
+`aria-pressed="true"`. Keynote was intentionally excluded at the user’s request, and
+the three legal documents retain their quieter shared legal treatment. Safari remains
+untested.
+
+---
+
+## 59. Premium foundations extracted from the approved homepage (24 November 2026)
+
+The premium homepage is now the source of an opt-in system rather than an 894-line
+island inside `index.html`. This was intentionally a narrow lift, not another inner-page
+redesign. Two new files were added. At the time of extraction only `index.html` loaded
+them; About opted in during the approved refinement recorded in §60:
+
+- `css/premium.css` carries the premium canvas, 1600px editorial width, responsive
+  gutters, display-heading foundation, kicker and body-copy treatment, editorial link
+  behavior, shared spacing token and the seven viewport reveal primitives. §60 later
+  added the shared premium testimonial surface once a second page adopted it.
+- `js/premium-motion.js` carries the shared IntersectionObserver, preloader-aware page
+  release, fast-scroll/hash fallback, no-observer fallback and reduced-motion path.
+
+Load order is `css/site.css`, then `css/premium.css`, then the page's scoped `<style>`.
+The split preserves the repo's page-scope rule: page composition still wins by source
+order, while only pages that explicitly load `premium.css` can receive the new system.
+
+The homepage keeps all of its authored composition locally: hero ground and photograph,
+logo slider, headline sizes and offsets, Oscar cutout positioning, offer surfaces,
+testimonial heading offsets, framework columns, statistics layout, portrait arch,
+closing composition and per-section motion staggers. The automatic logo slider also
+remains an inline homepage script because it is not a site-wide primitive.
+
+The early head opt-in is now `.premium-motion`; the shared controller releases the page
+with `.premium-ready`. Hidden states still exist only when that opt-in is present, so a
+JavaScript failure leaves the content visible. No existing shared behavior in
+`css/site.css` or `js/site.js` moved.
+
+Visual verification used CDP with cache disabled and the preloader removed. At
+1512 × 982 every measured section rectangle was byte-for-byte numerically identical
+before and after the lift: total height 7532px, hero 904px, and every subsequent section
+kept the same x/y/width/height. A true 390 × 844 pass initially caught the mobile hero
+line-height losing to its later page-local hero recipe; one local mobile reassertion
+restored the original 8418px page height and every section rectangle exactly. Both
+widths match their document width with no horizontal overflow.
+
+The live behavior check found 26 reveal targets. None of the below-fold targets fired at
+initial load; scrolling the IP section into view revealed its heading and all three rows
+while the Outcomes heading remained dormant. The featured-logo track still cloned its
+eight originals and advanced. Reduced-motion emulation revealed all 26 targets
+immediately and stopped the automatic slider. There were no console messages,
+exceptions or failed requests, and the page retained exactly one direct header, main,
+footer and footer grid.
+
+At the time of this extraction, the Work With Us, About, Contact, Diagnostic, Freebie
+and Detox edits recorded in §53-58 were unapproved local work and were deliberately
+excluded. About was subsequently approved and refined in §60; the other five still must
+not be treated as examples of the shared system. Keynote and the legal pages remain
+outside the premium stylesheet.
+
+---
+
+## 60. About journey and testimonial refinement (24 November 2026)
+
+The About pass was narrowed to the two areas the client called out. No biography,
+timeline or testimonial copy changed.
+
+The old alternating rounded timeline is now a single six-row editorial system. Every
+row uses the same number / era / narrative / photograph structure, with hard rules and
+controlled image proportions. At desktop it is a four-column composition; below 900px
+it becomes a readable two-column stack with the number held in its own rail. Each row
+uses the shared `.hm-row` reveal and remains hidden only after the early premium-motion
+opt-in, so a script failure cannot strand the content.
+
+About's testimonial area now uses the homepage's actual premium treatment: Deep Green
+field, lime offset display heading, hard-edged outlined cards, lime labels, white copy,
+the existing edge fades and the shared four-quote track. The visual rules were promoted
+from `index.html` to `css/premium.css` so the two pages cannot drift. Only the authored
+heading offsets stay local to each page. The homepage's computed heading geometry and
+card treatment remained identical after that lift.
+
+CDP verification ran with cache disabled at 1512 × 982 and a true 390 × 844 device
+viewport. Both widths matched their document width exactly with no horizontal overflow.
+All six timeline images loaded; the first timeline row was dormant at initial load and
+revealed only after its section entered the viewport. About retained eight direct main
+children, six timeline rows, sixteen testimonial cards and exactly one direct footer
+grid. On mobile, each timeline row measured 354px inside the 390px viewport, and the
+testimonial scroller advanced one card from 0 to 327px after its 4.2-second interval.
+There were no console errors or failed image requests. The homepage testimonial band
+was also rendered again at 1512px after the shared-style lift and matched About's
+heading coordinates and card properties exactly. Safari remains untested.
+
+---
+
+## 61. About image and overflow correction (24 November 2026)
+
+The follow-up review caught four visible problems in the first premium About pass. The
+lime / Deep Green circles behind the hero, Speaker and operations images were decorative
+noise and are now removed. The actual hero no longer uses the cutout or split-panel
+treatment: it follows the homepage's image-led recipe using the real
+`oscar-about.jpg` laptop portrait as a full background, a controlled Deep Green wash,
+white display type, a credibility line and the existing CTA pair. The AI-generated
+`speaking-keynote.jpg` remains excluded. The Speaker / Leader / Visionary section uses
+the real `speaking.jpg` audience photograph and a controlled 4:3 frame. The operations
+credentials use the separate `work-whiteboard.jpg` photograph, so Oscar is shown in
+context without repeating the hero.
+
+Two compositions were rebuilt rather than hidden with overflow. The operations statement
+now uses a measured 64px ceiling, a 15-character headline measure and an independently
+bounded 44-character copy column. The principles are no longer three fields that only
+stacked below 900px: they are three full-width ruled rows with number, title and body
+tracks, collapsing to a two-track mobile layout. The timeline and all visible copy were
+left unchanged.
+
+The first correction pass received CDP validation at exact 2048, 1512, 1024, 907 and
+390px widths. Every document width
+matched its viewport, all three circle pseudo-elements computed to `display:none`, and
+all images loaded. At 907px, the closest desktop composition, the Speaker headline ended
+157px before its photograph and the operations headline ended 229px before its copy.
+At 390px the Speaker photograph, operations headline / copy and every principle row sat
+inside the 20-370px content bounds. There were no console errors or warnings. Safari
+remains untested. The subsequent image-led hero conversion preserved the same page-title
+copy, added only the two existing site CTA labels, and left every lower section unchanged.
+
+---
+
+## 62. About journey archive photography (24 November 2026)
+
+The six journey placeholders were replaced without changing the timeline structure or
+any visible copy. Four purpose-cropped 4:3 JPEGs were added under `assets/img/`:
+
+- `about-journey-childhood.jpg`, from Oscar's childhood piano photograph.
+- `about-journey-flight.jpg`, from the aircraft cockpit photograph.
+- `about-journey-consulting.jpg`, a close editorial crop of the early suit portrait.
+- `about-journey-kilimanjaro.jpg`, from the full-resolution summit photograph.
+
+The Sony chapter uses `oscar-office-portrait.jpg` as a corporate portrait stand-in, and
+the current OPS Detox chapter keeps `oscar-chair.jpg`. The source photographs remain
+outside the repository in `/Users/mac/Downloads/Photos`; only the four web-ready crops
+were added. Every image now carries intrinsic dimensions and descriptive alt text.
+
+The first pass inherited the green luminosity treatment from the rest of the page and
+used narrow, inconsistent frames. That made the archive feel secondary and flattened
+the supplied photography. The final treatment keeps colour restrained but natural with
+`saturate(.88) contrast(1.03)`, removes blend mode entirely, and gives every photograph
+a consistent 4:3 frame. The desktop image track was expanded to roughly 500 × 375px at
+1512px, with a dedicated 1100px breakpoint to keep the editorial grid balanced on a
+tablet. The Sony and current-day portraits have local focal positions so faces and
+posture remain intentional without changing the shared image system.
+
+The desktop and tablet rows vertically centre the chapter number, era, copy and image
+against the image plate instead of pinning every element to its top edge. This removes
+the large unused lower field created by short copy while keeping the mobile composition
+top-aligned when it collapses to two columns.
+
+CDP verification ran with cache disabled at 1512 × 982, 1024 × 900 and a true
+390 × 844 viewport.
+All six images loaded with non-zero natural dimensions. The desktop rows measured 1416px
+inside the 1512px viewport, mobile rows measured 354px inside the 390px viewport, and
+both document widths matched their viewport exactly. Full-section screenshots confirmed
+the crops at all three widths. No motion, timeline copy or section order changed.
+
+---
+
+## 63. Keynote premium conversion, section 1 (24 November 2026)
+
+`keynote.html` already existed as a complete legacy page, so the section-by-section
+premium conversion is happening in place. No second Keynote page was created.
+
+The framed-to-full-bleed opening documented in §34 is superseded by a single full-bleed
+hero that follows the approved homepage language:
+
+- `speaking-keynote.webp` / `.jpg` fills the field with a restrained Deep Green
+  luminosity treatment and legibility gradients rather than a rounded picture frame.
+- The supplied heading is set as three authored, slightly offset white lines:
+  `STOP RUNNING` / `THE COMPANY.` / `START LEADING IT`.
+- The supplied supporting paragraph remains intact and the only CTA is `Let’s talk`.
+- The shared `css/premium.css` and `js/premium-motion.js` are now loaded. The hero uses
+  the homepage's line-uncover, image settle and delayed supporting-copy entrance.
+- The old Web Animations API script for shedding the framed hero's border was removed.
+
+The background photograph is decorative because the heading and paragraph already carry
+the hero's meaning; the empty-alt image sits inside an `aria-hidden` wrapper. At the time
+of this first pass the remaining sections were intentionally unchanged; §64 records their
+subsequent conversion.
+
+Visual verification used the local browser at its 2133px desktop viewport and a true
+390 × 844 mobile viewport. Desktop and mobile document widths stayed within their
+viewports, all three authored heading lines fit, and the console reported no errors or
+warnings. Mobile measured 390px document and hero widths; its longest headline line
+ended at 341px inside the 370px content edge.
+
+---
+
+## 64. Keynote premium conversion, full supplied sequence (25 November 2026)
+
+The rest of `keynote.html` now follows the page order supplied in the client's seven
+reference screenshots. This is a conversion in place, not a second Keynote page, and
+the new work stays page-scoped except for the already approved premium primitives in
+`css/premium.css` and `js/premium-motion.js`.
+
+The visible sequence is now:
+
+1. The full-bleed image-led hero from §63.
+2. An ivory problem section with the supplied three operational symptoms, numbered
+   ruled rows and Oscar's real stage photograph in a controlled arch.
+3. A Deep Green image field for “What's missing?”, followed by three ruled stage-value
+   rows and the supplied `Let's talk` CTA.
+4. The keynote programme: one signature keynote in a wide editorial split, followed by
+   three differentiated hard-edged programme cards. The mockup's full-lime card was not
+   copied because the brand guideline only permits Detox Green on Deep Green.
+5. A Deep Green statistics band and the same premium testimonial language used on the
+   homepage. The numerical claims and testimonials are still placeholders, so the page
+   visibly labels the figures `Client figures pending` and retains the placeholder
+   labels on every quote.
+6. An ivory About section using Oscar's real laptop portrait, the supplied biography,
+   and a route to `about.html`.
+7. The existing shared clarity switch, enlarged and re-composed at the homepage scale,
+   followed by the shared moving-pattern divider and footer.
+
+The older Keynote sections remain in two hidden `.key-legacy` recovery wrappers while
+the client reviews this replacement. They are removed from layout and the accessibility
+tree and must not be treated as live page content. Once the new direction is approved,
+delete those wrappers and their now-unused legacy CSS rather than maintaining both.
+
+Two source-copy issues remain deliberately unresolved rather than silently rewritten:
+the supplied programme kicker says `FOURS KEYNOTES`, and the supplied statistics include
+`10,000 countries spoken in`. Both need client-confirmed wording or figures. The page
+therefore preserves the first literally and visibly marks the statistics as pending.
+
+CDP verification ran with cache disabled at 1512 × 982 and a true 390 × 844 device
+viewport. At both sizes, every visible premium section measured exactly the viewport
+width, the document width matched the viewport, and both legacy wrappers computed to
+`display:none`. The mobile pass caught and corrected the closing headline overflow,
+the problem-list counter reset and the About kicker collision. Desktop and mobile
+screenshots were inspected for the problem, stage-value, keynote-programme, card-grid,
+proof, testimonial, About and closing-switch compositions. Safari remains untested.
+
+A 25 November follow-up corrected the testimonial heading composition. Its two lines
+no longer collide: `What leaders` holds the left field and `Say` continues diagonally
+below it, while the mobile reset returns both lines to one compact left edge. The copy,
+testimonial track and shared premium testimonial treatment were not changed.
+
+---
+
+## 65. Two tool premium review directions (25 November 2026)
+
+The client's complete standalone builds from
+`/Users/mac/Downloads/OPS-Detox-Two-Tools` were brought into two review artefacts:
+
+- `playground/noise-tax-tool-direction.html`
+- `playground/diagnostic-tool-direction.html`
+
+These are visual directions, not replacements for the live `diagnostic.html` or any
+other production page. They load the existing site shell, licensed display font,
+`css/premium.css`, `js/site.js` and `js/premium-motion.js`, while keeping every
+tool-specific visual rule in the artefact itself. Neither artefact is linked from the
+site navigation.
+
+The supplied engines remain intact. The Noise Tax Calculator still asks seven
+questions, excludes `I don't know` answers, refuses a result with fewer than three
+costed answers, caps recoverable time at six hours, presents a range before email
+capture and hides booking for companies below twenty people. Its result is now a
+Deep Green report opener with the euro range at display scale, followed by ruled
+explanation fields. The Diagnostic still branches to sixteen team questions or
+nineteen founder questions, preserves option-order scoring and ranks all seven rooms
+without introducing a maturity score. Its result now leads with the priority room at
+display scale, followed by the seven-room profile, first move, email and booking fields.
+
+Both directions share the homepage's restrained palette, full-width Deep Green intro,
+white offset Formula headline, single lime action, hard-edged ruled questions and
+editorial report surfaces. The form controls remain accessible native radios and the
+mobile layouts preserve the authored reading order.
+
+Production wiring was deliberately left unresolved for this review round. The supplied
+booking placeholder and email POST marker remain in both files. Live pages were not
+edited as part of this work.
+
+CDP verification ran with cache disabled at 1512 × 982 and a true 390 × 844 viewport.
+The Noise Tax calibration was checked with the exact five-hour scenario at one hundred
+people and €90,000 loaded cost, returning a €1.13M central estimate. The under-twenty
+booking suppression was also driven. Both Diagnostic respondent branches were driven
+to completion and returned seven-room results. At both viewport sizes, document width
+matched viewport width, the tested images and fonts loaded, and no console exception or
+failed resource was reported. Safari remains untested.
