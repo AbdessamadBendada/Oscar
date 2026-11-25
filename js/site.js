@@ -98,11 +98,50 @@
 
   /* ---------- 3b. Brand toggle rows ----------
      The noise → clarity device from the brand book. Each row is its own
-     switch; aria-pressed drives every visual state from CSS. */
+     switch; aria-pressed drives every visual state from CSS.
+
+     THE SECOND FLICK OPENS CONTACT. Client request, 25 Nov 2026: the
+     closing switch always snaps back to Clarity, so a visitor who keeps
+     flicking it is told "no" over and over. The second flick takes that
+     intent somewhere — straight to the contact page.
+
+     Guarded on .choice-toggle. Every page happens to carry exactly one
+     .toggle-row and it is always the closing switch, but the loop is
+     written for the brand device in general, so the guard keeps any
+     future plain switch out of it.
+
+     Counted per page view, not per session: come back later and the
+     switch behaves normally again. */
+  var CHOICE_CTA = 'contact.html';
+  var currentPage = (window.location.pathname.split('/').pop() || 'index.html');
+
   document.querySelectorAll('.toggle-row').forEach(function (row) {
     var clarityTimer;
+    var flicks = 0;
+
+    /* Not on the destination itself, and an opt-out for any page that
+       should keep the switch as nothing but a switch. */
+    var sendsToContact = row.classList.contains('choice-toggle') &&
+                         currentPage !== CHOICE_CTA &&
+                         !row.hasAttribute('data-no-cta');
 
     row.addEventListener('click', function () {
+      if (sendsToContact) {
+        flicks += 1;
+        if (flicks > 1) {
+          /* Show the flick landing before leaving: the knob takes 520ms
+             to cross (css/site.css §10a) and navigating on the same tick
+             would read as a dead click. Nothing to wait for when the
+             visitor has asked for reduced motion. */
+          window.clearTimeout(clarityTimer);
+          row.setAttribute('aria-pressed', 'false');
+          window.setTimeout(function () {
+            window.location.href = CHOICE_CTA;
+          }, reduceMotion ? 0 : 520);
+          return;
+        }
+      }
+
       var on = row.getAttribute('aria-pressed') !== 'true';
       row.setAttribute('aria-pressed', String(on));
 
