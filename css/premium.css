@@ -1,0 +1,487 @@
+/* ==============================================================
+   OPS DETOX PREMIUM PAGE FOUNDATIONS
+   Loaded only by pages that have adopted the approved premium
+   direction. Page composition, authored headline offsets and unique
+   section layouts stay in each page's scoped <style> block.
+
+   Load order is deliberate:
+     css/site.css -> css/premium.css -> page-scoped <style>
+   ============================================================== */
+
+/* ---------- Canvas and editorial width ---------- */
+.premium-page {
+  --premium-gap: clamp(104px, 10.5vw, 184px);
+  --gap: var(--premium-gap);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.premium-page main {
+  background: var(--paper);
+  overflow-x: clip;
+}
+
+/* site.css supplies max-width only. This prevents HTML height
+   attributes from overriding the intended aspect ratio. Components
+   that fill a frame set height:100% in their local composition. */
+.premium-page main img {
+  height: auto;
+}
+
+/* THE CHANNEL. Three selectors, not one: the header and the footer are
+   shared furniture built on css/site.css's .container, which is a
+   narrower 1180px/64px measure. Left alone, the logo sat 82px inboard
+   of every headline on the page below it — on all six premium pages,
+   the homepage included. They belong on the same vertical line as the
+   content, so they take the same channel here.
+
+   Scoped to .premium-page, so the pages still on the 14 Oct build keep
+   site.css's narrower container until they are converted. */
+.premium-page .pr-wrap,
+.premium-page .pr-bleed,
+.premium-page .site-header .container,
+.premium-page > footer .container {
+  width: min(1600px, calc(100% - 96px));
+  margin-inline: auto;
+}
+
+/* ---------- Editorial typography ---------- */
+.premium-page .pr-h {
+  margin: 0;
+  max-width: none;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: var(--fs);
+  line-height: var(--lh, .79);
+  letter-spacing: -.018em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.premium-page .pr-h > span {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+}
+
+.premium-page .pr-kicker {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(15px, 1.15vw, 21px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.premium-page .pr-copy {
+  margin: 0;
+  font-size: clamp(15px, 1.05vw, 18px);
+  line-height: 1.55;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.premium-page .pr-copy + .pr-copy {
+  margin-top: 1.1em;
+}
+
+/* ---------- Editorial links ---------- */
+.premium-page .pr-card-link {
+  display: inline-block;
+  margin-top: 22px;
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 5px;
+}
+
+.premium-page .pr-ip-link {
+  align-self: center;
+  justify-self: end;
+  white-space: nowrap;
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 5px;
+}
+
+.premium-page .pr-card-link:hover,
+.premium-page .pr-ip-link:hover {
+  opacity: .65;
+}
+
+.premium-page .pr-text-link {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 7px;
+}
+
+.premium-page .pr-card-link,
+.premium-page .pr-ip-link,
+.premium-page .pr-text-link {
+  position: relative;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+}
+
+.premium-page .pr-card-link::after,
+.premium-page .pr-ip-link::after,
+.premium-page .pr-text-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+
+.premium-page .pr-card-link:hover::after,
+.premium-page .pr-ip-link:hover::after,
+.premium-page .pr-text-link:hover::after {
+  transform: scaleX(1);
+}
+
+.premium-page .pr-card-link:hover,
+.premium-page .pr-ip-link:hover,
+.premium-page .pr-text-link:hover {
+  opacity: 1;
+}
+
+.premium-page .pr-card-link,
+.premium-page .pr-ip-link {
+  font-size: 15px;
+  letter-spacing: .07em;
+}
+
+/* ---------- Dark testimonial band ----------
+   Shared once a second approved page adopted the homepage treatment.
+   The four-quote track still comes from site.css section 14a; this block
+   changes only the premium surface, cards and type. Authored heading
+   offsets remain page-specific. */
+.premium-page .pr-voices {
+  position: relative;
+  overflow: hidden;
+  padding-block: calc(var(--gap) / 2);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.premium-page .pr-voices::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  background-size: 170px 170px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.premium-page .pr-voices > .pr-wrap,
+.premium-page .pr-voices .testimonial-slider {
+  position: relative;
+  z-index: 2;
+}
+
+.premium-page .pr-voices-h {
+  --fs: clamp(44px, 7.4vw, 138px);
+  color: var(--lime);
+}
+
+.premium-page .pr-voices .testimonial-slider {
+  margin-top: clamp(20px, 2.4vw, 40px);
+}
+
+.premium-page .pr-voices .testimonial-slider::before {
+  background: linear-gradient(90deg, var(--ink), rgba(20, 51, 24, 0));
+}
+
+.premium-page .pr-voices .testimonial-slider::after {
+  background: linear-gradient(270deg, var(--ink), rgba(20, 51, 24, 0));
+}
+
+.premium-page .pr-voices .testimonial-track article {
+  min-height: 0;
+  padding: clamp(24px, 2.2vw, 40px);
+  border: 1px solid var(--paper);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* ---------- Editorial outcomes ----------
+   Shared after the homepage treatment was adopted by Work With Us.
+   Headline offsets remain page-specific; the scale and stat rhythm do not. */
+.premium-page .pr-outcomes {
+  padding: clamp(60px, 6vw, 100px) 0 clamp(70px, 8vw, 130px);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.premium-page .pr-outcomes-h {
+  --fs: clamp(44px, 8vw, 150px);
+}
+
+.premium-page .pr-stats {
+  margin-top: clamp(40px, 4.5vw, 76px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(22px, 2.6vw, 46px);
+}
+
+.premium-page .pr-stats article {
+  text-align: center;
+}
+
+.premium-page .pr-stats strong {
+  display: block;
+  font: clamp(40px, 5vw, 94px)/.9 var(--display);
+  font-weight: 400;
+  letter-spacing: -.015em;
+  color: var(--ink);
+}
+
+.premium-page .pr-stats p {
+  margin: 14px 0 0;
+  font-size: clamp(14px, .98vw, 17px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+@media (max-width: 1100px) {
+  .premium-page .pr-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .premium-page .pr-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.premium-page .pr-voices .testimonial-track article:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.premium-page .pr-voices .testimonial-grid article::before {
+  content: none;
+}
+
+.premium-page .pr-voices .testimonial-label {
+  margin: 0 0 14px;
+  padding: 4px 10px 3px;
+  border: 0;
+  border-radius: 0;
+  background: var(--lime);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: .09em;
+}
+
+.premium-page .pr-voices .testimonial-grid blockquote {
+  color: var(--paper);
+  font-size: clamp(14px, .98vw, 17px);
+  line-height: 1.55;
+  text-align: justify;
+}
+
+.premium-page .pr-voices .testimonial-grid footer {
+  padding-top: clamp(20px, 2vw, 34px);
+  color: var(--paper);
+}
+
+.premium-page .pr-voices .testimonial-grid footer strong {
+  font-family: var(--display);
+  font-size: clamp(18px, 1.5vw, 27px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.premium-page .pr-voices .testimonial-grid footer span {
+  margin-top: 8px;
+  color: var(--paper);
+  opacity: .7;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+
+/* ---------- Viewport-bound motion primitives ----------
+   Hidden states exist only when the early head script opts the page
+   into .premium-motion. Without JavaScript, all content stays visible. */
+.premium-motion .premium-page .hm {
+  --hm-delay: 0s;
+  will-change: opacity, transform, clip-path;
+}
+
+.premium-motion .premium-page .hm-lines span {
+  opacity: 1;
+  clip-path: inset(-55% -100vw 155% -100vw);
+  transform: none;
+  transition: clip-path .95s cubic-bezier(.16, 1, .3, 1) var(--hm-delay);
+}
+
+.premium-motion .premium-page .hm-lines.is-in span {
+  clip-path: inset(-55% -100vw -55% -100vw);
+}
+
+.premium-motion .premium-page .hm-lines span:nth-child(2) {
+  transition-delay: calc(var(--hm-delay) + .11s);
+}
+
+.premium-motion .premium-page .hm-lines span:nth-child(3) {
+  transition-delay: calc(var(--hm-delay) + .22s);
+}
+
+.premium-motion .premium-page .hm-media {
+  opacity: 0;
+  transform: translateY(34px) scale(.975);
+  transition: opacity .7s ease var(--hm-delay), transform 1.15s cubic-bezier(.16, 1, .3, 1) var(--hm-delay);
+}
+
+.premium-motion .premium-page .hm-media.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.premium-motion .premium-page .hm-copy {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .75s ease var(--hm-delay), transform .95s cubic-bezier(.16, 1, .3, 1) var(--hm-delay);
+}
+
+.premium-motion .premium-page .hm-copy.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.premium-motion .premium-page .hm-card {
+  opacity: 0;
+  transform: translateY(52px);
+  transition: opacity .65s ease var(--hm-delay), transform 1s cubic-bezier(.16, 1, .3, 1) var(--hm-delay), box-shadow .4s ease;
+}
+
+.premium-motion .premium-page .hm-card.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.premium-motion .premium-page .hm-card.is-in:hover {
+  transform: translateY(-6px);
+}
+
+.premium-motion .premium-page .hm-row {
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transform: translateX(-22px);
+  transition: opacity .35s ease var(--hm-delay), clip-path 1.05s cubic-bezier(.16, 1, .3, 1) var(--hm-delay), transform 1.05s cubic-bezier(.16, 1, .3, 1) var(--hm-delay), background .35s ease;
+}
+
+.premium-motion .premium-page .hm-row.is-in {
+  opacity: 1;
+  clip-path: inset(0);
+  transform: none;
+}
+
+.premium-motion .premium-page .hm-stat {
+  opacity: 0;
+  transform: translateY(34px) scale(.94);
+  transition: opacity .65s ease var(--hm-delay), transform .9s cubic-bezier(.16, 1, .3, 1) var(--hm-delay);
+}
+
+.premium-motion .premium-page .hm-stat.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.premium-motion .premium-page .hm-panel {
+  opacity: 0;
+  clip-path: inset(0 8% 0 8%);
+  transform: translateY(26px);
+  transition: opacity .7s ease var(--hm-delay), clip-path 1.1s cubic-bezier(.16, 1, .3, 1) var(--hm-delay), transform 1.05s cubic-bezier(.16, 1, .3, 1) var(--hm-delay);
+}
+
+.premium-motion .premium-page .hm-panel.is-in {
+  opacity: 1;
+  clip-path: inset(0);
+  transform: none;
+}
+
+@media (max-width: 1100px) {
+  .premium-page .pr-wrap,
+  .premium-page .pr-bleed,
+  .premium-page .site-header .container,
+  .premium-page > footer .container {
+    width: min(100%, calc(100% - 56px));
+  }
+}
+
+@media (max-width: 760px) {
+  .premium-page .pr-wrap,
+  .premium-page .pr-bleed,
+  .premium-page .site-header .container,
+  .premium-page > footer .container {
+    width: min(100%, calc(100% - 36px));
+  }
+
+  .premium-page .pr-h > span {
+    margin-left: 0 !important;
+    padding-right: 0 !important;
+    width: auto;
+  }
+
+  .premium-page .pr-h {
+    --lh: .88;
+    letter-spacing: -.01em;
+    text-align: left;
+  }
+
+  .premium-page .pr-copy {
+    text-align: left;
+    hyphens: none;
+  }
+
+  .premium-motion .premium-page .hm-row {
+    transform: translateY(28px);
+    clip-path: inset(0 0 12% 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .premium-page .hm,
+  .premium-page .hm-lines span {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

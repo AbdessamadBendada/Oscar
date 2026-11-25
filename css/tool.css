@@ -1,0 +1,1197 @@
+/* ==============================================================
+   OPS DETOX TOOL PAGES
+   The shared design system for the step-by-step instruments: the
+   Detox Diagnostic and the Noise Tax Calculator.
+
+   Load order is deliberate and the same as every premium page:
+     css/site.css -> css/premium.css -> css/tool.css -> page <style>
+
+   This file replaced two near-identical 300-line blocks that lived
+   inside the two tool pages. Both of those sat on top of an older
+   pill-and-rounded-card layer which they then overrode almost line
+   for line; the old layer is gone rather than overridden, which is
+   why there is no border-radius to unset here.
+
+   WHAT BELONGS HERE
+     Anything both tools draw the same way: the rail, the screens,
+     the question rows, the result sections, the print sheet.
+   WHAT STAYS IN THE PAGE
+     Authored headline offsets, the hero photograph, and anything
+     that exists in one tool only. Same split as premium.css.
+
+   TYPE
+     Display face is var(--display) from site.css, which resolves to
+     the licensed PP Formula Condensed. Nothing in a tool page may
+     declare its own display stack: the earlier build asked for a
+     family called "Formula Condensed", which is not the registered
+     name, so the biggest figure on the result page silently fell
+     through to Arial.
+
+   COLOUR
+     Soft Ivory ground, Deep Green type, Detox Green as the accent.
+     The rule the homepage actually follows, and the one used here:
+       - on a Deep Green ground, lime carries the headline AND the
+         primary pill, exactly as the hero does;
+       - on Soft Ivory, lime appears once per view and it is the
+         thing the visitor just chose.
+     No black, no grey: every tint is Deep Green at an alpha.
+   ============================================================== */
+
+/* ---------- 1. Page frame ---------- */
+.tool-page {
+  /* Measured, not guessed: 62px of content box plus the 4px track.
+     The screens' scroll-margin is built from it, so a value that is
+     short by even a few pixels tucks a heading under the rail. */
+  --t-rail-h: 66px;
+  --t-line: rgba(20, 51, 24, .28);
+  --t-line-soft: rgba(20, 51, 24, .14);
+  --t-ink-70: rgba(20, 51, 24, .7);
+  --t-ink-55: rgba(20, 51, 24, .55);
+  --t-paper-80: rgba(254, 253, 242, .8);
+  --t-paper-55: rgba(254, 253, 242, .55);
+}
+
+.tool-page .tool-app {
+  background: var(--paper);
+  overflow-x: clip;
+}
+
+/* The engines hide finished or irrelevant blocks with the hidden
+   attribute, and the UA rule behind it is a bare `display:none` on
+   an element selector — it loses to every `display:grid` or `:flex`
+   in this file. Without this, hiding the founder-only block on the
+   result page did nothing at all. */
+.tool-page [hidden] {
+  display: none !important;
+}
+
+/* A back link is a control, not a destination, so it is a button.
+   premium.css styles .pr-text-link for an anchor; this strips the
+   button chrome without touching the underline sweep, which lives
+   on the class's ::after. */
+.tool-page button.pr-text-link,
+.tool-page button.pr-card-link {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border-width: 0;
+  border-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: color-mix(in srgb, currentColor 35%, transparent);
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ---------- 2. The rail ----------
+   Product name, step counter and progress, on one hairline. It is
+   sticky under the sticky header and it is hidden on the intro,
+   where the progress is zero and the counter has nothing to count.
+   That also removes the old build's seam: a 30px strip of ivory
+   between the Deep Green header and the Deep Green intro panel. */
+.tool-page .t-rail {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 15;
+  background: var(--paper);
+  border-bottom: 1px solid var(--t-line);
+}
+
+.tool-page .t-rail[hidden] {
+  display: none;
+}
+
+.tool-page .t-rail-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: var(--t-rail-h);
+  padding-block: 12px;
+}
+
+.tool-page .t-rail-name,
+.tool-page .t-rail-step {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tool-page .t-rail-name {
+  font-size: clamp(15px, 1.2vw, 19px);
+  letter-spacing: .05em;
+}
+
+.tool-page .t-rail-step {
+  flex: none;
+  font-size: clamp(13px, 1vw, 15px);
+  letter-spacing: .09em;
+  color: var(--t-ink-70);
+  font-variant-numeric: tabular-nums;
+}
+
+/* SCOPED TO THE RAIL. `.t-track` is not ours alone: css/site.css uses the
+   same class name for the <rect> inside the brand switcher's SVG. An
+   unscoped .tool-page .t-track also matched that rect — and `height` is a
+   real geometry property on SVG2 shapes, so any tool page carrying the
+   switcher would have had its toggle flattened to 4px. The progress bar
+   only ever lives inside .t-rail, so say so. */
+.tool-page .t-rail .t-track {
+  height: 4px;
+  background: var(--t-line-soft);
+  overflow: hidden;
+}
+
+.tool-page .t-rail .t-track > i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--ink);
+  transition: width .45s cubic-bezier(.16, 1, .3, 1);
+}
+
+/* ---------- 3. Screens ----------
+   One question per view. Only the active screen is in the document
+   flow; the rest are display:none, which is also why the motion
+   classes inside them are driven by js/tool-kit.js rather than by
+   the IntersectionObserver in premium-motion.js — an observer never
+   reports an intersection for a hidden element, so anything with
+   .hm in a queued screen would have stayed at opacity 0 for good. */
+.tool-page .t-screen {
+  display: none;
+  scroll-margin-top: calc(var(--header-h) + var(--t-rail-h) + 2px);
+}
+
+.tool-page .t-screen.is-active {
+  display: block;
+}
+
+/* ---------- 4. Intro ----------
+   The homepage hero, re-pointed at a tool: Deep Green ground, the
+   photograph as a luminosity duotone under a legibility floor, the
+   headline staircased in lime and a small pill pair at the foot.
+   Full viewport minus the header, butted straight against it.
+
+   THE HERO AND THE SCREEN ARE NOT ALWAYS THE SAME ELEMENT. On the
+   noise-tax tool they are: one <section> is both. On diagnostic.html
+   the intro screen also carries the marquee and the two explanatory
+   sections the page had before the tool was promoted into it, so the
+   screen is a plain block and .t-intro is a child of it.
+
+   So the hero's appearance lives on .t-intro unconditionally, and
+   only the show/hide lives on the .t-screen pairing below — which
+   needs the extra class to outrank .tool-page .t-screen{display:none}. */
+.tool-page .t-intro {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: calc(100svh - var(--header-h));
+  padding: clamp(40px, 6vw, 96px) 0 clamp(34px, 4vw, 70px);
+  background: var(--ink);
+  color: var(--lime);
+  overflow: hidden;
+}
+
+.tool-page .t-screen.t-intro {
+  display: none;
+}
+
+.tool-page .t-screen.t-intro.is-active {
+  display: flex;
+}
+
+.tool-page .t-intro-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+}
+
+/* A multiply would crush the photograph to black on this ground, so
+   the blend is luminosity: the picture keeps its light and takes its
+   hue from the field. Lifted verbatim from the homepage hero. */
+.tool-page .t-intro-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+  mix-blend-mode: luminosity;
+  opacity: .5;
+  filter: grayscale(1) brightness(.92) contrast(1.02);
+}
+
+/* A legibility floor, not a decorative scrim: the scene above the
+   half-way line is untouched and the foot of the hero, where the
+   copy and the buttons sit, is washed back to the flat ground. */
+.tool-page .t-intro-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(20, 51, 24, 0) 48%,
+    rgba(20, 51, 24, .58) 70%,
+    rgba(20, 51, 24, .96) 92%);
+}
+
+.tool-page .t-intro-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(30px, 3.6vw, 58px);
+}
+
+.tool-page .t-intro .pr-kicker {
+  color: var(--lime);
+}
+
+/* .pr-h hard-sets Deep Green, which is right on the cream body and
+   wrong here, where the type colour belongs to the ground. */
+.tool-page .t-intro-h {
+  --fs: clamp(40px, 10vw, 170px);
+  --lh: .78;
+  color: inherit;
+}
+
+.tool-page .t-intro-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: clamp(26px, 4vw, 74px);
+  align-items: end;
+}
+
+.tool-page .t-intro-foot .pr-copy {
+  max-width: 52ch;
+  color: var(--t-paper-80);
+  font-size: clamp(15px, 1.15vw, 19px);
+}
+
+.tool-page .t-intro-foot .t-micro {
+  color: var(--t-paper-55);
+}
+
+.tool-page .t-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+/* The hero pair is deliberately small and tight so the headline
+   stays the only loud thing on the screen. */
+.tool-page .t-actions .button {
+  --btn-size: 17px;
+  padding: 9px 20px 7px;
+}
+
+/* On Deep Green the primary has to be the lime pill or it vanishes,
+   and the secondary is an outline in the ground's type colour. */
+.tool-page .t-intro .t-actions .button--line {
+  background: var(--lime);
+  color: var(--ink);
+  border-color: var(--lime);
+}
+
+.tool-page .t-intro .t-actions .button--line:hover {
+  background: transparent;
+  color: var(--lime);
+}
+
+.tool-page .t-btn-ghost {
+  background: transparent;
+  color: var(--lime);
+  border-color: var(--lime);
+}
+
+.tool-page .t-btn-ghost:hover {
+  background: var(--lime);
+  color: var(--ink);
+  border-color: var(--lime);
+}
+
+/* A kicker over two lines closes up to nothing at line-height 1,
+   which is right for the one-line labels the homepage uses it for
+   and wrong for a question's category line. */
+.tool-page .pr-kicker {
+  line-height: 1.16;
+}
+
+/* ---------- 5. Question screens ----------
+   The IP table from the homepage, one row per answer: full-bleed
+   hairlines, a display numeral held off to the left and the content
+   in the column beside it.
+
+   One question holds the screen. Without the minimum the shorter
+   questions pull the site footer up under the answers, which reads
+   as the end of the tool rather than the middle of it.
+
+   The display value is on .is-active and NOT on .t-q. Both selectors
+   weigh the same, this file comes after the `display:none` that hides
+   a queued screen, and a bare `.t-q{display:flex}` therefore unhid
+   every question at once: nineteen screens stacked into one twenty
+   thousand pixel page. Centring a screen is a property of the screen
+   being the one on show. */
+.tool-page .t-q {
+  min-height: calc(100svh - var(--header-h) - var(--t-rail-h));
+  padding: clamp(54px, 6.5vw, 104px) 0 clamp(50px, 6vw, 92px);
+}
+
+.tool-page .t-q.is-active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tool-page .t-q-head {
+  display: grid;
+  grid-template-columns: minmax(0, .22fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 50px);
+  align-items: start;
+}
+
+.tool-page .t-q-num {
+  font: clamp(44px, 5.4vw, 104px)/.8 var(--display);
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--ink) 20%, transparent);
+}
+
+.tool-page .t-q-h {
+  --fs: clamp(29px, 3.7vw, 64px);
+  --lh: .9;
+  max-width: 26ch;
+  margin-top: clamp(10px, 1vw, 18px);
+}
+
+/* The question is the one focus target per screen. It carries
+   tabindex="-1" so the router can move the caret to it; the ring is
+   suppressed because the visitor did not tab to it themselves. */
+.tool-page .t-q-h:focus,
+.tool-page .t-stat:focus {
+  outline: none;
+}
+
+.tool-page .t-q-head .pr-kicker {
+  display: block;
+}
+
+.tool-page .t-opts {
+  margin-top: clamp(34px, 4vw, 66px);
+  border-bottom: 1px solid var(--ink);
+}
+
+.tool-page .t-opt {
+  display: grid;
+  grid-template-columns: minmax(0, .22fr) minmax(0, 1fr) auto;
+  gap: clamp(16px, 3vw, 50px);
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border: 0;
+  border-top: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  padding: clamp(18px, 2.1vw, 34px) clamp(16px, 4vw, 64px);
+  font-family: var(--sans);
+  transition: background .25s ease, padding .3s cubic-bezier(.16, 1, .3, 1);
+}
+
+.tool-page .t-opt-key {
+  font: clamp(26px, 2.6vw, 46px)/.8 var(--display);
+  letter-spacing: -.01em;
+  color: color-mix(in srgb, var(--ink) 38%, transparent);
+  transition: color .25s ease;
+}
+
+.tool-page .t-opt-label {
+  font-size: clamp(16px, 1.3vw, 22px);
+  line-height: 1.3;
+}
+
+/* The row's own call to action, in the same voice as .pr-ip-link.
+   Both words are in the markup rather than in CSS content, so they
+   are selectable, translatable and readable by a screen reader that
+   has been pointed at them. */
+.tool-page .t-opt-mark {
+  font-family: var(--display);
+  font-size: 14px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--t-ink-55);
+}
+
+/* <i> and <b> are carrying the two states, not emphasis, so the
+   default italic and bold that come with them are turned off. */
+.tool-page .t-opt-mark > i,
+.tool-page .t-opt-mark > b {
+  font-style: normal;
+  font-weight: 400;
+}
+
+.tool-page .t-opt-mark > b {
+  display: none;
+}
+
+.tool-page .t-opt:hover {
+  background: rgba(20, 51, 24, .045);
+  padding-left: clamp(24px, 4.8vw, 80px);
+}
+
+.tool-page .t-opt:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -4px;
+}
+
+/* The single lime element on a question view. */
+.tool-page .t-opt[aria-checked="true"],
+.tool-page .t-opt[aria-pressed="true"] {
+  background: var(--lime);
+  padding-left: clamp(24px, 4.8vw, 80px);
+}
+
+.tool-page .t-opt[aria-checked="true"] .t-opt-key,
+.tool-page .t-opt[aria-pressed="true"] .t-opt-key {
+  color: var(--ink);
+}
+
+.tool-page .t-opt[aria-checked="true"] .t-opt-mark > i,
+.tool-page .t-opt[aria-pressed="true"] .t-opt-mark > i {
+  display: none;
+}
+
+.tool-page .t-opt[aria-checked="true"] .t-opt-mark > b,
+.tool-page .t-opt[aria-pressed="true"] .t-opt-mark > b {
+  display: inline;
+}
+
+.tool-page .t-opt[aria-checked="true"] .t-opt-mark,
+.tool-page .t-opt[aria-pressed="true"] .t-opt-mark {
+  color: var(--ink);
+}
+
+/* "I don't know" is a real answer, so it is a row like any other.
+   It is set apart by its own label and a lighter key rather than by
+   a dashed border, which carried the whole distinction before and
+   is invisible to anyone who cannot see it. */
+.tool-page .t-opt--unknown .t-opt-label {
+  color: var(--t-ink-70);
+  font-style: italic;
+}
+
+/* ---------- 6. Number fields ----------
+   Same row, with the figure the visitor types standing in for the
+   answer rows: label and help text left, the input as a rule the
+   figure sits on. */
+.tool-page .t-fields {
+  margin-top: clamp(34px, 4vw, 66px);
+  border-bottom: 1px solid var(--ink);
+}
+
+.tool-page .t-field {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1fr);
+  gap: 10px clamp(24px, 4vw, 64px);
+  align-items: center;
+  border-top: 1px solid var(--ink);
+  padding: clamp(22px, 2.6vw, 40px) clamp(16px, 4vw, 64px);
+}
+
+.tool-page .t-field label {
+  grid-column: 1;
+  font: clamp(19px, 1.8vw, 30px)/1.05 var(--display);
+  font-weight: 400;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}
+
+.tool-page .t-field .t-field-sub {
+  grid-column: 1;
+  margin: 0;
+  max-width: 44ch;
+  font-size: clamp(13px, .95vw, 15px);
+  line-height: 1.5;
+  color: var(--t-ink-55);
+}
+
+.tool-page .t-field input {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 10px 0 6px;
+  font: clamp(30px, 3.4vw, 58px)/1 var(--display);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.tool-page .t-field input:focus {
+  outline: none;
+  border-bottom-width: 3px;
+  padding-bottom: 4px;
+}
+
+.tool-page .t-field input::placeholder {
+  color: color-mix(in srgb, var(--ink) 28%, transparent);
+}
+
+/* The spinner a number field draws on hover is a grey chrome widget
+   sitting on an editorial rule. The field is still type="number" —
+   the phone keypad and the min/max validation come from that — it
+   just stops drawing the arrows. */
+.tool-page .t-field input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.tool-page .t-field input[type="number"]::-webkit-outer-spin-button,
+.tool-page .t-field input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* The free-text question. A rule, not a box. */
+.tool-page .t-free {
+  width: 100%;
+  margin-top: clamp(30px, 3.6vw, 58px);
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 0 0 14px;
+  min-height: 112px;
+  resize: vertical;
+  font-family: var(--sans);
+  font-size: clamp(17px, 1.5vw, 24px);
+  line-height: 1.45;
+}
+
+.tool-page .t-free:focus {
+  outline: none;
+  border-bottom-width: 3px;
+  padding-bottom: 12px;
+}
+
+.tool-page .t-free::placeholder {
+  color: var(--t-ink-55);
+}
+
+/* ---------- 7. Screen furniture ---------- */
+.tool-page .t-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 26px;
+  margin-top: clamp(30px, 3.4vw, 52px);
+}
+
+.tool-page .t-hint,
+.tool-page .t-micro {
+  margin: clamp(22px, 2.4vw, 34px) 0 0;
+  max-width: 56ch;
+  font-size: clamp(13px, .98vw, 15px);
+  line-height: 1.55;
+  color: var(--t-ink-55);
+}
+
+.tool-page .t-micro {
+  margin-top: 16px;
+}
+
+/* A link inside a line of small print stays in that line. The
+   display face at its own size turns a sentence into two voices. */
+.tool-page .t-micro .pr-text-link,
+.tool-page .t-hint .pr-text-link {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+  padding-bottom: 1px;
+}
+
+/* ---------- 8. Result ----------
+   The figure is the content, so it is set at display scale on the
+   dark band and everything that explains it is kept small below.
+   The grain is the same overlay the homepage puts on its dark
+   sections; without it a flat Deep Green field reads cheaper than
+   every other band on the site. */
+.tool-page .t-result {
+  padding-bottom: clamp(60px, 7vw, 110px);
+}
+
+.tool-page .t-result-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(54px, 7vw, 120px) 0 clamp(50px, 6vw, 100px);
+}
+
+.tool-page .t-result-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  background-size: 170px 170px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tool-page .t-result-hero > .pr-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.tool-page .t-result-hero .pr-kicker {
+  color: var(--lime);
+}
+
+.tool-page .t-stat {
+  display: block;
+  margin: clamp(18px, 2vw, 34px) 0 0;
+  font: clamp(44px, 8.4vw, 150px)/.8 var(--display);
+  font-weight: 400;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+/* The figure takes the full width and the two things that explain
+   it sit under it in a pair, the way the intro's foot does. Held in
+   one column, the band was two thirds empty on any result whose
+   headline is a single word. */
+.tool-page .t-result-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: clamp(26px, 4vw, 74px);
+  align-items: start;
+  margin-top: clamp(26px, 3vw, 46px);
+}
+
+.tool-page .t-result-hero .pr-copy {
+  max-width: 54ch;
+  margin: 0;
+  color: var(--t-paper-80);
+  font-size: clamp(15px, 1.15vw, 19px);
+}
+
+.tool-page .t-result-foot .t-actions {
+  margin-top: 0;
+}
+
+.tool-page .t-result-hero .t-actions .button--line {
+  background: var(--lime);
+  color: var(--ink);
+  border-color: var(--lime);
+}
+
+.tool-page .t-result-hero .t-actions .button--line:hover {
+  background: transparent;
+  color: var(--lime);
+}
+
+.tool-page .t-result-hero .t-micro {
+  color: var(--t-paper-55);
+}
+
+/* Sections, not cards: a hairline, a Formula heading and the copy
+   held in the right-hand column. */
+.tool-page .t-blocks {
+  margin-top: clamp(50px, 6vw, 96px);
+  border-bottom: 1px solid var(--ink);
+}
+
+.tool-page .t-block {
+  display: grid;
+  grid-template-columns: minmax(0, .62fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 56px);
+  align-items: start;
+  border-top: 1px solid var(--ink);
+  padding: clamp(30px, 3.6vw, 60px) 0;
+}
+
+.tool-page .t-block > h3 {
+  margin: 0;
+  max-width: 18ch;
+  font: clamp(22px, 2.3vw, 40px)/.98 var(--display);
+  font-weight: 400;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}
+
+.tool-page .t-block-body > * + * {
+  margin-top: 1.1em;
+}
+
+.tool-page .t-block-body b {
+  font-weight: 600;
+}
+
+/* The ranking. Hairline bars flush to the column with the score as a
+   display figure, in place of the pill meters the first build used —
+   there is no precedent anywhere on the site for a rounded gauge. */
+.tool-page .t-rank {
+  display: grid;
+  gap: clamp(14px, 1.6vw, 24px);
+}
+
+.tool-page .t-rank-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 18px;
+  align-items: baseline;
+}
+
+.tool-page .t-rank-name {
+  font: clamp(16px, 1.35vw, 23px)/1.1 var(--display);
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--t-ink-70);
+}
+
+.tool-page .t-rank-score {
+  font: clamp(16px, 1.3vw, 22px)/1 var(--display);
+  font-variant-numeric: tabular-nums;
+  color: var(--t-ink-55);
+  white-space: nowrap;
+}
+
+.tool-page .t-rank-bar {
+  grid-column: 1 / -1;
+  height: 3px;
+  background: var(--t-line-soft);
+}
+
+.tool-page .t-rank-bar > i {
+  display: block;
+  width: var(--w, 0);
+  height: 100%;
+  background: var(--t-ink-55);
+}
+
+.tool-page .t-rank-row.is-top .t-rank-name,
+.tool-page .t-rank-row.is-top .t-rank-score {
+  color: var(--ink);
+}
+
+.tool-page .t-rank-row.is-top .t-rank-bar {
+  height: 6px;
+}
+
+.tool-page .t-rank-row.is-top .t-rank-bar > i {
+  background: var(--ink);
+}
+
+/* The arithmetic chain. A statement, line by line, with the figure
+   in the display face so it can be read at a glance. */
+.tool-page .t-chain {
+  display: grid;
+}
+
+.tool-page .t-chain > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--t-line-soft);
+}
+
+.tool-page .t-chain > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.tool-page .t-chain-label {
+  font-size: clamp(14px, 1vw, 16px);
+  color: var(--t-ink-70);
+}
+
+.tool-page .t-chain-value {
+  font: clamp(18px, 1.5vw, 26px)/1 var(--display);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tool-page .t-chain > div:last-child .t-chain-label,
+.tool-page .t-chain > div:last-child .t-chain-value {
+  color: var(--ink);
+}
+
+.tool-page .t-chain > div:last-child .t-chain-value {
+  font-size: clamp(22px, 2vw, 34px);
+}
+
+/* A finding pulled out of the running copy. */
+.tool-page .t-note {
+  margin: clamp(22px, 2.4vw, 34px) 0 0;
+  border-top: 1px solid var(--t-line);
+  padding-top: 18px;
+  font-size: clamp(14px, 1vw, 17px);
+  line-height: 1.55;
+  color: var(--t-ink-70);
+}
+
+.tool-page .t-note b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* The capture row. Rules, not pills. */
+.tool-page .t-send {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 20px;
+  margin-top: clamp(22px, 2.4vw, 34px);
+}
+
+.tool-page .t-send input {
+  flex: 1 1 240px;
+  min-width: 0;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 8px 0 10px;
+  font-family: var(--sans);
+  font-size: clamp(16px, 1.2vw, 19px);
+}
+
+.tool-page .t-send input:focus {
+  outline: none;
+  border-bottom-width: 3px;
+  padding-bottom: 8px;
+}
+
+.tool-page .t-send .button {
+  --btn-size: 16px;
+  flex: none;
+  padding: 11px 22px 9px;
+}
+
+.tool-page .t-sent {
+  margin: 16px 0 0;
+  font-family: var(--display);
+  font-size: clamp(16px, 1.3vw, 22px);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+/* margin-TOP only. The shorthand used to zero the left and right,
+   which killed the `margin-inline:auto` that .pr-wrap relies on and
+   dropped this one block to the far edge of the page. */
+.tool-page .t-foot-note {
+  margin-top: clamp(34px, 4vw, 58px);
+}
+
+.tool-page .t-foot-note p {
+  margin: 0;
+  max-width: 86ch;
+  font-size: clamp(13px, .95vw, 15px);
+  line-height: 1.55;
+  color: var(--t-ink-55);
+}
+
+.tool-page .t-foot-note p + p {
+  margin-top: 10px;
+}
+
+/* ---------- 9. The live region ----------
+   Every screen change is announced here. Visually gone, never
+   display:none, because a display:none live region announces
+   nothing at all. */
+.tool-page .t-announce {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 10. Motion ----------
+   The screens reveal with the same easing as the premium pages. The
+   reduced-motion branch is explicit: premium.css only neutralises
+   the .hm classes, so without this the screen change still slid. */
+.tool-page .t-screen.is-active {
+  animation: t-screen-in .5s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+@keyframes t-screen-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-page .t-screen.is-active,
+  .tool-page .t-opt,
+  .tool-page .t-rail .t-track > i {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- 11. Responsive ----------
+   Breakpoints match premium.css so the gutters step together. */
+@media (max-width: 1100px) {
+  .tool-page .t-intro-foot,
+  .tool-page .t-result-foot {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+
+  .tool-page .t-block {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .tool-page .t-block > h3 {
+    max-width: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .tool-page {
+    --t-rail-h: 54px;
+  }
+
+  .tool-page .t-intro-h {
+    --fs: clamp(36px, 12.2vw, 72px);
+  }
+
+  .tool-page .t-q-head,
+  .tool-page .t-field {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The key stays beside its answer rather than stacking above it:
+     five stacked rows ran past the fold on a phone. */
+  .tool-page .t-opt {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .tool-page .t-q-head {
+    gap: 14px;
+  }
+
+  /* A question no longer has to fill a phone screen — the answers
+     below it are what the thumb is reaching for. */
+  .tool-page .t-q {
+    min-height: 0;
+  }
+
+  .tool-page .t-q.is-active {
+    display: block;
+  }
+
+  .tool-page .t-q-num {
+    font-size: clamp(38px, 13vw, 58px);
+  }
+
+  .tool-page .t-q-h {
+    --fs: clamp(27px, 8.4vw, 46px);
+    --lh: .94;
+    max-width: none;
+  }
+
+  .tool-page .t-opt {
+    gap: 10px;
+    padding: 18px 0;
+  }
+
+  .tool-page .t-opt:hover,
+  .tool-page .t-opt[aria-checked="true"],
+  .tool-page .t-opt[aria-pressed="true"] {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .tool-page .t-opt-key {
+    font-size: 26px;
+  }
+
+  .tool-page .t-opt-mark {
+    display: none;
+  }
+
+  .tool-page .t-field {
+    padding: 22px 0;
+  }
+
+  .tool-page .t-field input {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .tool-page .t-stat {
+    font-size: clamp(40px, 14.5vw, 80px);
+  }
+
+  .tool-page .t-rail-name {
+    max-width: 52%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ---------- 12. Print, which is also the PDF ----------
+   "Download the result" prints the result screen. There is no PDF
+   library here on purpose: the browser's own Save as PDF produces
+   selectable text, honours the licensed font, needs no dependency
+   and works on a phone. What it does need is a sheet that drops the
+   furniture and puts the page back on white.
+
+   Everything outside the result is removed rather than hidden off
+   screen, so a stray blank first page cannot happen. */
+@media print {
+  .tool-page {
+    background: #fff;
+  }
+
+  .preloader,
+  .skip-link,
+  .site-header,
+  .pb,
+  .tool-page .t-rail,
+  .tool-page .t-screen:not(.t-result),
+  .tool-page .t-no-print,
+  body > footer {
+    display: none !important;
+  }
+
+  .tool-page .t-screen.t-result {
+    display: block !important;
+    animation: none !important;
+  }
+
+  /* The band inverts for print: lime on Deep Green is a quarter of a
+     toner cartridge per copy, and a page nobody prints twice. */
+  .tool-page .t-result-hero {
+    background: #fff;
+    color: #143318;
+    padding: 0 0 18pt;
+    border-bottom: 1.5pt solid #143318;
+  }
+
+  .tool-page .t-result-hero::after {
+    display: none;
+  }
+
+  .tool-page .t-result-hero .pr-kicker,
+  .tool-page .t-stat {
+    color: #143318;
+  }
+
+  .tool-page .t-stat {
+    font-size: 40pt;
+  }
+
+  .tool-page .t-result-hero .pr-copy,
+  .tool-page .t-result-hero .t-micro {
+    color: #143318;
+  }
+
+  .tool-page .pr-wrap,
+  .tool-page .pr-bleed {
+    width: 100%;
+  }
+
+  .tool-page .t-print-head {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 16pt;
+  }
+
+  .tool-page .t-print-head img {
+    width: 120pt;
+    height: auto;
+    /* The lockup ships in Detox Green, which is close to invisible on
+       white. Flatten it to the type colour for the printed sheet. */
+    filter: brightness(0) saturate(100%) invert(14%) sepia(29%) saturate(1100%) hue-rotate(74deg) brightness(93%) contrast(95%);
+  }
+
+  .tool-page .t-print-head p {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 9pt;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .tool-page .t-blocks {
+    margin-top: 18pt;
+  }
+
+  .tool-page .t-block {
+    padding: 12pt 0;
+    break-inside: avoid;
+    /* Tighter than on screen: a short heading against a wide empty
+       column costs a third of the sheet. */
+    grid-template-columns: minmax(0, .3fr) minmax(0, 1fr);
+    gap: 14pt;
+  }
+
+  .tool-page .t-result-foot {
+    display: block;
+    margin-top: 10pt;
+  }
+
+  .tool-page .t-block > h3 {
+    font-size: 14pt;
+  }
+
+  .tool-page .t-block-body,
+  .tool-page .t-chain-label,
+  .tool-page .t-note,
+  .tool-page .t-foot-note p {
+    font-size: 9.5pt;
+    line-height: 1.45;
+    color: #143318;
+  }
+
+  .tool-page .t-chain-value,
+  .tool-page .t-rank-name,
+  .tool-page .t-rank-score {
+    font-size: 11pt;
+    color: #143318;
+  }
+
+  .tool-page .t-rank-bar > i,
+  .tool-page .t-rank-row.is-top .t-rank-bar > i {
+    background: #143318;
+  }
+
+  .tool-page .pr-copy {
+    text-align: left;
+    hyphens: none;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}
+
+/* The print header exists only on paper. */
+.tool-page .t-print-head {
+  display: none;
+}
