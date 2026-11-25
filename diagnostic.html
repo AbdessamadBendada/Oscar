@@ -1,474 +1,1095 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#143318">
-  <title>OPS Detox Diagnostic™ | OPS DETOX™</title>
-  <meta name="description" content="Find out where your organization is losing time, clarity and execution speed. A full diagnostic of your operational friction.">
-  <link rel="icon" href="assets/logo/favicon.png">
-  <link rel="stylesheet" href="css/site.css">
-  <!-- Decide before first paint: reduced-motion visitors and anyone who has
-       already seen the preloader this session go straight to the page. -->
-  <script>try{if(sessionStorage.getItem('ops-preloaded')||matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}}catch(e){}</script>
-  <!-- ==========================================================
-       DIAGNOSTIC — brought onto the current design system,
-       2 November 2026. It was still the 14 October build.
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#143318">
+<title>OPS Detox Diagnostic™ | OPS DETOX™</title>
+<meta name="description" content="Find out where your organization is losing time, clarity and execution speed. A full diagnostic of your operational friction.">
+<link rel="icon" href="assets/logo/favicon.png">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/premium.css">
+<link rel="stylesheet" href="css/tool.css">
+<!-- Decide before first paint: reduced-motion visitors and anyone who has
+     already seen the preloader this session go straight to the page. -->
+<script>try{var reduceDiagnosticMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;if(sessionStorage.getItem('ops-preloaded')||reduceDiagnosticMotion){document.documentElement.className+=' no-preloader';}else{document.documentElement.className+=' pl-lock';}if(!reduceDiagnosticMotion){document.documentElement.className+=' premium-motion';}}catch(e){}</script>
 
-       SCOPE RULE: every rule lives in the <style> block below.
-       css/site.css, js/site.js AND js/diagnostic.js are NOT
-       touched.
+<!--
+================================================================================
+  OPS DETOX DIAGNOSTIC
+  A standalone tool. Anyone can fill it in: the founder, or anyone who works
+  there. One instrument, one result page, an emailed copy and a booked call.
+  Nothing else follows it.
 
-       THE WORKING DIAGNOSTIC IS UNCHANGED. js/diagnostic.js
-       binds to fourteen classes and one id inside section
-       "#diagnostic"; none was renamed, removed or reordered.
-       This rework is paint. Run the seven questions end to end
-       after any edit in there.
+  HOW IT ADAPTS
+  The first question asks who is answering. That answer does two things and
+  nothing more:
+    · it picks the wording of six questions, where the same measurement has to
+      be asked from the other end of the telescope
+    · it decides whether the four founder-only questions are shown
+  Everyone gets the same seven-room result.
 
-       THE COPY IS UNCHANGED, apart from one em dash removed per
-       §29.4. The questions and scoring are still the placeholder
-       demo, and the page still says so.
-       ========================================================== -->
-  <style>
-  /* ---------- 1. Page shell ---------- */
-  .section-rule{border-bottom:0}
-  @media(min-width:1001px){ .container{width:min(1320px,calc(100% - 80px))} }
+  TWO PLACEHOLDERS STILL TO REPLACE
+    {{BOOKING_URL}}   the calendar link, in the result markup
+    "WIRE THIS"       where the email capture should POST
+  Both are deliberately still stubs: the client has parked the calendar and
+  the mailer until the direction is signed off.
 
-  /* ---------- 3. The ivory sections ---------- */
-  .dg-hero,.dg-why,.dg-share{position:relative;overflow:hidden;background:var(--paper)}
-  /* The dot field was removed on 7 Nov. Designer: it is not in the
-     guideline — V1.0 names only the logo pattern (merch, p.36) and the
-     switcher pattern (p.38). These sections are plain Soft Ivory now. */
-  .dg-hero>*,.dg-why>*,.dg-share>*{position:relative;z-index:1}
+  SCORING
+  0 to 3, best to worst, in the order the options are written. Reordering them
+  silently inverts the result. "I don't know" is null: excluded from every
+  mean, counted separately, and never scored as a bad answer.
 
-  /* ---------- 4. Section 1 — the hero ---------- */
-  .dg-hero{padding:clamp(52px,6vw,92px) 0 clamp(42px,4.8vw,70px)}
-  .dg-hero-copy{text-align:center;max-width:780px;margin:0 auto}
-  .dg-hero-copy .eyebrow{font-size:17px;letter-spacing:.06em}
-  /* Page-title scale, as work-with-us.html §1 set it. */
-  .dg-hero-copy h1{
-    margin:14px 0 20px;max-width:none;
-    font-size:clamp(36px,5.6vw,84px);line-height:.94;
-    letter-spacing:.02em;color:var(--ink);
-  }
-  .dg-hero-copy p{
-    margin:0 auto;max-width:58ch;
-    font-size:clamp(16px,1.35vw,19px);line-height:1.6;color:var(--muted);
-  }
-  .dg-hero-copy .actions{justify-content:center;margin-top:32px}
+  THE DESIGN
+  There is no local design system here any more. The page is built out of the
+  homepage's own primitives — .pr-wrap, .pr-h, .pr-kicker, .pr-copy, .button —
+  with everything the two tools share in css/tool.css and the flow, focus,
+  persistence and print behaviour in js/tool-kit.js. What is left in the block
+  below is only what this one page composes differently: its headline offsets
+  and its hero photograph.
+================================================================================
+-->
 
-  /* ---------- 6. "Why complete the diagnostic" ----------
-     One process card and two result cards, grouped by their labels without
-     nesting cards inside another card. The first card is Deep Green so the
-     three-column rhythm has hierarchy without adding any new copy. */
-  .dg-why{padding:var(--section-y) 0}
-  .dg-why .section-heading{margin-bottom:clamp(30px,3.4vw,48px)}
-  .dg-why h2{max-width:none;font-size:clamp(30px,3.4vw,48px);line-height:1.04;color:var(--ink)}
-  .dg-why-layout{
-    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);
-    gap:clamp(20px,2.4vw,34px);align-items:stretch;
-  }
-  .dg-why-group{display:flex;min-width:0;flex-direction:column;gap:14px}
-  .dg-why-group>.eyebrow{
-    display:block;margin:0;color:var(--ink);font-size:13px;letter-spacing:.12em;
-  }
-  .dg-receive-grid{
-    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:clamp(20px,2.4vw,34px);height:100%;
-  }
-  .dg-how-card,.dg-receive-grid article{
-    min-height:280px;padding:clamp(28px,3vw,42px);
-    background:#fff;border:1px solid var(--rule);
-    border-radius:var(--r-card);transition:transform .18s,box-shadow .18s;
-    display:flex;flex-direction:column;align-items:flex-start;
-  }
-  .dg-how-card{background:var(--ink);border-color:var(--ink)}
-  .dg-how-card:hover,.dg-receive-grid article:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-  .dg-card-num{
-    display:grid;place-items:center;width:46px;height:46px;
-    border-radius:50%;background:var(--ink);color:var(--lime);
-    font:17px/1 var(--display);letter-spacing:.04em;margin-bottom:auto;
-  }
-  .dg-how-card .dg-card-num{background:var(--lime);color:var(--ink)}
-  .dg-how-card h3,.dg-receive-grid h3{
-    margin:0 0 10px;max-width:none;text-transform:none;
-    font-family:var(--body);font-weight:700;font-size:18px;line-height:1.3;color:var(--ink);
-  }
-  .dg-how-card p,.dg-receive-grid p{margin:0;font-size:15.5px;line-height:1.6;color:var(--muted)}
-  .dg-how-card h3{color:#fff}
-  .dg-how-card p{color:rgba(255,255,255,.72)}
+<style>
+  /* ---------- Intro ----------
+     The headline staircases the way the homepage hero's does. Three
+     authored offsets, no system rule: the shape is drawn, not derived.
 
-  @media(max-width:850px){
-    .dg-why-layout{grid-template-columns:minmax(0,1fr)}
+     The leading is looser than the shared .t-intro-h default and the
+     ceiling lower. The homepage hero sets three SHORT lines, where
+     .76 reads as a tight stack; these three are long enough to fill
+     the width, and at that size the stack closed up until the Y of
+     ACTUALLY was touching the O of GO. */
+  .tool-page .t-intro-h{--fs:clamp(38px,8.3vw,140px);--lh:.87}
+  .tool-page .t-intro-h span:nth-child(2){margin-left:7%}
+  .tool-page .t-intro-h span:nth-child(3){margin-left:30%}
+
+  /* ---------- The intro screen's lower half ----------
+     Everything below the hero came from the diagnostic page this tool
+     replaced. It lives inside the intro SCREEN, so it leaves with the
+     intro the moment the first question opens. .t-intro is the hero
+     only; css/tool.css carries that split. */
+  .tool-page .t-intro-screen.is-active{display:block}
+
+  .tool-page .dg-why{padding:var(--gap) 0;background:var(--paper)}
+  .tool-page .dg-why .pr-kicker{margin-bottom:clamp(26px,2.8vw,46px)}
+  .tool-page .dg-why-h{--fs:clamp(46px,7vw,128px);--lh:.8}
+  .tool-page .dg-why-h span:nth-child(2){margin-left:16%}
+  .tool-page .dg-why-rows{
+    margin-top:clamp(50px,5.5vw,84px);
+    border-top:1px solid var(--ink);
   }
-  @media(max-width:620px){
-    .dg-receive-grid{grid-template-columns:minmax(0,1fr)}
-    .dg-how-card,.dg-receive-grid article{min-height:240px}
+  .tool-page .dg-row{
+    display:grid;
+    grid-template-columns:clamp(58px,6vw,100px) minmax(220px,.8fr) minmax(0,1.2fr);
+    gap:clamp(22px,3vw,54px);align-items:start;
+    padding:clamp(28px,3vw,46px) 0;
+    border-bottom:1px solid var(--ink);
+  }
+  /* The group labels sit on the rule, like a table caption. */
+  .tool-page .dg-group{
+    margin:0;padding:clamp(22px,2.2vw,32px) 0 0;
+    color:var(--t-ink-55);
+  }
+  .tool-page .dg-group + .dg-row{padding-top:clamp(14px,1.5vw,22px)}
+  .tool-page .dg-row-num{
+    display:block;color:var(--ink);
+    font:clamp(30px,3.2vw,52px)/.8 var(--display);font-weight:400;letter-spacing:-.02em;
+  }
+  .tool-page .dg-row h3{
+    margin:0;max-width:20ch;color:var(--ink);
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(24px,2.3vw,38px);line-height:1;
+    letter-spacing:.02em;text-transform:uppercase;
   }
 
-  /* ---------- 7. "Share it with your colleagues" ----------
-     Deep Green, so the page alternates instead of running as one ivory
-     field, and because the point it makes is the page's sharpest.
-     The 1.9 MB poster.png that sat beside it is dropped — it is campaign
-     artwork of a different campaign and the section reads better without
-     a picture competing with a single paragraph. */
-  .dg-share{background:var(--ink);padding:var(--section-y) 0;text-align:center}
-  .dg-share::before{background-image:none}
-  .dg-share .eyebrow{color:var(--lime);font-size:17px;letter-spacing:.06em}
-  .dg-share h2{
-    margin:14px auto 22px;max-width:18ch;
-    font-size:clamp(30px,3.6vw,52px);line-height:1.04;color:var(--paper);
+  .tool-page .dg-share{padding:var(--gap) 0;background:var(--ink);color:var(--paper)}
+  .tool-page .dg-share .pr-kicker{color:var(--lime);margin-bottom:clamp(26px,2.8vw,46px)}
+  .tool-page .dg-share-h{--fs:clamp(46px,7vw,128px);--lh:.8;color:var(--paper)}
+  .tool-page .dg-share-h span:nth-child(2){margin-left:22%}
+  .tool-page .dg-share-copy{
+    margin-top:clamp(38px,4vw,62px);margin-left:auto;max-width:54ch;
+    color:var(--t-paper-80);font-size:clamp(16px,1.15vw,20px);
   }
-  .dg-lede{margin:0 auto;max-width:62ch}
-  .dg-lede p{margin:0;font-size:clamp(16px,1.35vw,19px);line-height:1.65;color:rgba(254,253,242,.86)}
 
-  /* ---------- 8. The diagnostic itself ----------
-     THE MARKUP AND EVERY CLASS HERE IS LOAD-BEARING. js/diagnostic.js binds
-     to .diag-shell, -progress i, -form, -step, -question, -scale, -back,
-     -result, -score, -verdict, -bars, -friction, -restart, and to #diagnostic
-     by id. It also reads scaleEl.querySelectorAll('button'). NOTHING below
-     renames or reorders any of them; this is paint only.
-     js/diagnostic.js was not touched. */
-  .diag{background:var(--paper);padding:var(--section-y) 0;position:relative}
-  .diag-shell{
-    max-width:860px;margin:0 auto;
-    background:#fff;border:1px solid var(--rule);
-    border-radius:var(--r-card);
-    padding:clamp(26px,3.2vw,52px);
-    box-shadow:var(--shadow);
+  .tool-page .choice{
+    padding-block:calc(var(--gap) / 2) var(--gap);
+    text-align:left;background:var(--paper);
   }
-  .diag-progress{height:8px;border-radius:var(--r-pill);background:rgba(20,51,24,.1);overflow:hidden;margin-bottom:clamp(26px,3vw,40px)}
-  .diag-progress i{display:block;height:100%;background:var(--lime);border-radius:var(--r-pill);transition:width .3s}
-  .diag-step{
-    margin:0 0 12px;font:13px/1 var(--display);
-    letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  .tool-page .choice .pr-kicker{margin-bottom:clamp(26px,2.8vw,44px)}
+  .tool-page .dg-choice-h{--fs:clamp(44px,7.8vw,146px)}
+  .tool-page .dg-choice-h span:nth-child(1){margin-left:24%}
+  .tool-page .dg-choice-h span:nth-child(2){margin-left:47%}
+  .tool-page .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .tool-page .choice .toggle-rows{max-width:980px;margin-top:40px}
+  .tool-page .choice .toggle-row{
+    padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
+    gap:clamp(20px,3vw,46px);
   }
-  .diag-question{
-    margin:0 0 clamp(26px,3vw,38px);max-width:34ch;
-    font-family:var(--display);font-size:clamp(23px,2.5vw,36px);
-    line-height:1.12;letter-spacing:.01em;color:var(--ink);
-  }
-  .diag-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,34px)}
-  .diag-back{
-    border:1px solid var(--ink);background:none;color:var(--ink);
-    border-radius:var(--r-pill);padding:9px 20px;cursor:pointer;
-    font:14px/1 var(--body);font-weight:700;
-  }
-  .diag-back:hover{background:var(--ink);color:var(--paper)}
-  .dg-flat{margin:0}
-
-  /* The result. The score is the one number on the page, so it takes the
-     display face at a size nothing else on the page reaches. */
-  .diag-score{
-    margin:10px 0 18px;
-    font:clamp(56px,8vw,112px)/1 var(--display);
-    letter-spacing:.02em;color:var(--ink);
-  }
-  .diag-verdict{max-width:52ch;margin:0}
-  .dg-friction-line{
-    margin-top:32px;padding-top:18px;border-top:1px solid var(--rule);
-    font-size:15px;line-height:1.7;color:var(--muted);
-  }
-  .dg-friction-line strong{color:var(--ink)}
-  .dg-demo{
-    text-align:center;max-width:62ch;margin:24px auto 0;
-  }
+  .tool-page .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
 
   @media(max-width:850px){
-    .dg-why .process-grid{grid-template-columns:1fr}
+    .tool-page .dg-row{grid-template-columns:52px minmax(0,1fr)}
+    .tool-page .dg-row .pr-copy{grid-column:2}
+    .tool-page .dg-share-copy{margin-left:0}
+  }
+  @media(max-width:760px){
+    .tool-page .dg-why-h,
+    .tool-page .dg-share-h{--lh:.88}
+    .tool-page .choice-note{margin-inline:0;text-align:left}
+  }
+  @media(max-width:700px){
+    .tool-page .choice .toggle-row{padding:18px 20px 15px;gap:14px}
+    .tool-page .choice .choice-toggle .t-switch{width:100px;height:60px}
   }
 
-  </style>
+  /* The seven-room ranking is the densest thing on the result page, so it
+     gets the full column rather than sharing the two-up grid. */
+  .tool-page .t-block--rooms{grid-template-columns:minmax(0,.62fr) minmax(0,1fr)}
+  .tool-page .t-block--rooms .t-rank{margin-top:4px}
+
+  @media(max-width:1100px){
+    .tool-page .t-block--rooms{grid-template-columns:minmax(0,1fr)}
+  }
+</style>
 </head>
-<body>
-  <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
-    <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div></div>
-  <a class="skip-link" href="#main">Skip to content</a>
+<body class="premium-page tool-page tool-page--diagnostic">
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="OPS DETOX home">
-        <img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
-      </a>
-      <!-- ONE NAV, EVERY PAGE. Settled 2 November, after the site had grown
-           four different navs across eleven pages (five, six, seven and
-           eight items) because each new page added itself.
+<div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
+  <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div>
+</div>
 
-           THE RULE: the nav carries FINISHED PAGES ONLY.
+<a class="skip-link" href="#main">Skip to content</a>
 
-           Deliberately NOT in it:
-             - detox.html ("The DETOX") and diagnostic.html ("Audit") are
-               still on the 14 October build and are not client-ready.
-               Put them back when they are reworked.
-             - index.html#results ("Results") was an anchor, not a page,
-               and the logo already goes home.
-             - freebie.html, and the three legal pages, which belong in
-               the footer.
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="OPS DETOX home"><img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX"></a>
+    <nav class="site-nav" id="nav" aria-label="Main navigation">
+      <a href="work-with-us.html">Work With Us</a>
+      <a href="keynote.html">Keynote</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="button button--small button--line header-cta" href="contact.html">Let’s talk</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
+  </div>
+</header>
 
-           SIXTEEN BUTTONS STILL POINT AT THE TWO DROPPED PAGES (four to
-           detox, twelve to diagnostic). Taking them out of the nav does
-           not hide them -- see the backlog. -->
-      <nav class="site-nav" id="nav" aria-label="Main navigation">
-        <a href="work-with-us.html">Work With Us</a>
-        <a href="keynote.html">Keynote</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <a class="button button--small button--line header-cta" href="contact.html">Let’s talk <span>→</span></a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
+<main id="main" class="tool-app">
+
+  <!-- The rail. Hidden on the intro, where there is no progress to report
+       and nothing for the counter to count. -->
+  <div class="t-rail" id="rail" hidden>
+    <div class="pr-wrap t-rail-inner">
+      <p class="t-rail-name">OPS Detox Diagnostic</p>
+      <p class="t-rail-step" id="railStep"></p>
     </div>
-  </header>
+    <div class="t-track" id="track" role="progressbar" aria-label="Progress through the diagnostic"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+  </div>
 
-  <main id="main">
-    <!-- ===== SECTION 1 — the hero =====
-         Centred, like contact.html's and freebie.html's. It was a two-column
-         split whose right half was assets/img/hero-cards.png — a 1.8 MB
-         artwork of the CARD treatment, captioned "Oscar de Grauw", which is
-         not what it shows. There is no diagnostic photography in the
-         project, and a half-empty grid is what the old layout already was. -->
-    <section class="dg-hero">
-      <div class="container">
-        <div class="dg-hero-copy">
-          <span class="eyebrow">The audit</span>
-          <!-- Literal uppercase so js/site.js §3a wraps the wide O and D. -->
-          <h1>OPS DETOX DIAGNOSTIC™</h1>
-          <p>Find out where your organization is losing time, clarity and execution speed. A full diagnostic of your operational friction, the same diagnostic Oscar runs at the start of every OPS Detox engagement.</p>
-          <div class="actions">
-            <a class="button" href="#diagnostic">Start the diagnostic <span>→</span></a>
+  <p class="t-announce" id="announce" role="status" aria-live="polite"></p>
+
+  <!-- ============== INTRO ============== -->
+  <!-- ============== INTRO ==============
+       The screen is the whole pre-start page, not just the hero: the
+       marquee and the two explanatory sections diagnostic.html carried
+       before the tool was promoted into it are inside it, so they are
+       what you read before pressing Start and they leave with the intro
+       when the questions begin. All of that copy is unchanged. -->
+  <section class="t-screen t-intro-screen" data-step="intro" aria-labelledby="intro-heading">
+
+  <div class="t-intro">
+    <div class="t-intro-bg">
+      <img src="assets/img/premium-office-pexels.jpg" width="2400" height="1350" alt="" fetchpriority="high">
+    </div>
+
+    <div class="pr-wrap t-intro-inner">
+      <h1 class="pr-h t-intro-h hm hm-lines" id="intro-heading" data-focus tabindex="-1">
+        <span>Where does</span>
+        <span>the week actually</span>
+        <span>go?</span>
+      </h1>
+
+      <div class="t-intro-foot">
+        <div class="hm hm-copy">
+          <p class="pr-copy">Questions about how work really moves in your company. Not about how well anyone is doing their job, and not about how things are supposed to work on paper. It ends with the one room to look at first, not a list of seven problems.</p>
+          <div class="t-actions">
+            <button class="button button--line" type="button" data-go="first">Start the diagnostic</button>
+            <a class="button t-btn-ghost" href="contact.html">Rather just talk</a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- The switcher-pattern strip, as it runs under the homepage hero.
-         Words are the homepage's, wide letters wrapped by hand for the same
-         reason as above. FOUR copies and a 6n cycle — see §4 of the style
-         block before changing a word. -->
-    <div class="pt-strip" aria-label="OPS Detox principles">
-      <div class="pt-row">
-        <div class="pt-track">
-          <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNCOMPLICATE the decision</span>
-          <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Unclog the approval queue</span>
-          <span class="pt">Strip the NOISE</span>
-          <span class="pt">Drain the decision backlog</span>
-
-          <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNCOMPLICATE the decision</span>
-          <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Unclog the approval queue</span>
-          <span class="pt">Strip the NOISE</span>
-          <span class="pt">Drain the decision backlog</span>
-
-          <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNCOMPLICATE the decision</span>
-          <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Unclog the approval queue</span>
-          <span class="pt">Strip the NOISE</span>
-          <span class="pt">Drain the decision backlog</span>
-
-          <span class="pt">Flush the pipelines</span>
-          <span class="pt">UNCOMPLICATE the decision</span>
-          <span class="pt">CLEAN THE SYSTEMS</span>
-          <span class="pt">Unclog the approval queue</span>
-          <span class="pt">Strip the NOISE</span>
-          <span class="pt">Drain the decision backlog</span>
+        <div class="hm hm-copy">
+          <p class="pr-kicker">Free · about 6 minutes</p>
+          <p class="t-micro">Answer for a normal month, not a good one. If you do not know something, say so. Those answers turn out to be the useful ones. Your answers stay in this browser until you close the tab.</p>
         </div>
       </div>
     </div>
+  </div>
 
+  <!-- The switcher-pattern strip, as it runs under the homepage hero.
+       FOUR copies and a 6n cycle — see the .pt rules in css/site.css
+       before changing a word. -->
+  <div class="pt-strip" aria-label="OPS Detox principles">
+    <div class="pt-row">
+      <div class="pt-track">
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
 
-    <!-- ===== SECTION 3 — why, what and how =====
-         The meeting asked for the reasons, deliverables and process to stop
-         reading as one mixed list. The wording below is unchanged; only the
-         existing points are grouped by what they answer. -->
-    <section class="dg-why reveal">
-      <div class="container">
-      <div class="section-heading">
-        <div><span class="eyebrow">Why complete it</span><h2>Why complete the diagnostic</h2></div>
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
+
+          <span class="pt">Flush the pipelines</span>
+          <span class="pt">UNCOMPLICATE the decision</span>
+          <span class="pt">CLEAN THE SYSTEMS</span>
+          <span class="pt">Unclog the approval queue</span>
+          <span class="pt">Strip the NOISE</span>
+          <span class="pt">Drain the decision backlog</span>
       </div>
-      <div class="dg-why-layout">
-        <div class="dg-why-group">
-          <span class="eyebrow">How it works</span>
-          <article class="dg-how-card">
-            <span class="dg-card-num">01</span>
-            <h3>Takes 6-8 minutes</h3>
-            <p>Short enough to finish in one sitting, long enough to be honest.</p>
-          </article>
+    </div>
+  </div>
+
+  <!-- ===== Why complete it =====
+       Carried over from the previous diagnostic.html. The wording is
+       unchanged; it is on .pr-wrap/.pr-h/.pr-copy/.pr-kicker now. -->
+  <section class="dg-why" aria-labelledby="dg-why-heading">
+    <div class="pr-wrap">
+      <span class="pr-kicker hm hm-copy">Why complete it</span>
+      <h2 class="pr-h dg-why-h hm hm-lines" id="dg-why-heading">
+        <span>Why complete</span>
+        <span>the diagnostic</span>
+      </h2>
+
+      <div class="dg-why-rows">
+        <!-- The two group labels are the old page's own: its three points
+             were split under "How it works" and "What you receive". The
+             split is kept so neither label is lost. -->
+        <p class="pr-kicker dg-group">How it works</p>
+        <article class="dg-row hm hm-row">
+          <span class="dg-row-num" aria-hidden="true">01</span>
+          <h3>Takes 6-8 minutes</h3>
+          <p class="pr-copy">Short enough to finish in one sitting, long enough to be honest.</p>
+        </article>
+        <p class="pr-kicker dg-group">What you receive</p>
+        <article class="dg-row hm hm-row">
+          <span class="dg-row-num" aria-hidden="true">02</span>
+          <h3>Module-level score profile across 7 areas</h3>
+          <p class="pr-copy">You see which part of the operation is clogged, not just that something is.</p>
+        </article>
+        <article class="dg-row hm hm-row">
+          <span class="dg-row-num" aria-hidden="true">03</span>
+          <h3>Your two biggest friction points, named</h3>
+          <p class="pr-copy">Plus a personal copy of the results emailed to you.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Share it with your colleagues =====
+       Deep Green, so the intro alternates instead of running as one
+       ivory field below the hero. Copy unchanged. -->
+  <section class="dg-share" aria-labelledby="dg-share-heading">
+    <div class="pr-wrap">
+      <span class="pr-kicker hm hm-copy">One viewpoint is one blind spot</span>
+      <h2 class="pr-h dg-share-h hm hm-lines" id="dg-share-heading">
+        <span>Share it with</span>
+        <span>your colleagues</span>
+      </h2>
+      <p class="pr-copy dg-share-copy hm hm-copy">Every layer of your organization lives in a different version of reality. Measure one viewpoint and you measure one blind spot. The wider the gap, the larger the hidden friction.</p>
+    </div>
+  </section>
+
+  <!-- ===== The closing switch =====
+       Carried over too. "Book the free diagnostic" pointed at
+       diagnostic.html on the old page, which was this page — a link to
+       itself. The page IS the diagnostic now, so the same words start
+       the flow instead. aria-pressed="true" is the RESTING state and
+       js/site.js snaps it back to it; the attribute is not touched. -->
+  <section class="choice">
+    <div class="pr-wrap">
+      <span class="pr-kicker hm hm-copy">The choice</span>
+      <h2 class="pr-h dg-choice-h hm hm-lines">
+        <span>What will you</span>
+        <span>choose?</span>
+      </h2>
+      <p class="choice-note hm hm-copy">Clarity is the default. Switch back to see the noise.</p>
+
+      <div class="toggle-rows hm hm-panel">
+        <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
+                aria-label="Switch between Operational Clarity and Operational Noise">
+          <span class="t-before">Operational Clarity</span>
+          <span class="t-switch" aria-hidden="true"><svg class="t-mark" viewBox="203.14 59.05 129.38 74.78" focusable="false"><path class="t-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="t-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="t-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="t-knob"><circle class="t-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="t-dot" cx="242.34" cy="96.50" r="18.35"/></g></svg></span>
+          <span class="t-after">Operational Noise</span>
+        </button>
+      </div>
+
+      <div class="actions hm hm-copy">
+        <button class="button" type="button" data-go="first">Book the free diagnostic</button>
+      </div>
+    </div>
+  </section>
+
+  </section>
+
+  <!-- Question screens are built by the engine below. -->
+  <div id="qHost"></div>
+
+  <!-- ============== RESULT ============== -->
+  <section class="t-screen t-result" data-step="result" aria-labelledby="rStat">
+
+    <div class="t-result-hero">
+      <div class="pr-wrap">
+        <div class="t-print-head">
+          <img src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+          <p id="printStamp">OPS Detox Diagnostic</p>
         </div>
-        <div class="dg-why-group">
-          <span class="eyebrow">What you receive</span>
-          <div class="dg-receive-grid">
-            <article><span class="dg-card-num">02</span><h3>Module-level score profile across 7 areas</h3><p>You see which part of the operation is clogged, not just that something is.</p></article>
-            <article><span class="dg-card-num">03</span><h3>Your two biggest friction points, named</h3><p>Plus a personal copy of the results emailed to you.</p></article>
-          </div>
-        </div>
-      </div>
-      </div>
-    </section>
 
-    <!-- ===== SECTION 4 — share it with your colleagues =====
-         Deep Green, so the page alternates instead of running as one ivory
-         field. Copy is unchanged.
-
-         THE 1.9 MB poster.png THAT SAT HERE IS DROPPED. It is campaign
-         artwork from a different campaign, captioned only "OPS Detox
-         campaign artwork", and it was competing with a single paragraph
-         that makes the page's sharpest point. The file is still in
-         assets/img/ and is now unreferenced by this page. -->
-    <section class="dg-share reveal">
-      <div class="container">
-        <span class="eyebrow">One viewpoint is one blind spot</span>
-        <h2>Share it with your colleagues</h2>
-        <div class="body-copy dg-lede">
-          <p>Every layer of your organization lives in a different version of reality. Measure one viewpoint and you measure one blind spot. The wider the gap, the larger the hidden friction.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="diagnostic" class="diag">
-      <div class="container">
-        <div class="diag-shell">
-          <div class="diag-progress"><i></i></div>
-
-          <div class="diag-form">
-            <p class="diag-step">Question 1 of 7</p>
-            <p class="diag-question">Loading…</p>
-            <div class="diag-scale"></div>
-            <div class="diag-nav">
-              <button class="diag-back" type="button" hidden>← Previous</button>
-              <p class="form-note dg-flat">Answers stay in your browser. Nothing is submitted.</p>
+        <p class="pr-kicker" id="rEyebrow">Your result</p>
+        <h2 class="pr-h t-stat" id="rStat" data-focus tabindex="-1">&nbsp;</h2>
+        <div class="t-result-foot">
+          <p class="pr-copy" id="rPer"></p>
+          <div class="t-no-print">
+            <div class="t-actions">
+              <button class="button button--line" type="button" data-download>Download the result</button>
+              <button class="button t-btn-ghost" type="button" data-restart>Start again</button>
             </div>
+            <p class="t-micro">Download opens your browser’s print dialogue. Choose “Save as PDF” as the destination and you get the whole result, workings included, as a file you can keep or send on.</p>
           </div>
-
-          <div class="diag-result" role="status">
-            <span class="eyebrow">Your operational clarity score</span>
-            <p class="diag-score">—</p>
-            <p class="body-copy diag-verdict"></p>
-
-            <div class="diag-bars"></div>
-
-            <p class="values dg-friction-line"><strong>Your two biggest friction points:</strong><br><span class="diag-friction"></span></p>
-
-            <div class="actions">
-              <a class="button" href="contact.html">Let’s talk <span>→</span></a>
-              <button class="button button--line diag-restart" type="button">Start again <span>↺</span></button>
-            </div>
-          </div>
-        </div>
-
-        <p class="form-note dg-demo">
-          Demo version. The seven statements and the scoring here are placeholders built to show the flow. Final questions, scoring and the emailed result come from the diagnostic platform once it is chosen.
-        </p>
-      </div>
-    </section>
-
-    <section class="choice">
-      <div class="container">
-        <span class="eyebrow">The choice</span>
-        <h2>What will you choose?</h2>
-        <p class="choice-note">Clarity is the default. Switch back to see the noise.</p>
-
-        <div class="toggle-rows">
-          <button class="toggle-row choice-toggle" type="button" aria-pressed="true"
-                  aria-label="Switch between Operational Clarity and Operational Noise">
-            <span class="t-before">Operational Clarity</span>
-            <span class="t-switch" aria-hidden="true"><svg class="t-mark" viewBox="203.14 59.05 129.38 74.78" focusable="false"><path class="t-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="t-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="t-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="t-knob"><circle class="t-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="t-dot" cx="242.34" cy="96.50" r="18.35"/></g></svg></span>
-            <span class="t-after">Operational Noise</span>
-          </button>
-        </div>
-
-        <div class="actions">
-          <a class="button" href="diagnostic.html">Book the free diagnostic <span>→</span></a>
-        </div>
-      </div>
-    </section>
-
-    <!-- The switcher-pattern divider, closing the page into the Deep Green
-         footer the way it does on the homepage (§24). Bars only, no words,
-         two rows running opposite ways. Decorative, so hidden from
-         assistive tech. -->
-    <div class="pb" aria-hidden="true">
-      <div class="pb-row">
-        <div class="pb-track">
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-        </div>
-      </div>
-      <div class="pb-row pb-row--b">
-        <div class="pb-track">
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
-          <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
         </div>
       </div>
     </div>
-  </main>
 
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <img class="footer-logo" src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
-          <div class="footer-social">
-            <a href="#" aria-label="LinkedIn"><img src="assets/social/linkedin.svg" alt=""></a>
-            <a href="#" aria-label="Instagram"><img src="assets/social/instagram.svg" alt=""></a>
-            <a href="#" aria-label="YouTube"><img src="assets/social/youtube.svg" alt=""></a>
-          </div>
+    <div class="pr-wrap t-blocks">
+
+      <section class="t-block t-block--rooms">
+        <h3>The seven rooms</h3>
+        <div class="t-block-body">
+          <div class="t-rank" id="rRooms"></div>
+          <p class="t-note" id="rUnknown"></p>
         </div>
+      </section>
 
-        <form data-demo-form data-success-message="Subscribed. Demo only, no email is sent yet.">
-          <h2>Newsletter</h2>
-          <div class="field">
-            <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
-            <span class="field-error" aria-live="polite"></span>
-          </div>
-          <div class="field">
-            <input type="email" name="email" placeholder="EMAIL" aria-label="Email" data-label="Email" required>
-            <span class="field-error" aria-live="polite"></span>
-          </div>
-          <button type="submit">Subscribe</button>
-          <p class="footer-status" role="status"></p>
-        </form>
-
-        <div>
-          <h2>Contact</h2>
-          <p><b>EMAIL</b><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p>
-          <p><b>PHONE</b><a href="tel:+1234567890">(123) 456 7890</a></p>
-          <p><b>ADDRESS</b>123 Anywhere St.,<br>Any City 1234</p>
+      <section class="t-block" id="founderBlock">
+        <h3>Your own week</h3>
+        <div class="t-block-body">
+          <p class="pr-copy" id="rTakeBack"></p>
+          <p class="pr-copy" id="rAwayWant"></p>
         </div>
+      </section>
 
-        <div>
-          <h2>Legal</h2>
-          <a href="#">Imprint</a>
-          <a href="terms.html">Terms and Conditions</a>
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="cookies.html">Cookies</a>
+      <section class="t-block">
+        <h3>One thing, this week</h3>
+        <div class="t-block-body">
+          <p class="pr-copy" id="rFirstMove"></p>
+          <p class="pr-copy" id="rFirstWhy"></p>
+        </div>
+      </section>
+
+      <section class="t-block t-no-print">
+        <h3>Keep this</h3>
+        <div class="t-block-body">
+          <p class="pr-copy" id="rKeep"></p>
+          <!-- WIRE THIS. The field is live and the POST is not: see the engine. -->
+          <div class="t-send" id="sendRow">
+            <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com" aria-label="Your email address">
+            <button class="button button--line" type="button" id="sendBtn">Email me this result</button>
+          </div>
+          <p class="t-sent" id="sentMsg" hidden></p>
+          <p class="t-micro" id="sendNote">One email with your seven rooms and the first move. No sequence, no newsletter, and it goes nowhere else. <a class="pr-text-link" href="privacy.html">How we handle it</a></p>
+        </div>
+      </section>
+
+      <section class="t-block t-no-print">
+        <h3>Talk it through</h3>
+        <div class="t-block-body">
+          <p class="pr-copy" id="rBook"></p>
+          <div class="t-actions">
+            <!-- REPLACE {{BOOKING_URL}} with the real calendar link -->
+            <a class="button button--line" href="{{BOOKING_URL}}">Book thirty minutes</a>
+          </div>
+          <p class="t-micro">Thirty minutes, live, with Oscar. Not a pitch deck and not another PDF.</p>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="pr-wrap t-foot-note" id="rFoot"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img class="footer-logo" src="assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+        <div class="footer-social">
+          <a href="#" aria-label="LinkedIn"><img src="assets/social/linkedin.svg" alt=""></a>
+          <a href="#" aria-label="Instagram"><img src="assets/social/instagram.svg" alt=""></a>
+          <a href="#" aria-label="YouTube"><img src="assets/social/youtube.svg" alt=""></a>
         </div>
       </div>
-      <p class="footer-legal">© 2026 OPS Detox™. Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
-    </div>
-  </footer>
 
-  <script src="js/site.js"></script>
-  <script src="js/diagnostic.js"></script>
+      <form data-demo-form data-success-message="Subscribed. Demo only, no email is sent yet.">
+        <h2>Newsletter</h2>
+        <div class="field">
+          <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
+          <span class="field-error" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <input type="email" name="email" placeholder="EMAIL" aria-label="Email" data-label="Email" required>
+          <span class="field-error" aria-live="polite"></span>
+        </div>
+        <button type="submit">Subscribe</button>
+        <p class="footer-status" role="status"></p>
+      </form>
+
+      <div>
+        <h2>Contact</h2>
+        <p><b>EMAIL</b><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p>
+        <p><b>PHONE</b><a href="tel:+1234567890">(123) 456 7890</a></p>
+        <p><b>ADDRESS</b>123 Anywhere St.,<br>Any City 1234</p>
+      </div>
+
+      <div>
+        <h2>Legal</h2>
+        <a href="#">Imprint</a>
+        <a href="terms.html">Terms and Conditions</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="cookies.html">Cookies</a>
+      </div>
+    </div>
+    <p class="footer-legal">© 2026 OPS Detox™. Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+  </div>
+</footer>
+
+<div class="pb" aria-hidden="true">
+  <div class="pb-row">
+    <div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div>
+  </div>
+  <div class="pb-row pb-row--b">
+    <div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div>
+  </div>
+</div>
+
+<script src="js/site.js"></script>
+<script src="js/premium-motion.js"></script>
+<script src="js/tool-kit.js"></script>
+<script>
+(function(){
+"use strict";
+
+var esc = OpsTool.escapeHtml;
+var andJoin = OpsTool.andJoin;
+
+/* ===========================================================================
+   QUESTIONS
+   role:"founder" / "team"  → shown only to that respondent
+   qF / qT                  → same measurement, asked from the other end
+   opts                     → best to worst. The index IS the score, 0 to 3.
+   =========================================================================== */
+var Q = [
+  { id:"who", unscored:true, noUnknown:true,
+    head:"First, so the questions make sense",
+    q:"Who is answering this?",
+    opts:["I am the founder or CEO","I run a team or department here","I work here"] },
+
+  { id:"m1", room:"Meetings", head:"Meetings",
+    q:"Think of the last recurring meeting you sat in. Did it end with a decision someone owns?",
+    opts:["Yes, clearly","Partly","No","I could not tell"] },
+
+  { id:"m2", room:"Meetings", head:"Meetings",
+    q:"How often do you leave a meeting unsure what was decided?",
+    opts:["Rarely","About once a month","About once a week","Most meetings"] },
+
+  { id:"d1", room:"Decisions", head:"Decisions",
+    qF:"How often do your people come to you for something that already sits inside their own responsibility?",
+    qT:"How often do you need permission for something that already sits inside your own responsibility?",
+    opts:["Rarely","Sometimes","Often","Almost always"] },
+
+  { id:"d2", room:"Decisions", head:"Decisions",
+    q:"The last decision that mattered in your area: how long from the question being raised to someone deciding?",
+    opts:["Within a day","A few days","Weeks","It is still open"] },
+
+  { id:"r1", room:"Reporting", head:"Reporting",
+    q:"Of the recurring reports you make or receive, how many lead to a decision you could name?",
+    opts:["Nearly all of them","About half","A few","Almost none"] },
+
+  { id:"r2", room:"Reporting", head:"Reporting",
+    q:"How often does making a report take time you would rather spend on the work itself?",
+    opts:["Rarely","About once a month","About once a week","Constantly"] },
+
+  { id:"c1", room:"Communication", head:"Communication",
+    q:"How often do you get work without the information you need to take the next step?",
+    opts:["Rarely","About once a week","Several times a week","Most days"] },
+
+  { id:"c2", room:"Communication", head:"Communication",
+    q:"To find out something about a project you are not on, how long does it take?",
+    opts:["Minutes","About an hour","Most of a day","I usually give up"] },
+
+  { id:"o1", room:"Ownership", head:"Ownership",
+    q:"When something goes wrong across two teams, how clear is it who owns the fix?",
+    opts:["Completely clear","Mostly clear","Rarely clear","Never clear"] },
+
+  { id:"o2", room:"Ownership", head:"Ownership",
+    q:"When someone is away, how often does normal work stop because nobody else knows how to finish it?",
+    opts:["Almost never","Now and then","Regularly","Constantly"] },
+
+  { id:"p1", room:"Psychological safety", head:"Truth, and how fast it moves",
+    qF:"If someone here saw something going seriously wrong, how fast would it reach you?",
+    qT:"If you saw something going seriously wrong, how fast would it reach the person who could act on it?",
+    opts:["Same day","Within a week","Eventually","It probably would not"] },
+
+  { id:"p2", room:"Psychological safety", head:"Truth, and how fast it moves",
+    qF:"In the last month, how often do you think somebody held something back in a meeting with you?",
+    qT:"In the last month, was there something you thought in a meeting and did not say?",
+    opts:["Never","Once","A few times","Regularly"] },
+
+  { id:"t1", room:"Tool stack", head:"Tools",
+    q:"How often do you type the same information into more than one system?",
+    opts:["Never","About once a week","Daily","Several times a day"] },
+
+  { id:"t2", room:"Tool stack", head:"Tools",
+    q:"How many tools do you need open to do a normal day's work?",
+    opts:["One or two","Three or four","Five or six","Seven or more"] },
+
+  /* ---- founder-only. Skipped entirely for anyone else. ---- */
+  { id:"f1", role:"founder", head:"Your own week",
+    q:"How often do you take back work after giving someone else responsibility for it?",
+    opts:["Rarely","About once a month","About once a week","Constantly"] },
+
+  { id:"f2", role:"founder", multi:true, noUnknown:true,
+    head:"Your most recent week away",
+    q:"Which of these needed you anyway?",
+    opts:["Meetings","Decisions","Reporting","Communication","Ownership","Something people were afraid to raise","Tools","Nothing, it ran without me"] },
+
+  { id:"f3", role:"founder", multi:true, noUnknown:true,
+    head:"The question most founders are never asked",
+    q:"Which decisions do you actually want to be in?",
+    opts:["Meetings","Decisions","Reporting","Communication","Ownership","Psychological safety","Tools","None of them"] },
+
+  { id:"free", free:true,
+    head:"Last one",
+    q:"Which recurring thing would you remove first, if removing it cost nothing?",
+    placeholder:"One sentence is plenty. Optional." }
+];
+
+var ROOMS = ["Meetings","Decisions","Reporting","Communication","Ownership","Psychological safety","Tool stack"];
+var PACK = { "Meetings":"operational","Decisions":"operational","Reporting":"operational",
+             "Communication":"organisational","Ownership":"organisational",
+             "Psychological safety":"organisational","Tool stack":"neither" };
+var KEYS = ["A","B","C","D","E","F","G","H"];
+
+var state = { a:{}, multi:{}, free:null };
+var ROLE = "founder";          /* set by question one */
+
+var host = document.getElementById("qHost");
+
+/* ---------- build every screen once ----------
+   All of them, including the founder-only ones. Which of them a visitor
+   actually walks through is decided by steps() below, not by the markup. */
+Q.forEach(function(item){
+  var screen = document.createElement("section");
+  screen.className = "t-screen t-q";
+  screen.setAttribute("data-step", "q-" + item.id);
+  screen.setAttribute("aria-labelledby", "qh-" + item.id);
+
+  var html = '<div class="pr-wrap t-q-head">'
+    + '<span class="t-q-num" aria-hidden="true" data-num></span>'
+    + '<div><span class="pr-kicker">' + esc(item.head) + '</span>'
+    + '<h2 class="pr-h t-q-h" id="qh-' + item.id + '" data-qtext data-focus tabindex="-1"></h2></div>'
+    + '</div>';
+
+  if (item.free){
+    html += '<div class="pr-wrap">'
+      + '<textarea class="t-free" id="freeText" aria-labelledby="qh-' + item.id + '" placeholder="' + esc(item.placeholder || "") + '"></textarea>'
+      + '<div class="t-nav">'
+      + '<button class="button button--line" type="button" data-finish>See my result</button>'
+      + '<button class="button t-btn-ghost" type="button" data-finish data-skip>Skip this</button>'
+      + '<button class="pr-text-link" type="button" data-back>Back</button>'
+      + '</div></div>';
+  } else {
+    html += '<div class="pr-bleed t-opts" role="' + (item.multi ? "group" : "radiogroup") + '"'
+      + ' aria-labelledby="qh-' + item.id + '">';
+
+    item.opts.forEach(function(label, index){
+      html += optionRow(item, index, label, KEYS[index] || "·");
+    });
+
+    if (!item.noUnknown){
+      html += optionRow(item, "null", "I don't know", "?", "t-opt--unknown");
+    }
+
+    html += '</div><div class="pr-wrap">';
+
+    if (item.multi){
+      html += '<div class="t-nav">'
+        + '<button class="button button--line" type="button" data-next>Continue</button>'
+        + '<button class="pr-text-link" type="button" data-back>Back</button></div>';
+    } else {
+      html += '<div class="t-nav"><button class="pr-text-link" type="button" data-back>Back</button></div>';
+    }
+
+    if (!item.noUnknown){
+      html += '<p class="t-hint">Not knowing is a real answer. It is left out of the scoring and never counts against you or anyone else.</p>';
+    }
+    if (item.multi){
+      html += '<p class="t-hint">Choose as many as apply, then continue.</p>';
+    }
+    html += '</div>';
+  }
+
+  screen.innerHTML = html;
+  host.appendChild(screen);
+});
+
+function optionRow(item, value, label, key, extra){
+  return '<button class="t-opt' + (extra ? ' ' + extra : '') + '" type="button"'
+    + ' role="' + (item.multi ? "checkbox" : "radio") + '" aria-checked="false"'
+    + ' data-q="' + item.id + '" data-v="' + value + '"' + (item.multi ? ' data-multi' : '')
+    + ' tabindex="-1">'
+    + '<span class="t-opt-key" aria-hidden="true">' + key + '</span>'
+    + '<span class="t-opt-label">' + esc(label) + '</span>'
+    + '<span class="t-opt-mark" aria-hidden="true"><i>Select</i><b>Selected</b></span>'
+    + '</button>';
+}
+
+/* The arrow keys, one group at a time. The first option of each group is
+   the group's single tab stop until something is chosen. */
+Array.prototype.forEach.call(document.querySelectorAll('.t-opts'), function(group){
+  OpsTool.radioGroup(group);
+  var first = group.querySelector('.t-opt');
+  if (first) first.tabIndex = 0;
+});
+
+/* ---------- which screens this respondent sees ----------
+   The flow is told the ids, not the indexes, so changing the answer to
+   question one re-cuts the list underneath the visitor without moving
+   them off the screen they are standing on. */
+function steps(){
+  var ids = ["intro"];
+  Q.forEach(function(item){
+    if (item.role && item.role !== ROLE) return;
+    ids.push("q-" + item.id);
+  });
+  ids.push("result");
+  return ids;
+}
+
+/* The wording of six questions depends on who is answering, and the step
+   numeral depends on which questions are in the running order. Both are
+   re-applied whenever the role changes. */
+function applyWording(){
+  var ids = steps();
+  Q.forEach(function(item){
+    var screen = document.querySelector('[data-step="q-' + item.id + '"]');
+    if (!screen) return;
+
+    var text = (ROLE === "founder" && item.qF) ? item.qF
+             : (ROLE !== "founder" && item.qT) ? item.qT
+             : item.q;
+    screen.querySelector("[data-qtext]").textContent = text;
+
+    var at = ids.indexOf("q-" + item.id);
+    var numEl = screen.querySelector("[data-num]");
+    numEl.textContent = at > 0 ? (at < 10 ? "0" + at : String(at)) : "";
+  });
+}
+
+/* ---------- the flow ---------- */
+var flow = OpsTool.flow({
+  key: "ops-detox-diagnostic-v1",
+  steps: steps,
+  rail: document.getElementById("rail"),
+  railStep: document.getElementById("railStep"),
+  track: document.getElementById("track"),
+  announce: document.getElementById("announce"),
+
+  label: function(id, index, total){
+    if (id === "result") return "Your result";
+    if (index === 0) return ROLE === "founder" ? "About 6 minutes" : "About 4 minutes";
+    return "Question " + index + " of " + (total - 2);
+  },
+  progress: function(index, total){
+    return (index / Math.max(1, total - 1)) * 100;
+  },
+  progressText: function(id, index, total){
+    if (id === "result") return "Complete";
+    return "Question " + index + " of " + (total - 2);
+  },
+  announcement: function(id, index, total){
+    if (id === "result") return "Your result.";
+    if (index === 0) return "Introduction.";
+    return "Question " + index + " of " + (total - 2) + ".";
+  },
+
+  onEnter: function(id){
+    if (id === "result") render();
+  },
+
+  serialize: function(){
+    return { role:ROLE, a:state.a, multi:state.multi, free:state.free };
+  },
+  restore: function(saved){
+    if (!saved) return false;
+    ROLE = saved.role === "team" ? "team" : "founder";
+    state.a = saved.a || {};
+    state.multi = saved.multi || {};
+    state.free = saved.free || null;
+    applyWording();
+    syncUi();
+    return true;
+  }
+});
+
+/* Put the saved answers back on the screens they came from. */
+function syncUi(){
+  Array.prototype.forEach.call(document.querySelectorAll(".t-opt"), function(option){
+    var qid = option.getAttribute("data-q");
+    var raw = option.getAttribute("data-v");
+    var on;
+
+    if (option.hasAttribute("data-multi")){
+      on = (state.multi[qid] || []).indexOf(parseInt(raw, 10)) > -1;
+    } else if (raw === "null"){
+      on = state.a[qid] === null;
+    } else {
+      on = state.a[qid] === parseInt(raw, 10);
+    }
+
+    option.setAttribute("aria-checked", on ? "true" : "false");
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".t-opts"), function(group){
+    var all = Array.prototype.slice.call(group.querySelectorAll('[role="radio"],[role="checkbox"]'));
+    var checked = all.filter(function(o){ return o.getAttribute("aria-checked") === "true"; })[0];
+    all.forEach(function(o){ o.tabIndex = o === (checked || all[0]) ? 0 : -1; });
+  });
+
+  var ta = document.getElementById("freeText");
+  if (ta) ta.value = state.free || "";
+}
+
+/* ---------- interaction ---------- */
+document.addEventListener("click", function(event){
+  var hit = event.target.closest(
+    ".t-opt,[data-go],[data-next],[data-back],[data-finish],[data-restart],[data-download],#sendBtn"
+  );
+  if (!hit) return;
+
+  if (hit.hasAttribute("data-back") || hit.hasAttribute("data-go")) event.preventDefault();
+
+  if (hit.hasAttribute("data-restart")){ restart(); return; }
+
+  if (hit.hasAttribute("data-download")){
+    OpsTool.download("OPS Detox Diagnostic — result — " + OpsTool.stamp());
+    return;
+  }
+
+  if (hit.id === "sendBtn"){ send(); return; }
+
+  if (hit.hasAttribute("data-go")){ flow.next(); return; }
+  if (hit.hasAttribute("data-next")){ flow.next(); return; }
+  if (hit.hasAttribute("data-back")){ flow.back(); return; }
+
+  if (hit.hasAttribute("data-finish")){
+    if (!hit.hasAttribute("data-skip")){
+      var ta = document.getElementById("freeText");
+      if (ta && ta.value.trim()) state.free = ta.value.trim();
+    }
+    flow.go("result");
+    return;
+  }
+
+  if (hit.classList.contains("t-opt")) choose(hit);
+});
+
+function choose(option){
+  var qid = option.getAttribute("data-q");
+  var raw = option.getAttribute("data-v");
+
+  /* Several answers, no advance: the visitor says when they are done. */
+  if (option.hasAttribute("data-multi")){
+    var on = option.getAttribute("aria-checked") === "true";
+    option.setAttribute("aria-checked", on ? "false" : "true");
+    state.multi[qid] = state.multi[qid] || [];
+    var value = parseInt(raw, 10);
+    var at = state.multi[qid].indexOf(value);
+    if (on){
+      if (at > -1) state.multi[qid].splice(at, 1);
+    } else if (at === -1){
+      state.multi[qid].push(value);
+    }
+    flow.persist();
+    return;
+  }
+
+  state.a[qid] = (raw === "null") ? null : parseInt(raw, 10);
+
+  var group = option.parentNode.querySelectorAll(".t-opt");
+  Array.prototype.forEach.call(group, function(sibling){
+    sibling.setAttribute("aria-checked", sibling === option ? "true" : "false");
+    sibling.tabIndex = sibling === option ? 0 : -1;
+  });
+
+  /* Question one sets the role, which re-cuts the running order and the
+     wording of six later questions before the step forward happens. */
+  if (qid === "who"){
+    ROLE = (state.a.who === 0) ? "founder" : "team";
+    applyWording();
+    flow.refresh();
+  }
+
+  flow.persist();
+  window.setTimeout(function(){ flow.next(); }, OpsTool.reducedMotion.matches ? 0 : 190);
+}
+
+function restart(){
+  state = { a:{}, multi:{}, free:null };
+  ROLE = "founder";
+  applyWording();
+  syncUi();
+
+  var sendRow = document.getElementById("sendRow");
+  var sentMsg = document.getElementById("sentMsg");
+  sendRow.hidden = false;
+  document.getElementById("sendNote").hidden = false;
+  sentMsg.hidden = true;
+
+  flow.forget();
+  flow.refresh();
+  flow.go("intro");
+}
+
+function send(){
+  var field = document.getElementById("email");
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(field.value.trim())){
+    field.focus();
+    return;
+  }
+  /* WIRE THIS: POST the payload below to your backend, which stores it and
+     emails this result back to the address given. Still a stub by request. */
+  console.log("RESULT >", JSON.stringify(Object.assign({ email:field.value.trim() }, payload()), null, 2));
+
+  document.getElementById("sendRow").hidden = true;
+  document.getElementById("sendNote").hidden = true;
+  var sentMsg = document.getElementById("sentMsg");
+  sentMsg.textContent = "On its way to " + field.value.trim() + ".";
+  sentMsg.hidden = false;
+}
+
+/* ---------- scoring ---------- */
+function roomScores(){
+  return ROOMS.map(function(name){
+    var questions = Q.filter(function(q){ return q.room === name; });
+    var values = [], unknown = 0;
+
+    questions.forEach(function(q){
+      var value = state.a[q.id];
+      if (value === null || value === undefined) unknown++; else values.push(value);
+    });
+
+    return {
+      name: name,
+      unknown: unknown,
+      asked: questions.length,
+      pack: PACK[name],
+      mean: values.length ? values.reduce(function(a, b){ return a + b; }, 0) / values.length : null
+    };
+  });
+}
+
+function topRoom(){
+  var best = null;
+  roomScores().forEach(function(room){
+    if (room.mean !== null && (!best || room.mean > best.mean)) best = room;
+  });
+  return best ? best.name : null;
+}
+
+function routePackage(){
+  var operational = 0, organisational = 0, safety = null;
+
+  roomScores().forEach(function(room){
+    if (room.mean === null) return;
+    if (room.name === "Psychological safety") safety = room.mean;
+    if (room.pack === "operational") operational += room.mean;
+    else if (room.pack === "organisational") organisational += room.mean;
+  });
+
+  if (safety !== null && safety >= 2.0) return "Organisational Flow";
+  return organisational > operational ? "Organisational Flow" : "Operational Flow";
+}
+
+/* The payload carries what this respondent was actually asked. A visitor who
+   starts as the founder and switches to "I work here" leaves founder answers
+   behind in state; they are not shown and they are not scored, so they have
+   no business being reported either. */
+function payload(){
+  var answers = {};
+  Q.forEach(function(item){
+    if (item.role && item.role !== ROLE) return;
+    if (Object.prototype.hasOwnProperty.call(state.a, item.id)) answers[item.id] = state.a[item.id];
+  });
+
+  var multi = {};
+  if (ROLE === "founder"){
+    if (state.multi.f2) multi.f2 = state.multi.f2;
+    if (state.multi.f3) multi.f3 = state.multi.f3;
+  }
+
+  return { role:ROLE, answers:answers, multi:multi, freeText:state.free,
+           rooms:roomScores(), priorityRoom:topRoom(), package:routePackage() };
+}
+
+var TAKE = {
+  0:"You rarely take work back once you have handed it over. That is the habit most founders never build, and it is doing more for your company than any process you could install this quarter.",
+  1:"You take work back about once a month. Low enough to be a judgement call rather than a pattern.",
+  2:"You take work back about weekly. At that rate your people have learned something: handing it to you is faster than finishing it. They are not wrong, and that is the problem.",
+  3:"You take work back constantly. Your people are not failing to own things. They have worked out that ownership here is temporary, and they have stopped investing in it."
+};
+
+var FIRST = {
+  "Meetings":["Pick the recurring meeting with the most people in it and no named decision. Cancel it for three weeks. Not shorten, not restructure. Cancel.",
+              "What people rebuild in its place tells you what it was actually for, and most of the time nothing gets rebuilt at all."],
+  "Decisions":["Raise one approval threshold by a factor of ten, in writing, this week. Whatever figure currently waits on one desk, move it, and tell everyone it moved.",
+               "The point is not the money. It is that your people find out the ceiling can move, which is the thing they currently do not believe."],
+  "Reporting":["Take the recurring report your team spends longest on. Stop producing it for one month and tell nobody.",
+               "Count who asks. In most companies the answer is nobody, and that is the cheapest money you will ever recover."],
+  "Communication":["Pick the handoff that fails most often. Write down what the receiving side needs before work arrives. One page, agreed by both sides.",
+                   "Most handoff failures are not carelessness. Nobody ever wrote down what finished looks like."],
+  "Ownership":["Take the last thing that went wrong across two teams and write one name against the fix. Not a team, a person. Then say it out loud in the room.",
+               "Shared ownership is the most expensive kind. It reads as cooperation and behaves as nobody."],
+  "Psychological safety":["Ask one person you trust what the company has stopped telling you. Not in a meeting, not in a survey.",
+                          "Then do nothing with the answer except thank them. That is the whole exercise, and it is what makes the second answer come faster."],
+  "Tool stack":["List every tool anyone needs open on a normal day. Find the two that hold the same information and kill one.",
+                "Pick which one dies before anyone is asked to defend either, or you will end up keeping both."]
+};
+
+/* ---------- render ---------- */
+function render(){
+  var rooms = roomScores();
+  var scored = rooms.filter(function(room){ return room.mean !== null; });
+  var top = topRoom();
+  var pack = routePackage();
+  var isFounder = ROLE === "founder";
+
+  document.getElementById("printStamp").textContent =
+    "OPS Detox Diagnostic · " + OpsTool.stamp();
+
+  document.getElementById("rEyebrow").textContent =
+    isFounder ? "The room to look at first" : "The room to look at first · as you see it";
+
+  document.getElementById("rStat").textContent = top || "Not enough answers";
+
+  var topMean = top ? scored.filter(function(room){ return room.name === top; })[0].mean : null;
+  var tied = top ? scored.filter(function(room){ return Math.abs(room.mean - topMean) < 0.01; }) : [];
+
+  if (!top){
+    document.getElementById("rPer").textContent =
+      "You answered too few questions for a ranking to mean anything, which is itself worth knowing.";
+  } else if (tied.length > 1){
+    document.getElementById("rPer").textContent =
+      "It is level with " + andJoin(tied.filter(function(room){ return room.name !== top; })
+        .map(function(room){ return room.name.toLowerCase(); }))
+      + ". When everything scores the same the ranking is not telling you much, so start here because it is usually the cheapest to change, and expect the real answer to come from a conversation rather than a form.";
+  } else {
+    document.getElementById("rPer").textContent =
+      "Of the seven rooms, this is where your answers put the most weight. It is the one to look at first, and the only one worth looking at first.";
+  }
+
+  document.getElementById("rRooms").innerHTML = rooms.map(function(room){
+    var isTop = top && room.name === top;
+    var width = room.mean === null ? 0 : (room.mean / 3) * 100;
+    return '<div class="t-rank-row' + (isTop ? ' is-top' : '') + '">'
+      + '<span class="t-rank-name">' + esc(room.name) + '</span>'
+      + '<span class="t-rank-score">' + (room.mean === null ? "not known" : room.mean.toFixed(1) + " / 3") + '</span>'
+      + '<span class="t-rank-bar"><i style="--w:' + width + '%"></i></span>'
+      + '</div>';
+  }).join("");
+
+  var unknown = rooms.filter(function(room){ return room.unknown > 0; });
+  document.getElementById("rUnknown").innerHTML = unknown.length
+    ? "<b>What you could not answer.</b> " + esc(andJoin(unknown.map(function(room){ return room.name; })))
+      + ". Those are not gaps in the questions. They are rooms you cannot see into from where you sit, and somebody else here can answer every one of them."
+    : "<b>You answered all of them.</b> That is rarer than it sounds. It means your picture of how this place runs is complete, which is a different thing from being accurate.";
+
+  /* founder-only block */
+  var founderBlock = document.getElementById("founderBlock");
+  if (!isFounder){
+    founderBlock.hidden = true;
+  } else {
+    founderBlock.hidden = false;
+    document.getElementById("rTakeBack").textContent =
+      TAKE[state.a.f1] !== undefined ? TAKE[state.a.f1] : "";
+
+    var away = state.multi.f2 || [];
+    var want = state.multi.f3 || [];
+    var LABELS = ["Meetings","Decisions","Reporting","Communication","Ownership","what people were afraid to raise","Tools"];
+    var intruding = away.filter(function(value){
+      return value < 7 && want.indexOf(value) === -1;
+    }).map(function(value){ return LABELS[value]; });
+
+    var awayEl = document.getElementById("rAwayWant");
+    if (away.indexOf(7) > -1){
+      awayEl.innerHTML = "You said your last week away ran without you. Say that out loud more often. Most founders cannot, and the ones who can built something rather than became something.";
+    } else if (intruding.length){
+      awayEl.innerHTML = "While you were away, <b>" + esc(andJoin(intruding))
+        + "</b> came to you anyway, and none of it is on your own list of what you want to be in. "
+        + "That is not a people problem and it is not a discipline problem. It is a structure with nowhere else to send those things.";
+    } else {
+      awayEl.innerHTML = "What reached you while you were away matches what you said you want to be in. That is unusual, and it means the dependency is deliberate rather than accidental.";
+    }
+  }
+
+  var move = FIRST[top] || FIRST["Meetings"];
+  document.getElementById("rFirstMove").innerHTML = "<b>" + esc(move[0]) + "</b>";
+  document.getElementById("rFirstWhy").textContent = move[1];
+
+  document.getElementById("rKeep").textContent = isFounder
+    ? "Your seven rooms, the first move and what you could not answer, in one email. Worth having in writing before you take it to anyone else."
+    : "Your seven rooms and the first move, in one email. Yours to keep, and yours to decide whether to share.";
+
+  document.getElementById("rBook").innerHTML = isFounder
+    ? ("You have a ranking. What you do not have is the cause, and no form can hand you that. On these answers the work points at <b>"
+       + esc(pack) + "</b>, and thirty minutes is usually enough to know whether that is right.")
+    : ("If you are not the person who decides what changes here, this result is still worth passing up. "
+       + "And if you want to understand what it means before you do, thirty minutes is usually enough.");
+
+  document.getElementById("rFoot").innerHTML =
+    "<p>Scores are the mean of that room's two questions, on a scale of 0 to 3 where 0 is clean. Unanswered questions are excluded rather than scored, which is why a room can read \"not known\".</p>"
+    + "<p>There is no overall maturity percentage here, deliberately. It would invite you to argue with the method instead of with the company.</p>";
+}
+
+/* ---------- go ---------- */
+applyWording();
+flow.start();
+})();
+</script>
 </body>
 </html>

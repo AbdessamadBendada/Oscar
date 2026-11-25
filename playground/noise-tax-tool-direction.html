@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#143318">
+<meta name="robots" content="noindex">
+<title>The Noise Tax Calculator | OPS Detox</title>
+<link rel="icon" href="../assets/logo/favicon.png">
+<link rel="stylesheet" href="../css/site.css">
+<link rel="stylesheet" href="../css/premium.css">
+<link rel="stylesheet" href="../css/tool.css">
+<script>try{if(!matchMedia('(prefers-reduced-motion:reduce)').matches)document.documentElement.classList.add('premium-motion')}catch(e){}</script>
+
+<!--
+================================================================================
+  OPS DETOX  ·  THE NOISE TAX™ CALCULATOR
+  A standalone tool. Seven questions, a euro range, a result page.
+  Nothing follows it except an emailed copy and a booked call.
+
+  TWO PLACEHOLDERS STILL TO REPLACE
+    {{BOOKING_URL}}   the calendar link, in the result markup
+    "WIRE THIS"       where the email capture should POST
+  Both are deliberately still stubs: the client has parked the calendar and
+  the mailer until the direction is signed off.
+
+  THE ENGINE
+    Five costed questions each return recoverable hours per person per week.
+    They are summed, capped at 6.0, and multiplied out. The range is +/-25%.
+    Calibration check: 100 people, EUR 90k loaded, 5 hrs/wk = EUR 1.125M,
+    which reproduces the 12.5% of payroll figure in the economic model doc.
+    "I don't know" is excluded from the sum and lowers the stated confidence.
+    It is never scored as a bad answer.
+
+  WHAT IT MUST NEVER CLAIM
+    This is recovered CAPACITY, not cash saved. The copy says so and the
+    copy stays. Headcount does not disappear because three meetings do.
+
+  THE DESIGN
+    No local design system. The page is built out of the homepage's own
+    primitives, with everything the two tools share in css/tool.css and the
+    flow, focus, persistence and print behaviour in js/tool-kit.js. The block
+    below holds only what this page composes differently.
+================================================================================
+-->
+
+<style>
+  /* ---------- Intro ----------
+     Two lines, one offset. The question is short enough that a third
+     step would read as decoration rather than as a drawn shape. */
+  .tool-page .t-intro-h{--fs:clamp(42px,10.8vw,182px)}
+  .tool-page .t-intro-h span:nth-child(2){margin-left:16%}
+
+  /* The euro range is the longest display string either tool sets, so it
+     gets a slightly tighter ceiling than the shared .t-stat. */
+  .tool-page .t-stat{font-size:clamp(42px,8vw,142px)}
+
+  @media(max-width:760px){
+    .tool-page .t-intro-h{--fs:clamp(38px,12.4vw,74px)}
+    .tool-page .t-stat{font-size:clamp(34px,11.5vw,64px)}
+  }
+</style>
+</head>
+<body class="premium-page tool-page tool-page--noise">
+
+<div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading OPS DETOX">
+  <div class="pl-stage"><svg class="pl-logo" viewBox="0 0 621.97 192.97" aria-hidden="true" focusable="false"><g class="pl-word pl-word--ops"><path d="M88.64,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM88.64,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><path d="M133.93,67.62h-10.8v57.61h10.8v-18.94c12.31-.22,16.42-4.25,16.42-15.7v-7.27c0-11.59-4.1-15.7-16.42-15.7ZM139.54,90.59c0,4.18-1.44,4.9-5.62,4.9v-17.07c4.18,0,5.62.72,5.62,4.9v7.27Z"/><path d="M172.09,90.81c-4.03-3.1-5.9-4.75-5.9-8.93,0-2.74.58-4.18,2.23-4.18s2.52,1.44,2.52,7.06h10.8c0-12.31-4.25-17.86-13.32-17.86s-13.03,5.54-13.03,14.98c0,10.87,5.54,14.33,10.8,18.58,4.75,3.89,5.47,5.62,5.47,9.79,0,3.46-.43,4.9-2.45,4.9s-3.02-1.44-3.02-9.94h-10.8c0,16.63,4.39,20.74,13.83,20.74s13.25-5.54,13.25-15.7c0-10.87-4.32-14.83-10.37-19.44Z"/></g><g class="pl-mark"><path class="pl-pill" d="M296.94,59.05h-58.22c-19.67,0-35.58,16.76-35.58,37.44s15.91,37.44,35.58,37.44h58.22c19.65,0,35.58-16.76,35.58-37.44s-15.93-37.44-35.58-37.44Z"/><rect class="pl-track" x="213.56" y="67.72" width="108.54" height="57.56" rx="28.78"/><rect class="pl-well" x="223.99" y="78.15" width="87.68" height="36.70" rx="18.35"/><g class="pl-knob"><circle class="pl-ring" cx="242.34" cy="96.50" r="28.78"/><circle class="pl-dot" cx="242.34" cy="96.50" r="18.35"/></g></g><g class="pl-word pl-word--detox"><path d="M381.7,67.62h-28.66v57.61h28.66c15.19,0,27.22-5.69,27.22-26.5v-4.61c0-20.95-12.02-26.5-27.22-26.5ZM398.12,98.73c0,14.98-8.64,16.42-16.42,16.42h-17.86v-37.44h17.86c7.78,0,16.42,1.44,16.42,16.42v4.61Z"/><polygon points="413.96 125.23 434.48 125.23 434.48 114.43 424.76 114.43 424.76 101.83 434.48 101.83 434.48 91.02 424.76 91.02 424.76 78.42 434.48 78.42 434.48 67.62 413.96 67.62 413.96 125.23"/><polygon points="439.52 78.42 446.93 78.42 446.93 125.23 457.73 125.23 457.73 78.42 465.15 78.42 465.15 67.62 439.52 67.62 439.52 78.42"/><path d="M499.78,66.9c-18.94,0-29.59,13.54-29.59,29.45s10.66,29.59,29.59,29.59,29.45-13.54,29.45-29.59-10.66-29.45-29.45-29.45ZM499.78,115.87c-12.96,0-18.79-9.43-18.79-19.51s5.83-19.37,18.79-19.37,18.65,9.43,18.65,19.37-5.83,19.51-18.65,19.51Z"/><polygon points="562.93 67.62 551.41 67.62 547.16 88.5 542.91 67.62 531.39 67.62 539.96 96.42 531.39 125.23 542.91 125.23 547.16 104.35 551.41 125.23 562.93 125.23 554.36 96.42 562.93 67.62"/></g></svg></div>
+</div>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="../index.html" aria-label="OPS DETOX home"><img src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX"></a>
+    <nav class="site-nav" id="nav" aria-label="Main navigation">
+      <a href="../work-with-us.html">Work With Us</a>
+      <a href="../keynote.html">Keynote</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+    <a class="button button--small button--line header-cta" href="../contact.html">Let’s talk</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
+  </div>
+</header>
+
+<main id="main" class="tool-app">
+
+  <div class="t-rail" id="rail" hidden>
+    <div class="pr-wrap t-rail-inner">
+      <p class="t-rail-name">Noise Tax Calculator</p>
+      <p class="t-rail-step" id="railStep"></p>
+    </div>
+    <div class="t-track" id="track" role="progressbar" aria-label="Progress through the calculator"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+  </div>
+
+  <p class="t-announce" id="announce" role="status" aria-live="polite"></p>
+
+  <!-- ============== INTRO ============== -->
+  <section class="t-screen t-intro" data-step="intro" aria-labelledby="intro-heading">
+    <div class="t-intro-bg">
+      <img src="../assets/img/work-whiteboard.jpg" width="1370" height="1148" alt="" fetchpriority="high">
+    </div>
+
+    <div class="pr-wrap t-intro-inner">
+      <h1 class="pr-h t-intro-h hm hm-lines" id="intro-heading" data-focus tabindex="-1">
+        <span>What is noise</span>
+        <span>costing you?</span>
+      </h1>
+
+      <div class="t-intro-foot">
+        <div class="hm hm-copy">
+          <p class="pr-copy">Seven questions about how your company actually works. At the end you get a range, the arithmetic behind it, and the one room to look in first.</p>
+          <div class="t-actions">
+            <button class="button button--line" type="button" data-go>Calculate my Noise Tax</button>
+            <a class="button t-btn-ghost" href="../contact.html">Rather just talk</a>
+          </div>
+        </div>
+        <div class="hm hm-copy">
+          <p class="pr-kicker">Free · ninety seconds · no email first</p>
+          <p class="t-micro">Answer as the founder or the person who runs the company. If you do not know something, say so: guessing makes the number worse, not better. Your answers stay in this browser until you close the tab.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SCALE ============== -->
+  <section class="t-screen t-q" data-step="scale" aria-labelledby="scale-heading">
+    <div class="pr-wrap t-q-head">
+      <span class="t-q-num" aria-hidden="true">01</span>
+      <div>
+        <span class="pr-kicker">First, the scale</span>
+        <h2 class="pr-h t-q-h" id="scale-heading" data-focus tabindex="-1">Two numbers to size it</h2>
+      </div>
+    </div>
+
+    <div class="pr-bleed t-fields">
+      <div class="t-field">
+        <label for="hc">How many people work in the company?</label>
+        <p class="t-field-sub" id="hc-sub">Everyone on the payroll, full time equivalent.</p>
+        <input id="hc" type="number" min="1" max="20000" inputmode="numeric" placeholder="120" aria-describedby="hc-sub">
+      </div>
+      <div class="t-field">
+        <label for="cost">Average loaded cost per person, per year</label>
+        <p class="t-field-sub" id="cost-sub">Salary plus employer costs, in euro. Leave the default if you are not sure. Change it if you know better.</p>
+        <input id="cost" type="number" min="10000" max="500000" step="1000" value="90000" aria-describedby="cost-sub">
+      </div>
+    </div>
+
+    <div class="pr-wrap">
+      <div class="t-nav">
+        <button class="button button--line" type="button" id="ctxNext" disabled data-next>Continue</button>
+        <button class="pr-text-link" type="button" data-back>Back</button>
+      </div>
+      <p class="t-hint" id="ctxHint">Both figures are needed before the arithmetic can start. Nothing here leaves your browser.</p>
+    </div>
+  </section>
+
+  <!-- Question screens are built by the engine below. -->
+  <div id="qHost"></div>
+
+  <!-- ============== RESULT ============== -->
+  <section class="t-screen t-result" data-step="result" aria-labelledby="rRange">
+
+    <div class="t-result-hero">
+      <div class="pr-wrap">
+        <div class="t-print-head">
+          <img src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+          <p id="printStamp">The Noise Tax Calculator</p>
+        </div>
+
+        <p class="pr-kicker">Your Noise Tax™, provisional · recoverable capacity per year</p>
+        <h2 class="pr-h t-stat" id="rRange" data-focus tabindex="-1">&nbsp;</h2>
+        <div class="t-result-foot">
+          <p class="pr-copy" id="rPer"></p>
+          <div class="t-no-print">
+            <div class="t-actions">
+              <button class="button button--line" type="button" data-download>Download the result</button>
+              <button class="button t-btn-ghost" type="button" data-restart>Start again</button>
+            </div>
+            <p class="t-micro">Download opens your browser’s print dialogue. Choose “Save as PDF” as the destination and you get the figures and the workings as a file you can keep or send on.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pr-wrap t-blocks">
+
+      <section class="t-block">
+        <h3>How that number was built</h3>
+        <div class="t-block-body">
+          <div class="t-chain" id="rChain"></div>
+          <p class="t-note" id="rConfidence"></p>
+        </div>
+      </section>
+
+      <section class="t-block">
+        <h3>Where it sits</h3>
+        <div class="t-block-body">
+          <div class="t-rank" id="rRooms"></div>
+          <p class="t-note" id="rRoomNote"></p>
+        </div>
+      </section>
+
+      <section class="t-block">
+        <h3>Your own week</h3>
+        <div class="t-block-body">
+          <p class="pr-copy" id="rFounder"></p>
+          <p class="pr-copy" id="rAway"></p>
+        </div>
+      </section>
+
+      <section class="t-block">
+        <h3>What this is not</h3>
+        <div class="t-block-body">
+          <p class="pr-copy">This is <b>recovered capacity, not cash saved</b>. Nobody leaves the payroll because three meetings stop. What you get back is hours, and hours turn into work the company would otherwise hire for, decisions that happen this week instead of next month, and evenings that belong to you.</p>
+          <p class="pr-copy">It is also <b>provisional</b>. It rests on seven answers from one person, and that person is the one furthest from the floor. The next step is the part you cannot do alone.</p>
+        </div>
+      </section>
+
+      <section class="t-block t-no-print">
+        <h3 id="nextH">Keep this</h3>
+        <div class="t-block-body">
+          <p class="pr-copy" id="nextP"></p>
+          <!-- WIRE THIS. The field is live and the POST is not: see the engine. -->
+          <div class="t-send" id="sendRow">
+            <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com" aria-label="Your email address">
+            <button class="button button--line" type="button" id="sendBtn">Email me this result</button>
+          </div>
+          <p class="t-sent" id="sentMsg" hidden></p>
+          <p class="t-micro" id="sendNote">One email with your figures and the workings behind them. No sequence, no newsletter, and it goes nowhere else. <a class="pr-text-link" href="../privacy.html">How we handle it</a></p>
+        </div>
+      </section>
+
+      <section class="t-block t-no-print" id="bookBlock">
+        <h3>Talk it through</h3>
+        <div class="t-block-body">
+          <p class="pr-copy" id="bookP"></p>
+          <div class="t-actions">
+            <!-- REPLACE {{BOOKING_URL}} with the real calendar link -->
+            <a class="button button--line" href="{{BOOKING_URL}}">Book thirty minutes</a>
+          </div>
+          <p class="t-micro">Thirty minutes, live, with Oscar. Not a pitch deck and not another PDF.</p>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="pr-wrap t-foot-note">
+      <p><b>Assumptions.</b> 46 productive weeks a year, 40 hours a week. Hourly cost derived from the loaded figure you entered. The range is the central estimate plus or minus 25 per cent.</p>
+      <p>The Noise Tax™ is a measurement method, not an accounting standard. Every figure here is a range with its workings shown, because a number you cannot inspect is a number you should not trust.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img class="footer-logo" src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+        <div class="footer-social">
+          <a href="#" aria-label="LinkedIn"><img src="../assets/social/linkedin.svg" alt=""></a>
+          <a href="#" aria-label="Instagram"><img src="../assets/social/instagram.svg" alt=""></a>
+          <a href="#" aria-label="YouTube"><img src="../assets/social/youtube.svg" alt=""></a>
+        </div>
+      </div>
+
+      <form data-demo-form data-success-message="Subscribed. Demo only, no email is sent yet.">
+        <h2>Newsletter</h2>
+        <div class="field">
+          <input type="text" name="name" placeholder="NAME" aria-label="Name" data-label="Name" required>
+          <span class="field-error" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <input type="email" name="email" placeholder="EMAIL" aria-label="Email" data-label="Email" required>
+          <span class="field-error" aria-live="polite"></span>
+        </div>
+        <button type="submit">Subscribe</button>
+        <p class="footer-status" role="status"></p>
+      </form>
+
+      <div>
+        <h2>Contact</h2>
+        <p><b>EMAIL</b><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p>
+        <p><b>PHONE</b><a href="tel:+1234567890">(123) 456 7890</a></p>
+        <p><b>ADDRESS</b>123 Anywhere St.,<br>Any City 1234</p>
+      </div>
+
+      <div>
+        <h2>Legal</h2>
+        <a href="#">Imprint</a>
+        <a href="../terms.html">Terms and Conditions</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../cookies.html">Cookies</a>
+      </div>
+    </div>
+    <p class="footer-legal">© 2026 OPS Detox™. Oscar de Grauw. Placeholder contact details and legal links pending client input.</p>
+  </div>
+</footer>
+
+<div class="pb" aria-hidden="true">
+  <div class="pb-row">
+    <div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div>
+  </div>
+  <div class="pb-row pb-row--b">
+    <div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div>
+  </div>
+</div>
+
+<script src="../js/site.js"></script>
+<script src="../js/premium-motion.js"></script>
+<script src="../js/tool-kit.js"></script>
+<script>
+(function(){
+"use strict";
+
+var esc = OpsTool.escapeHtml;
+
+/* ===========================================================================
+   QUESTIONS
+   weight = recoverable hours per person per week attributable to that answer.
+   null   = "I don't know". Excluded from the sum, lowers stated confidence.
+   room   = which detox module it maps to (for the ranking + routing).
+   pack   = "operational" or "organisational" — decides the package routed to.
+   =========================================================================== */
+var Q = [
+  { id:"meetings", room:"Meeting Detox", pack:"operational",
+    head:"Recurring meetings that end without a decision",
+    q:"In a normal week, how many hours does one of your people spend in them?",
+    opts:[
+      ["Under an hour",0.4],
+      ["One to two hours",1.0],
+      ["Three to four hours",1.8],
+      ["Five hours or more",2.6]
+    ]},
+
+  { id:"decisions", room:"Decision Detox", pack:"operational",
+    head:"A decision that needs your sign-off but not your expertise",
+    q:"How long does it usually wait?",
+    opts:[
+      ["It goes same day",0.15],
+      ["Two or three days",0.45],
+      ["About a week",0.80],
+      ["Two weeks or longer",1.20]
+    ]},
+
+  { id:"reporting", room:"Reporting Detox", pack:"operational",
+    head:"The recurring reports your people produce",
+    q:"How many of them lead to a decision you could name?",
+    opts:[
+      ["Nearly all of them",0.15],
+      ["About half",0.50],
+      ["A few",0.90],
+      ["Almost none",1.30]
+    ]},
+
+  { id:"handoffs", room:"Communication Detox", pack:"organisational",
+    head:"Work that comes back",
+    q:"How often does work return because the information needed was not there the first time?",
+    opts:[
+      ["Rarely",0.20],
+      ["About once a week",0.60],
+      ["Several times a week",1.00],
+      ["Most days",1.40]
+    ]},
+
+  { id:"knowledge", room:"Ownership Detox", pack:"organisational",
+    head:"When one person is away",
+    q:"How often does routine work stop because nobody else knows how to finish it?",
+    opts:[
+      ["Almost never",0.10],
+      ["Occasionally",0.35],
+      ["Regularly",0.70],
+      ["Constantly",1.00]
+    ]},
+
+  /* founder-only. Not in the per-person sum. Reported in hours and weeks. */
+  { id:"founder", room:null, pack:null, founderHours:true,
+    head:"Your own week",
+    q:"How many hours do you spend on work that someone else in the company could do?",
+    opts:[
+      ["Under five",3],
+      ["Five to ten",7.5],
+      ["Ten to twenty",15],
+      ["More than twenty",24]
+    ]},
+
+  /* continuity. Not costed. Drives the closing line and the routing tilt. */
+  { id:"away", room:null, pack:null, continuity:true,
+    head:"A full week away, no contact",
+    q:"What actually happens?",
+    opts:[
+      ["It runs. Nothing waits for me.",0],
+      ["A few things wait. Nothing breaks.",1],
+      ["Decisions pile up until I am back.",2],
+      ["People call me anyway.",3]
+    ]}
+];
+
+var WEEKS = 46, HRS = 40, CAP = 6.0, SPREAD = 0.25;
+var KEYS = ["A","B","C","D","E","F","G","H"];
+
+var state = { hc:null, cost:90000, a:{} };
+var host = document.getElementById("qHost");
+
+/* ---------- build the question screens ---------- */
+Q.forEach(function(item, i){
+  var screen = document.createElement("section");
+  screen.className = "t-screen t-q";
+  screen.setAttribute("data-step", "q-" + item.id);
+  screen.setAttribute("aria-labelledby", "qh-" + item.id);
+
+  var num = i + 2;   /* the scale screen is 01 */
+  var html = '<div class="pr-wrap t-q-head">'
+    + '<span class="t-q-num" aria-hidden="true">' + (num < 10 ? "0" + num : num) + '</span>'
+    + '<div><span class="pr-kicker">' + esc(item.head) + '</span>'
+    + '<h2 class="pr-h t-q-h" id="qh-' + item.id + '" data-focus tabindex="-1">' + esc(item.q) + '</h2></div>'
+    + '</div>'
+    + '<div class="pr-bleed t-opts" role="radiogroup" aria-labelledby="qh-' + item.id + '">';
+
+  item.opts.forEach(function(option, j){
+    html += optionRow(item, option[1], option[0], KEYS[j] || "·");
+  });
+  html += optionRow(item, "null", "I don't know", "?", "t-opt--unknown");
+
+  html += '</div><div class="pr-wrap">'
+    + '<div class="t-nav"><button class="pr-text-link" type="button" data-back>Back</button></div>'
+    + '<p class="t-hint">Saying you do not know is a real answer here. It lowers how confident the result claims to be, and it never counts against you.</p>'
+    + '</div>';
+
+  screen.innerHTML = html;
+  host.appendChild(screen);
+});
+
+function optionRow(item, value, label, key, extra){
+  return '<button class="t-opt' + (extra ? ' ' + extra : '') + '" type="button"'
+    + ' role="radio" aria-checked="false"'
+    + ' data-q="' + item.id + '" data-v="' + value + '" tabindex="-1">'
+    + '<span class="t-opt-key" aria-hidden="true">' + key + '</span>'
+    + '<span class="t-opt-label">' + esc(label) + '</span>'
+    + '<span class="t-opt-mark" aria-hidden="true"><i>Select</i><b>Selected</b></span>'
+    + '</button>';
+}
+
+Array.prototype.forEach.call(document.querySelectorAll('.t-opts'), function(group){
+  OpsTool.radioGroup(group);
+  var first = group.querySelector('.t-opt');
+  if (first) first.tabIndex = 0;
+});
+
+/* ---------- the flow ---------- */
+function steps(){
+  var ids = ["intro", "scale"];
+  Q.forEach(function(item){ ids.push("q-" + item.id); });
+  ids.push("result");
+  return ids;
+}
+
+var QUESTION_TOTAL = Q.length;
+
+var flow = OpsTool.flow({
+  key: "ops-noise-tax-v1",
+  steps: steps,
+  rail: document.getElementById("rail"),
+  railStep: document.getElementById("railStep"),
+  track: document.getElementById("track"),
+  announce: document.getElementById("announce"),
+
+  label: function(id, index){
+    if (id === "result") return "Your result";
+    if (id === "intro") return "7 questions · 90 seconds";
+    if (id === "scale") return "Setup";
+    return "Question " + (index - 1) + " of " + QUESTION_TOTAL;
+  },
+  progress: function(index, total){
+    return (index / Math.max(1, total - 1)) * 100;
+  },
+  progressText: function(id, index){
+    if (id === "result") return "Complete";
+    if (id === "scale") return "Setup";
+    return "Question " + (index - 1) + " of " + QUESTION_TOTAL;
+  },
+  announcement: function(id, index){
+    if (id === "result") return "Your result.";
+    if (id === "intro") return "Introduction.";
+    if (id === "scale") return "Setup. Two numbers to size it.";
+    return "Question " + (index - 1) + " of " + QUESTION_TOTAL + ".";
+  },
+
+  onEnter: function(id){
+    if (id === "result") render();
+  },
+
+  serialize: function(){
+    return { hc:state.hc, cost:state.cost, a:state.a };
+  },
+  restore: function(saved){
+    if (!saved) return false;
+    state.hc = typeof saved.hc === "number" ? saved.hc : null;
+    state.cost = typeof saved.cost === "number" ? saved.cost : 90000;
+    state.a = saved.a || {};
+
+    if (state.hc !== null) hcEl.value = state.hc;
+    costEl.value = state.cost;
+    checkCtx();
+    syncUi();
+    return true;
+  }
+});
+
+function syncUi(){
+  Array.prototype.forEach.call(document.querySelectorAll(".t-opt"), function(option){
+    var qid = option.getAttribute("data-q");
+    var raw = option.getAttribute("data-v");
+    var on = raw === "null"
+      ? state.a[qid] === null
+      : state.a[qid] === parseFloat(raw);
+    option.setAttribute("aria-checked", on ? "true" : "false");
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".t-opts"), function(group){
+    var all = Array.prototype.slice.call(group.querySelectorAll('[role="radio"]'));
+    var checked = all.filter(function(o){ return o.getAttribute("aria-checked") === "true"; })[0];
+    all.forEach(function(o){ o.tabIndex = o === (checked || all[0]) ? 0 : -1; });
+  });
+}
+
+/* ---------- the scale screen ---------- */
+var hcEl = document.getElementById("hc");
+var costEl = document.getElementById("cost");
+var ctxBtn = document.getElementById("ctxNext");
+
+function checkCtx(){
+  var people = parseFloat(hcEl.value);
+  var cost = parseFloat(costEl.value);
+  var ok = people >= 1 && people <= 20000 && cost >= 10000 && cost <= 500000;
+  ctxBtn.disabled = !ok;
+  if (ok){
+    state.hc = Math.round(people);
+    state.cost = cost;
+    flow.persist();
+  }
+  return ok;
+}
+
+hcEl.addEventListener("input", checkCtx);
+costEl.addEventListener("input", checkCtx);
+
+/* Enter moves on from either field, as it would in a form. */
+[hcEl, costEl].forEach(function(field){
+  field.addEventListener("keydown", function(event){
+    if (event.key === "Enter" && checkCtx()){
+      event.preventDefault();
+      flow.next();
+    }
+  });
+});
+
+/* ---------- interaction ---------- */
+document.addEventListener("click", function(event){
+  var hit = event.target.closest(
+    ".t-opt,[data-go],[data-next],[data-back],[data-restart],[data-download],#sendBtn"
+  );
+  if (!hit) return;
+
+  if (hit.hasAttribute("data-restart")){ restart(); return; }
+
+  if (hit.hasAttribute("data-download")){
+    OpsTool.download("OPS Detox Noise Tax — result — " + OpsTool.stamp());
+    return;
+  }
+
+  if (hit.id === "sendBtn"){ send(); return; }
+
+  if (hit.hasAttribute("data-go") || hit.hasAttribute("data-next")){
+    if (hit.disabled) return;
+    flow.next();
+    return;
+  }
+  if (hit.hasAttribute("data-back")){ flow.back(); return; }
+
+  if (hit.classList.contains("t-opt")) choose(hit);
+});
+
+function choose(option){
+  var qid = option.getAttribute("data-q");
+  var raw = option.getAttribute("data-v");
+  state.a[qid] = (raw === "null") ? null : parseFloat(raw);
+
+  var group = option.parentNode.querySelectorAll(".t-opt");
+  Array.prototype.forEach.call(group, function(sibling){
+    sibling.setAttribute("aria-checked", sibling === option ? "true" : "false");
+    sibling.tabIndex = sibling === option ? 0 : -1;
+  });
+
+  flow.persist();
+  window.setTimeout(function(){ flow.next(); }, OpsTool.reducedMotion.matches ? 0 : 190);
+}
+
+function restart(){
+  state = { hc:null, cost:90000, a:{} };
+  hcEl.value = "";
+  costEl.value = 90000;
+  ctxBtn.disabled = true;
+  syncUi();
+
+  document.getElementById("sendRow").hidden = false;
+  document.getElementById("sendNote").hidden = false;
+  document.getElementById("sentMsg").hidden = true;
+
+  flow.forget();
+  flow.go("intro");
+}
+
+function send(){
+  var field = document.getElementById("email");
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(field.value.trim())){
+    field.focus();
+    return;
+  }
+  /* WIRE THIS: POST the payload below to your backend, which stores it and
+     emails this result back. The number was already on screen before the
+     address was asked for, and it must stay that way. Still a stub. */
+  console.log("RESULT >", JSON.stringify(Object.assign({ email:field.value.trim() }, payload()), null, 2));
+
+  document.getElementById("sendRow").hidden = true;
+  document.getElementById("sendNote").hidden = true;
+  var sentMsg = document.getElementById("sentMsg");
+  sentMsg.textContent = "On its way to " + field.value.trim() + ".";
+  sentMsg.hidden = false;
+}
+
+/* ---------- the engine ---------- */
+function compute(){
+  var costed = Q.filter(function(q){ return !q.founderHours && !q.continuity; });
+  var sum = 0, answered = 0, unknown = 0, rooms = [];
+
+  costed.forEach(function(q){
+    var value = state.a[q.id];
+    if (value === null || value === undefined){
+      unknown++;
+      rooms.push({ name:q.room, hrs:null, pack:q.pack });
+      return;
+    }
+    sum += value;
+    answered++;
+    rooms.push({ name:q.room, hrs:value, pack:q.pack });
+  });
+
+  var central = Math.min(sum, CAP);
+  var capped = sum > CAP;
+
+  var hourly = state.cost / (WEEKS * HRS);
+  var annualHours = central * WEEKS * (state.hc || 0);
+  var euro = annualHours * hourly;
+
+  var founderHours = state.a.founder;
+  var founder = (founderHours === null || founderHours === undefined) ? null
+    : { hrs:founderHours, weeksPerYear:(founderHours * WEEKS) / HRS };
+
+  return {
+    central:central, capped:capped, sum:sum,
+    answered:answered, unknown:unknown, totalCosted:costed.length,
+    hourly:hourly, annualHours:annualHours,
+    low:euro * (1 - SPREAD), mid:euro, high:euro * (1 + SPREAD),
+    pctPayroll:(central / HRS) * 100,
+    rooms:rooms, founder:founder, away:state.a.away
+  };
+}
+
+function payload(){
+  var r = compute();
+  return { headcount:state.hc, loadedCost:state.cost, answers:state.a,
+           hoursPerPersonPerWeek:r.central, rangeLow:Math.round(r.low),
+           rangeHigh:Math.round(r.high), unknowns:r.unknown,
+           priorityRoom:topRoom(r), package:routePackage(r) };
+}
+
+function eur(n){
+  if (n >= 1000000){
+    return "€" + (n / 1000000).toFixed(n < 10000000 ? 2 : 1).replace(/\.?0+$/, "") + "M";
+  }
+  return "€" + Math.round(n / 1000) + "k";
+}
+
+function topRoom(r){
+  var best = null;
+  r.rooms.forEach(function(room){
+    if (room.hrs !== null && (!best || room.hrs > best.hrs)) best = room;
+  });
+  return best ? best.name : null;
+}
+
+function routePackage(r){
+  var operational = 0, organisational = 0;
+  r.rooms.forEach(function(room){
+    if (room.hrs === null) return;
+    if (room.pack === "operational") operational += room.hrs;
+    else organisational += room.hrs;
+  });
+  if (r.away !== null && r.away !== undefined && r.away >= 2) organisational += 0.4;
+  return organisational > operational ? "Organisational Flow" : "Operational Flow";
+}
+
+function chainLine(label, value){
+  return '<div><span class="t-chain-label">' + esc(label) + '</span>'
+    + '<span class="t-chain-value">' + esc(value) + '</span></div>';
+}
+
+/* ---------- render ---------- */
+function render(){
+  var r = compute();
+
+  document.getElementById("printStamp").textContent =
+    "The Noise Tax Calculator · " + OpsTool.stamp();
+
+  /* too few answers to say anything */
+  if (r.answered < 3){
+    document.getElementById("rRange").textContent = "Not enough to say";
+    document.getElementById("rPer").textContent =
+      "You answered " + r.answered + " of " + r.totalCosted + " costed questions. Three is the minimum before a number means anything, and publishing one from two answers would be the kind of consulting arithmetic this company exists to argue with.";
+    document.getElementById("rChain").innerHTML = "";
+    document.getElementById("rConfidence").innerHTML = "<b>What to do.</b> The things you could not answer are the finding. Nobody running a company should have to guess at them, and the fact that you did is worth more than the number would have been.";
+    document.getElementById("rRooms").innerHTML = "";
+    document.getElementById("rRoomNote").textContent = "";
+  } else {
+    document.getElementById("rRange").textContent = eur(r.low) + " to " + eur(r.high);
+    document.getElementById("rPer").textContent =
+      "That is roughly " + r.central.toFixed(1) + " hours per person per week, or " +
+      r.pctPayroll.toFixed(1) + " per cent of what you spend on people, tied up in how the work runs rather than in the work itself.";
+
+    document.getElementById("rChain").innerHTML =
+        chainLine("People", state.hc.toLocaleString("en-GB"))
+      + chainLine("Loaded cost each", "€" + state.cost.toLocaleString("en-GB"))
+      + chainLine("Hourly, over 46 weeks", "€" + r.hourly.toFixed(2))
+      + chainLine("Recoverable hours, per person, per week", r.central.toFixed(1) + (r.capped ? " (capped)" : ""))
+      + chainLine("Hours a year across the company", Math.round(r.annualHours).toLocaleString("en-GB"))
+      + chainLine("Central estimate", eur(r.mid));
+
+    var confidence;
+    if (r.unknown === 0){
+      confidence = "<b>Confidence.</b> Built on all " + r.totalCosted + " costed answers.";
+    } else {
+      var missing = r.rooms.filter(function(room){ return room.hrs === null; })
+        .map(function(room){ return room.name.replace(" Detox", ""); });
+      confidence = "<b>Confidence.</b> Built on " + r.answered + " of " + r.totalCosted + " answers, so treat this as a floor rather than a figure. "
+        + "You could not answer for <b>" + esc(OpsTool.andJoin(missing)) + "</b>, which means the real number is higher than this one and that part of your operation is not visible from where you sit. That is a finding, not a gap in the form.";
+    }
+    if (r.capped){
+      confidence += " Your answers summed to " + r.sum.toFixed(1) + " hours. We held the estimate at " + CAP.toFixed(1) + ", because beyond that the arithmetic stops being credible and starts being a sales pitch.";
+    }
+    document.getElementById("rConfidence").innerHTML = confidence;
+
+    var max = 0;
+    r.rooms.forEach(function(room){ if (room.hrs !== null && room.hrs > max) max = room.hrs; });
+    var top = topRoom(r);
+
+    document.getElementById("rRooms").innerHTML = r.rooms.map(function(room){
+      var isTop = room.hrs !== null && room.name === top;
+      var width = (room.hrs === null || !max) ? 0 : (room.hrs / max) * 100;
+      return '<div class="t-rank-row' + (isTop ? ' is-top' : '') + '">'
+        + '<span class="t-rank-name">' + esc(room.name) + '</span>'
+        + '<span class="t-rank-score">' + (room.hrs === null ? "not known" : room.hrs.toFixed(2) + " h/wk") + '</span>'
+        + '<span class="t-rank-bar"><i style="--w:' + width + '%"></i></span>'
+        + '</div>';
+    }).join("");
+
+    document.getElementById("rRoomNote").innerHTML =
+      "<b>" + esc(top) + "</b> carries the most of it. That is the room to open first, and it is the only one worth opening first. "
+      + "A list of five problems produces a meeting about the list. One produces a change.";
+  }
+
+  /* founder block */
+  var founderEl = document.getElementById("rFounder");
+  if (r.founder){
+    founderEl.innerHTML = "You spend about <b>" + r.founder.hrs + " hours a week</b> on work somebody else here could do. "
+      + "Over a year that is <b>" + r.founder.weeksPerYear.toFixed(0) + " working weeks</b> of your own time, spent below the level you are worth. "
+      + "We have deliberately not put a euro figure on your hour, because any rate we invented would be the least defensible number on this page.";
+  } else {
+    founderEl.textContent = "You did not answer how much of your week goes on work somebody else could do. For most founders that is the single most expensive line, and not knowing it is itself the answer.";
+  }
+
+  var awayEl = document.getElementById("rAway");
+  var AWAY = {
+    0:"A full week away and nothing waits for you. That is rare, and it means the structure is doing the work rather than you. Protect it.",
+    1:"A week away and a few things wait. That is a working company with a founder still in a couple of loops he does not need to be in.",
+    2:"A week away and decisions pile up until you are back. The company is not slow. It is waiting, and it is waiting on one desk.",
+    3:"A week away and people call you anyway. There is no version of this where the problem is the people. They are routing around a structure that gives them nowhere else to go."
+  };
+  awayEl.textContent = (r.away === null || r.away === undefined) ? "" : AWAY[r.away];
+
+  /* the two closing blocks, with the disqualification path */
+  var pack = routePackage(r);
+  var topName = topRoom(r);
+  var nextH = document.getElementById("nextH");
+  var nextP = document.getElementById("nextP");
+  var bookP = document.getElementById("bookP");
+  var bookBlock = document.getElementById("bookBlock");
+
+  nextH.textContent = "Keep this";
+  nextP.innerHTML = (r.answered < 3)
+    ? "There is no figure to keep, but there is a finding. The questions you could not answer are the result, and they are worth having in writing before you go looking for the answers."
+    : "Your range, the arithmetic behind it and the room carrying most of it, in one email or one PDF. Worth having in writing before you take it to anyone else, because the workings are the part that survives scrutiny.";
+
+  if (state.hc !== null && state.hc < 20){
+    nextH.textContent = "Honestly, not yet";
+    nextP.innerHTML = "At " + state.hc + " people you do not have inherited process to strip. You have a founder doing everything, "
+      + "which is a different problem and a cheaper one to fix. Paying anyone to detox an operation this size would be money spent early. "
+      + "Come back at forty or fifty people, or when the second layer of managers arrives and the company starts getting slower as it gets bigger. "
+      + "Take the figures with you in the meantime.";
+    bookBlock.hidden = true;
+  } else {
+    bookBlock.hidden = false;
+    bookP.innerHTML = (r.answered < 3)
+      ? "Not knowing where the time goes is the most common answer there is, and it is the most useful one. Thirty minutes is usually enough to work out which room to look in first."
+      : ("You have a number. What you do not have is the cause, and that is not something a form can hand you. On these answers the weight sits in <b>"
+         + esc(topName || "your meetings") + "</b>, and the work it points at is <b>" + esc(pack) + "</b>.");
+  }
+}
+
+/* ---------- go ---------- */
+flow.start();
+})();
+</script>
+</body>
+</html>
