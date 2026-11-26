@@ -1,0 +1,266 @@
+/* ================================================================
+   OPS DETOX proprietary framework pages
+   Shared only by see-strip-choose.html, truth-latency.html and
+   drmt-model.html. The three pages share a visual grammar but keep
+   their own narrative device.
+   ================================================================ */
+
+.ip-page{
+  --ip-rule:rgba(20,51,24,.28);
+  --ip-rule-dark:rgba(254,253,242,.32);
+  background:var(--paper);color:var(--ink);
+}
+.ip-page *{box-sizing:border-box}
+.ip-page main{overflow:clip;background:var(--paper)}
+.ip-page .ip-shell{width:min(1600px,calc(100% - 96px));margin-inline:auto}
+.ip-page .ip-section{padding:clamp(88px,9vw,158px) 0}
+.ip-page .ip-kicker{
+  display:block;margin:0 0 24px;
+  font:clamp(16px,1.15vw,21px)/1 var(--display);
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.ip-page .ip-title{
+  margin:0;font:clamp(62px,9.7vw,176px)/.77 var(--display);
+  letter-spacing:-.018em;text-transform:uppercase;
+}
+.ip-page .ip-title--truth{white-space:nowrap}
+.ip-page .ip-section-title{
+  margin:0;font:clamp(52px,7vw,126px)/.79 var(--display);
+  letter-spacing:-.016em;text-transform:uppercase;text-wrap:balance;
+  overflow-wrap:normal;
+}
+.ip-page .ip-section-title--compact{font-size:clamp(48px,5.4vw,94px);line-height:.84}
+.ip-page .ip-section-title--feature{font-size:clamp(50px,6.2vw,112px);line-height:.82}
+.ip-page .ip-copy{margin:0;font-size:clamp(16px,1.05vw,19px);line-height:1.6}
+.ip-page .ip-rule-list{margin:0;padding:0;list-style:none;border-top:1px solid currentColor}
+.ip-page .ip-rule-list li{border-bottom:1px solid currentColor}
+.ip-page .ip-button{
+  display:inline-flex;align-items:center;justify-content:center;min-height:52px;
+  padding:11px 24px 9px;border:1px solid currentColor;border-radius:999px;
+  font:19px/1 var(--display);text-transform:uppercase;text-decoration:none;
+  transition:background .2s ease,color .2s ease;
+}
+.ip-page .ip-button--lime{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.ip-page .ip-button--lime:hover,.ip-page .ip-button--lime:focus-visible{background:transparent;color:var(--lime)}
+.ip-page .ip-button--line{background:transparent;color:var(--paper)}
+.ip-page .ip-button--line:hover,.ip-page .ip-button--line:focus-visible{background:var(--paper);color:var(--ink)}
+.ip-page .ip-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.ip-page .ip-reveal{opacity:0;transform:translateY(28px);transition:opacity .72s ease,transform .72s cubic-bezier(.2,.8,.2,1)}
+.ip-page .ip-reveal.is-in{opacity:1;transform:none}
+
+/* Hero */
+.ip-page .ip-hero{
+  min-height:calc(100svh - var(--header-h));padding:clamp(72px,7vw,116px) 0 0;
+  background:var(--ink);color:var(--paper);display:flex;overflow:hidden;
+}
+.ip-page .ip-hero .ip-shell{display:flex;flex-direction:column;justify-content:space-between}
+.ip-page .ip-hero-head{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);gap:7vw;align-items:end}
+.ip-page .ip-hero-head > *{min-width:0}
+.ip-page .ip-hero-copy{max-width:42ch;padding-bottom:12px}
+.ip-page .ip-hero-copy .ip-copy{color:rgba(254,253,242,.82)}
+.ip-page .ip-hero .is-lime{color:var(--lime)}
+.ip-page .ip-hero-device{margin-top:clamp(56px,7vw,104px)}
+
+/* See Strip Choose */
+.ip-page .ssc-hero-process{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ip-rule-dark)}
+.ip-page .ssc-hero-step{min-height:172px;padding:24px 28px 30px;border-right:1px solid var(--ip-rule-dark)}
+.ip-page .ssc-hero-step:last-child{border-right:0;background:var(--lime);color:var(--ink)}
+.ip-page .ssc-hero-step span{display:block;font:clamp(45px,4.4vw,78px)/.8 var(--display);text-transform:uppercase}
+.ip-page .ssc-hero-step p{margin:18px 0 0;font-size:16px;color:rgba(254,253,242,.72)}
+.ip-page .ssc-hero-step:last-child p{color:var(--ink)}
+.ip-page .ssc-problem-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);gap:8vw;align-items:end}
+.ip-page .ssc-problem .ip-section-title span{display:block}
+.ip-page .ssc-problem .ip-section-title span:nth-child(2){margin-left:12%}
+.ip-page .ssc-symptoms li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:22px;padding:22px 0}
+.ip-page .ssc-symptoms b,.ip-page .ip-need-list b{font:34px/1 var(--display)}
+.ip-page .ssc-symptoms p,.ip-page .ip-need-list p{margin:0;font-size:17px;line-height:1.5}
+.ip-page .ssc-method{background:var(--ink);color:var(--paper)}
+.ip-page .ssc-method-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.55fr);gap:8vw;align-items:end}
+.ip-page .ssc-method-head .ip-copy{color:rgba(254,253,242,.76)}
+.ip-page .ssc-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:72px;border-block:1px solid var(--ip-rule-dark)}
+.ip-page .ssc-stage{min-height:380px;padding:34px clamp(24px,3vw,50px);border-right:1px solid var(--ip-rule-dark)}
+.ip-page .ssc-stage:last-child{border-right:0;background:var(--lime);color:var(--ink)}
+.ip-page .ssc-stage-label{font:clamp(60px,6vw,100px)/.78 var(--display);text-transform:uppercase}
+.ip-page .ssc-stage h3{margin:42px 0 14px;font:30px/1 var(--display);text-transform:uppercase}
+.ip-page .ssc-stage p{margin:0;max-width:34ch;font-size:16px;line-height:1.55;color:rgba(254,253,242,.7)}
+.ip-page .ssc-stage:last-child p{color:var(--ink)}
+.ip-page .ssc-tracks{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:6vw;align-items:start}
+.ip-page .ssc-track-board{border-top:1px solid var(--ink)}
+.ip-page .ssc-track{display:grid;grid-template-columns:130px repeat(3,minmax(0,1fr));border-bottom:1px solid var(--ink)}
+.ip-page .ssc-track > *{padding:22px 18px;border-right:1px solid var(--ip-rule)}
+.ip-page .ssc-track > *:last-child{border-right:0}
+.ip-page .ssc-track strong{font:20px/1 var(--display);text-transform:uppercase}
+.ip-page .ssc-track span{font-size:15px;line-height:1.35}
+.ip-page .ssc-track--current{color:rgba(20,51,24,.55)}
+.ip-page .ssc-example{background:var(--panel)}
+.ip-page .ssc-example-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--ink)}
+.ip-page .ssc-example-card{padding:clamp(30px,4vw,62px)}
+.ip-page .ssc-example-card + .ssc-example-card{border-left:1px solid var(--ink)}
+.ip-page .ssc-example-card h3{margin:0 0 22px;font:38px/1 var(--display);text-transform:uppercase}
+.ip-page .ssc-example-card p{margin:0;font-size:17px;line-height:1.55}
+
+/* Truth Latency */
+.ip-page .truth-hero-route{display:grid;grid-template-columns:auto minmax(160px,1fr) auto minmax(90px,.28fr) auto;align-items:center;padding:30px 0 38px;border-top:1px solid var(--ip-rule-dark)}
+.ip-page .truth-node{min-width:126px}
+.ip-page .truth-node strong{display:block;font:clamp(28px,3vw,50px)/.9 var(--display);text-transform:uppercase}
+.ip-page .truth-node span{display:block;margin-top:9px;font-size:14px;color:rgba(254,253,242,.65)}
+.ip-page .truth-node--action strong,.ip-page .truth-live-node--action strong{color:var(--lime)}
+.ip-page .truth-link{position:relative;height:1px;margin:0 22px;background:rgba(254,253,242,.7)}
+.ip-page .truth-link::after{content:"";position:absolute;right:0;top:-4px;width:8px;height:8px;border-top:1px solid var(--paper);border-right:1px solid var(--paper);transform:rotate(45deg)}
+.ip-page .truth-link em{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font:22px/1 var(--display);font-style:normal;white-space:nowrap}
+.ip-page .truth-definition{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.72fr);gap:8vw;align-items:start}
+.ip-page .truth-equation{margin-top:54px;border-block:1px solid var(--ink);padding:26px 0;font:clamp(34px,4vw,70px)/.9 var(--display);text-transform:uppercase}
+.ip-page .truth-distinction{border-top:1px solid var(--ink)}
+.ip-page .truth-distinction article{padding:24px 0;border-bottom:1px solid var(--ink)}
+.ip-page .truth-distinction h3{margin:0 0 10px;font:28px/1 var(--display);text-transform:uppercase}
+.ip-page .truth-distinction p{margin:0;font-size:16px;line-height:1.5}
+.ip-page .truth-demo{background:var(--ink);color:var(--paper)}
+.ip-page .truth-demo-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.5fr);gap:8vw;align-items:end}
+.ip-page .truth-demo-head .ip-copy{color:rgba(254,253,242,.75)}
+.ip-page .truth-demo-control{appearance:none;margin-top:32px;padding:10px 20px 8px;border:1px solid var(--lime);border-radius:999px;background:var(--lime);color:var(--ink);font:18px/1 var(--display);text-transform:uppercase;cursor:pointer}
+.ip-page .truth-demo-control:hover,.ip-page .truth-demo-control:focus-visible{background:transparent;color:var(--lime)}
+.ip-page .truth-live-route{display:grid;grid-template-columns:auto minmax(260px,1fr) auto 130px auto;align-items:center;margin-top:72px;padding:50px 0;border-block:1px solid var(--ip-rule-dark);transition:grid-template-columns .65s cubic-bezier(.2,.8,.2,1)}
+.ip-page .truth-demo.is-compressed .truth-live-route{grid-template-columns:auto minmax(80px,.18fr) auto 130px auto}
+.ip-page .truth-live-node{min-width:130px}
+.ip-page .truth-live-node strong{display:block;font:42px/1 var(--display);text-transform:uppercase}
+.ip-page .truth-live-node span{display:block;margin-top:8px;font-size:14px;color:rgba(254,253,242,.62)}
+.ip-page .truth-live-gap{position:relative;height:1px;margin:0 24px;background:var(--paper)}
+.ip-page .truth-live-gap em{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font:30px/1 var(--display);font-style:normal;white-space:nowrap;color:var(--lime)}
+.ip-page .truth-demo.is-compressed .truth-live-gap--latency em{font-size:0}
+.ip-page .truth-demo.is-compressed .truth-live-gap--latency em::after{content:"8 HOURS";font:30px/1 var(--display)}
+.ip-page .truth-layers{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:6vw;align-items:start}
+.ip-page .truth-layer-list{border-top:1px solid var(--ink)}
+.ip-page .truth-layer{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:28px 0;border-bottom:1px solid var(--ink)}
+.ip-page .truth-layer h3{margin:0;font:29px/1 var(--display);text-transform:uppercase}
+.ip-page .truth-layer p{margin:0;font-size:16px;line-height:1.55}
+.ip-page .truth-example{background:var(--panel)}
+.ip-page .truth-example-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
+.ip-page .truth-example-grid article{padding:30px 28px;border-bottom:1px solid var(--ink);border-right:1px solid var(--ink)}
+.ip-page .truth-example-grid article:last-child{border-right:0}
+.ip-page .truth-example-grid strong{display:block;font:clamp(46px,5vw,88px)/.8 var(--display)}
+.ip-page .truth-example-grid span{display:block;margin-top:14px;font-size:15px;line-height:1.45}
+
+/* DRMT */
+.ip-page .drmt-hero-record{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ip-rule-dark)}
+.ip-page .drmt-hero-field{min-height:178px;padding:25px 26px;border-right:1px solid var(--ip-rule-dark)}
+.ip-page .drmt-hero-field:last-child{border-right:0;background:var(--lime);color:var(--ink)}
+.ip-page .drmt-hero-field strong{display:block;font:clamp(28px,3vw,48px)/.9 var(--display);text-transform:uppercase}
+.ip-page .drmt-hero-field span{display:block;margin-top:16px;font-size:15px;line-height:1.4;color:rgba(254,253,242,.66)}
+.ip-page .drmt-hero-field:last-child span{color:var(--ink)}
+.ip-page .drmt-problem{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.72fr);gap:8vw;align-items:end}
+.ip-page .drmt-before-after{border:1px solid var(--ink)}
+.ip-page .drmt-ba-row{padding:28px 30px}
+.ip-page .drmt-ba-row + .drmt-ba-row{border-top:1px solid var(--ink)}
+.ip-page .drmt-ba-row span{display:block;margin-bottom:12px;font:20px/1 var(--display);text-transform:uppercase}
+.ip-page .drmt-ba-row p{margin:0;font-size:16px;line-height:1.5}
+.ip-page .drmt-model{background:var(--ink);color:var(--paper)}
+.ip-page .drmt-model-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.55fr);gap:8vw;align-items:end}
+.ip-page .drmt-model-head .ip-copy{color:rgba(254,253,242,.72)}
+.ip-page .drmt-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:70px;border:1px solid var(--ip-rule-dark)}
+.ip-page .drmt-field{min-height:390px;padding:34px clamp(22px,2.7vw,44px);border-right:1px solid var(--ip-rule-dark)}
+.ip-page .drmt-field:last-child{border-right:0;background:var(--lime);color:var(--ink)}
+.ip-page .drmt-field b{font:clamp(62px,6vw,108px)/.75 var(--display);font-weight:400}
+.ip-page .drmt-field h3{margin:50px 0 16px;font:32px/1 var(--display);text-transform:uppercase}
+.ip-page .drmt-field p{margin:0;font-size:15px;line-height:1.55;color:rgba(254,253,242,.68)}
+.ip-page .drmt-field:last-child p{color:var(--ink)}
+.ip-page .drmt-example{background:var(--panel)}
+.ip-page .drmt-record{border:1px solid var(--ink)}
+.ip-page .drmt-record-row{display:grid;grid-template-columns:190px minmax(0,1fr)}
+.ip-page .drmt-record-row + .drmt-record-row{border-top:1px solid var(--ink)}
+.ip-page .drmt-record-row h3{margin:0;padding:26px 28px;border-right:1px solid var(--ink);font:27px/1 var(--display);text-transform:uppercase}
+.ip-page .drmt-record-row p{margin:0;padding:25px 30px;font-size:16px;line-height:1.55}
+
+/* One documentary image per page. It supports the example rather than
+   becoming a decorative hero. */
+.ip-page .ip-photo{margin:clamp(50px,6vw,92px) 0 0;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr);border:1px solid var(--ink);background:var(--paper)}
+.ip-page .ip-photo-media{min-height:clamp(330px,46vw,720px);overflow:hidden}
+.ip-page .ip-photo picture{display:block;width:100%;height:100%}
+.ip-page .ip-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.ip-page .ip-photo-copy{display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(26px,4vw,58px);border-left:1px solid var(--ink)}
+.ip-page .ip-photo-number{margin-bottom:auto;font:clamp(56px,7vw,120px)/.8 var(--display)}
+.ip-page .ip-photo-copy h3{margin:40px 0 16px;font:clamp(30px,3.3vw,54px)/.9 var(--display);text-transform:uppercase}
+.ip-page .ip-photo-copy p{margin:0;font-size:16px;line-height:1.55}
+.ip-page .ip-photo + .ssc-example-grid,
+.ip-page .ip-photo + .truth-example-grid,
+.ip-page .ip-photo + .drmt-record{margin-top:clamp(42px,5vw,72px)}
+
+/* Recognition, testimonial placeholder and close */
+.ip-page .ip-need{background:var(--paper)}
+.ip-page .ip-need-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6vw;align-items:start}
+.ip-page .ip-need-list li{display:grid;grid-template-columns:42px minmax(0,1fr);gap:26px;padding:27px 0}
+.ip-page .ip-testimonial{padding:clamp(82px,8vw,132px) 0;background:var(--paper)}
+.ip-page .ip-quote{max-width:1240px;margin:0 auto;padding:0 clamp(24px,5vw,80px);text-align:center}
+.ip-page .ip-quote-label{display:block;margin-bottom:28px;font:17px/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ip-page .ip-quote blockquote{margin:0;font:clamp(38px,5vw,84px)/.92 var(--display);text-transform:uppercase;text-wrap:balance}
+.ip-page .ip-quote-attribution{margin:28px 0 0;font-size:15px;color:var(--muted)}
+.ip-page .ip-close{padding:clamp(92px,10vw,170px) 0;background:var(--ink);color:var(--paper)}
+.ip-page .ip-close-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.45fr);gap:8vw;align-items:end}
+.ip-page .ip-close .ip-section-title{font-size:clamp(50px,6.2vw,106px);line-height:.82;color:var(--paper)}
+.ip-page .ip-close .ip-section-title--close-long{font-size:clamp(48px,5.25vw,84px)}
+.ip-page .ip-close .ip-section-title--close-long .is-lime{white-space:nowrap}
+.ip-page .ip-close .ip-section-title .is-lime{color:var(--lime)}
+.ip-page .ip-close-copy .ip-copy{color:rgba(254,253,242,.72)}
+
+@media(max-width:1100px){
+  .ip-page .ip-hero-head,.ip-page .ssc-method-head,.ip-page .truth-demo-head,.ip-page .drmt-model-head,.ip-page .ip-close-grid{grid-template-columns:1fr;gap:36px}
+  .ip-page .ip-hero-copy{max-width:58ch}
+  .ip-page .ssc-problem-grid,.ip-page .ssc-tracks,.ip-page .truth-definition,.ip-page .truth-layers,.ip-page .drmt-problem,.ip-page .ip-need-grid{grid-template-columns:1fr;gap:58px}
+  .ip-page .ssc-stages,.ip-page .drmt-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ip-page .ssc-stage:nth-child(2),.ip-page .drmt-field:nth-child(2){border-right:0}
+  .ip-page .ssc-stage:nth-child(n+3),.ip-page .drmt-field:nth-child(n+3){border-top:1px solid var(--ip-rule-dark)}
+  .ip-page .truth-live-route{grid-template-columns:auto minmax(120px,1fr) auto 90px auto}
+}
+
+@media(max-width:760px){
+  .ip-page .ip-shell{width:calc(100% - 36px)}
+  .ip-page .ip-section{padding:76px 0}
+  .ip-page .ip-hero{min-height:auto;padding-top:68px}
+  .ip-page .ip-title{font-size:clamp(58px,19vw,90px)}
+  .ip-page .ip-section-title{font-size:clamp(48px,15vw,74px)}
+  .ip-page .ip-title--truth{font-size:clamp(54px,14.4vw,58px)}
+  .ip-page .ip-section-title--compact{font-size:clamp(40px,10.8vw,48px);line-height:.86}
+  .ip-page .ip-section-title--feature{font-size:clamp(44px,13vw,58px);line-height:.84}
+  .ip-page .ip-hero-device{margin-top:54px}
+  .ip-page .ssc-hero-process,.ip-page .drmt-hero-record{grid-template-columns:1fr}
+  .ip-page .ssc-hero-step,.ip-page .drmt-hero-field{min-height:auto;border-right:0;border-bottom:1px solid var(--ip-rule-dark)}
+  .ip-page .ssc-hero-step:last-child,.ip-page .drmt-hero-field:last-child{border-bottom:0}
+  .ip-page .ssc-stages,.ip-page .drmt-fields{grid-template-columns:1fr}
+  .ip-page .ssc-stage,.ip-page .drmt-field{min-height:auto;border-right:0;border-top:1px solid var(--ip-rule-dark);padding-block:34px 46px}
+  .ip-page .ssc-stage:first-child,.ip-page .drmt-field:first-child{border-top:0}
+  .ip-page .ssc-stage h3,.ip-page .drmt-field h3{margin-top:32px}
+  .ip-page .ssc-track{grid-template-columns:1fr}
+  .ip-page .ssc-track > *{border-right:0;border-bottom:1px solid var(--ip-rule)}
+  .ip-page .ssc-track > *:last-child{border-bottom:0}
+  .ip-page .ssc-example-grid{grid-template-columns:1fr}
+  .ip-page .ssc-example-card + .ssc-example-card{border-left:0;border-top:1px solid var(--ink)}
+  .ip-page .truth-hero-route{grid-template-columns:1fr;padding-bottom:34px}
+  .ip-page .truth-node{padding:20px 0}
+  .ip-page .truth-link{width:1px;height:54px;margin:0 0 0 20px}
+  .ip-page .truth-link::after{right:-4px;top:auto;bottom:0;transform:rotate(135deg)}
+  .ip-page .truth-link em{left:22px;bottom:16px;transform:none}
+  .ip-page .truth-live-route,.ip-page .truth-demo.is-compressed .truth-live-route{grid-template-columns:1fr}
+  .ip-page .truth-live-node{padding:18px 0}
+  .ip-page .truth-live-gap{width:1px;height:68px;margin:0 0 0 20px}
+  .ip-page .truth-live-gap em{left:22px;bottom:24px;transform:none}
+  .ip-page .truth-layer{grid-template-columns:1fr;gap:12px}
+  .ip-page .truth-example-grid{grid-template-columns:1fr}
+  .ip-page .truth-example-grid article{border-right:0}
+  .ip-page .drmt-record-row{grid-template-columns:1fr}
+  .ip-page .drmt-record-row h3{border-right:0;border-bottom:1px solid var(--ink)}
+  .ip-page .ip-photo{grid-template-columns:1fr}
+  .ip-page .ip-photo-media{min-height:300px}
+  .ip-page .ip-photo-copy{border-left:0;border-top:1px solid var(--ink)}
+  .ip-page .ip-photo-number{margin-bottom:0}
+  .ip-page .ip-need-list li{grid-template-columns:34px minmax(0,1fr);gap:18px}
+  .ip-page .ip-testimonial{padding-block:76px}
+  .ip-page .ip-quote-label{max-width:30ch;margin-inline:auto;font-size:14px;line-height:1.15}
+  .ip-page .ip-quote blockquote{font-size:clamp(30px,9vw,40px);line-height:.96}
+  .ip-page .ip-quote-attribution{margin-top:22px}
+  .ip-page .ip-close .ip-section-title{font-size:clamp(42px,11.8vw,48px);line-height:.84}
+  .ip-page .ip-close .ip-section-title--close-long{font-size:clamp(34px,8.9vw,36px);line-height:.86}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ip-page .ip-reveal{opacity:1;transform:none;transition:none}
+  .ip-page .truth-live-route{transition:none}
+}

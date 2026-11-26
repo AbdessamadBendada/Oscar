@@ -1,6 +1,11 @@
 # OPS DETOX™ — Backlog
 
-_What we are waiting on, and who owns it. Last updated: 7 November 2026._
+_What we are waiting on, and who owns it. Last updated: 25 November 2026._
+
+> **25 Nov: the website's three-IP set is confirmed and applied.** See – Strip –
+> Choose™, Truth Latency™ and the DRMT Model™ now use the supplied workshop-guide
+> definitions in both duplicated framework sections. The DRMT expansion, CORE naming
+> and real framework wording asks in §C are closed. See HANDOFF §66.
 
 > **The site is live for review at <https://oscar.bendada.co>.** All eleven pages are on
 > one design system. Everything below is content, decisions or licensing — **none of it
@@ -125,9 +130,9 @@ in four tables; the names, providers and durations all come from the actual stac
 |---|---|---|
 | **Real testimonials, four, with attribution** | Four pages, each repeating them four times — **16 edits** | Long-standing |
 | **The two package names** — *The Execution package (Founder Bottleneck)* and *The Leadership package (Team Bottleneck)* | `work-with-us.html`, `index.html` | **29 Oct**, by email, still not applied anywhere |
-| **What DRMT™ stands for** | The Frameworks block, live on `index.html` | 15 Oct |
-| **Does See – Strip – Choose™ replace The CORE method™?** | Same block. CORE is still in the live copy but absent from his updated list | 15 Oct |
-| **Real wording for the three frameworks** | Same block — the current descriptions are drafted from old site copy, not his | 15 Oct |
+| ~~What DRMT™ stands for~~ | **DONE 25 Nov.** The supplied guide confirms **Decision, Reason, Metric and Trigger** and the website now uses **DRMT Model™** | 15 Oct |
+| ~~Does See – Strip – Choose™ replace The CORE method™?~~ | **DONE 25 Nov.** The website's three-IP set was confirmed; both live CORE references now use See – Strip – Choose™ | 15 Oct |
+| ~~Real wording for the three frameworks~~ | **DONE 25 Nov.** Both duplicated framework sections now use the supplied workshop-guide definitions and their placeholder notices are gone | 15 Oct |
 | **How many keynotes exist** | `keynote.html` §7 is a placeholder grid. The reference sells five; we know one, *Tracks of Time* | 1 Nov |
 | Copy and photographs for the other keynotes | Same | 1 Nov |
 | **Approved wording for the six About values** | `about.html` — currently filler | Long-standing |

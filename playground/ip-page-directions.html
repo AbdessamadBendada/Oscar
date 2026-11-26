@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143318">
+  <title>OPS Detox IP Page Directions</title>
+  <meta name="description" content="Review directions for three OPS Detox proprietary framework pages.">
+  <link rel="icon" href="../assets/logo/favicon.png">
+  <link rel="stylesheet" href="../css/site.css">
+  <link rel="stylesheet" href="../css/premium.css">
+
+  <!-- ==========================================================
+       REVIEW ARTEFACT ONLY. Three full-page IP directions in tabs.
+       Every prototype-specific rule is scoped to .ip-review here;
+       no live page or shared stylesheet depends on this file.
+       ========================================================== -->
+  <style>
+  .ip-review{
+    --ip-rule:rgba(20,51,24,.28);
+    --ip-rule-dark:rgba(254,253,242,.32);
+    background:var(--paper);color:var(--ink);
+  }
+  .ip-review *{box-sizing:border-box}
+  .ip-review main{overflow:clip;background:var(--paper)}
+  .ip-review .site-header{position:relative;top:auto}
+  .ip-review .ip-shell{
+    width:min(1600px,calc(100% - 96px));margin-inline:auto;
+  }
+  .ip-review .ip-section{padding:clamp(88px,9vw,158px) 0}
+  .ip-review .ip-kicker{
+    display:block;margin:0 0 24px;
+    font:clamp(16px,1.15vw,21px)/1 var(--display);
+    letter-spacing:.1em;text-transform:uppercase;
+  }
+  .ip-review .ip-title{
+    margin:0;font:clamp(62px,9.7vw,176px)/.77 var(--display);
+    letter-spacing:-.018em;text-transform:uppercase;
+  }
+  .ip-review .ip-section-title{
+    margin:0;font:clamp(52px,7vw,126px)/.79 var(--display);
+    letter-spacing:-.016em;text-transform:uppercase;
+  }
+  .ip-review .ip-subtitle{
+    margin:0;font:clamp(30px,3.8vw,68px)/.88 var(--display);
+    letter-spacing:-.01em;text-transform:uppercase;
+  }
+  .ip-review .ip-copy{
+    margin:0;font-size:clamp(16px,1.05vw,19px);line-height:1.6;
+  }
+  .ip-review .ip-copy + .ip-copy{margin-top:1.15em}
+  .ip-review .ip-rule-list{margin:0;padding:0;list-style:none;border-top:1px solid currentColor}
+  .ip-review .ip-rule-list li{border-bottom:1px solid currentColor}
+  .ip-review .ip-rule-list strong{font-family:var(--display);font-weight:400;text-transform:uppercase}
+  .ip-review .ip-button{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-height:52px;padding:11px 24px 9px;border:1px solid currentColor;
+    border-radius:999px;font:19px/1 var(--display);text-transform:uppercase;
+    text-decoration:none;transition:background .2s ease,color .2s ease;
+  }
+  .ip-review .ip-button--lime{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+  .ip-review .ip-button--lime:hover,.ip-review .ip-button--lime:focus-visible{
+    background:transparent;color:var(--lime);
+  }
+  .ip-review .ip-button--line{background:transparent;color:var(--paper)}
+  .ip-review .ip-button--line:hover,.ip-review .ip-button--line:focus-visible{
+    background:var(--paper);color:var(--ink);
+  }
+  .ip-review .ip-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+  .ip-review .ip-reveal{
+    opacity:0;transform:translateY(28px);
+    transition:opacity .72s ease,transform .72s cubic-bezier(.2,.8,.2,1);
+  }
+  .ip-review .ip-reveal.is-in{opacity:1;transform:none}
+
+  /* Review controls. This is staging furniture, not proposed live UI. */
+  .ip-review .review-toolbar{
+    position:sticky;top:0;z-index:1000;
+    display:grid;grid-template-columns:minmax(210px,1fr) auto minmax(210px,1fr);
+    align-items:center;gap:24px;min-height:58px;padding:8px 24px;
+    background:#08190b;color:var(--paper);border-bottom:1px solid rgba(254,253,242,.22);
+  }
+  .ip-review .review-label{
+    font:16px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;
+  }
+  .ip-review .review-label span{color:var(--lime)}
+  .ip-review .review-note{justify-self:end;margin:0;font-size:13px;color:rgba(254,253,242,.68)}
+  .ip-review .review-tabs{
+    display:flex;align-items:center;gap:6px;padding:4px;
+    border:1px solid rgba(254,253,242,.28);border-radius:999px;
+  }
+  .ip-review .review-tab{
+    appearance:none;border:0;border-radius:999px;background:transparent;color:var(--paper);
+    padding:8px 16px 7px;font:15px/1 var(--display);letter-spacing:.035em;text-transform:uppercase;
+    cursor:pointer;
+  }
+  .ip-review .review-tab[aria-selected="true"]{background:var(--lime);color:var(--ink)}
+  .ip-review .review-tab:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+  .ip-review .ip-panel[hidden]{display:none}
+  .ip-review .ip-panel.is-entering{animation:ip-panel-in .5s ease both}
+  @keyframes ip-panel-in{from{opacity:0}to{opacity:1}}
+
+  /* Shared hero structure. */
+  .ip-review .ip-hero{
+    min-height:calc(100svh - 126px);padding:clamp(72px,7vw,116px) 0 0;
+    background:var(--ink);color:var(--paper);display:flex;overflow:hidden;
+  }
+  .ip-review .ip-hero .ip-shell{display:flex;flex-direction:column;justify-content:space-between}
+  .ip-review .ip-hero-head{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);gap:7vw;align-items:end}
+  .ip-review .ip-hero-copy{max-width:42ch;padding-bottom:12px}
+  .ip-review .ip-hero-copy .ip-copy{color:rgba(254,253,242,.82)}
+  .ip-review .ip-hero .is-lime{color:var(--lime)}
+  .ip-review .ip-hero-device{margin-top:clamp(56px,7vw,104px)}
+
+  /* See Strip Choose. */
+  .ip-review .ssc-hero-process{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ip-rule-dark);
+  }
+  .ip-review .ssc-hero-step{
+    position:relative;min-height:172px;padding:24px 28px 30px;border-right:1px solid var(--ip-rule-dark);
+  }
+  .ip-review .ssc-hero-step:last-child{border-right:0;background:var(--lime);color:var(--ink)}
+  .ip-review .ssc-hero-step span{display:block;font:clamp(45px,4.4vw,78px)/.8 var(--display);text-transform:uppercase}
+  .ip-review .ssc-hero-step p{margin:18px 0 0;font-size:16px;color:rgba(254,253,242,.72)}
+  .ip-review .ssc-hero-step:last-child p{color:var(--ink)}
+  .ip-review .ssc-problem-grid{
+    display:grid;grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);gap:8vw;align-items:end;
+  }
+  .ip-review .ssc-problem .ip-section-title span{display:block}
+  .ip-review .ssc-problem .ip-section-title span:nth-child(2){margin-left:12%}
+  .ip-review .ssc-symptoms li{
+    display:grid;grid-template-columns:36px minmax(0,1fr);gap:22px;padding:22px 0;
+  }
+  .ip-review .ssc-symptoms b{font:34px/1 var(--display)}
+  .ip-review .ssc-symptoms p{margin:0;font-size:17px;line-height:1.45}
+  .ip-review .ssc-method{background:var(--ink);color:var(--paper)}
+  .ip-review .ssc-method-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.55fr);gap:8vw;align-items:end}
+  .ip-review .ssc-method-head .ip-copy{color:rgba(254,253,242,.76)}
+  .ip-review .ssc-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:72px;border-block:1px solid var(--ip-rule-dark)}
+  .ip-review .ssc-stage{min-height:380px;padding:34px clamp(24px,3vw,50px);border-right:1px solid var(--ip-rule-dark)}
+  .ip-review .ssc-stage:last-child{border-right:0;background:var(--lime);color:var(--ink)}
+  .ip-review .ssc-stage-label{font:clamp(64px,7.6vw,134px)/.76 var(--display);text-transform:uppercase}
+  .ip-review .ssc-stage h3{margin:42px 0 14px;font:30px/1 var(--display);text-transform:uppercase}
+  .ip-review .ssc-stage p{margin:0;max-width:34ch;font-size:16px;line-height:1.55;color:rgba(254,253,242,.7)}
+  .ip-review .ssc-stage:last-child p{color:var(--ink)}
+  .ip-review .ssc-tracks{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:8vw;align-items:start}
+  .ip-review .ssc-track-board{border-top:1px solid var(--ink)}
+  .ip-review .ssc-track{
+    display:grid;grid-template-columns:130px repeat(3,minmax(0,1fr));align-items:stretch;
+    border-bottom:1px solid var(--ink);
+  }
+  .ip-review .ssc-track > *{padding:22px 18px;border-right:1px solid var(--ip-rule)}
+  .ip-review .ssc-track > *:last-child{border-right:0}
+  .ip-review .ssc-track strong{font:20px/1 var(--display);text-transform:uppercase}
+  .ip-review .ssc-track span{font-size:15px;line-height:1.35}
+  .ip-review .ssc-track--current{color:rgba(20,51,24,.55)}
+  .ip-review .ssc-example{background:var(--panel)}
+  .ip-review .ip-example-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.72fr);gap:8vw;align-items:end}
+  .ip-review .ip-example-head .ip-copy{max-width:46ch}
+  .ip-review .ssc-example-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:64px;border:1px solid var(--ink)}
+  .ip-review .ssc-example-card{padding:clamp(30px,4vw,62px)}
+  .ip-review .ssc-example-card + .ssc-example-card{border-left:1px solid var(--ink)}
+  .ip-review .ssc-example-card h3{margin:0 0 22px;font:38px/1 var(--display);text-transform:uppercase}
+  .ip-review .ssc-example-card p{margin:0;font-size:17px;line-height:1.55}
+
+  /* Truth Latency. */
+  .ip-review .truth-hero-route{
+    display:grid;grid-template-columns:auto minmax(160px,1fr) auto minmax(90px,.28fr) auto;
+    align-items:center;padding:30px 0 38px;border-top:1px solid var(--ip-rule-dark);
+  }
+  .ip-review .truth-node{min-width:126px}
+  .ip-review .truth-node strong{display:block;font:clamp(28px,3vw,50px)/.9 var(--display);text-transform:uppercase}
+  .ip-review .truth-node span{display:block;margin-top:9px;font-size:14px;color:rgba(254,253,242,.65)}
+  .ip-review .truth-node--action strong{color:var(--lime)}
+  .ip-review .truth-link{position:relative;height:1px;margin:0 22px;background:rgba(254,253,242,.7)}
+  .ip-review .truth-link::after{content:"";position:absolute;right:0;top:-4px;width:8px;height:8px;border-top:1px solid var(--paper);border-right:1px solid var(--paper);transform:rotate(45deg)}
+  .ip-review .truth-link em{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font:22px/1 var(--display);font-style:normal;white-space:nowrap}
+  .ip-review .truth-definition{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.72fr);gap:8vw;align-items:start}
+  .ip-review .truth-equation{margin-top:54px;border-block:1px solid var(--ink);padding:26px 0;font:clamp(34px,4vw,70px)/.9 var(--display);text-transform:uppercase}
+  .ip-review .truth-distinction{border-top:1px solid var(--ink)}
+  .ip-review .truth-distinction article{padding:24px 0;border-bottom:1px solid var(--ink)}
+  .ip-review .truth-distinction h3{margin:0 0 10px;font:28px/1 var(--display);text-transform:uppercase}
+  .ip-review .truth-distinction p{margin:0;font-size:16px;line-height:1.5}
+  .ip-review .truth-demo{background:var(--ink);color:var(--paper)}
+  .ip-review .truth-demo-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.5fr);gap:8vw;align-items:end}
+  .ip-review .truth-demo-head .ip-copy{color:rgba(254,253,242,.75)}
+  .ip-review .truth-demo-control{
+    appearance:none;margin-top:32px;padding:10px 20px 8px;border:1px solid var(--lime);border-radius:999px;
+    background:var(--lime);color:var(--ink);font:18px/1 var(--display);text-transform:uppercase;cursor:pointer;
+  }
+  .ip-review .truth-demo-control:hover,.ip-review .truth-demo-control:focus-visible{background:transparent;color:var(--lime)}
+  .ip-review .truth-live-route{
+    display:grid;grid-template-columns:auto minmax(260px,1fr) auto 130px auto;
+    align-items:center;margin-top:72px;padding:50px 0;border-block:1px solid var(--ip-rule-dark);
+    transition:grid-template-columns .65s cubic-bezier(.2,.8,.2,1);
+  }
+  .ip-review .truth-demo.is-compressed .truth-live-route{grid-template-columns:auto minmax(80px,.18fr) auto 130px auto}
+  .ip-review .truth-live-node{min-width:130px}
+  .ip-review .truth-live-node strong{display:block;font:42px/1 var(--display);text-transform:uppercase}
+  .ip-review .truth-live-node span{display:block;margin-top:8px;font-size:14px;color:rgba(254,253,242,.62)}
+  .ip-review .truth-live-node--action strong{color:var(--lime)}
+  .ip-review .truth-live-gap{position:relative;height:1px;margin:0 24px;background:var(--paper)}
+  .ip-review .truth-live-gap em{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font:30px/1 var(--display);font-style:normal;white-space:nowrap;color:var(--lime)}
+  .ip-review .truth-demo.is-compressed .truth-live-gap--latency em::before{content:"8 HOURS";font-size:0}
+  .ip-review .truth-demo.is-compressed .truth-live-gap--latency em{font-size:0}
+  .ip-review .truth-demo.is-compressed .truth-live-gap--latency em::after{content:"8 HOURS";font:30px/1 var(--display)}
+  .ip-review .truth-layers{display:grid;grid-template-columns:minmax(0,.6fr) minmax(0,1.4fr);gap:8vw;align-items:start}
+  .ip-review .truth-layer-list{border-top:1px solid var(--ink)}
+  .ip-review .truth-layer{
+    display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:28px 0;border-bottom:1px solid var(--ink);
+  }
+  .ip-review .truth-layer h3{margin:0;font:29px/1 var(--display);text-transform:uppercase}
+  .ip-review .truth-layer p{margin:0;font-size:16px;line-height:1.55}
+  .ip-review .truth-example{background:var(--panel)}
+  .ip-review .truth-example-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:62px;border-top:1px solid var(--ink)}
+  .ip-review .truth-example-grid article{padding:30px 28px;border-bottom:1px solid var(--ink);border-right:1px solid var(--ink)}
+  .ip-review .truth-example-grid article:last-child{border-right:0}
+  .ip-review .truth-example-grid strong{display:block;font:clamp(46px,5vw,88px)/.8 var(--display)}
+  .ip-review .truth-example-grid span{display:block;margin-top:14px;font-size:15px;line-height:1.45}
+
+  /* DRMT. */
+  .ip-review .drmt-hero-record{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ip-rule-dark)}
+  .ip-review .drmt-hero-field{min-height:178px;padding:25px 26px;border-right:1px solid var(--ip-rule-dark)}
+  .ip-review .drmt-hero-field:last-child{border-right:0;background:var(--lime);color:var(--ink)}
+  .ip-review .drmt-hero-field strong{display:block;font:clamp(28px,3vw,48px)/.9 var(--display);text-transform:uppercase}
+  .ip-review .drmt-hero-field span{display:block;margin-top:16px;font-size:15px;line-height:1.4;color:rgba(254,253,242,.66)}
+  .ip-review .drmt-hero-field:last-child span{color:var(--ink)}
+  .ip-review .drmt-problem{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.72fr);gap:8vw;align-items:end}
+  .ip-review .drmt-before-after{border:1px solid var(--ink)}
+  .ip-review .drmt-ba-row{padding:28px 30px}
+  .ip-review .drmt-ba-row + .drmt-ba-row{border-top:1px solid var(--ink)}
+  .ip-review .drmt-ba-row span{display:block;margin-bottom:12px;font:20px/1 var(--display);text-transform:uppercase}
+  .ip-review .drmt-ba-row p{margin:0;font-size:16px;line-height:1.5}
+  .ip-review .drmt-model{background:var(--ink);color:var(--paper)}
+  .ip-review .drmt-model-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.55fr);gap:8vw;align-items:end}
+  .ip-review .drmt-model-head .ip-copy{color:rgba(254,253,242,.72)}
+  .ip-review .drmt-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:70px;border:1px solid var(--ip-rule-dark)}
+  .ip-review .drmt-field{min-height:390px;padding:34px clamp(22px,2.7vw,44px);border-right:1px solid var(--ip-rule-dark)}
+  .ip-review .drmt-field:last-child{border-right:0;background:var(--lime);color:var(--ink)}
+  .ip-review .drmt-field b{font:clamp(62px,6vw,108px)/.75 var(--display);font-weight:400}
+  .ip-review .drmt-field h3{margin:50px 0 16px;font:32px/1 var(--display);text-transform:uppercase}
+  .ip-review .drmt-field p{margin:0;font-size:15px;line-height:1.55;color:rgba(254,253,242,.68)}
+  .ip-review .drmt-field:last-child p{color:var(--ink)}
+  .ip-review .drmt-example{background:var(--panel)}
+  .ip-review .drmt-record{margin-top:62px;border:1px solid var(--ink)}
+  .ip-review .drmt-record-row{display:grid;grid-template-columns:190px minmax(0,1fr)}
+  .ip-review .drmt-record-row + .drmt-record-row{border-top:1px solid var(--ink)}
+  .ip-review .drmt-record-row h3{margin:0;padding:26px 28px;border-right:1px solid var(--ink);font:27px/1 var(--display);text-transform:uppercase}
+  .ip-review .drmt-record-row p{margin:0;padding:25px 30px;font-size:16px;line-height:1.55}
+
+  /* Shared recognition, proof and close. */
+  .ip-review .ip-need{background:var(--paper)}
+  .ip-review .ip-need-grid{display:grid;grid-template-columns:minmax(0,.65fr) minmax(0,1.35fr);gap:8vw;align-items:start}
+  .ip-review .ip-need-list li{
+    display:grid;grid-template-columns:42px minmax(0,1fr);gap:26px;padding:27px 0;
+  }
+  .ip-review .ip-need-list b{font:34px/1 var(--display)}
+  .ip-review .ip-need-list p{margin:0;font-size:17px;line-height:1.5}
+  .ip-review .ip-testimonial{padding:clamp(82px,8vw,132px) 0;background:var(--paper)}
+  .ip-review .ip-quote{max-width:1240px;margin:0 auto;padding:0 clamp(24px,5vw,80px);text-align:center}
+  .ip-review .ip-quote-label{display:block;margin-bottom:28px;font:17px/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .ip-review .ip-quote blockquote{margin:0;font:clamp(38px,5vw,84px)/.92 var(--display);text-transform:uppercase}
+  .ip-review .ip-quote footer{margin-top:28px;font-size:15px;color:var(--muted)}
+  .ip-review .ip-close{padding:clamp(92px,10vw,170px) 0;background:var(--ink);color:var(--paper)}
+  .ip-review .ip-close-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.45fr);gap:8vw;align-items:end}
+  .ip-review .ip-close .ip-section-title{color:var(--paper)}
+  .ip-review .ip-close .ip-section-title .is-lime{color:var(--lime)}
+  .ip-review .ip-close-copy .ip-copy{color:rgba(254,253,242,.72)}
+
+  /* Review footer. */
+  .ip-review > footer .footer-grid{grid-template-columns:1.1fr repeat(3,minmax(0,1fr))}
+  .ip-review .review-footer-note{max-width:30ch;font-size:15px;line-height:1.5;color:rgba(254,253,242,.72)}
+  .ip-review .review-footer-links a{display:block;margin:8px 0}
+
+  @media(max-width:1100px){
+    .ip-review .review-toolbar{grid-template-columns:1fr auto}.ip-review .review-note{display:none}
+    .ip-review .ip-hero-head,.ip-review .ssc-method-head,.ip-review .truth-demo-head,.ip-review .drmt-model-head,
+    .ip-review .ip-example-head,.ip-review .ip-close-grid{grid-template-columns:1fr;gap:36px}
+    .ip-review .ip-hero-copy{max-width:58ch}
+    .ip-review .ssc-problem-grid,.ip-review .ssc-tracks,.ip-review .truth-definition,.ip-review .truth-layers,
+    .ip-review .drmt-problem,.ip-review .ip-need-grid{grid-template-columns:1fr;gap:58px}
+    .ip-review .ssc-stages,.ip-review .drmt-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .ip-review .ssc-stage:nth-child(2),.ip-review .drmt-field:nth-child(2){border-right:0}
+    .ip-review .ssc-stage:nth-child(n+3),.ip-review .drmt-field:nth-child(n+3){border-top:1px solid var(--ip-rule-dark)}
+    .ip-review .truth-live-route{grid-template-columns:auto minmax(120px,1fr) auto 90px auto}
+  }
+
+  @media(max-width:760px){
+    .ip-review .ip-shell{width:calc(100% - 36px)}
+    .ip-review .review-toolbar{position:relative;display:block;padding:12px 14px}
+    .ip-review .review-label{margin-bottom:10px;text-align:center}
+    .ip-review .review-tabs{overflow-x:auto;justify-content:flex-start;border-radius:0;padding:4px}
+    .ip-review .review-tab{flex:0 0 auto}
+    .ip-review .ip-section{padding:76px 0}
+    .ip-review .ip-hero{min-height:auto;padding-top:68px}
+    .ip-review .ip-title{font-size:clamp(58px,19vw,90px)}
+    .ip-review .ip-section-title{font-size:clamp(48px,15vw,74px)}
+    .ip-review .ip-hero-device{margin-top:54px}
+    .ip-review .ssc-hero-process,.ip-review .drmt-hero-record{grid-template-columns:1fr}
+    .ip-review .ssc-hero-step,.ip-review .drmt-hero-field{min-height:auto;border-right:0;border-bottom:1px solid var(--ip-rule-dark)}
+    .ip-review .ssc-hero-step:last-child,.ip-review .drmt-hero-field:last-child{border-bottom:0}
+    .ip-review .ssc-stages,.ip-review .drmt-fields{grid-template-columns:1fr}
+    .ip-review .ssc-stage,.ip-review .drmt-field{min-height:auto;border-right:0;border-top:1px solid var(--ip-rule-dark);padding-block:34px 46px}
+    .ip-review .ssc-stage:first-child,.ip-review .drmt-field:first-child{border-top:0}
+    .ip-review .ssc-stage h3,.ip-review .drmt-field h3{margin-top:32px}
+    .ip-review .ssc-track{grid-template-columns:1fr}
+    .ip-review .ssc-track > *{border-right:0;border-bottom:1px solid var(--ip-rule)}
+    .ip-review .ssc-track > *:last-child{border-bottom:0}
+    .ip-review .ssc-example-grid{grid-template-columns:1fr}
+    .ip-review .ssc-example-card + .ssc-example-card{border-left:0;border-top:1px solid var(--ink)}
+    .ip-review .truth-hero-route{grid-template-columns:1fr;gap:0;padding-bottom:34px}
+    .ip-review .truth-node{padding:20px 0}.ip-review .truth-link{width:1px;height:54px;margin:0 0 0 20px}
+    .ip-review .truth-link::after{right:-4px;top:auto;bottom:0;transform:rotate(135deg)}
+    .ip-review .truth-link em{left:22px;bottom:16px;transform:none}
+    .ip-review .truth-live-route,.ip-review .truth-demo.is-compressed .truth-live-route{grid-template-columns:1fr;gap:0}
+    .ip-review .truth-live-node{padding:18px 0}.ip-review .truth-live-gap{width:1px;height:68px;margin:0 0 0 20px}
+    .ip-review .truth-live-gap em{left:22px;bottom:24px;transform:none}
+    .ip-review .truth-layer{grid-template-columns:1fr;gap:12px}
+    .ip-review .truth-example-grid{grid-template-columns:1fr}
+    .ip-review .truth-example-grid article{border-right:0}
+    .ip-review .drmt-record-row{grid-template-columns:1fr}
+    .ip-review .drmt-record-row h3{border-right:0;border-bottom:1px solid var(--ink)}
+    .ip-review .ip-need-list li{grid-template-columns:34px minmax(0,1fr);gap:18px}
+    .ip-review .ip-quote blockquote{font-size:clamp(34px,11vw,54px)}
+    .ip-review > footer .footer-grid{grid-template-columns:1fr}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .ip-review .ip-reveal{opacity:1;transform:none;transition:none}
+    .ip-review .ip-panel.is-entering{animation:none}
+    .ip-review .truth-live-route{transition:none}
+  }
+  </style>
+</head>
+
+<body class="premium-page ip-review">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="review-toolbar">
+    <div class="review-label"><span>Review only</span> · IP page directions</div>
+    <div class="review-tabs" role="tablist" aria-label="Choose an IP page direction">
+      <button class="review-tab" id="tab-ssc" type="button" role="tab" aria-selected="true" aria-controls="panel-ssc" data-target="ssc">See · Strip · Choose</button>
+      <button class="review-tab" id="tab-truth" type="button" role="tab" aria-selected="false" aria-controls="panel-truth" data-target="truth" tabindex="-1">Truth Latency</button>
+      <button class="review-tab" id="tab-drmt" type="button" role="tab" aria-selected="false" aria-controls="panel-drmt" data-target="drmt" tabindex="-1">DRMT Model</button>
+    </div>
+    <p class="review-note">Not linked from the live site</p>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html" aria-label="OPS DETOX home">
+        <img src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+      </a>
+      <nav class="site-nav" id="nav" aria-label="Main navigation">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../work-with-us.html">Work With Us</a>
+        <a href="../tools.html">Tools</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <a class="button button--small button--line header-cta" href="../contact.html">Let’s talk</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- SEE STRIP CHOOSE -->
+    <article class="ip-panel" id="panel-ssc" role="tabpanel" aria-labelledby="tab-ssc" data-panel="ssc">
+      <section class="ip-hero ip-hero--ssc" aria-labelledby="ssc-heading">
+        <div class="ip-shell">
+          <div class="ip-hero-head">
+            <div>
+              <span class="ip-kicker">Proprietary framework · See – Strip – Choose™</span>
+              <h1 class="ip-title" id="ssc-heading"><span>Make the</span><br><span>default a</span><br><span class="is-lime">choice.</span></h1>
+            </div>
+            <div class="ip-hero-copy">
+              <p class="ip-copy">Most operating habits were inherited, accumulated or copied. See – Strip – Choose™ turns the default back into a deliberate decision.</p>
+            </div>
+          </div>
+
+          <div class="ip-hero-device ssc-hero-process" aria-label="See, Strip and Choose in three stages">
+            <div class="ssc-hero-step"><span>See</span><p>Recognise reality.</p></div>
+            <div class="ssc-hero-step"><span>Strip</span><p>Remove the noise.</p></div>
+            <div class="ssc-hero-step"><span>Choose</span><p>Decide and act.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section ssc-problem">
+        <div class="ip-shell ssc-problem-grid ip-reveal">
+          <div>
+            <span class="ip-kicker">The problem</span>
+            <h2 class="ip-section-title"><span>Familiar</span><span>is not the</span><span>same as useful.</span></h2>
+          </div>
+          <ul class="ip-rule-list ssc-symptoms">
+            <li><b>01</b><p>A meeting continues because it has always been there.</p></li>
+            <li><b>02</b><p>An approval remains long after the risk it protected has changed.</p></li>
+            <li><b>03</b><p>A report is produced without anyone choosing what it is for.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="ip-section ssc-method">
+        <div class="ip-shell">
+          <div class="ssc-method-head ip-reveal">
+            <div>
+              <span class="ip-kicker">The method</span>
+              <h2 class="ip-section-title">Three moves.<br>In order.</h2>
+            </div>
+            <p class="ip-copy">Start with evidence. Protect what is useful. Remove what no longer earns its place. Then make one explicit choice the team can act on.</p>
+          </div>
+
+          <div class="ssc-stages ip-reveal">
+            <article class="ssc-stage">
+              <div class="ssc-stage-label">See</div>
+              <h3>Recognise reality</h3>
+              <p>Look at what actually happened, who is involved and which useful function the current practice still serves.</p>
+            </article>
+            <article class="ssc-stage">
+              <div class="ssc-stage-label">Strip</div>
+              <h3>Remove the noise</h3>
+              <p>Separate the useful work from the inherited format, duplicate effort and approval without purpose.</p>
+            </article>
+            <article class="ssc-stage">
+              <div class="ssc-stage-label">Choose</div>
+              <h3>Decide and act</h3>
+              <p>Keep, adjust or change the practice. Name the owner, the first move and when the choice will be reviewed.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section">
+        <div class="ip-shell ssc-tracks ip-reveal">
+          <div>
+            <span class="ip-kicker">The comparison</span>
+            <h2 class="ip-section-title">What runs now.<br>What you would choose.</h2>
+          </div>
+          <div class="ssc-track-board" aria-label="Illustrative comparison between the current and chosen way of working">
+            <div class="ssc-track ssc-track--current">
+              <strong>Current</strong><span>Prepare a deck</span><span>Repeat the tracker</span><span>Meet for an hour</span>
+            </div>
+            <div class="ssc-track">
+              <strong>Chosen</strong><span>Write one update</span><span>Read asynchronously</span><span>Meet only to decide</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section ssc-example">
+        <div class="ip-shell">
+          <div class="ip-example-head ip-reveal">
+            <div><span class="ip-kicker">Illustrative example</span><h2 class="ip-section-title">A status meeting becomes a decision route.</h2></div>
+            <p class="ip-copy">The team keeps the information people need, strips the repeated presentation and chooses a short live slot only for decisions that require discussion.</p>
+          </div>
+          <div class="ssc-example-grid ip-reveal">
+            <article class="ssc-example-card"><h3>Before</h3><p>One hour every week. Twelve attendees. Information repeated from a tracker. Decisions pushed to another meeting.</p></article>
+            <article class="ssc-example-card"><h3>After</h3><p>One written update. A clear response window. A short live slot for unresolved decisions. Review after two cycles.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section ip-need">
+        <div class="ip-shell ip-need-grid ip-reveal">
+          <div><span class="ip-kicker">When you need it</span><h2 class="ip-section-title">The work feels fixed, but nobody chose it.</h2></div>
+          <ul class="ip-rule-list ip-need-list">
+            <li><b>01</b><p>Your team says, “We have always done it this way.”</p></li>
+            <li><b>02</b><p>Removing one ritual seems risky because nobody knows what useful work it contains.</p></li>
+            <li><b>03</b><p>Old habits return even after everyone agreed to change them.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="ip-testimonial">
+        <div class="ip-quote ip-reveal">
+          <span class="ip-quote-label">Testimonial slot · Approved client quote needed</span>
+          <blockquote>“OPS Detox helped us simplify how information, decisions and accountability move.”</blockquote>
+          <footer>Client name · Role and company pending</footer>
+        </div>
+      </section>
+
+      <section class="ip-close">
+        <div class="ip-shell ip-close-grid ip-reveal">
+          <h2 class="ip-section-title">What would you<br><span class="is-lime">choose again?</span></h2>
+          <div class="ip-close-copy"><p class="ip-copy">Bring one recurring practice. We will find what is useful, what is noise and what the team can choose next.</p><div class="ip-actions"><a class="ip-button ip-button--lime" href="../contact.html">Let’s talk</a><a class="ip-button ip-button--line" href="../work-with-us.html">Explore Work With Us</a></div></div>
+        </div>
+      </section>
+    </article>
+
+    <!-- TRUTH LATENCY -->
+    <article class="ip-panel" id="panel-truth" role="tabpanel" aria-labelledby="tab-truth" data-panel="truth" hidden>
+      <section class="ip-hero ip-hero--truth" aria-labelledby="truth-heading">
+        <div class="ip-shell">
+          <div class="ip-hero-head">
+            <div>
+              <span class="ip-kicker">Proprietary framework · Truth Latency™</span>
+              <h1 class="ip-title" id="truth-heading"><span>How long</span><br><span>does the truth</span><br><span class="is-lime">wait?</span></h1>
+            </div>
+            <div class="ip-hero-copy"><p class="ip-copy">The delay is not only whether someone speaks. It is whether useful information reaches someone with the authority to act.</p></div>
+          </div>
+
+          <div class="ip-hero-device truth-hero-route" aria-label="Known, received and action timeline">
+            <div class="truth-node"><strong>Known</strong><span>Someone recognises the issue.</span></div>
+            <div class="truth-link"><em>48 hours</em></div>
+            <div class="truth-node"><strong>Received</strong><span>The right person has enough to act.</span></div>
+            <div class="truth-link"><em>4 hours</em></div>
+            <div class="truth-node truth-node--action"><strong>Action</strong><span>A response begins.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section">
+        <div class="ip-shell truth-definition ip-reveal">
+          <div>
+            <span class="ip-kicker">The measure</span>
+            <h2 class="ip-section-title">Measure the delay without confusing the stages.</h2>
+            <div class="truth-equation">Truth Latency = Received − Known</div>
+          </div>
+          <div class="truth-distinction">
+            <article><h3>Known</h3><p>The earliest evidenced time someone recognised a relevant risk, problem or insight.</p></article>
+            <article><h3>Received</h3><p>When someone with appropriate authority received enough information to act.</p></article>
+            <article><h3>Action</h3><p>When a decision or concrete response began. This is tracked separately.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section truth-demo" data-truth-demo>
+        <div class="ip-shell">
+          <div class="truth-demo-head ip-reveal">
+            <div><span class="ip-kicker">The route</span><h2 class="ip-section-title">Give the concern somewhere useful to go.</h2></div>
+            <div><p class="ip-copy">A clearer recipient, confirmation of receipt and an agreed response can shorten the route without ranking the messenger.</p><button class="truth-demo-control" type="button" aria-pressed="false" data-truth-toggle>Shorten the route</button></div>
+          </div>
+          <div class="truth-live-route ip-reveal">
+            <div class="truth-live-node"><strong>Known</strong><span>Monday · 10:00</span></div>
+            <div class="truth-live-gap truth-live-gap--latency"><em>48 hours</em></div>
+            <div class="truth-live-node"><strong>Received</strong><span>Wednesday · 10:00</span></div>
+            <div class="truth-live-gap"><em>4 hours</em></div>
+            <div class="truth-live-node truth-live-node--action"><strong>Action</strong><span>Wednesday · 14:00</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section">
+        <div class="ip-shell truth-layers ip-reveal">
+          <div><span class="ip-kicker">What changes</span><h2 class="ip-section-title">The route and the response.</h2></div>
+          <div class="truth-layer-list">
+            <article class="truth-layer"><h3>Structure</h3><p>Name a recipient with authority, a backup and an urgent route that works across roles and shifts.</p></article>
+            <article class="truth-layer"><h3>Behaviour</h3><p>Receive the concern with curiosity, clarify the facts, name the next step and close the loop.</p></article>
+            <article class="truth-layer"><h3>Environment</h3><p>Make written and private routes usable, and ensure remote voices can reach the same authority.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section truth-example">
+        <div class="ip-shell">
+          <div class="ip-example-head ip-reveal">
+            <div><span class="ip-kicker">Illustrative timeline</span><h2 class="ip-section-title">One risk. Two different delays.</h2></div>
+            <p class="ip-copy">A delivery risk is known on Monday. The accountable owner receives it on Wednesday and starts a response four hours later. The team examines the first interval before prescribing a fix.</p>
+          </div>
+          <div class="truth-example-grid ip-reveal">
+            <article><strong>48h</strong><span>Truth Latency from knowing to receipt.</span></article>
+            <article><strong>4h</strong><span>Receipt-to-action, measured separately.</span></article>
+            <article><strong>1 route</strong><span>A named recipient, backup and confirmation.</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section ip-need">
+        <div class="ip-shell ip-need-grid ip-reveal">
+          <div><span class="ip-kicker">When you need it</span><h2 class="ip-section-title">The truth arrives after the cost.</h2></div>
+          <ul class="ip-rule-list ip-need-list">
+            <li><b>01</b><p>Risks travel sideways before reaching someone who can act.</p></li>
+            <li><b>02</b><p>People send a message but cannot tell whether the right person received it.</p></li>
+            <li><b>03</b><p>The response to difficult information makes the next concern slower to surface.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="ip-testimonial">
+        <div class="ip-quote ip-reveal">
+          <span class="ip-quote-label">Testimonial slot · Approved client quote needed</span>
+          <blockquote>“We stopped treating silence as a people problem and started fixing the route.”</blockquote>
+          <footer>Illustrative placement · Real testimonial required</footer>
+        </div>
+      </section>
+
+      <section class="ip-close">
+        <div class="ip-shell ip-close-grid ip-reveal">
+          <h2 class="ip-section-title">How long does<br><span class="is-lime">your truth wait?</span></h2>
+          <div class="ip-close-copy"><p class="ip-copy">Bring one delayed decision, concern or insight. We will trace where the information stopped moving.</p><div class="ip-actions"><a class="ip-button ip-button--lime" href="../contact.html">Let’s talk</a><a class="ip-button ip-button--line" href="../work-with-us.html">Explore Work With Us</a></div></div>
+        </div>
+      </section>
+    </article>
+
+    <!-- DRMT -->
+    <article class="ip-panel" id="panel-drmt" role="tabpanel" aria-labelledby="tab-drmt" data-panel="drmt" hidden>
+      <section class="ip-hero ip-hero--drmt" aria-labelledby="drmt-heading">
+        <div class="ip-shell">
+          <div class="ip-hero-head">
+            <div>
+              <span class="ip-kicker">Proprietary framework · DRMT Model™</span>
+              <h1 class="ip-title" id="drmt-heading"><span>Make the</span><br><span>decision</span><br><span class="is-lime">travel.</span></h1>
+            </div>
+            <div class="ip-hero-copy"><p class="ip-copy">A decision is useful when people can find what was chosen, why it was chosen, how it will be assessed and when it should be reviewed.</p></div>
+          </div>
+
+          <div class="ip-hero-device drmt-hero-record" aria-label="Decision, Reason, Metric and Trigger">
+            <div class="drmt-hero-field"><strong>Decision</strong><span>What we chose. Who owns it.</span></div>
+            <div class="drmt-hero-field"><strong>Reason</strong><span>Why this choice. What we assumed.</span></div>
+            <div class="drmt-hero-field"><strong>Metric</strong><span>What we watch. How we know.</span></div>
+            <div class="drmt-hero-field"><strong>Trigger</strong><span>When to review. Who responds.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section">
+        <div class="ip-shell drmt-problem ip-reveal">
+          <div><span class="ip-kicker">The problem</span><h2 class="ip-section-title">Agreement in the room is not clarity afterwards.</h2></div>
+          <div class="drmt-before-after">
+            <article class="drmt-ba-row"><span>Before</span><p>“We agreed to explore it.” People leave with different interpretations and reopen the discussion.</p></article>
+            <article class="drmt-ba-row"><span>After</span><p>A specific choice, owner, rationale, useful measure and review condition are easy to find.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section drmt-model">
+        <div class="ip-shell">
+          <div class="drmt-model-head ip-reveal">
+            <div><span class="ip-kicker">The model</span><h2 class="ip-section-title">Four lines.<br>One usable decision.</h2></div>
+            <p class="ip-copy">DRMT records the outcome. It does not replace decision rights, create authority or require consensus.</p>
+          </div>
+          <div class="drmt-fields ip-reveal">
+            <article class="drmt-field"><b>D</b><h3>Decision</h3><p>State the choice, named owner, scope and mandate.</p></article>
+            <article class="drmt-field"><b>R</b><h3>Reason</h3><p>Explain the priority, evidence, assumptions and trade-off.</p></article>
+            <article class="drmt-field"><b>M</b><h3>Metric</h3><p>Name an observable indicator, source and expected direction.</p></article>
+            <article class="drmt-field"><b>T</b><h3>Trigger</h3><p>Name the condition for review, who watches it and who can reconsider.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section drmt-example">
+        <div class="ip-shell">
+          <div class="ip-example-head ip-reveal">
+            <div><span class="ip-kicker">Illustrative record</span><h2 class="ip-section-title">From vague agreement to usable choice.</h2></div>
+            <p class="ip-copy">A weekly update is redesigned as a four-week trial. The record tells anyone who missed the meeting what happens next.</p>
+          </div>
+          <div class="drmt-record ip-reveal">
+            <article class="drmt-record-row"><h3>Decision</h3><p>Trial a written Tuesday update for four weeks. Keep a live slot for unresolved decisions.</p></article>
+            <article class="drmt-record-row"><h3>Reason</h3><p>The current meeting repeats information already available in the tracker.</p></article>
+            <article class="drmt-record-row"><h3>Metric</h3><p>Compare weekly person-hours and check whether any decisions are missed.</p></article>
+            <article class="drmt-record-row"><h3>Trigger</h3><p>Review early if an urgent decision misses its response window or the update lacks context twice.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ip-section ip-need">
+        <div class="ip-shell ip-need-grid ip-reveal">
+          <div><span class="ip-kicker">When you need it</span><h2 class="ip-section-title">The same decision keeps returning.</h2></div>
+          <ul class="ip-rule-list ip-need-list">
+            <li><b>01</b><p>People leave the same meeting with different interpretations.</p></li>
+            <li><b>02</b><p>Decisions wait on the founder because authority and scope are unclear.</p></li>
+            <li><b>03</b><p>A choice remains in force even after its assumptions have changed.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="ip-testimonial">
+        <div class="ip-quote ip-reveal">
+          <span class="ip-quote-label">Testimonial slot · Approved client quote needed</span>
+          <blockquote>“Decisions stopped living in the meeting and started moving through the company.”</blockquote>
+          <footer>Illustrative placement · Real testimonial required</footer>
+        </div>
+      </section>
+
+      <section class="ip-close">
+        <div class="ip-shell ip-close-grid ip-reveal">
+          <h2 class="ip-section-title">Can people use the<br><span class="is-lime">decision tomorrow?</span></h2>
+          <div class="ip-close-copy"><p class="ip-copy">Bring one significant choice your team keeps reopening. We will make the decision, reason, metric and trigger visible.</p><div class="ip-actions"><a class="ip-button ip-button--lime" href="../contact.html">Let’s talk</a><a class="ip-button ip-button--line" href="../work-with-us.html">Explore Work With Us</a></div></div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <img class="footer-logo" src="../assets/logo/primary-detoxgreen.svg" alt="OPS DETOX">
+          <p class="review-footer-note">Review artefact for three proprietary framework pages. Not linked from the live website.</p>
+        </div>
+        <div class="review-footer-links"><h2>Explore</h2><a href="../work-with-us.html">Work With Us</a><a href="../about.html">About Oscar</a><a href="../contact.html">Contact</a></div>
+        <div><h2>Contact</h2><p><b>EMAIL</b><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p><p><b>PHONE</b><a href="tel:+1234567890">(123) 456 7890</a></p></div>
+        <div class="review-footer-links"><h2>Legal</h2><a href="../terms.html">Terms and Conditions</a><a href="../privacy.html">Privacy Policy</a><a href="../cookies.html">Cookies</a></div>
+      </div>
+      <p class="footer-legal">© 2026 OPS Detox™. Review content only. Placeholder contact details remain pending client input.</p>
+    </div>
+  </footer>
+
+  <div class="pb" aria-hidden="true">
+    <div class="pb-row"><div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div></div>
+    <div class="pb-row pb-row--b"><div class="pb-track">
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+      <span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span><span class="pb-bar"></span>
+    </div></div>
+  </div>
+
+  <script src="../js/site.js"></script>
+  <script>
+  (() => {
+    const tabs = Array.from(document.querySelectorAll('.review-tab'));
+    const panels = Array.from(document.querySelectorAll('.ip-panel'));
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const reveal = panel => {
+      const items = Array.from(panel.querySelectorAll('.ip-reveal:not(.is-in)'));
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        items.forEach(item => item.classList.add('is-in'));
+        return;
+      }
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-in');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: .12, rootMargin: '0px 0px -7% 0px' });
+      items.forEach(item => observer.observe(item));
+    };
+
+    const activate = (name, moveFocus = false) => {
+      const chosen = tabs.find(tab => tab.dataset.target === name) || tabs[0];
+      tabs.forEach(tab => {
+        const active = tab === chosen;
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+      });
+      panels.forEach(panel => {
+        const active = panel.dataset.panel === chosen.dataset.target;
+        panel.hidden = !active;
+        panel.classList.toggle('is-entering', active);
+        if (active) {
+          reveal(panel);
+          requestAnimationFrame(() => panel.classList.remove('is-entering'));
+        }
+      });
+      history.replaceState(null, '', `#${chosen.dataset.target}`);
+      document.title = `OPS Detox IP Direction: ${chosen.textContent.trim()}`;
+      if (moveFocus) chosen.focus();
+      window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activate(tab.dataset.target));
+      tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let next = index;
+        if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = tabs.length - 1;
+        activate(tabs[next].dataset.target, true);
+      });
+    });
+
+    const truthToggle = document.querySelector('[data-truth-toggle]');
+    const truthDemo = document.querySelector('[data-truth-demo]');
+    truthToggle?.addEventListener('click', () => {
+      const compressed = truthDemo.classList.toggle('is-compressed');
+      truthToggle.setAttribute('aria-pressed', String(compressed));
+      truthToggle.textContent = compressed ? 'Show current route' : 'Shorten the route';
+    });
+
+    const requested = location.hash.replace('#', '');
+    activate(['ssc', 'truth', 'drmt'].includes(requested) ? requested : 'ssc');
+  })();
+  </script>
+</body>
+</html>

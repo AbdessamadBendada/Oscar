@@ -2,6 +2,27 @@
 
 _Last updated: 25 November 2026_
 
+> **25 Nov — the three live IP pages have had a full responsive design audit.**
+> Long display headings now use measured compact scales, the clipped See – Strip –
+> Choose stage is repaired, split layouts have more useful proportions, and the
+> testimonial attribution no longer inherits the global site footer. See §69.
+
+> **25 Nov — the approved IP directions are now three live root pages, with one
+> restrained documentary image field each.** The Homepage framework links point to
+> the new pages; the pages remain outside the main navigation, share one dedicated
+> stylesheet and script, and keep paid workshop materials private. See §68.
+
+> **25 Nov — three full-page IP directions now exist as one tabbed review
+> artefact.** See – Strip – Choose™, Truth Latency™ and the DRMT Model™ each use a
+> distinct explanatory device while staying inside the approved premium site language.
+> The live site and shared CSS are untouched. See §67.
+
+> **25 Nov — the website's three-IP set is now final and uses the supplied guide
+> definitions.** See – Strip – Choose™, Truth Latency™ and the DRMT Model™ are the
+> only frameworks in the two public IP sections. The placeholder notices and secondary
+> toolkit list are gone, CORE was reconciled in two live marketing references, and the
+> Keynote descriptions now match the models. See §66.
+
 > **25 Nov — the two supplied OPS Detox tools now have premium review builds.**
 > The Noise Tax Calculator and Diagnostic keep their supplied engines and copy,
 > but now use the approved homepage's type, colour, editorial rules and report
@@ -5194,3 +5215,159 @@ booking suppression was also driven. Both Diagnostic respondent branches were dr
 to completion and returned seven-room results. At both viewport sizes, document width
 matched viewport width, the tested images and fonts loaded, and no console exception or
 failed resource was reported. Safari remains untested.
+
+---
+
+## 66. The website's three-IP set and source wording (25 November 2026)
+
+The user confirmed that the website needs exactly three public IP frameworks:
+
+1. See – Strip – Choose™.
+2. Truth Latency™.
+3. DRMT Model™.
+
+The source is the three supplied workshop guides in
+`/Users/mac/Downloads/NEW Modules & IP documents/`. Their wording closes three asks
+that had been open since 15 October: the real framework descriptions, the DRMT
+expansion, and whether CORE remains in the website set. DRMT means **Decision, Reason,
+Metric and Trigger**. See – Strip – Choose is the thinking method; the separate
+eight-step delivery process organises the wider engagement. Truth Latency runs from
+knowledge to receipt by someone who can act, not merely from knowing to saying.
+
+`index.html` and `work-with-us.html` now carry those definitions in their duplicated
+framework sections. Their visible `For Oscar` placeholder notices are deleted, along
+with the unused page-scoped CSS. Work With Us no longer adds Async Mastery™, Speak Up
+Gym™ and the Seven Contextual Gaps™ beneath the three cards. Those workshop names remain
+where the site genuinely describes workshop activity; this decision narrows the public
+IP section rather than erasing the wider toolkit.
+
+Two live `CORE method™` references, in `work-with-us.html` and `detox.html`, now say
+See – Strip – Choose™. The current Keynote programme also used the old meanings: its
+Truth Latency card measured knowing-to-action as one interval, and its DRMT card
+described a delegation-role matrix. They now follow the supplied definitions, and the
+marketing references in the Homepage and Keynote About copy use `DRMT Model™`.
+`terms.html` was deliberately not rewritten: its legal text is locked client copy and
+its broader list defines protected OPS Detox materials, not the three-framework
+marketing section.
+
+Browser verification ran with cache disabled at 1512 × 982 and a true 390 × 844 device
+viewport on `index.html`, `work-with-us.html`, `detox.html` and `keynote.html`. All four
+matched document width to viewport width at both sizes, retained exactly one direct
+header, direct footer and footer grid, and the changed sections contained none of the
+old placeholder, CORE, decision-engine or knowing-and-saying language. The Homepage
+and Work With Us framework sections were inspected from screenshots at both widths.
+Safari remains untested.
+
+---
+
+## 67. Three IP page directions, review only (25 November 2026)
+
+`playground/ip-page-directions.html` is a tabbed review artefact containing three
+complete, presentation-led page directions. It loads the shared site and premium
+foundations with `../` paths, but every new composition rule stays in one scoped
+`<style>` block inside the artefact. No live page, shared stylesheet or shared script
+was changed for this prototype.
+
+The three directions share the existing Deep Green / Soft Ivory canvas, licensed
+Formula display type, Inter body copy, hard editorial rules, current header and footer,
+moving pattern below the footer and restrained viewport reveals. They deliberately do
+not share the same internal visual device:
+
+- **See – Strip – Choose™** is built around transformation: three large stages, a
+  current-versus-chosen working track and one simplified status-meeting example.
+- **Truth Latency™** is built around elapsed time: Known, Received and Action are kept
+  separate, with a review-only interaction that compresses the illustrated 48-hour
+  route without turning the concept into a public score or calculator.
+- **DRMT Model™** is built around a usable record: Decision, Reason, Metric and Trigger
+  form the hero and the main explainer, followed by one simplified illustrative record.
+
+The public-content boundary is visible in the designs. Each page explains the problem,
+model, one example and when it is useful. Workshop timings, facilitator prompts,
+participant worksheets and downloadable templates are absent. Each direction ends in
+the same low-pressure route: `Let’s talk` plus `Explore Work With Us`. A testimonial
+slot is present but explicitly labelled as awaiting an approved client quote, so the
+review does not let placeholder proof pass as real.
+
+The artefact is not linked from navigation. If a direction is approved, split it into
+three root-level pages and lift only genuinely shared rules into an appropriate shared
+stylesheet; then repoint the three existing `Learn more` links. A new page still does
+not add itself to the main navigation.
+
+CDP verification ran with cache disabled at 1512 × 982 and a true 390 × 844 mobile
+viewport. Every tab kept document width equal to viewport width, showed exactly one
+panel, retained one direct header, direct footer and footer grid, and produced no
+console or page exceptions. The desktop and mobile hero and primary explainer for all
+three directions were inspected from screenshots. The Truth Latency control changed
+state and label correctly; the mobile nav opened, closed on Escape and restored its
+state. Safari remains untested.
+
+---
+
+## 68. Three live IP pages and documentary image fields (25 November 2026)
+
+The approved directions in `playground/ip-page-directions.html` are now three
+root-level site pages:
+
+- `see-strip-choose.html`
+- `truth-latency.html`
+- `drmt-model.html`
+
+They are reached from the three existing Homepage framework `Learn more` links. They
+were deliberately not added to the main navigation. Each page keeps the approved
+direction's own narrative device and ends with the same two routes: `Let’s talk` and
+`Explore Work With Us`.
+
+The sibling pages share `css/ip-pages.css` and `js/ip-pages.js`, both loaded only by
+these three pages. The stylesheet holds the common premium composition, responsive
+rules and each framework's named device. The script owns the restrained viewport
+reveals and the Truth Latency route interaction. No framework-page rule was added to
+`css/site.css` or `css/premium.css`.
+
+One existing documentary photograph was added to the illustrative part of each page,
+not the hero:
+
+- See – Strip – Choose uses `assets/img/premium-hero-session.jpg`, showing a team in a
+  live learning room.
+- Truth Latency uses `assets/img/work-two-ways.webp` with a JPEG fallback, supporting
+  the idea of shortening a complex route to action.
+- DRMT uses `assets/img/work-whiteboard.webp` with a JPEG fallback, showing a decision
+  conversation made visible at the board.
+
+The photographs sit in hard-edged editorial fields with a numbered caption, rather
+than generic rounded image cards. The surrounding public copy explains the concept,
+one simplified example and when it is useful. Workshop timings, facilitator prompts,
+participant worksheets and downloadable templates remain absent. The only proof on
+the pages is still visibly labelled as a placeholder awaiting an approved client
+testimonial.
+
+CDP verification ran with cache disabled at 1512 × 982 and a true 390 × 844 mobile
+viewport. All three pages matched document width to viewport width at both sizes,
+contained one direct header, direct footer and footer grid, and loaded their photograph
+at its real intrinsic dimensions. No failed request, console exception or page
+exception was reported. The six hero/photo screenshots were inspected at both sizes.
+The Truth Latency control changed its pressed state, compressed class and label at both
+sizes, and the mobile navigation opened correctly. Safari remains untested.
+
+---
+
+## 69. IP page typography and overflow audit (25 November 2026)
+
+The three live framework pages were audited as complete pages at 1512 × 982 and a true
+390 × 844 mobile viewport. The original shared section-title scale worked for short
+statements but forced longer headings into four or five tightly packed lines. The
+refinement keeps the large hero language, adds compact and feature scales for longer
+statements, gives the recognition splits equal usable columns, and uses a separate
+measured treatment for the longer DRMT closing question.
+
+The audit also found two concrete layout defects. `Choose` exceeded its desktop stage
+because the stage label was wider than the column after padding; its scale now fits the
+available field. The testimonial attribution used a nested `<footer>`, so the global
+site-footer rule turned it into a large Deep Green rectangle. All three pages now use a
+plain attribution paragraph, leaving the page with one actual footer landmark.
+
+The final CDP pass kept document width equal to viewport width on all six page and
+viewport combinations. The visible headings, image fields, records, routes, proof
+placeholder and closing sections were inspected from full-page screenshots. Expected
+off-canvas mobile navigation, animated pattern tracks and the deliberately labelled
+Truth Latency route markers remain clipped by their owning components; no page-level
+horizontal overflow remains. Safari remains untested.
