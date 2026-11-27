@@ -173,7 +173,8 @@
   .premium-tools .tl-choice-h{--fs:clamp(44px,7.8vw,146px)}
   .premium-tools .tl-choice-h span:nth-child(1){margin-left:24%}
   .premium-tools .tl-choice-h span:nth-child(2){margin-left:47%}
-  .premium-tools .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-tools .choice-note,
+  .premium-tools .choice-hint{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
   .premium-tools .choice .toggle-rows{max-width:980px;margin-top:40px}
   .premium-tools .choice .toggle-row{
     padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
@@ -199,7 +200,8 @@
     .premium-tools .tl-hero-h{--fs:clamp(54px,15vw,110px);--lh:.9;letter-spacing:-.01em}
     .premium-tools .tl-card-h{--lh:.9}
     .premium-tools .tl-hero .pr-copy{margin-left:0}
-    .premium-tools .choice-note{margin-inline:0;text-align:left}
+    .premium-tools .choice-note,
+    .premium-tools .choice-hint{margin-inline:0;text-align:left}
   }
   @media(max-width:700px){
     .premium-tools .choice .toggle-row{padding:18px 20px 15px;gap:14px}
@@ -392,6 +394,11 @@
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
+
+        <!-- Revealed by js/site.js after the first flick, and only on pages
+             where the second flick actually navigates. Hidden markup here on
+             contact.html too, so every page carries the same block. -->
+        <p class="choice-hint" data-choice-hint hidden aria-live="polite">Flick it again and we’ll open the contact page.</p>
 
         <div class="actions hm hm-copy">
           <a class="button" href="contact.html">Let’s talk</a>

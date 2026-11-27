@@ -296,7 +296,14 @@
      CTA: it reads as Oscar speaking rather than as the site
      describing him. The page's ask is below, and the two tracks above
      already carry one each — a fourth button here would compete. */
-  .premium-work .ws-about{padding:var(--gap) 0;background:var(--ink);color:var(--paper)}
+  /* NO BOTTOM PADDING. The portrait is a cutout with a hard bottom edge —
+     the chair legs and his jeans are cropped off. With padding below it that
+     cut edge floated in open green and he read as flying. Zeroing it lets the
+     grid's `align-items:end` put his cut edge ON the section's own edge,
+     where it reads as the page boundary instead of a crop. detox.html does
+     the same thing; `.ws-about-copy` carries its own bottom padding so the
+     text still clears the edge. */
+  .premium-work .ws-about{padding:var(--gap) 0 0;background:var(--ink);color:var(--paper)}
   .premium-work .ws-about-grid{
     display:grid;
     grid-template-columns:minmax(320px,.78fr) minmax(0,1.22fr);
@@ -304,7 +311,7 @@
     gap:clamp(48px,7vw,112px);align-items:end;
   }
   .premium-work .ws-about-copy{
-    grid-area:copy;max-width:72ch;padding-bottom:clamp(20px,4vw,60px);
+    grid-area:copy;max-width:72ch;padding-bottom:var(--gap);
   }
   .premium-work .ws-about-h{
     --fs:clamp(58px,7vw,128px);--lh:.8;
@@ -323,12 +330,18 @@
     display:block;margin-top:clamp(34px,4vw,52px);color:var(--lime);
     font-size:12px;line-height:1.4;letter-spacing:.02em;
   }
+  /* NO BACKGROUND. This used to be `background:var(--paper)`, which drew an
+     ivory rectangle behind a cutout whose corners are transparent — so the
+     empty area around the arch read as a white block sitting in the green
+     section. The cutout belongs directly on the ink ground. */
   .premium-work .ws-about-shot{
     grid-area:portrait;position:relative;margin:0;padding:0;
-    overflow:hidden;border-radius:0;background:var(--paper);
+    overflow:hidden;border-radius:0;background:transparent;
   }
-  /* This is the designer-supplied black-shirt composition. Its transparent
-     outer field needs the ivory ground used in the supplied treatment. */
+  /* The designer-supplied black-shirt composition, tight-cropped to the
+     subject. The homepage card's `homepage-about.webp` carries 226px of
+     transparent headroom above his head; `about-black-shirt.webp` is that
+     same artwork with the dead field trimmed. */
   .premium-work .ws-about-shot img{
     display:block;width:100%;height:auto;max-height:760px;
     object-fit:contain;object-position:50% 100%;
@@ -525,7 +538,8 @@
   .premium-work .ww-choice-h{--fs:clamp(60px,7.8vw,146px)}
   .premium-work .ww-choice-h span:nth-child(1){margin-left:24%}
   .premium-work .ww-choice-h span:nth-child(2){margin-left:47%}
-  .premium-work .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-work .choice-note,
+  .premium-work .choice-hint{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
   .premium-work .choice .toggle-rows{max-width:980px;margin-top:22px}
   .premium-work .choice .toggle-row{
     padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
@@ -534,7 +548,22 @@
   .premium-work .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
 
   /* ---------- 12. Reveal stagger ----------
-     Delays only. The states themselves are premium.css's .hm-*. */
+     Delays only, with one exception below. The states themselves are
+     premium.css's .hm-*. */
+
+  /* THE ONE EXCEPTION. premium.css reveals .hm-media from
+     `translateY(34px)`, which assumes the element has room beneath it.
+     The About portrait is glued to the section's bottom edge (§76), so
+     rising from 34px below means starting past the boundary and sliding up
+     through it — he looked like he was climbing out of the next section.
+     Bottom-anchored artwork settles in place instead: it grows from its own
+     bottom edge and never crosses the line it sits on. Scale and fade only,
+     no vertical travel. */
+  .premium-motion .premium-work .ws-about-shot.hm-media{
+    transform:scale(.975);transform-origin:50% 100%;
+  }
+  .premium-motion .premium-work .ws-about-shot.hm-media.is-in{transform:none}
+
   .premium-work .ws-mess-list li:nth-child(2),
   .premium-work .ws-why-grid article:nth-child(2),
   .premium-work .pr-stats article:nth-child(2),
@@ -582,7 +611,11 @@
     .premium-work .ws-mess-out{margin-left:0;max-width:none}
     .premium-work .ws-clean-grid{grid-template-columns:minmax(0,1fr)}
     .premium-work .ws-about-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "portrait"}
-    .premium-work .ws-about-shot{max-width:520px}
+    /* Stacked, the copy is directly above the portrait, so its bottom
+       padding would stack on top of the grid gap. The grid gap is the
+       separator here; the portrait still lands on the section edge. */
+    .premium-work .ws-about-copy{padding-bottom:0}
+    .premium-work .ws-about-shot{max-width:520px;justify-self:center}
     .premium-work .ws-feel .pr-wrap{grid-template-columns:minmax(0,1fr);grid-template-rows:auto}
     .premium-work .ws-feel .pr-kicker,
     .premium-work .ws-feel-h,
@@ -608,7 +641,8 @@
     .premium-work .ws-feel-h,
     .premium-work .ws-why-h{--lh:.9}
     .premium-work .choice .container{width:min(100%,calc(100% - 36px))}
-    .premium-work .choice-note{margin-inline:0;text-align:left}
+    .premium-work .choice-note,
+    .premium-work .choice-hint{margin-inline:0;text-align:left}
   }
   @media(max-width:700px){
     .premium-work .ws-why-grid{grid-template-columns:minmax(0,1fr)}
@@ -895,7 +929,7 @@
           </div>
 
           <figure class="ws-about-shot hm hm-media">
-            <img src="assets/img/homepage-about.webp" alt="Oscar de Grauw seated and smiling" width="1080" height="1350" loading="lazy">
+            <img src="assets/img/about-black-shirt.webp" alt="Oscar de Grauw seated and smiling" width="834" height="1124" loading="lazy">
           </figure>
         </div>
       </div>
@@ -1188,6 +1222,11 @@
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
+
+        <!-- Revealed by js/site.js after the first flick, and only on pages
+             where the second flick actually navigates. Hidden markup here on
+             contact.html too, so every page carries the same block. -->
+        <p class="choice-hint" data-choice-hint hidden aria-live="polite">Flick it again and we’ll open the contact page.</p>
 
       </div>
     </section>

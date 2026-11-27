@@ -125,9 +125,32 @@
                          currentPage !== CHOICE_CTA &&
                          !row.hasAttribute('data-no-cta');
 
+    /* SAY WHAT THE NEXT CLICK DOES. The second flick navigates, which is a
+       surprise if nothing warned you. The warning is not static copy: the
+       first flick costs nothing, so it would just be clutter above a
+       control nobody has touched yet. It appears once the switch has
+       snapped back — the moment the visitor is actually asking why — and
+       only where `sendsToContact` is true, so contact.html never promises
+       a trip it cannot make. The element carries aria-live="polite", so
+       unhiding it announces it. */
+    var hint = sendsToContact
+      ? (row.closest('.choice') || document).querySelector('[data-choice-hint]')
+      : null;
+
+    var revealHint = function () {
+      if (!hint || !hint.hidden) return;
+      hint.hidden = false;
+      /* Next frame, or the element goes straight to its end state and the
+         transition never runs. */
+      window.requestAnimationFrame(function () {
+        hint.classList.add('is-shown');
+      });
+    };
+
     row.addEventListener('click', function () {
       if (sendsToContact) {
         flicks += 1;
+        if (flicks === 1) revealHint();
         if (flicks > 1) {
           /* Show the flick landing before leaving: the knob takes 520ms
              to cross (css/site.css §10a) and navigating on the same tick

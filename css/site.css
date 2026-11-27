@@ -1307,6 +1307,37 @@ h3{font:700 18px/1.2 var(--sans);letter-spacing:-.03em;text-transform:none}
 .choice h2{margin:15px auto 10px;font-size:clamp(54px,7vw,102px);max-width:9ch;color:var(--ink)}
 .choice>.container>.eyebrow{color:var(--ink)}
 .choice-note{color:var(--muted);font-size:16px;max-width:46ch;margin:0 auto}
+/* The second-flick warning. Deliberately NOT static copy: the first flick
+   is harmless, so nothing needs saying until the switch has snapped back
+   and the visitor is holding the question. js/site.js reveals it after
+   flick one, and only where the second flick really navigates — on
+   contact.html it stays hidden because there is nowhere to go. Smaller and
+   dimmer than .choice-note; this is a footnote to the control, not a
+   second instruction competing with the first.
+
+   ALIGNMENT IS NOT SET HERE. `.choice` computes text-align:left on the
+   premium pages, and each page re-centres `.choice-note` in its own rule —
+   with its own mobile exception, which flips both back to left. The hint is
+   named alongside `.choice-note` in every one of those rules so the two
+   lines can never drift apart; the margin below is only the base, and the
+   premium pages override it. resources.html has no page rule and uses this
+   block as-is. */
+.choice-hint{
+  color:var(--muted);font-size:14px;
+  /* THE SAME MEASURE AS .choice-note, not the same number. That rule caps
+     at 46ch with a 16px font; `ch` scales with the element's own font-size,
+     so a bare 46ch here would be a visibly narrower box. Centred text hides
+     the difference, which is why it only showed on keynote.html — the one
+     page where .choice is left-aligned, so two centred boxes of different
+     widths made the two lines start 28px apart. */
+  max-width:calc(46ch * (16 / 14));
+  margin:18px auto 0;opacity:0;transform:translateY(4px);
+  transition:opacity .45s ease,transform .45s ease;
+}
+.choice-hint.is-shown{opacity:.85;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .choice-hint{transition:none}
+}
 .switch-line{display:flex;align-items:center;justify-content:center;gap:12px;font-size:14px;font-weight:700}
 .switch-line span{opacity:.45;transition:.2s ease}
 .switch-line span.is-on{opacity:1}

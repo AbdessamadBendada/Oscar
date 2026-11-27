@@ -60,15 +60,66 @@
      ============================================================== */
 
   /* ---------- 1. The hero ----------
-     Contact stays typographic on purpose. The other premium pages open
-     on a duotone photograph; there is no contact photography in the
-     project, so the Deep Green field and the offset title carry the
-     first fold on their own. */
+     Still typographic, now with a face in it. Client request,
+     27 Nov 2026: a photograph on the right of the hero, above the
+     subheadline. There is no contact-specific photography in the project,
+     so this reuses the blue-suit studio portrait that keynote.html's
+     About section carries — the one shot on the site where he is looking
+     straight down the lens, which is the right pairing for "Let's talk".
+
+     THE POCKET WAS ALREADY THERE. The title indents its second line 26%
+     and the copy is pushed right, which left the top right of the field
+     empty. The wrap is now an explicit grid saying so, rather than a
+     column of block elements that happen to lean right. */
   .premium-contact .ct-hero{
     min-height:calc(100svh - var(--header-h));
     padding:clamp(76px,9vw,150px) 0;
     display:flex;align-items:center;
     background:var(--ink);color:var(--paper);
+  }
+  .premium-contact .ct-hero .pr-wrap{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) clamp(280px,30vw,460px);
+    grid-template-areas:
+      "kicker   portrait"
+      "title    portrait"
+      "copy     copy";
+    column-gap:clamp(32px,4vw,72px);
+    align-items:start;
+  }
+  .premium-contact .ct-hero .pr-kicker{grid-area:kicker}
+  .premium-contact .ct-hero .ct-title{grid-area:title}
+  .premium-contact .ct-hero .ct-hero-copy{grid-area:copy}
+  /* A hairline frame, not a bleed. The same device as the .ct-grid
+     two-route block immediately below, so the fold reads as one idea
+     instead of a photograph dropped onto type. The border is ivory at low
+     alpha because a solid rule would out-contrast the copy beside it.
+
+     4/5 WITH A COVER CROP, not the file's own 970x1400. At the width this
+     column needs to close the gap to the title, the full 1:1.44 frame runs
+     past the fold and pushes the subheadline off it. The crop is held high
+     (object-position 14%) so it takes his face and loses the floor. */
+  .premium-contact .ct-portrait{
+    grid-area:portrait;margin:0;align-self:start;
+    aspect-ratio:4/5;
+    border:1px solid rgba(254,253,242,.22);
+    background:var(--ink);overflow:hidden;
+  }
+  /* GREEN, NOT GREY. The studio ground is a mid-grey that reads as a
+     foreign tone in a Deep Green / Soft Ivory / Lime palette — the photo
+     looked pasted on. Luminosity over the figure's own ink background
+     keeps his tonal range and takes the field's hue, so the shot joins the
+     palette instead of sitting on top of it. The contrast nudge is because
+     the blend flattens the midtones slightly.
+
+     NOT the blend §74 removed elsewhere. That one was a grayscale +
+     luminosity pair built around the old white-shirt cutout, which has no
+     background to absorb. This is a full-frame studio photograph, which is
+     exactly the case the treatment suits. */
+  .premium-contact .ct-portrait img{
+    display:block;width:100%;height:100%;
+    object-fit:cover;object-position:50% 14%;
+    mix-blend-mode:luminosity;opacity:.95;filter:contrast(1.08);
   }
   /* .pr-kicker and .pr-h both hard-set Deep Green, which is right on
      the cream body and wrong inside an ink band. Same fix the homepage
@@ -134,10 +185,16 @@
   .premium-contact .ct-form{flex:1;display:flex;flex-direction:column}
   .premium-contact .ct-form .field:last-of-type{margin-bottom:auto}
   .premium-contact .ct-form .button{margin-top:26px;align-self:flex-start}
-  /* Square corners, like every other edge on the premium pages. */
-  .premium-contact .field input,
-  .premium-contact .field textarea,
-  .premium-contact .field select{border-radius:0}
+  /* Square corners, like every other edge on the premium pages.
+
+     SCOPED TO .ct-form, NOT THE PAGE. `.premium-contact .field` also
+     matched the newsletter inputs in the shared footer, which wrap in
+     `.field` too — so this page alone squared a component that is pill-
+     shaped on the other sixteen. The footer is shared markup; page rules
+     must not reach into it. */
+  .premium-contact .ct-form .field input,
+  .premium-contact .ct-form .field textarea,
+  .premium-contact .ct-form .field select{border-radius:0}
 
   /* The booking slot. Dashed because it is explicitly an empty slot
      waiting for a platform — a solid panel would read as finished
@@ -222,7 +279,8 @@
   .premium-contact .ct-choice-h{--fs:clamp(44px,7.8vw,146px)}
   .premium-contact .ct-choice-h span:nth-child(1){margin-left:24%}
   .premium-contact .ct-choice-h span:nth-child(2){margin-left:47%}
-  .premium-contact .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-contact .choice-note,
+  .premium-contact .choice-hint{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
   .premium-contact .choice .toggle-rows{max-width:980px;margin-top:40px}
   .premium-contact .choice .toggle-row{
     padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
@@ -235,6 +293,19 @@
      compositions that have to change shape. */
   @media(max-width:1100px){
     .premium-contact .choice .container{width:min(100%,calc(100% - 56px))}
+  }
+  /* PORTRAIT OUT BELOW 900px. The hero is min-height:100svh carrying a
+     clamp(100px,15vw,270px) title; on a phone the type alone fills the
+     fold, and a portrait on top of it pushes the subheadline and the
+     first way in off-screen. The typographic hero is what this page
+     opened with and it still works at that width. The wrap goes back to
+     a plain single column so the staircase and the right-leaning copy
+     behave exactly as they did before the grid existed. */
+  @media(max-width:900px){
+    .premium-contact .ct-hero .pr-wrap{
+      display:block;grid-template-columns:none;grid-template-areas:none;
+    }
+    .premium-contact .ct-portrait{display:none}
   }
   @media(max-width:850px){
     .premium-contact .ct-grid{grid-template-columns:minmax(0,1fr)}
@@ -249,7 +320,8 @@
        win. Restated rather than inherited. */
     .premium-contact .ct-title{--fs:clamp(86px,27vw,160px);--lh:.82;letter-spacing:-.01em}
     .premium-contact .ct-hero-copy{margin-left:0}
-    .premium-contact .choice-note{margin-inline:0;text-align:left}
+    .premium-contact .choice-note,
+    .premium-contact .choice-hint{margin-inline:0;text-align:left}
   }
   @media(max-width:700px){
     .premium-contact .choice .toggle-row{padding:18px 20px 15px;gap:14px}
@@ -320,6 +392,15 @@
           <span>Let’s</span>
           <span>talk</span>
         </h1>
+
+        <!-- Above the subheadline, per the 27 Nov client note. Shared with
+             keynote.html's About section; there is no contact-specific
+             photography in the project. Hidden below 900px — see the media
+             query in §1 of the style block. -->
+        <figure class="ct-portrait hm hm-media">
+          <img src="assets/img/keynote-about-portrait.webp" width="970" height="1400"
+               alt="Oscar de Grauw, smiling, in a blue suit" fetchpriority="high">
+        </figure>
 
         <p class="pr-copy ct-hero-copy hm hm-copy">Tell me where the week goes, and we will look at it together. A first conversation costs you thirty minutes and commits you to nothing.</p>
       </div>
@@ -478,6 +559,11 @@
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
+
+        <!-- Revealed by js/site.js after the first flick, and only on pages
+             where the second flick actually navigates. Hidden markup here on
+             contact.html too, so every page carries the same block. -->
+        <p class="choice-hint" data-choice-hint hidden aria-live="polite">Flick it again and we’ll open the contact page.</p>
 
         <div class="actions hm hm-copy">
           <a class="button" href="diagnostic.html">Book the free diagnostic</a>

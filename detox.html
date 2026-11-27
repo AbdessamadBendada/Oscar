@@ -343,7 +343,11 @@
        the foot of the field at every width instead of relying on
        object-position to do it inside a box of the wrong shape. */
     display:flex;align-items:flex-end;justify-content:center;
-    background:var(--paper);overflow:hidden;border-radius:0;
+    /* NO BACKGROUND. This used to be `background:var(--paper)`, which drew an
+       ivory rectangle behind a cutout whose corners are transparent — so the
+       empty area around the arch read as a white block sitting in the green
+       section. The cutout belongs directly on the ink ground. */
+    background:transparent;overflow:hidden;border-radius:0;
   }
   .premium-detox .about figure img{
     display:block;width:100%;height:auto;max-height:860px;
@@ -449,7 +453,8 @@
   .premium-detox .dx-choice-h{--fs:clamp(64px,8vw,146px);--lh:.78}
   .premium-detox .dx-choice-h span:nth-child(1){margin-left:24%}
   .premium-detox .dx-choice-h span:nth-child(2){margin-left:47%}
-  .premium-detox .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-detox .choice-note,
+  .premium-detox .choice-hint{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
   .premium-detox .choice .toggle-rows{max-width:980px;margin-top:40px}
   .premium-detox .choice .toggle-row{
     padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
@@ -458,7 +463,19 @@
   .premium-detox .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
 
   /* ---------- 13. Reveal stagger ----------
-     Delays only. The states themselves are premium.css's .hm-*. */
+     Delays only, with one exception below. The states themselves are
+     premium.css's .hm-*. */
+
+  /* THE ONE EXCEPTION. Same fix as work-with-us.html: premium.css reveals
+     .hm-media from `translateY(34px)`, which assumes room beneath the
+     element. This portrait sits on the section's bottom edge, so it rose
+     through the boundary from the section below. Scale and fade only, from
+     its own bottom edge. */
+  .premium-motion .premium-detox .about figure.hm-media{
+    transform:scale(.975);transform-origin:50% 100%;
+  }
+  .premium-motion .premium-detox .about figure.hm-media.is-in{transform:none}
+
   .premium-detox .marked-list li:nth-child(2),
   .premium-detox .module:nth-child(2),
   .premium-detox .stat-grid article:nth-child(2),
@@ -544,7 +561,8 @@
     .premium-detox .about-h{--lh:.86}
     .premium-detox .split-h{--lh:.94}
     .premium-detox .choice .container{width:min(100%,calc(100% - 36px))}
-    .premium-detox .choice-note{margin-inline:0;text-align:left}
+    .premium-detox .choice-note,
+    .premium-detox .choice-hint{margin-inline:0;text-align:left}
   }
   @media(max-width:700px){
     .premium-detox .dx-hero-h{--fs:clamp(44px,12.4vw,96px)}
@@ -793,9 +811,12 @@
     </section>
 
     <section class="about" aria-labelledby="dx-about-heading"><div class="pr-wrap about-grid">
-      <!-- The designer-supplied black-shirt portrait, shared with the
-           Homepage About card and the Work With Us About section. -->
-        <figure class="hm hm-media"><img src="assets/img/homepage-about.webp" width="1080" height="1350" alt="Oscar de Grauw seated and smiling" loading="lazy"></figure>
+      <!-- The designer-supplied black-shirt portrait, tight-cropped to the
+           subject and sitting on the ink ground with no field behind it.
+           The Homepage About card uses the taller `homepage-about.webp`;
+           this section and the Work With Us About section share
+           `about-black-shirt.webp`. -->
+        <figure class="hm hm-media"><img src="assets/img/about-black-shirt.webp" width="834" height="1124" alt="Oscar de Grauw seated and smiling" loading="lazy"></figure>
       <div class="about-copy hm hm-copy">
         <span class="pr-kicker">About Oscar de Grauw</span>
         <h2 class="pr-h about-h" id="dx-about-heading"><span>Why work</span><span>with me</span></h2>
@@ -1027,6 +1048,11 @@
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
+
+        <!-- Revealed by js/site.js after the first flick, and only on pages
+             where the second flick actually navigates. Hidden markup here on
+             contact.html too, so every page carries the same block. -->
+        <p class="choice-hint" data-choice-hint hidden aria-live="polite">Flick it again and we’ll open the contact page.</p>
 
         <div class="actions hm hm-copy">
           <a class="button" href="diagnostic.html">Book the free diagnostic</a>

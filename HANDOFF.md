@@ -5494,3 +5494,306 @@ inside review artefacts in `playground/`.
 CDP checks at 1512 × 982 and a true 390 × 844 viewport confirmed that the WebP
 loaded in both sections, document width matched viewport width, and neither
 composition introduced horizontal overflow. Safari remains untested.
+
+---
+
+## 75. The About portrait's ivory field removed (27 November 2026)
+
+Two things were wrong with the sections added in §74, not one.
+
+First the asset. `homepage-about.webp` carries 226px of fully transparent
+headroom above Oscar's head (content bounding box 143,226 -> 976,1349 inside a
+1080 x 1350 canvas). On the homepage, where it sits on the page ground, that is
+invisible. `about-black-shirt.webp` is the same artwork cropped to its alpha
+bounding box — 834 x 1124, WebP quality 88 with lossless alpha.
+
+Second, and the actual complaint: both figures carried
+`background:var(--paper)`. A cutout whose corners are transparent on an ivory
+rectangle reads as a white block dropped into a dark green section, and no
+amount of cropping fixes that — the tighter crop only made the block smaller.
+Both figures are now `background:transparent`, so the cutout sits directly on
+the ink ground and the artwork's own arch is the only shape behind him. It is
+a slightly lighter green than `--ink`, which is what gives it its edge.
+
+Live in:
+
+- the "Why work with me" section in `work-with-us.html`;
+- the "About Oscar de Grauw / Why work with me" section in `detox.html`.
+
+`homepage-about.webp` is unchanged and still used by `index.html`.
+
+CDP checks at 1512 x 982 and a true 390 x 844 viewport, cache disabled: the
+WebP loaded at its intrinsic 834 x 1124 in both sections, no ivory field
+remains at either size, and document width matched viewport width on both
+pages. Safari remains untested.
+
+---
+
+## 76. The Work With Us portrait grounded on the section edge (27 November 2026)
+
+With the ivory field gone (§75) a third problem surfaced: on
+`work-with-us.html` Oscar read as flying. The cause was layout, not the
+cutout. `.ws-about` carried `padding:var(--gap) 0`, so the artwork's hard
+bottom edge — the chair legs and his jeans are cropped off — floated in open
+green with nothing under it. A hard crop only reads as a crop when there is
+space below it.
+
+`.ws-about` is now `padding:var(--gap) 0 0`. The grid's existing
+`align-items:end` then puts his cut edge exactly on the section's own bottom
+edge, where it reads as the page boundary. This is the treatment
+`detox.html` has used all along (`align-items:flex-end`, `padding:0`), so the
+two About sections finally match.
+
+Two knock-on adjustments:
+
+- `.ws-about-copy` takes `padding-bottom:var(--gap)` — it used to borrow the
+  section's bottom padding to clear the edge, and now needs its own.
+- In the stacked layout below 1000px the copy sits directly above the
+  portrait, so that padding would stack on the grid gap; it is zeroed there
+  and the grid gap does the separating. The shot also gained
+  `justify-self:center`, which its `max-width:520px` needed.
+
+NOTE FOR FUTURE CDP CHECKS: `.hm-media` starts at
+`translateY(34px) scale(.975)` and only resets on `.is-in`. Measuring the
+figure without first scrolling it into view reports a phantom 25–34px
+overflow past the section. Scroll the figure itself into view — scrolling the
+section to `block:'center'` does not fire the observer at 390 × 844.
+
+Measured after the reveal at 1512 × 982, 1100 × 900, 768 × 1024 and a true
+390 × 844: the distance from the figure's bottom to the section's bottom is
+0px at every width, and document width matched viewport width throughout.
+Safari remains untested.
+
+---
+
+## 77. Bottom-anchored portraits settle instead of rising (27 November 2026)
+
+premium.css reveals every `.hm-media` from `translateY(34px) scale(.975)`,
+which assumes the element has room beneath it. After §76 the About portrait
+has none — it is glued to the section's bottom edge — so the reveal started
+it 34px past the boundary and slid it up through the section below. Oscar
+looked like he was climbing out of the next section.
+
+Both bottom-anchored portraits now settle in place: `scale(.975)` with
+`transform-origin:50% 100%` and no vertical travel, so the artwork grows from
+the edge it is sitting on and never crosses it. The fade is premium.css's,
+unchanged; only the transform is overridden.
+
+- `work-with-us.html` — `.premium-motion .premium-work .ws-about-shot.hm-media`
+- `detox.html` — `.premium-motion .premium-detox .about figure.hm-media`
+
+Both sit in each page's "Reveal stagger" block, which is otherwise
+delays-only; the comment there now flags the exception. The overrides beat
+premium.css on specificity (0,4,0 against 0,3,0), so no `!important`.
+
+Sampled the figure's bottom against the section's bottom every 60ms across
+the full 1.15s transition at 1512 × 982 and a true 390 × 844, on both pages:
+maximum overshoot 0px, settled transform `none`, final gap 0px. The
+pre-reveal computed transform is `matrix(0.975, 0, 0, 0.975, 0, 0)` —
+no translation component, which is what confirms the override is winning.
+Safari remains untested.
+
+---
+
+## 78. The second flick now announces itself (27 November 2026)
+
+The closing switch navigates to contact.html on the second flick (§ the
+25 Nov client request in `js/site.js` §3b), and nothing on the page said so.
+A silent navigation on a control that looks like a toggle is a surprise.
+
+It is NOT static copy. The first flick is harmless, so a permanent warning
+above an untouched control is clutter that gets skipped. The line appears
+after the first flick — the moment the switch has snapped back to Clarity
+and the visitor is actually holding the question "why won't it stay?":
+
+> Flick it again and we'll open the contact page.
+
+`.choice-note` above the switch is unchanged; it still does the
+before-you-touch-it job.
+
+The reveal is gated on `js/site.js`'s existing `sendsToContact`, which is the
+same flag that decides whether the second flick navigates at all. That is
+the whole point of reusing it: contact.html cannot promise a trip it will
+not make, and there is no per-page copy divergence to keep in sync. The
+markup is identical on all ten pages and stays `hidden` where the flag is
+false.
+
+- markup: `<p class="choice-hint" data-choice-hint hidden aria-live="polite">`
+  after the `.toggle-rows` div, on all ten pages carrying the device.
+- styles: `css/site.css` §20, 14px and `opacity:.85` — a footnote to the
+  control, deliberately quieter than the 16px `.choice-note` above it.
+  ALIGNMENT IS NOT SET THERE. `.choice` computes `text-align:left` on the
+  premium pages and each page re-centres `.choice-note` itself, with a
+  mobile exception that flips both back to left. The hint is named
+  alongside `.choice-note` in every one of those rules, so the two lines
+  cannot drift apart. Its measure is `calc(46ch * (16 / 14))`, not a bare
+  46ch: `ch` scales with the element's own font-size, so matching the
+  note's NUMBER would not match its WIDTH.
+- behaviour: `js/site.js` §3b, revealed on flick 1. `hidden` comes off, then
+  `.is-shown` is added on the NEXT FRAME — same tick and the transition
+  never runs. `aria-live="polite"` means unhiding announces it.
+
+Verified over CDP at 1512 x 982 and a true 390 x 844 on all ten pages:
+hidden on load everywhere; after flick one the hint is visible at
+`opacity:.85` on the nine pages that navigate, and still `hidden` with
+`opacity:0` on contact.html; after flick two those nine land on
+`/contact.html` and contact.html stays put. Document width matched viewport
+width. Safari remains untested.
+
+---
+
+## 79. Two bugs behind the off-centre hint (27 November 2026)
+
+The §78 hint rendered left of centre. Two separate causes, and the first
+one was mine.
+
+A BROKEN COMMENT IN css/site.css. The §20 block had been given a second
+explanatory paragraph that began after the first comment's `*/`, leaving
+prose sitting in the stylesheet as raw CSS. The parser read it as a
+selector and swallowed the whole `.choice-hint{...}` block as its
+declaration body, so the base rule — font-size, measure, margin, the
+opacity:0 start — never applied on any page. `.choice-hint.is-shown` came
+after the damage and still worked, which is exactly why it looked like a
+centring bug rather than a missing rule. The per-page rules masked the rest
+on eight of ten pages. `CSS.getMatchedStylesForNode` over CDP is what found
+it: the base rule was simply absent from the match list.
+
+If a style "is not applying" and the selector looks right, check that the
+stylesheet still parses before touching specificity. A brace/comment count
+over the file catches this in one line.
+
+ALIGNMENT WAS NEVER SET FOR THE HINT. `.choice` computes `text-align:left`
+on the premium pages; `.choice-note` re-centres itself in a per-page rule
+with a mobile exception that flips both back to left. The hint inherited
+the left and sat flush inside its own centred box. It is now named
+alongside `.choice-note` in every one of those rules — 17 rules across nine
+pages — so the two lines track each other by construction instead of by
+being edited in step. resources.html is not premium, has no page rule and
+takes the site.css defaults.
+
+One leftover from that: both lines capped at `46ch`, but `ch` scales with
+the element's own font-size, so 46ch at the hint's 14px is a narrower box
+than 46ch at the note's 16px. Centred text hides it; keynote.html, the only
+page where `.choice` is left-aligned, showed it as a 28px difference in
+where the two lines start. The hint's measure is now
+`calc(46ch * (16 / 14))` — the same width, not the same number.
+
+PRE-EXISTING, NOT TOUCHED: keynote.html's `.choice-note` is left-aligned at
+desktop while the other eight premium pages centre it. It is the only page
+missing the `text-align:center` rule. The hint now matches whatever the
+note does, so keynote is at least internally consistent, but the note
+itself still looks like an oversight.
+
+Verified over CDP at 1512 x 982 and a true 390 x 844 on all ten pages,
+comparing the two lines' alignment anchors — centre point where the text is
+centred, left edge where it is left-aligned. Every page matches exactly;
+keynote sits 1px off at desktop, which is sub-pixel rounding in the Range
+rect. The stylesheet balances at 0 braces and 134/134 comment delimiters.
+Safari remains untested.
+
+---
+
+## 80. A portrait in the contact hero (27 November 2026)
+
+Client request, 27 November 2026: a photograph on the right of the contact
+hero, above the subheadline.
+
+THE POCKET WAS ALREADY THERE. `.ct-title` indents its second line 26% and
+`.ct-hero-copy` is pushed right with `margin-left:auto`, which left the top
+right of the ink field empty. `.ct-hero .pr-wrap` is now an explicit grid
+that says so — areas `kicker / title / portrait / copy` — instead of a
+column of block elements that happened to lean right. The typographic
+composition is unchanged; it is the same arrangement, now declared.
+
+The image is `keynote-about-portrait.webp`, already on the site in
+keynote.html's About section. There is still no contact-specific
+photography in the project. It is the one shot where he looks straight down
+the lens, which is the right pairing for "Let's talk".
+
+It sits in a hairline frame, `1px solid rgba(254,253,242,.28)`, rather than
+bleeding — the same device as the `.ct-grid` two-route block immediately
+below, so the fold reads as one idea rather than a photograph dropped onto
+type. A solid ivory rule out-contrasted the copy beside it.
+
+HIDDEN BELOW 900px. The hero is `min-height:100svh` carrying a
+`clamp(100px,15vw,270px)` title; on a phone the type alone fills the fold
+and a portrait pushes the subheadline and the first way in off-screen. The
+wrap reverts to `display:block` there, so the staircase and the
+right-leaning copy behave exactly as they did before the grid existed. The
+§62 comment claiming this hero is typographic "on its own" has been
+rewritten rather than left to rot.
+
+Verified over CDP, cache disabled, at 1512 x 982, 1280 x 900, 1100 x 900,
+960 x 900, 901 x 900, 900 x 900 and a true 390 x 844. At every width above
+the breakpoint the portrait loaded at its intrinsic 970 x 1400, its box
+does not intersect the title's box, and its bottom edge sits above the
+subheadline's top — the client's "above the subheadline", measured rather
+than eyeballed. It disappears at exactly 900px and below. Document width
+matched viewport width at all eight sizes. Safari remains untested.
+
+THE GREY GROUND IS GONE. Flagged as open when this first went in, and
+closed the same day: the client's verdict on the first build was that it
+"doesn't look as good", and the grey studio field was half the reason. The
+image now carries `mix-blend-mode:luminosity` over the figure's own ink
+background, which keeps his tonal range and takes the field's hue, so the
+photograph joins the palette instead of sitting on top of it.
+`filter:contrast(1.08)` offsets the midtone flattening the blend causes.
+
+This is NOT the blend §74 removed. That one was a grayscale + luminosity
+pair built around the old white-shirt CUTOUT, which has no background to
+absorb and so lost all its colour for nothing. A full-frame studio
+photograph on a coloured field is precisely the case the treatment suits.
+
+SCALE WAS THE OTHER HALF. The column was `clamp(210px,23vw,330px)`, which
+at 1512 left 555px of dead green between "TALK" and the photograph — the
+portrait read as a small floating rectangle rather than one side of the
+fold. It is now `clamp(280px,30vw,460px)` and the gap is 60px. A wider
+column at the file's native 970 x 1400 runs past the fold and pushes the
+subheadline off it, so the frame is `aspect-ratio:4/5` with a cover crop
+held high at `object-position:50% 14%` — it takes his face and loses the
+floor.
+
+Re-verified at 1512 x 982, 1280 x 900, 1100 x 900, 901 x 900, 900 x 900 and
+a true 390 x 844. At every width above the breakpoint: the blend computes
+as `luminosity`, the portrait does not intersect the title, its bottom edge
+is above the subheadline, and the subheadline's bottom is inside the fold.
+Gap to the title closes smoothly, 60 / 51 / 44 / 36px. Hidden at exactly
+900 and below. Document width matched viewport width at all six sizes.
+Safari remains untested — and `mix-blend-mode` is the one thing here worth
+looking at there, though the fallback is simply the untinted photograph.
+
+---
+
+## 81. The footer newsletter was square on one page (27 November 2026)
+
+Reported as "square in some places and round in others". It was one page:
+contact.html. The other sixteen were already pill-shaped.
+
+`css/site.css` §1370 gives `.footer-grid input` and the submit button
+`border-radius:var(--r-pill)`, and nothing else touches them. The culprit
+was contact.html's own rule:
+
+    .premium-contact .field input,
+    .premium-contact .field textarea,
+    .premium-contact .field select{border-radius:0}
+
+written to square the fields in this page's "Send a message" card. But the
+footer newsletter inputs wrap in `.field` too, and the footer is shared
+markup on every page — so a page-level selector reached into a shared
+component and squared it. The submit button was untouched, which is why the
+result looked half-done: square inputs above a pill button.
+
+Now scoped to `.premium-contact .ct-form .field …`. The page's own form
+keeps its square corners, the footer keeps the pill.
+
+THE GENERAL RULE, worth keeping: page rules must not reach into the shared
+header or footer. `.premium-<page> .field` looks page-scoped and is not —
+it is scoped to the page's BODY, which includes every shared component on
+it. Anchor on the page's own container, here `.ct-form`.
+
+Verified over CDP, cache disabled, at 1512 x 982 across all seventeen HTML
+pages: every footer newsletter input and submit button computes 999px, and
+contact.html's four own form fields still compute 0px. `CSS.getMatchedStyles
+ForNode` is what identified the offending rule rather than grepping, since
+the selector that caused it does not contain the word "footer".
+Safari remains untested.

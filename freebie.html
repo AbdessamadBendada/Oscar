@@ -139,7 +139,8 @@
   .premium-freebie .fb-choice-h{--fs:clamp(64px,8vw,146px);--lh:.78}
   .premium-freebie .fb-choice-h span:nth-child(1){margin-left:24%}
   .premium-freebie .fb-choice-h span:nth-child(2){margin-left:47%}
-  .premium-freebie .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-freebie .choice-note,
+  .premium-freebie .choice-hint{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
   .premium-freebie .choice .toggle-rows{max-width:980px;margin-top:40px}
   .premium-freebie .choice .toggle-row{
     padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);
@@ -167,7 +168,8 @@
     .premium-freebie .fb-hero-h{--fs:clamp(46px,13vw,104px);--lh:.9}
     .premium-freebie .fb-card-h{--lh:.9}
     .premium-freebie .fb-hero .pr-copy{margin-left:0}
-    .premium-freebie .choice-note{margin-inline:0;text-align:left}
+    .premium-freebie .choice-note,
+    .premium-freebie .choice-hint{margin-inline:0;text-align:left}
   }
   @media(max-width:700px){
     .premium-freebie .choice .toggle-row{padding:18px 20px 15px;gap:14px}
@@ -335,6 +337,11 @@
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
+
+        <!-- Revealed by js/site.js after the first flick, and only on pages
+             where the second flick actually navigates. Hidden markup here on
+             contact.html too, so every page carries the same block. -->
+        <p class="choice-hint" data-choice-hint hidden aria-live="polite">Flick it again and we’ll open the contact page.</p>
 
         <div class="actions hm hm-copy">
           <a class="button" href="diagnostic.html">Book the free diagnostic</a>

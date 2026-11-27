@@ -408,7 +408,8 @@
   .premium-page .pr-choice-h{--fs:clamp(44px,7.8vw,146px)}
   .premium-page .pr-choice-h span:nth-child(1){margin-left:24%}
   .premium-page .pr-choice-h span:nth-child(2){margin-left:47%}
-  .premium-page .choice-note{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
+  .premium-page .choice-note,
+  .premium-page .choice-hint{margin:clamp(26px,3vw,44px) auto 0;text-align:center}
   .premium-page .choice .toggle-rows{margin-top:22px}
 
   /* ---------- Responsive ----------
@@ -469,7 +470,8 @@
       background:linear-gradient(to bottom,
         rgba(var(--pr-rgb),0) 20%,rgba(var(--pr-rgb),.74) 40%,rgba(var(--pr-rgb),.96) 68%);
     }
-    .premium-page .choice-note{text-align:left;margin-inline:0}
+    .premium-page .choice-note,
+    .premium-page .choice-hint{text-align:left;margin-inline:0}
   }
 
   /* ============================================================
@@ -1107,6 +1109,11 @@
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
+
+        <!-- Revealed by js/site.js after the first flick, and only on pages
+             where the second flick actually navigates. Hidden markup here on
+             contact.html too, so every page carries the same block. -->
+        <p class="choice-hint" data-choice-hint hidden aria-live="polite">Flick it again and we’ll open the contact page.</p>
       </div>
     </section>
 

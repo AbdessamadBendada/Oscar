@@ -634,7 +634,8 @@
   .premium-keynote .choice h2 span{display:block;width:max-content;max-width:100%}
   .premium-keynote .choice h2 span:nth-child(1){margin-left:10%}
   .premium-keynote .choice h2 span:nth-child(2){margin-left:39%}
-  .premium-keynote .choice .choice-note{margin-top:28px}
+  .premium-keynote .choice .choice-note,
+  .premium-keynote .choice .choice-hint{margin-top:28px}
   .premium-keynote .choice .toggle-rows{max-width:980px;margin-top:40px}
   .premium-keynote .choice .toggle-row{padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);gap:clamp(20px,3vw,46px)}
   .premium-keynote .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
@@ -1045,6 +1046,11 @@
             <span class="t-after">Operational Noise</span>
           </button>
         </div>
+
+        <!-- Revealed by js/site.js after the first flick, and only on pages
+             where the second flick actually navigates. Hidden markup here on
+             contact.html too, so every page carries the same block. -->
+        <p class="choice-hint" data-choice-hint hidden aria-live="polite">Flick it again and we’ll open the contact page.</p>
 
         <div class="actions">
           <a class="button" href="contact.html">Book this keynote</a>
