@@ -325,22 +325,13 @@
   }
   .premium-work .ws-about-shot{
     grid-area:portrait;position:relative;margin:0;padding:0;
-    overflow:visible;border-radius:0;
-    /* An explicit ink backdrop for the blend below to mix against,
-       the same way the homepage's arch gives its cutout one. */
-    background:var(--ink);
+    overflow:hidden;border-radius:0;background:var(--paper);
   }
-  /* Duotone, matching the homepage's own cutout-on-ink treatment. A flat
-     greyscale cutout on Deep Green reads as a photograph pasted on, and
-     the white shirt blows out against the field. */
+  /* This is the designer-supplied black-shirt composition. Its transparent
+     outer field needs the ivory ground used in the supplied treatment. */
   .premium-work .ws-about-shot img{
-    /* NO z-index. It was holding the picture above a ::before overlay
-       that no longer exists, and the stacking context it opened was
-       what kept mix-blend-mode from ever reaching the field behind. */
     display:block;width:100%;height:auto;max-height:760px;
     object-fit:contain;object-position:50% 100%;
-    filter:grayscale(1) brightness(.92) contrast(1.06);
-    mix-blend-mode:luminosity;
   }
 
   /* ---------- 7. The frameworks ----------
@@ -890,9 +881,8 @@
          and a signature. They are not the same block and neither should be
          edited to match the other.
 
-         Portrait: oscar-portrait.jpg, which until now was only on
-         about.html. Not oscar-about.jpg, which is the homepage's About
-         picture and is already on four pages. -->
+         Portrait: the same designer-supplied black-shirt composition now
+         used by the Homepage About card. -->
     <section class="ws-about" aria-labelledby="ws-about-heading">
       <div class="pr-wrap">
         <div class="ws-about-grid">
@@ -905,7 +895,7 @@
           </div>
 
           <figure class="ws-about-shot hm hm-media">
-            <img src="assets/img/oscar-cutout.png" alt="Oscar de Grauw holding a laptop" width="504" height="860" loading="lazy">
+            <img src="assets/img/homepage-about.webp" alt="Oscar de Grauw seated and smiling" width="1080" height="1350" loading="lazy">
           </figure>
         </div>
       </div>

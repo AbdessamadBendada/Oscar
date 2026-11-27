@@ -322,8 +322,8 @@
   }
 
   /* ---------- 8. Oscar ----------
-     The shared transparent cutout on Deep Green, duotoned the way the
-     homepage does it, rather than the old framed photograph. */
+     The designer-supplied black-shirt composition shared with the
+     Homepage About card and Work With Us. */
   .premium-detox .about{background:var(--ink);color:var(--paper);padding:0}
   .premium-detox .about-grid{
     display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
@@ -343,13 +343,11 @@
        the foot of the field at every width instead of relying on
        object-position to do it inside a box of the wrong shape. */
     display:flex;align-items:flex-end;justify-content:center;
-    background:var(--ink);overflow:hidden;border-radius:0;
+    background:var(--paper);overflow:hidden;border-radius:0;
   }
   .premium-detox .about figure img{
-    display:block;width:auto;max-width:100%;
-    height:100%;object-fit:contain;object-position:center bottom;
-    filter:grayscale(1) brightness(.92) contrast(1.06);
-    mix-blend-mode:luminosity;
+    display:block;width:100%;height:auto;max-height:860px;
+    object-fit:contain;object-position:center bottom;
   }
   /* max-width:none — css/site.css caps .about-copy at 650px, which left
      the text stopping 94px short of the channel while every section
@@ -795,20 +793,9 @@
     </section>
 
     <section class="about" aria-labelledby="dx-about-heading"><div class="pr-wrap about-grid">
-      <!-- The real portrait, in the brand's arch frame.
-
-           IT WAS assets/img/portrait.png, AND THAT WAS WRONG IN TWO WAYS.
-           §20 records what that file actually is: the LinkedIn-banner
-           lockup, 1983x793 — a WIDE banner, not a portrait — with a
-           headline, a fake "BOOK A CALL" button and an OLD logo baked into
-           it. In the 3:4 arch frame this section now uses it would have
-           been destroyed, and it was putting a superseded logo on the page.
-           It was also 1.4 MB, one of the five oversized assets §31 lists.
-
-           The premium pass replaces that framed photograph with the shared
-           transparent Oscar cutout on Deep Green, matching the selected
-           homepage direction without carrying the old grey backdrop. -->
-        <figure class="hm hm-media"><img src="assets/img/oscar-cutout.png" width="1178" height="2100" alt="Oscar de Grauw" loading="lazy"></figure>
+      <!-- The designer-supplied black-shirt portrait, shared with the
+           Homepage About card and the Work With Us About section. -->
+        <figure class="hm hm-media"><img src="assets/img/homepage-about.webp" width="1080" height="1350" alt="Oscar de Grauw seated and smiling" loading="lazy"></figure>
       <div class="about-copy hm hm-copy">
         <span class="pr-kicker">About Oscar de Grauw</span>
         <h2 class="pr-h about-h" id="dx-about-heading"><span>Why work</span><span>with me</span></h2>

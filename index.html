@@ -198,30 +198,10 @@
      the figure's padding box, so padding here silently scales him up with
      it — the first build put him at 160% of the intended size. The figure
      is exactly the box; the break-out is overflow, not reserved space. */
-  /* The padding is deliberate and load-bearing, which is the opposite of
-     the first build where it was a mistake. The client asked for a shorter
-     box without moving Oscar. He is pinned to the box's BOTTOM, so taking
-     height off the box would drag him up with it; the padding puts that
-     height back above the box, leaving the bottom edge, and therefore him,
-     exactly where it was. A % height on the cutout resolves against this
-     padding box, so his size is unchanged too. */
-  .premium-page .pr-problem-fig{position:relative;z-index:2;margin:0;padding-top:15%}
-  .premium-page .pr-fig-box{
-    position:relative;overflow:hidden;
-    aspect-ratio:4/3;background:var(--ink);   /* shortened, client 19 Nov */
-  }
-  .premium-page .pr-fig-box img{
-    width:100%;height:100%;object-fit:cover;object-position:50% 50%;
-    transform:scale(1.14);                 /* hides the blur's soft edge */
-    filter:blur(9px) saturate(.5) brightness(1.1);
-  }
-  .premium-page .pr-cutout{
-    /* Left of centre, as the mockup places him: his cutout starts ~10%
-       into the box and leaves roughly a quarter of it clear on the right. */
-    position:absolute;left:7%;bottom:0;
-    height:124%;width:auto;max-width:none;
-    filter:drop-shadow(0 16px 24px rgba(20,51,24,.3));
-  }
+  /* Designer-supplied composite: crop, background and subject edge are
+     one approved image, so the former two-layer reconstruction is gone. */
+  .premium-page .pr-problem-fig{position:relative;z-index:2;margin:0;align-self:end}
+  .premium-page .pr-problem-art{display:block;width:100%;height:auto}
   .premium-page .pr-problem-copy{padding-top:clamp(20px,4vw,74px)}
   /* One row: the CTA on the left, the attribution and signature hard
      right. They used to be two stacked blocks with the button centred
@@ -283,30 +263,33 @@
   .premium-page .pr-card-title{margin-top:auto;padding:clamp(26px,2.4vw,42px);padding-top:0}
 
   .premium-page .pr-card--outline{border:1px solid var(--ink);background:transparent}
-  .premium-page .pr-card--dark{background:var(--ink);color:var(--paper)}
-  /* The figure is a cutout, not a photo panel: the two of them stand
-     directly on the Deep Green and meet the card's bottom edge, which is
-     where the source photograph's desk used to be. No crop and no
-     aspect-ratio here on purpose — object-fit would cut the silhouette,
-     and the point is that there is no rectangle. */
-  /* margin:0 is not cosmetic. The UA stylesheet gives <figure> a default
-     `margin:1em 40px`, which was insetting the cutout 40px on each side
-     and stopping it reaching the card's edges. */
-  .premium-page .pr-card--dark .pr-card-figure{margin:0;margin-top:auto;position:relative}
-  .premium-page .pr-card--dark .pr-card-figure img{width:100%;height:auto;display:block}
+  .premium-page .pr-card--dark{
+    position:relative;isolation:isolate;overflow:hidden;
+    background:var(--ink);color:var(--paper)
+  }
+  /* The designer supplied this as one complete 4:5 composition. It fills
+     the card rather than being cropped into the former 4:3 lower panel. */
+  .premium-page .pr-card--dark .pr-card-body{position:relative;z-index:2}
+  .premium-page .pr-card--dark .pr-card-figure{
+    position:absolute;z-index:0;inset:0;margin:0;overflow:hidden;
+  }
+  .premium-page .pr-card--dark .pr-card-figure::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to bottom,var(--ink) 0%,rgba(20,51,24,.94) 30%,rgba(20,51,24,.48) 56%,transparent 78%);
+    pointer-events:none;
+  }
+  .premium-page .pr-card--dark .pr-card-figure img{
+    width:100%;height:100%;object-fit:contain;object-position:50% 100%;display:block;
+  }
   .premium-page .pr-card--dark h3{
-    position:absolute;right:clamp(16px,1.4vw,26px);top:clamp(-26px,-2vw,-18px);
+    position:absolute;z-index:2;right:clamp(16px,1.4vw,26px);bottom:clamp(18px,1.8vw,28px);
     color:var(--lime);text-align:right;
   }
   .premium-page .pr-card--lime{position:relative;isolation:isolate;background:var(--lime);color:var(--ink)}
   .premium-page .pr-card--lime .pr-card-bg{position:absolute;inset:0;z-index:-1;background:var(--lime);overflow:hidden}
   .premium-page .pr-card--lime .pr-card-bg img{
-    /* The keynote shot is a dark stage, so it needs lifting harder than
-       the bright office did before a multiply leaves anything visible.
-       Cropped left of centre to keep Oscar in frame on a portrait card. */
-    width:100%;height:100%;object-fit:cover;object-position:30% 45%;
-    mix-blend-mode:multiply;opacity:.62;
-    filter:grayscale(1) brightness(2.1) contrast(.5);
+    /* Colour treatment and crop are baked into the designer-supplied file. */
+    width:100%;height:100%;object-fit:contain;object-position:50% 50%;
   }
   .premium-page .pr-card--lime h3{text-align:right;margin-left:auto}
   /* margin-top:auto pushes the title and the copy together down to the
@@ -466,8 +449,9 @@
     .premium-page .pr-card--lime h3,.premium-page .pr-card--dark h3{text-align:left}
     .premium-page .pr-card--lime h3{margin-left:0}
     .premium-page .pr-cards{grid-template-columns:minmax(0,1fr)}
-    .premium-page .pr-cards .pr-card--lime{grid-column:auto}
+    .premium-page .pr-cards .pr-card--lime{grid-column:auto;min-height:calc((100vw - 36px) * 1.25)}
     .premium-page .pr-card{min-height:0}
+    .premium-page .pr-card--dark{min-height:520px}
     .premium-page .pr-stats{grid-template-columns:minmax(0,1fr);gap:34px}
     .premium-page .pr-ip-row{grid-template-columns:minmax(0,1fr);gap:12px;padding-inline:0}
     .premium-page .pr-ip-link{grid-column:auto}
@@ -476,10 +460,6 @@
     .premium-page .pr-sign{flex-direction:column-reverse;align-items:flex-start;gap:26px}
     .premium-page .pr-sign-by{flex-direction:row-reverse;text-align:left}
     .premium-page .pr-sign img{width:46px}
-    /* The break-out has to shrink here or his head eats two lines of the
-       headline. Same principle as zeroing the headline offsets: the
-       device survives, the collision does not. */
-    .premium-page .pr-cutout{height:112%;left:10%}
     .premium-page .pr-voices .testimonial-grid blockquote{text-align:left;hyphens:none}
     .premium-page .pr-hero{min-height:0;padding-top:52px}
     .premium-page .pr-featured ul{grid-auto-columns:calc((100% - var(--logo-gap)) / 2)}
@@ -631,22 +611,16 @@
   .premium-page .pr-hero[data-ground="deep"] .pr-hero-h,
   .premium-page .pr-hero[data-ground="deep"] .pr-hero-foot{color:#fff}
 
-  /* 3. The About portrait uses Abdessamad's Deep Green arch treatment. */
-  .premium-page .pr-about figure{
-    position:relative;padding:0 0 clamp(28px,3vw,46px) clamp(28px,3vw,46px);
-  }
+  /* The designer-supplied artwork already contains the ivory canvas,
+     both green arches and the outlined circle. Display it intact: the
+     old CSS arch and circle must not be drawn around it a second time. */
+  .premium-page .pr-about figure{position:relative;padding:0}
   .premium-page .pr-about-arch{
-    position:relative;z-index:1;overflow:hidden;background:var(--ink);
-    border-radius:999px 999px 0 0;
+    position:relative;z-index:1;
   }
   .premium-page .pr-about figure .pr-about-arch img{
-    display:block;width:100%;aspect-ratio:3/4.15;object-fit:contain;object-position:50% 100%;
-    filter:grayscale(1) contrast(1.08);mix-blend-mode:luminosity;
-  }
-  .premium-page .pr-about figure::before{
-    content:"";position:absolute;z-index:2;left:0;bottom:0;
-    width:58%;aspect-ratio:1;border:2px solid var(--ink);border-radius:50%;
-    pointer-events:none;
+    display:block;width:100%;height:auto;aspect-ratio:auto;
+    object-fit:contain;object-position:50% 50%;filter:none;
   }
 
   /* 6. Restore the closing switch to Abdessamad's confident scale. */
@@ -660,7 +634,7 @@
   }
 
   @media(max-width:760px){
-    .premium-page .pr-about figure{max-width:520px;padding:0 0 28px 28px}
+    .premium-page .pr-about figure{max-width:520px;padding:0}
     .premium-page .choice .toggle-row{padding:18px 20px 15px;gap:14px}
     .premium-page .choice .choice-toggle .t-switch{width:100px;height:60px}
   }
@@ -835,33 +809,10 @@
         </h2>
 
         <div class="pr-problem-body">
-          <!-- The break-out composite. The box is a blurred room, the
-               cutout stands in it and grows out of the top.
-
-               THE CUTOUT: assets/img/oscar-portrait-cutout.png, the
-               navy-suit portrait the mockup uses. It is GENERATED, not
-               supplied: oscar-portrait.jpg run through Vision's
-               VNGenerateForegroundInstanceMaskRequest, the same subject
-               lift macOS Preview uses, then scaled to 751x1200.
-
-               Two earlier routes failed and are not worth retrying. A
-               flood-fill key of the studio backdrop walked straight
-               through the subject's own gradients and removed him as
-               well. The crop supplied on 19 Nov carries an alpha channel
-               but 0% of its pixels are transparent: it is a flat
-               screenshot, with headline pixels baked into one corner.
-
-               Still worth a human eye on the edge before this ships. -->
+          <!-- Designer-supplied replacement for the former generated
+               cutout over a separately blurred meeting-room image. -->
           <figure class="pr-problem-fig hm hm-media">
-            <!-- The room behind him. This is the hero photograph again,
-                 blurred past recognition: it is a real meeting room, it
-                 carries no second Oscar to smudge (speaking.jpg and both
-                 work-*.jpg do), and reusing it ties the section back to
-                 the top of the page. -->
-            <div class="pr-fig-box">
-              <img src="assets/img/premium-hero-session.jpg" width="2400" height="1600" alt="" loading="lazy">
-            </div>
-            <img class="pr-cutout" src="assets/img/oscar-portrait-cutout.png" width="751" height="1200"
+            <img class="pr-problem-art" src="assets/img/homepage-problem.webp" width="1080" height="1350"
                  alt="Oscar de Grauw" loading="lazy">
           </figure>
 
@@ -910,14 +861,7 @@
             </div>
             <figure class="pr-card-figure">
               <h3>Workshops</h3>
-              <!-- Background removed, desk kept. Vision's subject lift
-                   returns the two people and nothing else, because it
-                   segments subjects rather than furniture, so the matte
-                   is that mask UNION a polygon traced along the bottle
-                   cap, the laptop lid, the mug rim and the desk's back
-                   edge. Everything standing on the desk survives; only
-                   the whiteboard, wall and plant are cut away. -->
-              <img src="assets/img/work-whiteboard-cutout.png" width="1100" height="796"
+              <img src="assets/img/homepage-workshops.webp" width="1080" height="1350"
                    alt="Oscar working through an operational flow with a client" loading="lazy">
             </figure>
           </article>
@@ -929,7 +873,7 @@
                exists and inventing one is not ours to do. -->
           <article class="pr-card pr-card--lime hm hm-card">
             <div class="pr-card-bg">
-              <img src="assets/img/speaking-keynote.jpg" width="1600" height="1067" alt="" loading="lazy">
+              <img src="assets/img/homepage-keynotes.webp" width="1080" height="1350" alt="" loading="lazy">
             </div>
             <div class="pr-card-head">
               <h3>Keynotes</h3>
@@ -1121,7 +1065,7 @@
       <div class="pr-wrap pr-about-grid">
         <figure class="hm hm-media">
           <div class="pr-about-arch">
-            <img src="assets/img/oscar-cutout.png" width="504" height="860" alt="Oscar de Grauw holding a laptop" loading="lazy">
+            <img src="assets/img/homepage-about.webp" width="1080" height="1350" alt="Oscar de Grauw" loading="lazy">
           </div>
         </figure>
 

@@ -1,6 +1,23 @@
 # OPS DETOX™ — Project Handoff
 
-_Last updated: 25 November 2026_
+_Last updated: 27 November 2026_
+
+> **27 Nov — the Keynote About block now uses the supplied blue-suit portrait.**
+> The formal speaker image replaces the repeated laptop photograph and retains the
+> section's existing responsive 4:5 frame. See §73.
+
+> **27 Nov — two supplied portraits received new live placements.** The Keynote
+> benefits section now carries the Deep Green stage composite, and the About hero
+> uses the seated stool portrait in place of the laptop photograph. See §72.
+
+> **27 Nov — See – Strip – Choose now uses Oscar's real workshop photograph.**
+> The generic training-room image in the illustrative example was replaced by
+> the supplied session showing Oscar facilitating a seated team. See §71.
+
+> **27 Nov — four designer-supplied homepage crops replaced the reconstructed
+> image treatments.** The Problem portrait, Workshops card, Keynotes card and
+> Why Work With Me portrait now use the designer's finished compositions rather
+> than locally generated masks, crops and colour effects. See §70.
 
 > **25 Nov — the three live IP pages have had a full responsive design audit.**
 > Long display headings now use measured compact scales, the clipped See – Strip –
@@ -5258,8 +5275,6 @@ old placeholder, CORE, decision-engine or knowing-and-saying language. The Homep
 and Work With Us framework sections were inspected from screenshots at both widths.
 Safari remains untested.
 
----
-
 ## 67. Three IP page directions, review only (25 November 2026)
 
 `playground/ip-page-directions.html` is a tabbed review artefact containing three
@@ -5371,3 +5386,111 @@ placeholder and closing sections were inspected from full-page screenshots. Expe
 off-canvas mobile navigation, animated pattern tracks and the deliberately labelled
 Truth Latency route markers remain clipped by their owning components; no page-level
 horizontal overflow remains. Safari remains untested.
+
+---
+
+## 70. Designer-supplied homepage image crops (27 November 2026)
+
+The designer supplied finished image compositions for four homepage placements.
+They supersede the locally reconstructed treatments:
+
+- `homepage-problem.webp` replaces the blurred meeting-room layer plus generated
+  navy-suit cutout in the Problem section.
+- `homepage-workshops.webp` replaces the locally masked whiteboard-session cutout
+  in the Workshops card. Its complete 4:5 composition now fills the card behind
+  the existing copy; it is no longer cropped into the former 4:3 lower panel.
+- `homepage-keynotes.webp` replaces the raw keynote photograph plus CSS colour
+  treatment in the Keynotes card. The card preserves the complete 4:5 artwork;
+  its mobile height follows that ratio so the supplied crop is neither trimmed
+  nor letterboxed.
+- `homepage-about.webp` replaces the laptop cutout and CSS luminosity treatment in
+  the Why Work With Me composition. The supplied file already contains the ivory
+  canvas, both green arches and the outlined circle; the former CSS arch, padding
+  and circle are removed so those devices are not drawn twice.
+
+The supplied 1080 × 1350 PNGs were converted to WebP at quality 88, preserving
+alpha where present. Only `index.html` and the four new assets changed; the shared
+stylesheets and other pages were not touched.
+
+`playground/image-crop-comparison.html` is the review record. It groups all twenty
+supplied files into direct replacements, images already covered by optimized site
+assets, possible new placements, and event/promotional material to hold. Nothing in
+the live site depends on that page or its review assets.
+
+CDP verification ran with cache disabled at 1512 × 982 and a true 390 × 844 mobile
+viewport. All four WebPs loaded at 1080 × 1350, the three desktop programme cards
+remained equal-height, document width matched viewport width at both sizes, and the
+page retained one direct header, footer and footer grid with no broken images. Safari
+remains untested.
+
+---
+
+## 71. See – Strip – Choose workshop photograph (27 November 2026)
+
+The illustrative example on `see-strip-choose.html` now uses the supplied real
+workshop photograph of Oscar facilitating a seated team instead of
+`premium-hero-session.jpg`. The source was exported as
+`see-strip-choose-workshop.webp` with a JPEG fallback; both retain the original
+1448 × 1086 dimensions. A framework-specific object position in
+`css/ip-pages.css` keeps Oscar visible at the right edge on the narrower mobile
+crop without affecting the other two IP pages.
+
+CDP verification ran with cache disabled at 1512 × 982 and a true 390 × 844
+viewport. The WebP loaded at its intrinsic dimensions, the photograph and caption
+remained inside their bordered field, document width matched viewport width and no
+image request failed. Safari remains untested.
+
+---
+
+## 72. New Keynote and About portrait placements (27 November 2026)
+
+Two images from the supplied review folder now have live placements:
+
+- `keynote-stage-composite.webp` sits behind the “What Oscar brings to your stage”
+  section in `keynote.html`. It is contained at the right on desktop and moved
+  further right with lower opacity on narrow screens so it never competes with the
+  benefit copy.
+- `about-portrait-stool.webp` replaces `oscar-about.jpg` in the `about.html` hero.
+  On desktop the image is confined to the right 70% of the hero so Oscar clears the
+  headline; its colour treatment is lighter than the former grayscale blend. Below
+  900px it returns to a full-width portrait behind the stacked mobile composition.
+
+Both supplied files were converted to WebP at quality 88. CDP checks at 1512 × 982
+and a true 390 × 844 viewport found no horizontal overflow. The new About portrait
+loaded at 934 × 1400 and remained legible behind the hero content at both sizes.
+Safari remains untested.
+
+---
+
+## 73. Keynote speaker portrait (27 November 2026)
+
+The lower “About Oscar de Grauw / Why choose me for your event?” section in
+`keynote.html` now uses the supplied blue-suit portrait instead of the older laptop
+photograph. The source was converted to `keynote-about-portrait.webp` at quality 88
+and retains its 970 × 1400 dimensions. The existing 4:5 frame, crop treatment and
+responsive section layout remain unchanged. The section now has the direct anchor
+`#keynote-about-oscar` for review.
+
+CDP checks at 1512 × 982 and a true 390 × 844 viewport found no horizontal overflow;
+the portrait rendered inside the frame at both sizes. Safari remains untested.
+
+---
+
+## 74. Laptop portrait removed from live pages (27 November 2026)
+
+The remaining two live uses of the blue-shirt laptop cutout were replaced with
+the designer-supplied black-shirt portrait already exported as
+`homepage-about.webp`:
+
+- the “Why work with me” section in `work-with-us.html`;
+- the “About Oscar de Grauw / Why work with me” section in `detox.html`.
+
+Both page-specific treatments now use an ivory image field and preserve the
+supplied colour composition. The former grayscale filter and luminosity blend
+were removed because they were designed around the old white-shirt cutout.
+`oscar-cutout.png` is no longer referenced by a live page; its remaining uses are
+inside review artefacts in `playground/`.
+
+CDP checks at 1512 × 982 and a true 390 × 844 viewport confirmed that the WebP
+loaded in both sections, document width matched viewport width, and neither
+composition introduced horizontal overflow. Safari remains untested.

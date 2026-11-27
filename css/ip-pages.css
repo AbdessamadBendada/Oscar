@@ -176,6 +176,7 @@
 .ip-page .ip-photo-media{min-height:clamp(330px,46vw,720px);overflow:hidden}
 .ip-page .ip-photo picture{display:block;width:100%;height:100%}
 .ip-page .ip-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.ip-page .ssc-example .ip-photo img{object-position:68% 50%}
 .ip-page .ip-photo-copy{display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(26px,4vw,58px);border-left:1px solid var(--ink)}
 .ip-page .ip-photo-number{margin-bottom:auto;font:clamp(56px,7vw,120px)/.8 var(--display)}
 .ip-page .ip-photo-copy h3{margin:40px 0 16px;font:clamp(30px,3.3vw,54px)/.9 var(--display);text-transform:uppercase}

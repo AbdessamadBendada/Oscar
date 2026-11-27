@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Image crop comparison</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#fbfbf9;color:#143318;font:16px/1.4 Arial,sans-serif}
+    main{width:min(1200px,calc(100% - 32px));margin:40px auto 80px}
+    h1{margin:0 0 32px;font-size:clamp(30px,5vw,64px)}
+    .group-title{margin:48px 0 12px;padding-bottom:10px;border-bottom:3px solid #143318;font-size:28px}
+    .group-note{margin:0 0 24px;max-width:760px}
+    section{padding:24px 0;border-top:1px solid #143318}
+    h2{margin:0 0 14px;font-size:20px}
+    .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    figure{margin:0}
+    figcaption{margin-bottom:8px;font-weight:700}
+    .frame{position:relative;overflow:hidden;aspect-ratio:4/5;background:#143318}
+    .frame>img{display:block;width:100%;height:100%;object-fit:contain}
+    .old-1{padding-top:12%;background:#fbfbf9}
+    .old-1 .room{position:absolute;inset:12% 0 0;width:100%;height:88%;object-fit:cover;filter:blur(9px) saturate(.5) brightness(1.1);transform:scale(1.08)}
+    .old-1 .person{position:absolute;left:6%;bottom:0;width:auto;height:96%;object-fit:contain}
+    .old-2 img{object-position:center bottom}
+    .old-3{background:#c6ff00}
+    .old-3 img{object-fit:cover;object-position:30% 45%;mix-blend-mode:multiply;opacity:.62;filter:grayscale(1) brightness(2.1) contrast(.5)}
+    .arch{border-radius:999px 999px 0 0}
+    .old-4 img{object-position:center bottom;filter:grayscale(1) contrast(1.08);mix-blend-mode:luminosity}
+    .new-1{background:#fbfbf9}
+    .new-3{background:#c6ff00}
+    .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .card{margin:0;border:1px solid #143318;background:#fff}
+    .card img{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;background:#143318}
+    .card div{padding:12px}
+    .card b,.card span{display:block}
+    .card span{margin-top:4px;font-size:14px}
+    @media(max-width:700px){main{margin-top:24px}.pair{grid-template-columns:1fr}}
+    @media(max-width:700px){.gallery{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Old crop / new crop</h1>
+
+    <h2 class="group-title">1 · Direct replacements</h2>
+    <p class="group-note">These four designer crops directly replace image treatments currently on the homepage.</p>
+
+    <section>
+      <h2>01 · Homepage problem section</h2>
+      <div class="pair">
+        <figure><figcaption>Old</figcaption><div class="frame old-1"><img class="room" src="../assets/img/premium-hero-session.jpg" alt=""><img class="person" src="../assets/img/oscar-portrait-cutout.png" alt="Oscar de Grauw"></div></figure>
+        <figure><figcaption>New</figcaption><div class="frame new-1"><img src="image-comparison-assets/new-1.png" alt="Oscar de Grauw"></div></figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>02 · Homepage Workshops card</h2>
+      <div class="pair">
+        <figure><figcaption>Old</figcaption><div class="frame old-2"><img src="../assets/img/work-whiteboard-cutout.png" alt="Oscar leading a working session"></div></figure>
+        <figure><figcaption>New</figcaption><div class="frame"><img src="image-comparison-assets/new-2.png" alt="Oscar leading a working session"></div></figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>03 · Homepage Keynotes card</h2>
+      <div class="pair">
+        <figure><figcaption>Old</figcaption><div class="frame old-3"><img src="../assets/img/speaking-keynote.jpg" alt="Oscar speaking on stage"></div></figure>
+        <figure><figcaption>New</figcaption><div class="frame new-3"><img src="image-comparison-assets/new-3.png" alt="Oscar speaking on stage"></div></figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>04 · Homepage Why work with me</h2>
+      <div class="pair">
+        <figure><figcaption>Old</figcaption><div class="frame arch old-4"><img src="../assets/img/oscar-cutout.png" alt="Oscar de Grauw"></div></figure>
+        <figure><figcaption>New</figcaption><div class="frame arch"><img src="image-comparison-assets/new-4.png" alt="Oscar de Grauw"></div></figure>
+      </div>
+    </section>
+
+    <h2 class="group-title">2 · Already covered — keep current</h2>
+    <p class="group-note">The supplied file is the same photograph already used by the website. The current website copy is cropped and optimized appropriately.</p>
+
+    <section>
+      <h2>Chair portrait</h2>
+      <div class="pair">
+        <figure><figcaption>Current website image</figcaption><div class="frame"><img src="../assets/img/oscar-chair.jpg" alt="Oscar seated on a chair"></div></figure>
+        <figure><figcaption>Supplied source</figcaption><div class="frame"><img src="image-comparison-assets/chair-source.png" alt="Oscar seated on a chair"></div></figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>Whiteboard session</h2>
+      <div class="pair">
+        <figure><figcaption>Current website image</figcaption><div class="frame"><img src="../assets/img/work-whiteboard.jpg" alt="Oscar at a whiteboard"></div></figure>
+        <figure><figcaption>Supplied source</figcaption><div class="frame"><img src="image-comparison-assets/whiteboard-source.jpg" alt="Oscar at a whiteboard"></div></figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>Steps portrait</h2>
+      <div class="pair">
+        <figure><figcaption>Current optimized image</figcaption><div class="frame"><img src="../assets/img/oscar-steps.jpg" alt="Oscar seated on steps"></div></figure>
+        <figure><figcaption>Supplied high-resolution source</figcaption><div class="frame"><img src="image-comparison-assets/steps-source.jpg" alt="Oscar seated on steps"></div></figure>
+      </div>
+    </section>
+
+    <h2 class="group-title">3 · Possible new placements</h2>
+    <p class="group-note">These are useful additions, but they are not direct replacements for the same crop.</p>
+    <div class="gallery">
+      <figure class="card"><img src="image-comparison-assets/new-6.png" alt="Oscar speaking on stage"><div><b>6.png</b><span>Possible secondary image on the Keynote page.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/oscar-website-images.png" alt="Oscar walking across a stage"><div><b>Oscar website images.png</b><span>Possible Deep Green stage composition on the Keynote page.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/workshop-room.jpg" alt="Oscar facilitating a workshop"><div><b>319B…PNG</b><span>Strong option for the See – Strip – Choose example.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/portrait-stool.jpg" alt="Oscar seated on a stool"><div><b>IMG_2750.jpeg</b><span>Possible About, press or speaker portrait.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/portrait-blue-suit.jpg" alt="Oscar in a blue suit"><div><b>IMG_2763.jpeg</b><span>Possible press, speaker or booking portrait.</span></div></figure>
+    </div>
+
+    <h2 class="group-title">4 · Event and promotional material — hold</h2>
+    <p class="group-note">Useful for a future event gallery, press area or social metadata. These should not replace a current page image without a separate layout decision.</p>
+    <div class="gallery">
+      <figure class="card"><img src="image-comparison-assets/event-1.jpg" alt="Leadership conference audience and stage"><div><b>Event photo for Oscar.jpg</b><span>Event atmosphere.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/event-2.jpg" alt="Leadership conference screen"><div><b>Event photo for Oscar 2.jpg</b><span>Event branding detail.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/event-3.jpg" alt="Leadership conference stage"><div><b>Event photo for Oscar 3.jpg</b><span>Wide stage atmosphere.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/event-heic-4894.png" alt="Conference audience"><div><b>IMG_4894.HEIC</b><span>Audience atmosphere.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/event-heic-4898.png" alt="Conference stage"><div><b>IMG_4898.HEIC</b><span>Large-stage atmosphere.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/event-heic-4970.png" alt="Dark conference stage"><div><b>IMG_4970.HEIC</b><span>Too dark for current use.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/promotional-complexity.jpg" alt="Complexity or clarity promotional artwork"><div><b>Oscar.jpeg</b><span>Promotional artwork, not a page photograph.</span></div></figure>
+      <figure class="card"><img src="image-comparison-assets/seo-image.png" alt="OPS Detox promotional graphic"><div><b>SEO image.png</b><span>Possible social-sharing image after its wording is confirmed.</span></div></figure>
+    </div>
+  </main>
+</body>
+</html>
