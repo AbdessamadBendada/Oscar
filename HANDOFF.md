@@ -5828,3 +5828,41 @@ Still open from §76: work-with-us.html's "Why work with me" heading
 collides with itself at 1512px — `--lh:.8` on `.ws-about-h` is tighter
 than the letters are tall, and the wrap puts "ME" under the "W". Mobile
 already got `--lh:.9`; desktop never did.
+
+---
+
+## 83. index.html — the "Fewer meetings" portrait sat too low
+
+The gap under the headline was not layout. Measured over CDP at ten
+widths, the figure's top edge was 0-1px below the headline at every one
+of them: the element was already tucked up against the type. The space
+was inside the file. `homepage-problem.webp` was 1080 x 1350 with the
+first opaque row at y=118 — 8.7% of its height was transparent padding,
+which scales with the image, so it read as roughly 40-65 CSS px of dead
+air wherever the image rendered.
+
+Same failure as §75 and worth remembering as a class: when a cutout
+looks badly positioned, check the asset's alpha bounding box before
+touching CSS. An element box that measures flush can still paint low.
+
+Recropped to 1080 x 1232 from y=118, first opaque row now 0:
+
+    cwebp -q 90 -alpha_q 100 -crop 0 118 1080 1232 prob-src.png \
+      -o assets/img/homepage-problem.webp
+
+Replaced in place (101,644 -> 101,290 bytes, alpha intact). The `height`
+attribute on the img in index.html moved 1350 -> 1232 to match; leaving
+it stale would have reserved the old aspect ratio and reintroduced the
+gap as layout. index.html is the only file referencing this asset.
+
+Second, smaller cause in the 861-1000px band only: `.pr-problem-fig` is
+`align-self:end` so Oscar stands on the row's floor, which is correct
+while he is the taller column. Below ~1000px the copy column overtakes
+him and the same rule pushed him down 82-99px. Added `align-self:start`
+to the existing `max-width:1100px` query — above that he is always the
+taller column, so the override never fires where `end` still matters.
+
+Verified at 1512 / 1280 / 1101 / 1100 / 1000 / 950 / 900 / 861 / 860 /
+760 / 600 / 430 / 390: gap is 0-1px at every width. Screenshots at 1512
+and 660 confirm he reads as emerging from the headline again rather than
+floating below it. Safari untested.

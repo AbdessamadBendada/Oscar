@@ -424,6 +424,11 @@
     .premium-page .pr-ip-row{grid-template-columns:minmax(0,.35fr) minmax(0,1fr) minmax(0,1.3fr);padding-inline:clamp(16px,3vw,40px)}
     .premium-page .pr-ip-link{grid-column:2/4;justify-self:start;margin-top:6px}
     .premium-page .pr-featured ul{grid-auto-columns:calc((100% - (2 * var(--logo-gap))) / 3)}
+    /* The figure bottom-aligns so Oscar stands on the row's floor, which
+       is right while he is the taller column. Below ~1000px the copy
+       overtakes him and the same rule drops him away from the headline
+       instead, so hand the row back to the top here. */
+    .premium-page .pr-problem-fig{align-self:start}
   }
   @media(max-width:860px){
     .premium-page .pr-problem-body,.premium-page .pr-about-grid{grid-template-columns:minmax(0,1fr);gap:34px}
@@ -814,7 +819,7 @@
           <!-- Designer-supplied replacement for the former generated
                cutout over a separately blurred meeting-room image. -->
           <figure class="pr-problem-fig hm hm-media">
-            <img class="pr-problem-art" src="assets/img/homepage-problem.webp" width="1080" height="1350"
+            <img class="pr-problem-art" src="assets/img/homepage-problem.webp" width="1080" height="1232"
                  alt="Oscar de Grauw" loading="lazy">
           </figure>
 
