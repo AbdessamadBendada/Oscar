@@ -5877,3 +5877,51 @@ its name would not. Note the failure is benign-looking rather than
 broken: `width`/`height` on the img only reserve the pre-load ratio, and
 the CSS is `width:100%;height:auto`, so a stale cached image renders at
 its own size — the old gap, not a distorted photo.
+
+---
+
+## 84. index.html — his head now sits level with the headline, not under it
+
+§83 closed the wrong gap. It removed the transparent padding inside the
+asset, which put the figure's top edge 1px below the headline — but the
+headline is a three-line staircase indented 18% and 40%, so "below the
+headline" means below the THIRD line, far right, while Oscar is far
+left. His head ended up under a void with no type above it at all. The
+measurement said 1px and the page still looked wrong, which is the whole
+lesson here: the number was measuring a relationship nobody looks at.
+
+What was actually wanted is the original break-out: his head level with
+the headline and in front of it.
+
+    .premium-page .pr-problem-fig{
+      position:relative;z-index:2;align-self:end;
+      margin:calc(clamp(38px,6.3vw,118px) * -1.4) 0 0;
+    }
+
+The -1.4 is 1.4 heading lines (measured pitch is .79 of font size, so
+two lines minus a little). Expressed against the heading's own clamp
+rather than a pixel constant, so it tracks the type instead of drifting
+apart as the viewport scales — verified head-to-first-line at 0-2px
+across 861 / 870 / 900 / 950 / 1000 / 1024 / 1100 / 1200 / 1280 / 1440 /
+1512 / 1728 / 1920.
+
+Safe to overlap because the cutout's head occupies only 18.8%-44.9% of
+the image width (computed from the alpha channel, rows 0-240). That
+clears "More decisions" completely and reaches the "F" of "Fewer
+reports" only where the head is narrowest; z-index:2 puts him in front
+there, which is the documented intent.
+
+Untouched below 861px: the existing max-width:860px block already resets
+`margin-top:0`, and once the layout stacks the headline is directly
+overhead, where a pull-up would collide instead of nesting.
+
+Process note worth keeping. Three rounds were lost to this, and only one
+was a real CSS mistake:
+  - round 1, I fixed the asset padding but reported it as done while the
+    change sat uncommitted, so the live site legitimately had not moved;
+  - round 2, the recrop reused the filename, so caches could serve the
+    old bytes (fixed by the v2 rename);
+  - round 3, the gap I kept re-verifying was not the gap being pointed
+    at. Measuring the same wrong thing more precisely never surfaces
+    that. Screenshot the region and compare it to the report before
+    claiming a visual fix.

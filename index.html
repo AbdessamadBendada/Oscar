@@ -200,7 +200,19 @@
      is exactly the box; the break-out is overflow, not reserved space. */
   /* Designer-supplied composite: crop, background and subject edge are
      one approved image, so the former two-layer reconstruction is gone. */
-  .premium-page .pr-problem-fig{position:relative;z-index:2;margin:0;align-self:end}
+  /* The pull-up is what puts his head level with the headline instead of
+     below it. 1.4 heading lines, expressed against the heading's own
+     clamp so it tracks the type at every width rather than drifting.
+     Safe because his head only occupies 18.8%-44.9% of the image width,
+     which clears "More decisions" entirely and reaches the "F" of
+     "Fewer reports" at its narrowest point — and z-index:2 above puts
+     him in front there, which is the intended break-out.
+     The max-width:860px block below resets this to 0: once the layout
+     stacks, the headline is directly overhead and a pull-up collides. */
+  .premium-page .pr-problem-fig{
+    position:relative;z-index:2;align-self:end;
+    margin:calc(clamp(38px,6.3vw,118px) * -1.4) 0 0;
+  }
   .premium-page .pr-problem-art{display:block;width:100%;height:auto}
   .premium-page .pr-problem-copy{padding-top:clamp(20px,4vw,74px)}
   /* One row: the CTA on the left, the attribution and signature hard
