@@ -5797,3 +5797,34 @@ contact.html's four own form fields still compute 0px. `CSS.getMatchedStyles
 ForNode` is what identified the offending rule rather than grepping, since
 the selector that caused it does not contain the word "footer".
 Safari remains untested.
+
+---
+
+## 82. keynote.html — the switcher captions now centre like every other page
+
+Eight premium pages centre `.choice-note` and `.choice-hint` under the
+switcher. keynote.html set only the gap above them:
+
+    .premium-keynote .choice .choice-note,
+    .premium-keynote .choice .choice-hint{margin-top:28px}
+
+With no alignment of its own the text inherited the block's computed
+`text-align:left`, so on keynote alone both lines hugged the left edge
+while the switcher sat centred.
+
+Now `margin:28px auto 0;text-align:center`, with the usual revert to left
+inside the existing `max-width:620px` query. 620 rather than the 850 the
+other pages use on purpose: 620 is where keynote's own `.choice h2` drops
+its offset spans and goes flush left, so the captions unwind with it.
+
+Verified over CDP, cache disabled, at 1512 / 1280 / 900 / 619 / 390. The
+measurement takes a Range rect over the text rather than the element box,
+because auto margins centre the box whether or not the glyphs inside it
+move. Centred widths land on the switcher's midline (off by 0 and -1px,
+the usual sub-pixel rounding) and reproduce about.html's numbers exactly;
+619 and 390 go left, also matching. Safari untested.
+
+Still open from §76: work-with-us.html's "Why work with me" heading
+collides with itself at 1512px — `--lh:.8` on `.ws-about-h` is tighter
+than the letters are tall, and the wrap puts "ME" under the "W". Mobile
+already got `--lh:.9`; desktop never did.

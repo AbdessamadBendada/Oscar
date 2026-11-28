@@ -634,8 +634,12 @@
   .premium-keynote .choice h2 span{display:block;width:max-content;max-width:100%}
   .premium-keynote .choice h2 span:nth-child(1){margin-left:10%}
   .premium-keynote .choice h2 span:nth-child(2){margin-left:39%}
+  /* Centred under the switcher like every other premium page. The
+     heading above is deliberately left-aligned with offset spans, so
+     only these two lines centre — and they unwind back to left at
+     620px, where the heading drops its offsets too. */
   .premium-keynote .choice .choice-note,
-  .premium-keynote .choice .choice-hint{margin-top:28px}
+  .premium-keynote .choice .choice-hint{margin:28px auto 0;text-align:center}
   .premium-keynote .choice .toggle-rows{max-width:980px;margin-top:40px}
   .premium-keynote .choice .toggle-row{padding:24px 34px 20px;font-size:clamp(20px,2.2vw,32px);gap:clamp(20px,3vw,46px)}
   .premium-keynote .choice .choice-toggle .t-switch{width:130px;height:76px;flex:0 0 auto}
@@ -668,6 +672,8 @@
     .premium-keynote .key-voices .pr-voices-h span:nth-child(2){margin-top:0}
     .premium-keynote .choice h2{font-size:clamp(54px,16vw,72px);line-height:.8}
     .premium-keynote .choice h2 span:nth-child(n){margin-left:0;width:auto;max-width:none}
+    .premium-keynote .choice .choice-note,
+    .premium-keynote .choice .choice-hint{margin-inline:0;text-align:left}
     .premium-keynote .key-stats{grid-template-columns:minmax(0,1fr)}
     .premium-keynote .key-stat{border-right:0;border-bottom:1px solid rgba(254,253,242,.38)}
     .premium-keynote .key-stat:last-child{border-bottom:0}
