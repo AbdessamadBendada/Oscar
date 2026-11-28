@@ -5866,3 +5866,14 @@ Verified at 1512 / 1280 / 1101 / 1100 / 1000 / 950 / 900 / 861 / 860 /
 760 / 600 / 430 / 390: gap is 0-1px at every width. Screenshots at 1512
 and 660 confirm he reads as emerging from the headline again rather than
 floating below it. Safari untested.
+
+Renamed to `homepage-problem-v2.webp` in a follow-up. The recrop kept the
+original filename, and the first report back was "it still looks the
+same" — which was the deploy lagging, but a same-name asset swap would
+have produced exactly that symptom too, from the browser and CDN image
+cache. Renaming makes the new bytes a new URL, so no cache can serve the
+old crop. Worth doing by default whenever an asset's pixels change but
+its name would not. Note the failure is benign-looking rather than
+broken: `width`/`height` on the img only reserve the pre-load ratio, and
+the CSS is `width:100%;height:auto`, so a stale cached image renders at
+its own size — the old gap, not a distorted photo.
